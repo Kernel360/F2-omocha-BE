@@ -1,0 +1,25 @@
+name: omocha-dev
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  database:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - TZ=Asia/Seoul
+    env_file:
+      - .env
+    volumes:
+      - ${POSTGRES_HOME_DIR}/data:/var/lib/postgresql/data # ${POSTGRES_HOME_DIR}/data
+    networks:
+      - backend
+
