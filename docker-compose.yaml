@@ -6,7 +6,7 @@ networks:
 
 services:
   database:
-    image: postgres:latest
+    image: postgres:16.4
     container_name: postgres
     restart: always
     ports:
