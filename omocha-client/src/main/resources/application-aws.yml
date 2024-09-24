@@ -1,0 +1,22 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ${AWS_REGION_NAME}
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+      upload-path: ${S3_IMAGE_PATH}
+
+
+
+#spring:
+#  servlet:
+#    multipart:
+#      enabled: true
+#      file-size-threshold: 2MB
+#      max-file-size: 5MB
+#      max-request-size: 10MB

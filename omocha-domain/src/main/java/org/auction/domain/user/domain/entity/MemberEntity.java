@@ -1,6 +1,6 @@
 package org.auction.domain.user.domain.entity;
 
-import org.auction.domain.common.TimeTrackableEntity;
+import org.auction.domain.common.domain.entity.TimeTrackableEntity;
 import org.auction.domain.user.domain.enums.Role;
 import org.auction.domain.user.domain.enums.UserStatus;
 

@@ -1,4 +1,4 @@
-package org.auction.client.config;
+package org.auction.client.config.objectmapper;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

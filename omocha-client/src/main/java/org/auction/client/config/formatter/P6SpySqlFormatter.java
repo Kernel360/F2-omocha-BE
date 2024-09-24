@@ -1,4 +1,4 @@
-package org.auction.client.config;
+package org.auction.client.config.formatter;
 
 import static org.springframework.util.StringUtils.*;
 

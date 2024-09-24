@@ -1,4 +1,4 @@
-package org.auction.domain.common;
+package org.auction.domain.common.domain.entity;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ public abstract class TimeTrackableEntity {
 	protected LocalDateTime createdAt;
 
 	@LastModifiedDate
-	@Column(name = "updated_at", nullable = false)
+	@Column(name = "updated_at")
 	protected LocalDateTime updatedAt;
 }
 
