@@ -18,11 +18,29 @@ repositories {
 }
 
 dependencies {
+    // root project -> settings.gradle에 선언한 값과 동일해야함
     implementation project(':omocha-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    // .env 파일 사용 라이브러리
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+    // jackson data
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // java 8 date module added
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    // swagger 추가
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0' // swagger 추가
+
+
     // lombok
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
@@ -41,6 +59,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.register("prepareKotlinBuildScriptModel") {}
 
 bootJar {
     enabled = true
