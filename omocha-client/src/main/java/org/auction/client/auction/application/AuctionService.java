@@ -82,7 +82,7 @@ public class AuctionService {
 
 	// 게시글 상세 조회
 	@Transactional(readOnly = true)
-	public AuctionDetailResponse findAuction(
+	public AuctionDetailResponse findAuctionDetails(
 		Long id
 	) {
 

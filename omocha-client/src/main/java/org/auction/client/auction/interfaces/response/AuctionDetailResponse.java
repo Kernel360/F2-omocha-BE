@@ -12,9 +12,9 @@ public record AuctionDetailResponse(
 	Integer startPrice,
 	Integer bidUnit,
 	AuctionType auctionType,
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime startDate,
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime endDate,
 	List<String> imageKeys // Include image keys
 ) {

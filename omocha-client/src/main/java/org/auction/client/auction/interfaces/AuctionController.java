@@ -45,6 +45,7 @@ public class AuctionController implements AuctionApi {
 		// TODO : 소셜로그인 구현 시 SecurityContextHolder에서 User 정보를 가져올 수 있다.
 		// SecurityContextHolder.getContect().getAuthentication().getName()
 		CreateAuctionResponse response = auctionService.addAuction(auctionRequest, images, memberId);
+		// TODO : response 할 때 오류 코드와 메시지를 담는 ENUM 클래스 생성하기
 		ResultDto<CreateAuctionResponse> resultDto = ResultDto.res(
 			HttpStatus.OK, "경매가 성공적으로 생성되었습니다.", response);
 		return ResponseEntity.ok(resultDto);
@@ -57,21 +58,21 @@ public class AuctionController implements AuctionApi {
 	) {
 		log.info("Received GetAuctionDetailRequest: {}", postId);
 		log.debug("Get auction post started");
-		AuctionDetailResponse response = auctionService.findAuction(postId);
+		AuctionDetailResponse response = auctionService.findAuctionDetails(postId);
 		ResultDto<AuctionDetailResponse> resultDto = ResultDto.res(
 			HttpStatus.OK, "경매 상세 정보 조회 성공", response);
 		return ResponseEntity.ok(resultDto);
 	}
 
 	@Override
-	@DeleteMapping("/auction/{id}")
+	@DeleteMapping("/auction/{post_id}")
 	public ResponseEntity<ResultDto<Void>> auctionRemove(
 		@PathVariable("post_id") Long postId
 	) {
 		log.debug("Remove auction post started");
 		auctionService.removeAuction(postId);
 		ResultDto<Void> resultDto = ResultDto.res(
-			HttpStatus.OK, "경매가 성공적으로 삭제되었습니다", null);
+			HttpStatus.OK, "경매가 성공적으로 삭제되었습니다");
 		return ResponseEntity.ok(resultDto);
 	}
 }

@@ -1,6 +1,7 @@
 logs
 *.env
 omocha-server
+*.sql
 
 HELP.md
 .gradle
@@ -35,6 +36,7 @@ bin/
 *.yml
 !application.yml
 !application-aws.yml
+!application-local.yml
 *.properties
 !gradle/wrapper/gradle-wrapper.properties
 out/
@@ -67,3 +69,5 @@ out/
 ../ImageWebCrawling.R
 ../images/
 /logs/
+
+omocha-common

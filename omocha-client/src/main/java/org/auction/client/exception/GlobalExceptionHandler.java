@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
 		AuctionCreationException ex
 	) {
 		ResultDto<String> resultDto = ResultDto.res(
-			HttpStatus.BAD_REQUEST, ex.getMessage(), null);
+			HttpStatus.BAD_REQUEST, ex.getMessage());
 		return new ResponseEntity<>(resultDto, HttpStatus.BAD_REQUEST);
 	}
 
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 		EntityNotFoundException ex
 	) {
 		ResultDto<String> resultDto = ResultDto.res(
-			HttpStatus.NOT_FOUND, ex.getMessage(), null);
+			HttpStatus.NOT_FOUND, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultDto);
 	}
 
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 		Exception ex
 	) {
 		ResultDto<String> resultDto = ResultDto.res(
-			HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.", null);
+			HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
 	}
 

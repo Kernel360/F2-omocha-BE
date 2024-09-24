@@ -22,6 +22,7 @@ public enum AuctionStatus {
 				return status;
 			}
 		}
+		// TODO : return exception 처리 해야함
 		return null; // 값이 맞지 않을 때 처리
 	}
 

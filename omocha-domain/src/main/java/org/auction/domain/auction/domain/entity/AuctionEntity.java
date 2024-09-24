@@ -57,7 +57,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
 
-	@Column(name = "acution_type", nullable = false)
+	@Column(name = "auction_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AuctionType auctionType;
 
