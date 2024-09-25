@@ -83,10 +83,10 @@ public class AuctionService {
 	// 게시글 상세 조회
 	@Transactional(readOnly = true)
 	public AuctionDetailResponse findAuctionDetails(
-		Long id
+		Long auctionId
 	) {
 
-		AuctionEntity auctionEntity = auctionRepository.findByIdWithImages(id)
+		AuctionEntity auctionEntity = auctionRepository.findByIdWithImages(auctionId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 경매를 찾을 수 없습니다."));
 
 		List<String> imageKeys = auctionEntity.getImages().stream()
@@ -94,7 +94,7 @@ public class AuctionService {
 			.collect(Collectors.toList());
 
 		log.debug("Find auction finished with images {}", imageKeys);
-		log.debug("Find auction finished with id {}", id);
+		log.debug("Find auction finished with auctionId {}", auctionId);
 		return new AuctionDetailResponse(
 			auctionEntity.getTitle(),
 			auctionEntity.getContent(),
@@ -109,9 +109,9 @@ public class AuctionService {
 
 	@Transactional
 	public void removeAuction(
-		Long id
+		Long auctionId
 	) {
-		AuctionEntity auctionEntity = auctionRepository.findById(id)
+		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 경매를 찾을 수 없습니다."));
 
 		try {
@@ -124,7 +124,7 @@ public class AuctionService {
 			throw new RuntimeException("이미지 삭제 중 오류가 발생했습니다's.", e);
 		}
 
-		log.debug("Remove auction finished with id {}", id);
+		log.debug("Remove auction finished with auctionId {}", auctionId);
 
 		auctionRepository.delete(auctionEntity);
 

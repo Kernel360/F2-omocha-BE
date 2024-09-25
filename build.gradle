@@ -2,12 +2,34 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.3'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'java-library'
 }
 
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        // Test dependencies
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+    }
 
     repositories {
         mavenCentral()
+    }
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }
 
@@ -16,7 +38,7 @@ bootJar {
 }
 
 jar {
-    enabled = true
+    enabled = false
 }
 
 

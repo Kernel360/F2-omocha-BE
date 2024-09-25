@@ -1,28 +1,10 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-}
-
-group = 'org.auction'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-repositories {
-    mavenCentral()
-}
+def jarName = "omocha-api.jar"
 
 dependencies {
     // root project -> settings.gradle에 선언한 값과 동일해야함
     implementation project(':omocha-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     // aws s3
@@ -52,15 +34,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-tasks.register("prepareKotlinBuildScriptModel") {}
 
 bootJar {
     enabled = true
@@ -68,4 +46,15 @@ bootJar {
 
 jar {
     enabled = false
+}
+
+tasks.named("bootJar") {
+    bootJar.getArchiveFileName().set(jarName) // JAR 이름 설정
+
+    doLast {
+        copy {
+            from "build/libs/$jarName" // 생성된 JAR 파일 경로
+            into "../build/libs" // 복사할 경로
+        }
+    }
 }

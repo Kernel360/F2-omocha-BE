@@ -52,25 +52,25 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@Override
-	@GetMapping("/auction/{post_id}")
+	@GetMapping("/auction/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDetailResponse>> auctionDetails(
-		@PathVariable("post_id") Long postId
+		@PathVariable("auction_id") Long auctionId
 	) {
-		log.info("Received GetAuctionDetailRequest: {}", postId);
+		log.info("Received GetAuctionDetailRequest: {}", auctionId);
 		log.debug("Get auction post started");
-		AuctionDetailResponse response = auctionService.findAuctionDetails(postId);
+		AuctionDetailResponse response = auctionService.findAuctionDetails(auctionId);
 		ResultDto<AuctionDetailResponse> resultDto = ResultDto.res(
 			HttpStatus.OK, "경매 상세 정보 조회 성공", response);
 		return ResponseEntity.ok(resultDto);
 	}
 
 	@Override
-	@DeleteMapping("/auction/{post_id}")
+	@DeleteMapping("/auction/{auction_id}")
 	public ResponseEntity<ResultDto<Void>> auctionRemove(
-		@PathVariable("post_id") Long postId
+		@PathVariable("auction_id") Long auctionId
 	) {
 		log.debug("Remove auction post started");
-		auctionService.removeAuction(postId);
+		auctionService.removeAuction(auctionId);
 		ResultDto<Void> resultDto = ResultDto.res(
 			HttpStatus.OK, "경매가 성공적으로 삭제되었습니다");
 		return ResponseEntity.ok(resultDto);
