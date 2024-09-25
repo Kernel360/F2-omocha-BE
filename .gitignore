@@ -37,6 +37,7 @@ bin/
 !application.yml
 !application-aws.yml
 !application-local.yml
+!application-prod.yml
 *.properties
 !gradle/wrapper/gradle-wrapper.properties
 out/

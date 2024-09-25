@@ -1,8 +1,8 @@
 spring:
   config:
     activate:
-      on-profile: local
-  #    import: optional:file:.env[.properties]
+      on-profile: prod
+  #      import: optional:file:.env[.properties]
   output:
     ansi:
       enabled: always
@@ -16,9 +16,9 @@ spring:
     open-in-view: false
 
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${AWS_DATASOURCE_URL}
+    username: ${AWS_DATABASE_USERNAME}
+    password: ${AWS_DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   sql:
