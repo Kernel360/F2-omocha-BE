@@ -31,12 +31,10 @@ jobs:
 
     - name: Build with Gradle
       run: |
-        cd ./omocha
         ./gradlew clean build -x test
         
     - name: Docker build and push
       run: |
-        cd ./omocha
         echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
         docker build -t ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }} ./
         docker buildx build --push --platform linux/amd64 -t ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7} .
