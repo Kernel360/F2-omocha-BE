@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Run chmod to make gradlew executable
-      run: chmod +x ./gradlew 
+      run: chmod +x ./gradlew
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -31,6 +31,7 @@ jobs:
 
     - name: Build with Gradle
       run: |
+        cd ./omocha
         ./gradlew clean build -x test
         
     - name: Docker build and push
