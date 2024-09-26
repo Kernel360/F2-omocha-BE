@@ -87,7 +87,7 @@
     </appender>
 
     <!-- 루트 로거 설정 -->
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE2"/>
         <appender-ref ref="REQUEST2"/>
         <appender-ref ref="ERROR"/>

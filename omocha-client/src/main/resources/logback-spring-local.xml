@@ -1,5 +1,8 @@
 <included>
-    <property resource="logback-variables.properties"/>
+
+    <!-- LOG_DIR과 LOG_PATTERN을 직접 정의 -->
+    <property name="LOG_DIR" value="./omocha-server/server/logs"/>
+    <property name="LOG_PATTERN" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n"/>
 
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
@@ -29,10 +32,6 @@
         </encoder>
     </appender>
 
-    <!--
-    DEBUG < INFO < WARN < ERROR
-    -->
-
     <appender name="QUERY" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/query.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -48,12 +47,14 @@
         </encoder>
     </appender>
 
+    <!-- 루트 로거 설정 -->
     <root level="INFO">
         <appender-ref ref="CONSOLE2"/>
         <appender-ref ref="REQUEST1"/>
     </root>
 
-    <logger name="SQL_LOG1" level="INFO" additivitty="false">
+    <!-- SQL 로그 로거 설정 -->
+    <logger name="SQL_LOG1" level="INFO" additivity="false">
         <appender-ref ref="QUERY"/>
     </logger>
 
