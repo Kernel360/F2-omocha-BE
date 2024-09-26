@@ -1,7 +1,6 @@
 package org.auction.client.config.swagger;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
@@ -12,10 +11,16 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.core.jackson.ModelResolver;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.RequiredArgsConstructor;
 
+@OpenAPIDefinition(
+	servers = {
+		@Server(url = "https://api.omocha-auction.com", description = "omocha https 서버입니다."),
+		@Server(url = "http://localhost:8080", description = "omocha local 서버입니다.")
+	}
+)
 @Configuration
 @RequiredArgsConstructor
 public class SwaggerConfig {
@@ -40,13 +45,4 @@ public class SwaggerConfig {
 			.build();
 	}
 
-	// 로컬 환경 및 프로덕션 환경 모두에서 테스트할 수 있도록 OpenAPI 서버 설정
-	@Bean
-	public OpenAPI customOpenAPI() {
-		return new OpenAPI()
-			.servers(List.of(
-				new Server().url("https://api.omocha-auction.com").description("Production server"),
-				new Server().url("http://localhost:8080").description("Local server")  // 로컬 테스트 서버 추가
-			));
-	}
 }
