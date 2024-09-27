@@ -6,11 +6,7 @@ import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,17 +30,15 @@ public interface AuctionApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	@ApiResponse(description = "파일 업로드를 위한 API 요청")
-	@RequestMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
 		@Parameter(description = "사용자 ID", required = true)
-		@PathVariable("member_id") Long userId,
+		Long userId,
 
 		@Parameter(description = "경매 요청 데이터", required = true)
-		@RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
+		CreateAuctionRequest auctionRequest,
 
-		@Parameter(description = "이미지 파일 리스트", required = false, schema = @Schema(type = "string", format = "binary"))
-		@RequestPart(value = "images", required = false) List<MultipartFile> images
+		@Parameter(description = "이미지 파일 리스트", required = true)
+		List<MultipartFile> images
 	);
 
 	@Operation(summary = "경매 상세 조회", description = "경매 ID를 사용하여 경매의 상세 정보를 조회합니다.")

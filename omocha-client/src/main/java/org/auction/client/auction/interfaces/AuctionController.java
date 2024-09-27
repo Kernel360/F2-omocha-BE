@@ -9,6 +9,7 @@ import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.image.application.AwsS3Service;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auction")
 public class AuctionController implements AuctionApi {
 
 	private final AuctionService auctionService;
@@ -34,11 +34,12 @@ public class AuctionController implements AuctionApi {
 
 	// REFACTOR : 로그인 구현이 완료되면 PathVariable에 있는 User Id를 삭제할 예정
 	@Override
-	@PostMapping("/auction/{member_id}")
+	@PostMapping(value = "/{member_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {
+		MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
 		@PathVariable("member_id") Long memberId,
-		@Valid @RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
-		@RequestPart(value = "images", required = false) List<MultipartFile> images
+		@RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
+		@RequestPart(value = "images", required = true) List<MultipartFile> images
 	) {
 		log.info("Received CreateAuctionRequest: {} ", auctionRequest);
 		log.debug("Create auction post started");
@@ -48,11 +49,12 @@ public class AuctionController implements AuctionApi {
 		// TODO : response 할 때 오류 코드와 메시지를 담는 ENUM 클래스 생성하기
 		ResultDto<CreateAuctionResponse> resultDto = ResultDto.res(
 			HttpStatus.OK, "경매가 성공적으로 생성되었습니다.", response);
+
 		return ResponseEntity.ok(resultDto);
 	}
 
 	@Override
-	@GetMapping("/auction/{auction_id}")
+	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDetailResponse>> auctionDetails(
 		@PathVariable("auction_id") Long auctionId
 	) {
@@ -65,7 +67,7 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@Override
-	@DeleteMapping("/auction/{auction_id}")
+	@DeleteMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<Void>> auctionRemove(
 		@PathVariable("auction_id") Long auctionId
 	) {
