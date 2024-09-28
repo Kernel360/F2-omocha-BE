@@ -79,7 +79,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 
 	@Builder
 	public AuctionEntity(
-		String title, String content, int startPrice, int bidUnit,
+		String title, String content, int startPrice, int bidUnit, AuctionStatus auctionStatus,
 		AuctionType auctionType, LocalDateTime startDate, LocalDateTime endDate,
 		MemberEntity memberEntity
 	) {
