@@ -87,6 +87,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 		this.content = content;
 		this.startPrice = startPrice;
 		this.bidUnit = bidUnit;
+		this.auctionStatus = auctionStatus;
 		this.auctionType = auctionType;
 		this.startDate = startDate;
 		this.endDate = endDate;
