@@ -1,41 +1,67 @@
 package org.auction.client.exception;
 
+import static org.auction.client.common.code.AuctionErrorCode.*;
+
 import org.auction.client.common.dto.ResultDto;
-import org.auction.client.exception.auction.AuctionCreationException;
-import org.springframework.http.HttpStatus;
+import org.auction.client.exception.auction.AuctionException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	@ExceptionHandler(AuctionCreationException.class)
-	public ResponseEntity<ResultDto<String>> handleAuctionCreationException(
-		AuctionCreationException ex
+
+	@ExceptionHandler(AuctionException.class)
+	public ResponseEntity<ResultDto<Object>> handleAuctionException(
+		AuctionException e,
+		HttpServletRequest request
 	) {
-		ResultDto<String> resultDto = ResultDto.res(
-			HttpStatus.BAD_REQUEST, ex.getMessage());
-		return new ResponseEntity<>(resultDto, HttpStatus.BAD_REQUEST);
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getAuctionErrorCode(), request.getRequestURI(), e.getDetailMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getAuctionErrorCode().getStatusCode(),
+			e.getAuctionErrorCode().getResultMsg()
+		);
+		return ResponseEntity
+			.status(e.getAuctionErrorCode().getHttpStatus())
+			.body(resultDto);
 	}
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<ResultDto<String>> handleEntityNotFoundException(
-		EntityNotFoundException ex
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	public ResponseEntity<ResultDto<Object>> handleHttpMediaTypeNotSupported(
+		HttpMediaTypeNotSupportedException e,
+		HttpServletRequest request
 	) {
-		ResultDto<String> resultDto = ResultDto.res(
-			HttpStatus.NOT_FOUND, ex.getMessage());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultDto);
+		log.error("errorCode: {}, url: {}, message: {}",
+			UNSUPPORTED_MEDIA_TYPE, request.getRequestURI(), e.getMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			UNSUPPORTED_MEDIA_TYPE.getStatusCode(),
+			UNSUPPORTED_MEDIA_TYPE.getResultMsg()
+		);
+		return ResponseEntity
+			.status(UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
+			.body(resultDto);
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ResultDto<String>> handleGeneralException(
-		Exception ex
+	public ResponseEntity<ResultDto<Object>> handleGeneralException(
+		Exception e,
+		HttpServletRequest request
 	) {
-		ResultDto<String> resultDto = ResultDto.res(
-			HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
+		log.error("url: {}, message: {}", request.getRequestURL(), e.getMessage(), e);
+		ResultDto<Object> resultDto = ResultDto.res(
+			INTERNAL_SERVER_ERROR.getStatusCode(),
+			INTERNAL_SERVER_ERROR.getResultMsg()
+		);
+		return ResponseEntity
+			.status(INTERNAL_SERVER_ERROR.getHttpStatus())
+			.body(resultDto);
 	}
-
 }

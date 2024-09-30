@@ -11,8 +11,16 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.core.jackson.ModelResolver;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.RequiredArgsConstructor;
 
+@OpenAPIDefinition(
+	servers = {
+		@Server(url = "https://api.omocha-auction.com", description = "omocha https 서버입니다."),
+		@Server(url = "http://localhost:8080", description = "omocha local 서버입니다.")
+	}
+)
 @Configuration
 @RequiredArgsConstructor
 public class SwaggerConfig {
@@ -36,4 +44,5 @@ public class SwaggerConfig {
 			.pathsToMatch(paths)
 			.build();
 	}
+
 }

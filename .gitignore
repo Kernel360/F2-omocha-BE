@@ -3,6 +3,8 @@ logs
 omocha-server
 *.sql
 
+omocha-domain/src/main/generated
+
 HELP.md
 .gradle
 resources/templates/data.sql
