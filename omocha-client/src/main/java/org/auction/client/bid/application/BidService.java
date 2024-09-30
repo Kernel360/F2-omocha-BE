@@ -7,6 +7,7 @@ import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
+import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
 import org.auction.domain.bid.entity.BidEntity;
 import org.auction.domain.bid.infrastructure.BidRepository;
@@ -26,7 +27,9 @@ public class BidService {
 	private final MemberRepository memberRepository;
 
 	@Transactional(readOnly = true)
-	public List<BidResponse> findBidList(Long auction_id) {
+	public List<BidResponse> findBidList(
+		Long auction_id
+	) {
 
 		AuctionEntity auctionEntity = auctionRepository.findById(auction_id).orElseThrow();
 
@@ -38,7 +41,11 @@ public class BidService {
 	}
 
 	@Transactional
-	public CreateBidResponse addBid(Long auction_id, Long buyerId, CreateBidRequest createBidRequest) {
+	public CreateBidResponse addBid(
+		Long auction_id,
+		Long buyerId,
+		CreateBidRequest createBidRequest
+	) {
 
 		MemberEntity memberEntity = memberRepository.findById(buyerId)
 			.orElseThrow(() -> new RuntimeException("Member not found"));
@@ -48,6 +55,10 @@ public class BidService {
 
 		if (!checkLastBid(memberEntity, createBidRequest.getBidPrice())) {
 			throw new RuntimeException("Last bid price is incorrect");
+		}
+
+		if (!checkAutionStatus(auctionEntity)) {
+			throw new RuntimeException("Auction status is incorrect");
 		}
 
 		BidEntity bidEntity = BidEntity.builder()
@@ -62,11 +73,23 @@ public class BidService {
 
 	}
 
-	private boolean checkLastBid(MemberEntity memberEntity, Long bidPrice) {
+	private boolean checkLastBid(
+		MemberEntity memberEntity,
+		Long bidPrice
+	) {
 		BidEntity beforeBidEntity = bidRepository.findTopByMemberEntityOrderByBidPriceDesc(memberEntity);
 
 		if (beforeBidEntity != null) {
 			return beforeBidEntity.getBidPrice() < bidPrice;
+		}
+		return true;
+
+	}
+
+	private boolean checkAutionStatus(AuctionEntity auctionEntity) {
+
+		if (!(auctionEntity.getAuctionStatus() == AuctionStatus.BIDDING)) {
+			return false;
 		}
 		return true;
 

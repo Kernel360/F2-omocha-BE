@@ -21,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auction")
 public class BidController implements BidApi {
 
 	private final BidService bidService;
 
-	@GetMapping("/auction/{auction_id}/bid")
+	@GetMapping("/{auction_id}/bid")
 	public ResponseEntity<ResultDto<List<BidResponse>>> bidList(
 		@PathVariable("auction_id") Long auction_id
 
@@ -42,7 +42,7 @@ public class BidController implements BidApi {
 
 	}
 
-	@PostMapping("/auction/{auction_id}/bid")
+	@PostMapping("/{auction_id}/bid")
 	public ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
 		@PathVariable("auction_id") Long auctionId,
 		@RequestParam("buyer_id") Long buyerId,

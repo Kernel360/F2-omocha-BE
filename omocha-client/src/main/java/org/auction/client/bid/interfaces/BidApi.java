@@ -7,9 +7,6 @@ import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,8 +27,7 @@ public interface BidApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<List<BidResponse>>> bidList(
-		@Parameter(description = "입찰 목록을 확인 할 경매")
-		@PathVariable("auction_id") Long auction_id
+		@Parameter(description = "입찰 목록을 확인 할 경매", required = true) Long auction_id
 
 	);
 
@@ -45,12 +41,9 @@ public interface BidApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
-		@Parameter(description = "입찰 할 경매")
-		@PathVariable("auction_id") Long auctionId,
-		@Parameter(description = "입찰 할 멤버")
-		@RequestParam("buyer_id") Long buyerId,
-		@Parameter(description = "입찰 금액")
-		@RequestBody CreateBidRequest createBidRequest
+		@Parameter(description = "입찰 할 경매", required = true) Long auctionId,
+		@Parameter(description = "입찰 할 멤버", required = true) Long buyerId,
+		@Parameter(description = "입찰 금액", required = true) CreateBidRequest createBidRequest
 	);
 
 }
