@@ -38,10 +38,9 @@ jobs:
         # log in to docker hub
         echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
         # build docker image
-        docker build -t ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }} ./
+        docker build -t ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }} .
         # push docker image to docker hub
-        docker buildx build --push --platform linux/amd64 -t ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}: .
-
+        docker buildx build --push --platform linux/amd64 -t ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }} .
     - name: Clean up dangling Docker images locally
       run: |
         sudo docker image prune -f
@@ -56,7 +55,6 @@ jobs:
         script: |
           echo "Testing SSH connection"
           uptime
-
     - name: Deploy to EC2 Server
       uses: appleboy/ssh-action@master
       with:
@@ -66,10 +64,8 @@ jobs:
         port: 22
         script: |
           echo ${{ secrets.DOCKERHUB_PASSWORD }} | sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-
           echo "모든 실행 중인 컨테이너 중지"
           sudo docker stop $(sudo docker ps -aq)  # 모든 실행 중인 컨테이너 중지
-
           echo "모든 컨테이너 및 네트워크 삭제"
           sudo docker rm $(sudo docker ps -aq)  # 모든 컨테이너 삭제
           # sudo docker network prune -f  # 모든 브리지 네트워크 삭제 (주의: 사용 중인 네트워크도 삭제됨)
