@@ -32,7 +32,7 @@ public interface AuctionApi {
 	})
 	ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
 		@Parameter(description = "사용자 ID", required = true)
-		Long userId,
+		Long memberId,
 
 		@Parameter(description = "경매 요청 데이터", required = true)
 		CreateAuctionRequest auctionRequest,
@@ -53,7 +53,9 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<AuctionDetailResponse>> auctionDetails(
-		@Parameter(description = "경매 ID", required = true) Long id);
+		@Parameter(description = "경매 ID", required = true)
+		Long auctionId
+	);
 
 	@Operation(summary = "경매 삭제", description = "경매 ID를 사용하여 경매를 삭제합니다.")
 	@ApiResponses(value = {
@@ -71,5 +73,7 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<Void>> auctionRemove(
-		@Parameter(description = "경매 ID", required = true) Long id);
+		@Parameter(description = "경매 ID", required = true)
+		Long auctionId
+	);
 }
