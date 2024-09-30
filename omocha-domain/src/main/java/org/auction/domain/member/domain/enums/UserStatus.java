@@ -1,4 +1,4 @@
-package org.auction.domain.user.domain.enums;
+package org.auction.domain.member.domain.enums;
 
 public enum UserStatus {
 	ACTIVATE, DEACTIVATE

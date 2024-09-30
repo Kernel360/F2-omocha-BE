@@ -1,6 +1,4 @@
 <included>
-    <!-- 변수 파일 포함 -->
-    <property resource="logback-variables.properties"/>
 
     <!-- 콘솔 앱렌더 -->
     <appender name="CONSOLE2" class="ch.qos.logback.core.ConsoleAppender">
@@ -9,22 +7,22 @@
         </filter>
         <encoder>
             <pattern>
-                [CONSOLE2] ${LOG_PATTERN}
+                [CONSOLE2] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
         </encoder>
     </appender>
 
     <!-- 요청 로그 앱렌더 -->
     <appender name="REQUEST2" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/request2.log</file>
+        <file>./omocha-server/server/logs/request2.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/archive/request2.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>./omocha-server/server/logs/archive/request2.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                [REQUEST2] ${LOG_PATTERN}
+                [REQUEST2] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
         </encoder>
@@ -32,20 +30,20 @@
 
     <!-- 에러 로그 앱렌더 -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/error.log</file>
+        <file>./omocha-server/server/logs/error.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/archive/error.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>./omocha-server/server/logs/archive/error.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                [ERROR] ${LOG_PATTERN}
+                [ERROR] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
         </encoder>
@@ -53,20 +51,20 @@
 
     <!-- 경고 로그 앱렌더 -->
     <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/warn.log</file>
+        <file>./omocha-server/server/logs/warn.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/archive/warn.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>./omocha-server/server/logs/archive/warn.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                [WARN] ${LOG_PATTERN}
+                [WARN] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
         </encoder>
@@ -74,22 +72,22 @@
 
     <!-- 쿼리 로그 앱렌더 -->
     <appender name="QUERY" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/query.log</file>
+        <file>./omocha-server/server/logs/query.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/archive/query.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>./omocha-server/server/logs/archive/query.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                [QUERY] ${LOG_PATTERN}
+                [QUERY] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
         </encoder>
     </appender>
 
     <!-- 루트 로거 설정 -->
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE2"/>
         <appender-ref ref="REQUEST2"/>
         <appender-ref ref="ERROR"/>

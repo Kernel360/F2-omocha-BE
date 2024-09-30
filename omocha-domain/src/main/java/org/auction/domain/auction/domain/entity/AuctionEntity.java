@@ -8,7 +8,7 @@ import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.domain.enums.AuctionType;
 import org.auction.domain.common.domain.entity.TimeTrackableEntity;
 import org.auction.domain.image.domain.entity.ImageEntity;
-import org.auction.domain.user.domain.entity.MemberEntity;
+import org.auction.domain.member.domain.entity.MemberEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -79,7 +79,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 
 	@Builder
 	public AuctionEntity(
-		String title, String content, int startPrice, int bidUnit,
+		String title, String content, int startPrice, int bidUnit, AuctionStatus auctionStatus,
 		AuctionType auctionType, LocalDateTime startDate, LocalDateTime endDate,
 		MemberEntity memberEntity
 	) {
@@ -87,6 +87,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 		this.content = content;
 		this.startPrice = startPrice;
 		this.bidUnit = bidUnit;
+		this.auctionStatus = auctionStatus;
 		this.auctionType = auctionType;
 		this.startDate = startDate;
 		this.endDate = endDate;

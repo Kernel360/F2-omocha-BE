@@ -1,24 +1,31 @@
 package org.auction.client.auction.application;
 
+import static org.auction.client.common.code.AuctionCode.*;
+import static org.auction.client.common.code.ImageCode.*;
+import static org.auction.client.common.code.MemberCode.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
-import org.auction.client.exception.auction.AuctionCreationException;
+import org.auction.client.exception.auction.AuctionNotFoundException;
+import org.auction.client.exception.image.ImageDeletionException;
+import org.auction.client.exception.image.ImageNotFoundException;
+import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.image.application.AwsS3Service;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
+import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
 import org.auction.domain.image.domain.entity.ImageEntity;
 import org.auction.domain.image.infrastructure.ImageRepository;
-import org.auction.domain.user.domain.entity.MemberEntity;
-import org.auction.domain.user.infrastructure.MemberRepository;
+import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.infrastructure.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,23 +48,23 @@ public class AuctionService {
 	) {
 
 		MemberEntity memberEntity = memberRepository.findById(memberId)
-			.orElseThrow(() -> new EntityNotFoundException("Member not found"));
+			.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
 		AuctionEntity auctionEntity = AuctionEntity.builder()
 			.title(request.title())
 			.content(request.content())
 			.startPrice(request.startPrice())
 			.bidUnit(request.bidUnit())
-			/*.auctionStatus(request.getAuctionStatus())*/
-			.memberEntity(memberEntity)
+			.auctionStatus(AuctionStatus.BIDDING)
 			.auctionType(request.auctionType())
 			.startDate(request.startDate())
 			.endDate(request.endDate())
+			.memberEntity(memberEntity)
 			.build();
 
 		if (images == null || images.isEmpty()) {
 			// TODO: exception 수정 필요
-			throw new AuctionCreationException("images is null or empty");
+			throw new ImageNotFoundException(IMAGE_NOT_FOUND);
 		}
 
 		for (MultipartFile image : images) {
@@ -87,7 +94,7 @@ public class AuctionService {
 	) {
 
 		AuctionEntity auctionEntity = auctionRepository.findByIdWithImages(auctionId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 경매를 찾을 수 없습니다."));
+			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
 
 		List<String> imageKeys = auctionEntity.getImages().stream()
 			.map(ImageEntity::getS3Key)
@@ -112,7 +119,7 @@ public class AuctionService {
 		Long auctionId
 	) {
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 경매를 찾을 수 없습니다."));
+			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
 
 		try {
 			// 이미지 삭제
@@ -121,7 +128,7 @@ public class AuctionService {
 				awsS3Service.deleteFile(image.getS3Key());
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("이미지 삭제 중 오류가 발생했습니다's.", e);
+			throw new ImageDeletionException(IMAGE_DELETION_ERROR);
 		}
 
 		log.debug("Remove auction finished with auctionId {}", auctionId);
