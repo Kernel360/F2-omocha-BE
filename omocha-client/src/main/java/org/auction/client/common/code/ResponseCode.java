@@ -9,11 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResponseCode {
 
-	// EXPLAIN: 200 OK 응답 코드
-	AUCTION_CREATE_SUCCESS(HttpStatus.OK, "경매가 성공적으로 생성되었습니다."),
-	AUCTION_DELETE_SUCCESS(HttpStatus.OK, "경매가 성공적으로 삭제되었습니다."),
-	AUCTION_DETAIL_SUCCESS(HttpStatus.OK, "경매 상세 정보 조회 성공"),
-
 	// EXPLAIN: 400 Bad Request 응답 코드
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
@@ -24,7 +19,7 @@ public enum ResponseCode {
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 
 	private final HttpStatus httpStatus;
-	private final String message;
+	private final String resultMsg;
 
 	public int getStatusCode() {
 		return httpStatus.value();

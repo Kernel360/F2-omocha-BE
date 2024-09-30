@@ -1,7 +1,6 @@
-package org.auction.client.exception.auction;
+package org.auction.client.exception.member;
 
 import org.auction.client.common.code.MemberCode;
-import org.auction.client.exception.member.MemberException;
 
 public class MemberNotFoundException extends MemberException {
 	public MemberNotFoundException(

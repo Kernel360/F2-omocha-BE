@@ -1,6 +1,6 @@
 package org.auction.client.auction.interfaces;
 
-import static org.auction.client.common.code.ResponseCode.*;
+import static org.auction.client.common.code.AuctionCode.*;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class AuctionController implements AuctionApi {
 
 		ResultDto<CreateAuctionResponse> resultDto = ResultDto.res(
 			AUCTION_CREATE_SUCCESS.getStatusCode(),
-			AUCTION_CREATE_SUCCESS.getMessage(),
+			AUCTION_CREATE_SUCCESS.getResultMsg(),
 			response
 		);
 
@@ -69,7 +69,7 @@ public class AuctionController implements AuctionApi {
 
 		ResultDto<AuctionDetailResponse> resultDto = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
-			AUCTION_DETAIL_SUCCESS.getMessage(),
+			AUCTION_DETAIL_SUCCESS.getResultMsg(),
 			response
 		);
 
@@ -89,7 +89,7 @@ public class AuctionController implements AuctionApi {
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			AUCTION_DELETE_SUCCESS.getStatusCode(),
-			AUCTION_DELETE_SUCCESS.getMessage(),
+			AUCTION_DELETE_SUCCESS.getResultMsg(),
 			null
 		);
 

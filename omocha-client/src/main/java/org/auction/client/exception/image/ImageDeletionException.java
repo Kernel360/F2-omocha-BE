@@ -1,7 +1,6 @@
-package org.auction.client.exception.auction;
+package org.auction.client.exception.image;
 
 import org.auction.client.common.code.ImageCode;
-import org.auction.client.exception.image.ImageException;
 
 public class ImageDeletionException extends ImageException {
 	public ImageDeletionException(
