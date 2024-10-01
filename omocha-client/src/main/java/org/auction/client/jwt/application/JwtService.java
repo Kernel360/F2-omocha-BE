@@ -66,8 +66,8 @@ public class JwtService {
 
 	public String generateRefreshToken(HttpServletResponse response, MemberEntity memberEntity) {
 		String refreshToken = jwtGenerator.generateRefreshToken(memberEntity, refreshKey, REFRESH_EXPIRATION);
-		RefreshToken.removeUserRefreshToken(memberEntity.getLoginId());
-		RefreshToken.putRefreshToken(refreshToken, memberEntity.getLoginId());
+		RefreshToken.removeUserRefreshToken(memberEntity.getMemberId());
+		RefreshToken.putRefreshToken(refreshToken, memberEntity.getMemberId());
 
 		ResponseCookie cookie = setTokenToCookie(JwtCategory.REFRESH.getValue(), refreshToken);
 		response.addHeader("Set-Cookie", cookie.toString());
@@ -119,14 +119,9 @@ public class JwtService {
 	}
 
 	public MemberEntity findMemberByRefreshToken(String refreshToken) {
-		String loginId = findClaimFromToken(refreshToken, accessKey, Claims::getId);
-		String savedLoginIdByRefreshToken = RefreshToken.findLoginIdByRefreshToken(refreshToken);
+		Long memberId = Long.valueOf(findClaimFromToken(refreshToken, refreshKey, Claims::getId));
 
-		if (loginId != null && loginId.equals(savedLoginIdByRefreshToken)) {
-			return memberService.findMemberByLoginId(loginId);
-		}
-
-		return null;
+		return memberService.findMemberByMemberId(memberId);
 	}
 
 	private <T> T findClaimFromToken(
@@ -148,7 +143,7 @@ public class JwtService {
 	}
 
 	public void logout(MemberEntity requestMember, HttpServletResponse response) {
-		RefreshToken.removeUserRefreshToken(requestMember.getLoginId());
+		RefreshToken.removeUserRefreshToken(requestMember.getMemberId());
 
 		Cookie accessCookie = jwtUtil.resetToken(JwtCategory.ACCESS);
 		Cookie refreshCookie = jwtUtil.resetToken(JwtCategory.REFRESH);

@@ -21,7 +21,7 @@ public class JwtGenerator {
 		return Jwts.builder()
 			.setHeader(createHeader())
 			.setClaims(createClaims(memberEntity))
-			.setSubject(memberEntity.getLoginId())
+			.setSubject(String.valueOf(memberEntity.getMemberId()))
 			.setIssuedAt(new Date(System.currentTimeMillis()))
 			.setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXPIRATION))
 			.signWith(accessKey)
@@ -31,7 +31,7 @@ public class JwtGenerator {
 	public String generateRefreshToken(MemberEntity memberEntity, Key refreshKey, long REFRESH_EXPIRATION) {
 		return Jwts.builder()
 			.setHeader(createHeader())
-			.setSubject(memberEntity.getLoginId())
+			.setSubject(String.valueOf(memberEntity.getMemberId()))
 			.setExpiration(new Date(System.currentTimeMillis() + (REFRESH_EXPIRATION * 24)))
 			.setIssuedAt(new Date(System.currentTimeMillis()))
 			.signWith(refreshKey)
@@ -47,7 +47,7 @@ public class JwtGenerator {
 
 	private Map<String, Object> createClaims(MemberEntity memberEntity) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("LoginId", memberEntity.getLoginId());
+		claims.put("MemberId", memberEntity.getMemberId());
 		claims.put("Role", memberEntity.getRole());
 		return claims;
 	}

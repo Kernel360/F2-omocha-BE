@@ -40,6 +40,14 @@ public class MemberService {
 		return memberRepository.save(memberEntity).getLoginId();
 	}
 
+	// TODO : findMemberByMemberId와 findMemberByLoginId에서 에러가 발생했을 경우 각각 식별이 필요함
+	public MemberEntity findMemberByMemberId(
+		Long memberId
+	) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+	}
+
 	public MemberEntity findMemberByLoginId(
 		String loginId
 	) {
@@ -48,11 +56,10 @@ public class MemberService {
 	}
 
 	public void validateLogin(
-		MemberLoginRequest memberLoginRequest
+		MemberLoginRequest memberLoginRequest,
+		MemberEntity memberEntity
 	) {
-		MemberEntity memberInfo = findMemberByLoginId(memberLoginRequest.loginId());
-
-		if (!passwordEncoder.matches(memberLoginRequest.password(), memberInfo.getPassword())) {
+		if (!passwordEncoder.matches(memberLoginRequest.password(), memberEntity.getPassword())) {
 			throw new InvalidPasswordException(INVALID_PASSWORD);
 		}
 	}

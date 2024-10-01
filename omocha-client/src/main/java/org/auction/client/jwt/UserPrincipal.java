@@ -26,7 +26,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return memberEntity.getLoginId();
+		return String.valueOf(memberEntity.getMemberId());
 	}
 
 	@Override

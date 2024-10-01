@@ -17,8 +17,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private final MemberService memberService;
 
 	@Override
-	public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-		MemberEntity memberEntity = memberService.findMemberByLoginId(loginId);
+	public UserDetails loadUserByUsername(String memberIdStr) throws UsernameNotFoundException {
+		MemberEntity memberEntity = memberService.findMemberByMemberId(Long.valueOf(memberIdStr));
 
 		return new UserPrincipal(memberEntity);
 	}
