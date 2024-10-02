@@ -2,6 +2,7 @@ package org.auction.client.auction.interfaces;
 
 import static org.auction.client.common.code.AuctionCode.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.auction.application.AuctionService;
@@ -33,9 +34,9 @@ public class AuctionController implements AuctionApi {
 
 	// REFACTOR : 로그인 구현이 완료되면 PathVariable에 있는 User Id를 삭제할 예정
 	@Override
-	@PostMapping(value = "/{member_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
-		@PathVariable("member_id") Long memberId,
+		Principal principal,
 		@RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
 		@RequestPart(value = "images", required = true) List<MultipartFile> images
 	) {
@@ -43,6 +44,7 @@ public class AuctionController implements AuctionApi {
 		log.debug("Create auction post started");
 
 		// TODO : 소셜로그인 구현 시 SecurityContextHolder에서 User 정보를 가져올 수 있다.
+		Long memberId = Long.parseLong(principal.getName());
 
 		CreateAuctionResponse response = auctionService.addAuction(auctionRequest, images, memberId);
 
@@ -81,11 +83,12 @@ public class AuctionController implements AuctionApi {
 	@Override
 	@DeleteMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<Void>> auctionRemove(
+		Principal principal,
 		@PathVariable("auction_id") Long auctionId
 	) {
 		log.debug("Remove auction post started");
 
-		auctionService.removeAuction(auctionId);
+		auctionService.removeAuction(Long.parseLong(principal.getName()), auctionId);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			AUCTION_DELETE_SUCCESS.getStatusCode(),

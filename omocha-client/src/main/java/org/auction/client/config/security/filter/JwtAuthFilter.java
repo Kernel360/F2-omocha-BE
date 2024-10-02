@@ -35,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		String accessToken = jwtService.resolveTokenFromCookie(request, JwtCategory.ACCESS);
 
 		// TODO: 추후 리팩토링 필요함
-		if (accessToken == null) {
+		if (accessToken == null || accessToken.isEmpty()) {
 			SecurityContextHolder.getContext().setAuthentication(null);
 			filterChain.doFilter(request, response);
 			return;

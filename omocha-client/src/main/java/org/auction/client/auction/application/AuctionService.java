@@ -13,6 +13,7 @@ import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.image.ImageDeletionException;
 import org.auction.client.exception.image.ImageNotFoundException;
+import org.auction.client.exception.member.InvalidMemberException;
 import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.image.application.AwsS3Service;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
@@ -116,10 +117,15 @@ public class AuctionService {
 
 	@Transactional
 	public void removeAuction(
+		Long memberId,
 		Long auctionId
 	) {
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
+
+		if (!auctionEntity.getMemberEntity().getMemberId().equals(memberId)) {
+			throw new InvalidMemberException(INVALID_MEMBER);
+		}
 
 		try {
 			// 이미지 삭제
@@ -133,6 +139,7 @@ public class AuctionService {
 
 		log.debug("Remove auction finished with auctionId {}", auctionId);
 
+		// TODO: soft delete로 변경해야 함
 		auctionRepository.delete(auctionEntity);
 
 	}

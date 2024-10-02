@@ -3,7 +3,8 @@ package org.auction.client.auction.interfaces.request;
 import java.time.LocalDateTime;
 
 import org.auction.domain.auction.domain.enums.AuctionType;
-import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,9 +16,9 @@ public record CreateAuctionRequest(
 	@NotNull Integer startPrice,
 	@NotNull Integer bidUnit,
 	@NotNull AuctionType auctionType,
-	@NotNull @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime startDate,
-	@NotNull @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime endDate
 ) {
 }
