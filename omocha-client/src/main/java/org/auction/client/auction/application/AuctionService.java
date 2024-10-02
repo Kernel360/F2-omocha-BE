@@ -1,6 +1,8 @@
 package org.auction.client.auction.application;
 
-import static org.auction.client.common.code.AuctionErrorCode.*;
+import static org.auction.client.common.code.AuctionCode.*;
+import static org.auction.client.common.code.ImageCode.*;
+import static org.auction.client.common.code.MemberCode.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,17 +11,18 @@ import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.exception.auction.AuctionNotFoundException;
-import org.auction.client.exception.auction.ImageDeletionException;
-import org.auction.client.exception.auction.ImageNotFoundException;
-import org.auction.client.exception.auction.MemberNotFoundException;
+import org.auction.client.exception.image.ImageDeletionException;
+import org.auction.client.exception.image.ImageNotFoundException;
+import org.auction.client.exception.member.InvalidMemberException;
+import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.image.application.AwsS3Service;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
 import org.auction.domain.image.domain.entity.ImageEntity;
 import org.auction.domain.image.infrastructure.ImageRepository;
-import org.auction.domain.user.domain.entity.MemberEntity;
-import org.auction.domain.user.infrastructure.MemberRepository;
+import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.infrastructure.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,10 +117,15 @@ public class AuctionService {
 
 	@Transactional
 	public void removeAuction(
+		Long memberId,
 		Long auctionId
 	) {
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
+
+		if (!auctionEntity.getMemberEntity().getMemberId().equals(memberId)) {
+			throw new InvalidMemberException(INVALID_MEMBER);
+		}
 
 		try {
 			// 이미지 삭제
@@ -131,6 +139,7 @@ public class AuctionService {
 
 		log.debug("Remove auction finished with auctionId {}", auctionId);
 
+		// TODO: soft delete로 변경해야 함
 		auctionRepository.delete(auctionEntity);
 
 	}

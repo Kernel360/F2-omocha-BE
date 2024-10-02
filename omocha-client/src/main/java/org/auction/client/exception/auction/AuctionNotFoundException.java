@@ -1,18 +1,18 @@
 package org.auction.client.exception.auction;
 
-import org.auction.client.common.code.AuctionErrorCode;
+import org.auction.client.common.code.AuctionCode;
 
 public class AuctionNotFoundException extends AuctionException {
 	public AuctionNotFoundException(
-		AuctionErrorCode errorCode
+		AuctionCode auctionCode
 	) {
-		super(errorCode);
+		super(auctionCode);
 	}
 
 	public AuctionNotFoundException(
-		AuctionErrorCode errorCode,
+		AuctionCode auctionCode,
 		String detailMessage
 	) {
-		super(errorCode, detailMessage);
+		super(auctionCode, detailMessage);
 	}
 }
