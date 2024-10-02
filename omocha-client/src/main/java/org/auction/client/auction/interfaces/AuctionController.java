@@ -8,8 +8,15 @@ import java.util.List;
 import org.auction.client.auction.application.AuctionService;
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
+import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,6 +67,26 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@Override
+	@GetMapping("/basic-list")
+	public ResponseEntity<ResultDto<Page<AuctionListResponse>>> auctionList(
+		AuctionSearchCondition condition,
+		@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+		Pageable pageable
+	) {
+		Page<AuctionListResponse> response = auctionService.searchAuction(condition, pageable);
+
+		ResultDto<Page<AuctionListResponse>> resultDto = ResultDto.res(
+			200,
+			"성공",
+			response
+		);
+
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.body(resultDto);
+	}
+
+	@Override
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDetailResponse>> auctionDetails(
 		@PathVariable("auction_id") Long auctionId
@@ -100,4 +127,5 @@ public class AuctionController implements AuctionApi {
 			.status(AUCTION_DELETE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
+
 }

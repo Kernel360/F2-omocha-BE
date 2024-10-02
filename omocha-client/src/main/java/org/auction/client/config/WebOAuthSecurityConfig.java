@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,6 +21,16 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 public class WebOAuthSecurityConfig {
+
+	@Bean
+	public WebSecurityCustomizer configure() { // 스프링 시큐리티 기능 비활성화
+		return (web) -> web.ignoring()
+			.requestMatchers(
+				new AntPathRequestMatcher("/img/**"),
+				new AntPathRequestMatcher("/css/**"),
+				new AntPathRequestMatcher("/js/**")
+			);
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
