@@ -1,13 +1,11 @@
 package org.auction.client.jwt.application;
 
-import static org.auction.client.common.code.JwtCode.*;
-
 import java.security.Key;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
-import org.auction.client.exception.jwt.JwtTokenNotFoundException;
 import org.auction.client.jwt.JwtCategory;
 import org.auction.client.jwt.RefreshToken;
 import org.auction.client.jwt.util.JwtGenerator;
@@ -56,7 +54,10 @@ public class JwtService {
 		refreshKey = Keys.hmacShaKeyFor(REFRESH_SECRET.getBytes());
 	}
 
-	public String generateAccessToken(HttpServletResponse response, MemberEntity memberEntity) {
+	public String generateAccessToken(
+		HttpServletResponse response,
+		MemberEntity memberEntity
+	) {
 		String accessToken = jwtGenerator.generateAccessToken(memberEntity, accessKey, ACCESS_EXPIRATION);
 		ResponseCookie cookie = setTokenToCookie(JwtCategory.ACCESS.getValue(), accessToken);
 		response.addHeader("Set-Cookie", cookie.toString());
@@ -64,7 +65,10 @@ public class JwtService {
 		return accessToken;
 	}
 
-	public String generateRefreshToken(HttpServletResponse response, MemberEntity memberEntity) {
+	public String generateRefreshToken(
+		HttpServletResponse response,
+		MemberEntity memberEntity
+	) {
 		String refreshToken = jwtGenerator.generateRefreshToken(memberEntity, refreshKey, REFRESH_EXPIRATION);
 		RefreshToken.removeUserRefreshToken(memberEntity.getMemberId());
 		RefreshToken.putRefreshToken(refreshToken, memberEntity.getMemberId());
@@ -75,7 +79,10 @@ public class JwtService {
 		return refreshToken;
 	}
 
-	public ResponseCookie setTokenToCookie(String tokenPrefix, String token) {
+	public ResponseCookie setTokenToCookie(
+		String tokenPrefix,
+		String token
+	) {
 		long maxAgeSeconds =
 			(tokenPrefix.equals(JwtCategory.ACCESS.getValue())) ? ACCESS_EXPIRATION : REFRESH_EXPIRATION;
 
@@ -88,28 +95,41 @@ public class JwtService {
 			.build();
 	}
 
-	public boolean validateAccessToken(final String token) {
+	public boolean validateAccessToken(
+		String token
+	) {
 		return jwtUtil.validateToken(token, accessKey);
 	}
 
-	public boolean validateRefreshToken(final String token) {
+	public boolean validateRefreshToken(
+		final String token
+	) {
 		return jwtUtil.validateToken(token, refreshKey);
 	}
 
-	public String resolveTokenFromCookie(HttpServletRequest request, JwtCategory tokenPrefix) {
+	public String resolveTokenFromCookie(
+		HttpServletRequest request,
+		JwtCategory tokenPrefix
+	) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {
-			throw new JwtTokenNotFoundException(JWT_TOKEN_NOT_FOUND);
+			// throw new JwtTokenNotFoundException(JWT_TOKEN_NOT_FOUND);
+			return null;
 		}
 		return jwtUtil.resolveTokenFromCookie(cookies, tokenPrefix);
 	}
 
-	public Authentication getAuthentication(String token) {
+	public Authentication getAuthentication(
+		String token
+	) {
 		UserDetails principal = customUserDetailsService.loadUserByUsername(getUserPk(token, accessKey));
 		return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
 	}
 
-	private String getUserPk(String token, Key secretKey) {
+	private String getUserPk(
+		String token,
+		Key secretKey
+	) {
 		return Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
@@ -118,16 +138,26 @@ public class JwtService {
 			.getSubject();
 	}
 
-	public MemberEntity findMemberByRefreshToken(String refreshToken) {
-		Long memberId = Long.valueOf(findClaimFromToken(refreshToken, refreshKey, Claims::getId));
+	public MemberEntity findMemberByRefreshToken(
+		String refreshToken
+	) {
+		Long memberId = Optional.ofNullable(findClaimFromToken(refreshToken, refreshKey, Claims::getId))
+			.map(Long::valueOf)
+			.orElse(null);
 
-		return memberService.findMemberByMemberId(memberId);
+		Long savedMemberIdByRefreshToken = RefreshToken.findMemberIdByRefreshToken(refreshToken);
+
+		if (memberId != null && memberId.equals(savedMemberIdByRefreshToken)) {
+			return memberService.findMemberByMemberId(memberId);
+		}
+
+		return null;
 	}
 
 	private <T> T findClaimFromToken(
-		final String token,
-		final Key secretKey,
-		final Function<Claims, T> claimsResolver
+		String token,
+		Key secretKey,
+		Function<Claims, T> claimsResolver
 	) {
 		if (jwtUtil.validateToken(token, secretKey)) {
 			return null;
@@ -142,7 +172,10 @@ public class JwtService {
 		return claimsResolver.apply(claims);
 	}
 
-	public void logout(MemberEntity requestMember, HttpServletResponse response) {
+	public void logout(
+		MemberEntity requestMember,
+		HttpServletResponse response
+	) {
 		RefreshToken.removeUserRefreshToken(requestMember.getMemberId());
 
 		Cookie accessCookie = jwtUtil.resetToken(JwtCategory.ACCESS);

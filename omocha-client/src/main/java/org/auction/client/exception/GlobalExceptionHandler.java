@@ -19,11 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	// TODO: 추후 controller 내부로 리팩토링 필요
 	@ExceptionHandler(AuctionException.class)
 	public ResponseEntity<ResultDto<Object>> handleAuctionException(
 		AuctionException e,
 		HttpServletRequest request
 	) {
+		// TODO: 로그에 치환문자{} 를 3개 이상 사용할 경우 Object[] 를 생성하는 비용이 발생
 		log.error("errorCode: {}, url: {}, message: {}",
 			e.getAuctionCode(), request.getRequestURI(), e.getDetailMessage(), e);
 

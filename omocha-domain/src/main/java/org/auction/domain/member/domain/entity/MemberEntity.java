@@ -52,6 +52,13 @@ public class MemberEntity extends TimeTrackableEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	// TODO: 추후 통합 로그인으로 수정해야함
+	@Column(name = "provider")
+	private String provider;
+
+	@Column(name = "provider_id")
+	private String providerId;
+
 	@Column(name = "user_status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;
@@ -60,7 +67,8 @@ public class MemberEntity extends TimeTrackableEntity {
 	public MemberEntity(
 		String loginId, String password, String nickname,
 		String birth, String email, String phoneNumber,
-		String profileImageUrl, Role role, UserStatus userStatus
+		String profileImageUrl, Role role,
+		String provider, String providerId, UserStatus userStatus
 	) {
 		this.loginId = loginId;
 		this.password = password;
@@ -70,6 +78,8 @@ public class MemberEntity extends TimeTrackableEntity {
 		this.phoneNumber = phoneNumber;
 		this.profileImageUrl = profileImageUrl;
 		this.role = role;
+		this.provider = provider;
+		this.providerId = providerId;
 		this.userStatus = userStatus;
 	}
 }

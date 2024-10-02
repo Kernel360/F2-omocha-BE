@@ -58,8 +58,7 @@ public class AuthController implements AuthApi {
 		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 		log.debug("Member login started");
 
-		MemberEntity requestMember = memberService.findMemberByLoginId(memberLoginRequest.loginId());
-		memberService.validateLogin(memberLoginRequest, requestMember);
+		MemberEntity requestMember = memberService.findMemberByLoginId(memberLoginRequest);
 
 		jwtService.generateAccessToken(response, requestMember);
 		jwtService.generateRefreshToken(response, requestMember);

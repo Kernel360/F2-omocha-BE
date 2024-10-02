@@ -16,20 +16,29 @@ public class RefreshToken {
 
 	protected static final Map<String, Long> refreshTokens = new HashMap<>();
 
-	public static Long findMemberIdByRefreshToken(final String refreshToken) {
+	public static Long findMemberIdByRefreshToken(
+		String refreshToken
+	) {
 		return Optional.ofNullable(refreshTokens.get(refreshToken))
 			.orElseThrow(() -> new InvalidRefreshTokenException(INVALID_REFRESH_TOKEN));
 	}
 
-	public static void putRefreshToken(final String refreshToken, Long memberId) {
+	public static void putRefreshToken(
+		String refreshToken,
+		Long memberId
+	) {
 		refreshTokens.put(refreshToken, memberId);
 	}
 
-	private static void removeRefreshToken(final String refreshToken) {
+	private static void removeRefreshToken(
+		String refreshToken
+	) {
 		refreshTokens.remove(refreshToken);
 	}
 
-	public static void removeUserRefreshToken(final Long memberId) {
+	public static void removeUserRefreshToken(
+		Long memberId
+	) {
 		for (Map.Entry<String, Long> entry : refreshTokens.entrySet()) {
 			if (entry.getValue().equals(memberId)) {
 				removeRefreshToken(entry.getKey());

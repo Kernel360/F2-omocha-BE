@@ -24,6 +24,7 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 		log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getRequestURL());
 		log.info("[CustomAuthenticationEntryPointHandler] :: 토근 정보가 만료되었거나 존재하지 않음");
 
+		// TODO: 예외처리
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 }

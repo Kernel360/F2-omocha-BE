@@ -3,8 +3,12 @@ package org.auction.client.config.security;
 import org.auction.client.config.security.filter.JwtAuthFilter;
 import org.auction.client.config.security.handler.CustomAccessDeniedHandler;
 import org.auction.client.config.security.handler.CustomAuthenticationEntryPointHandler;
+import org.auction.client.config.security.handler.OAuth2FailureHandler;
+import org.auction.client.config.security.handler.OAuth2SuccessHandler;
+import org.auction.client.oauth.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,9 +26,17 @@ public class SecurityConfig {
 
 	private final CustomCorsConfig customCorsConfig;
 	private final JwtAuthFilter jwtAuthFilter;
+	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-	public static final String[] PERMITTED_URI = {"/api/v1/auth/**", "/swagger-ui/**"};
+	private final OAuth2SuccessHandler successHandler;
+	private final OAuth2FailureHandler failureHandler;
+
+	//TODO: 정적 자원 접근에러 파악해야함
+	public static final String[] PERMITTED_ALL_URI = {
+		"/swagger-ui/**", "/v3/api-docs/*",
+		"/img/**", "/css/**", "/js/**", "/favicon.ico",
+	};
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,9 +45,13 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.httpBasic(HttpBasicConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.sessionManagement(session -> session
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			)
 			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(PERMITTED_URI).permitAll()
+				.requestMatchers(PERMITTED_ALL_URI).permitAll()
+				.requestMatchers("/api/v1/auth/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
 				.anyRequest().authenticated()
 			)
 

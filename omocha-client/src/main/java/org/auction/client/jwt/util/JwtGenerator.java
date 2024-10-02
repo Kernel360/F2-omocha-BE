@@ -17,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtGenerator {
 
-	public String generateAccessToken(MemberEntity memberEntity, Key accessKey, long ACCESS_EXPIRATION) {
+	public String generateAccessToken(
+		MemberEntity memberEntity,
+		Key accessKey,
+		long ACCESS_EXPIRATION
+	) {
 		return Jwts.builder()
 			.setHeader(createHeader())
 			.setClaims(createClaims(memberEntity))
@@ -28,7 +32,11 @@ public class JwtGenerator {
 			.compact();
 	}
 
-	public String generateRefreshToken(MemberEntity memberEntity, Key refreshKey, long REFRESH_EXPIRATION) {
+	public String generateRefreshToken(
+		MemberEntity memberEntity,
+		Key refreshKey,
+		long REFRESH_EXPIRATION
+	) {
 		return Jwts.builder()
 			.setHeader(createHeader())
 			.setSubject(String.valueOf(memberEntity.getMemberId()))
@@ -45,7 +53,9 @@ public class JwtGenerator {
 		return header;
 	}
 
-	private Map<String, Object> createClaims(MemberEntity memberEntity) {
+	private Map<String, Object> createClaims(
+		MemberEntity memberEntity
+	) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("MemberId", memberEntity.getMemberId());
 		claims.put("Role", memberEntity.getRole());

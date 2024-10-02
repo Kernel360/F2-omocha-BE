@@ -49,18 +49,26 @@ public class MemberService {
 	}
 
 	public MemberEntity findMemberByLoginId(
-		String loginId
+		MemberLoginRequest memberLoginRequest
 	) {
-		return memberRepository.findByLoginId(loginId)
+		MemberEntity member = memberRepository.findByLoginId(memberLoginRequest.loginId())
 			.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+		if (!validateLogin(memberLoginRequest, member)) {
+			return null;
+		}
+
+		return member;
 	}
 
-	public void validateLogin(
+	private boolean validateLogin(
 		MemberLoginRequest memberLoginRequest,
 		MemberEntity memberEntity
 	) {
 		if (!passwordEncoder.matches(memberLoginRequest.password(), memberEntity.getPassword())) {
 			throw new InvalidPasswordException(INVALID_PASSWORD);
 		}
+
+		return true;
 	}
 }
