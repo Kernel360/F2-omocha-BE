@@ -1,8 +1,6 @@
 package org.auction.client.bid.application;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
@@ -32,16 +30,17 @@ public class BidService {
 		Long auctionId
 	) {
 
-		AuctionEntity auctionEntity = auctionRepository.findById(auctionId).orElseThrow();
+		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
+			.orElseThrow(() -> new RuntimeException("Auction not found"));
 
-		// TODO : 멘토링 이후 수정 필요
-		return bidRepository.findALlByAuctionEntity(auctionEntity).stream()
-			.sorted(Comparator.comparing(BidEntity::getCreatedAt).reversed())
+		return bidRepository.findAllByAuctionEntityOrderByCreatedAtDesc(auctionEntity)
+			.stream()
 			.map(BidResponse::toDto)
 			.toList();
 
 	}
 
+	// TODO : 최고 입찰가 관련 논의 후 수정 필요
 	// TODO : Log, Error 처리 필요
 	@Transactional
 	public CreateBidResponse addBid(
@@ -56,7 +55,7 @@ public class BidService {
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new RuntimeException("Auction not found"));
 
-		if (!checkLastBid(memberEntity, createBidRequest.getBidPrice())) {
+		if (!checkLastBidPrice(memberEntity, createBidRequest.bidPrice())) {
 			throw new RuntimeException("Last bid price is incorrect");
 		}
 
@@ -71,7 +70,7 @@ public class BidService {
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
 			.memberEntity(memberEntity)
-			.bidPrice(createBidRequest.getBidPrice())
+			.bidPrice(createBidRequest.bidPrice())
 			.build();
 
 		bidRepository.save(bidEntity);
@@ -80,16 +79,14 @@ public class BidService {
 
 	}
 
-	private boolean checkLastBid(
+	private boolean checkLastBidPrice(
 		MemberEntity memberEntity,
 		Long bidPrice
 	) {
-		Optional<BidEntity> beforeBidEntity = bidRepository.findTopByMemberEntityOrderByBidPriceDesc(memberEntity);
 
-		if (beforeBidEntity.isPresent()) {
-			return beforeBidEntity.get().getBidPrice() < bidPrice;
-		}
-		return true;
+		return bidRepository.findTopByMemberEntityOrderByBidPriceDesc(memberEntity)
+			.map(bid -> bid.getBidPrice() < bidPrice)
+			.orElse(true);
 
 	}
 
@@ -97,24 +94,18 @@ public class BidService {
 		AuctionEntity auctionEntity
 	) {
 
-		if (!(auctionEntity.getAuctionStatus() == AuctionStatus.BIDDING)) {
-			return false;
-		}
-		return true;
+		return auctionEntity.getAuctionStatus() == AuctionStatus.BIDDING;
 
 	}
 
+	// TODO : 재입찰 논의 후 수정
 	private boolean checkLastBiddingMember(
 		MemberEntity memberEntity
 	) {
 
-		Optional<BidEntity> bidEntity = bidRepository.findTopByMemberEntityOrderByCreatedAtDesc(memberEntity);
-
-		if (!(bidEntity.get().getMemberEntity().getMemberId().equals(memberEntity.getMemberId()))) {
-			return false;
-		}
-
-		return true;
+		return bidRepository.findTopByMemberEntityOrderByCreatedAtDesc(memberEntity)
+			.map(entity -> entity.getMemberEntity().getMemberId().equals(memberEntity.getMemberId()))
+			.orElse(true);
 
 	}
 

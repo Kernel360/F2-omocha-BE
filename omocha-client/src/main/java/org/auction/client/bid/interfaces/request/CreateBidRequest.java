@@ -4,8 +4,5 @@ public record CreateBidRequest(
 	Long bidPrice
 
 ) {
-	public Long getBidPrice() {
-		return bidPrice;
-	}
 
 }

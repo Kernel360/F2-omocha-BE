@@ -30,7 +30,6 @@ public class BidController implements BidApi {
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<List<BidResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
-
 	) {
 
 		List<BidResponse> bidList = bidService.findBidList(auctionId);
@@ -47,6 +46,7 @@ public class BidController implements BidApi {
 
 	}
 
+	// TODO : Login 개발 이후 수정 필요
 	@PostMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
 		@PathVariable("auction_id") Long auctionId,

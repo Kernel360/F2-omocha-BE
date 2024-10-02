@@ -14,6 +14,6 @@ public interface BidRepository extends JpaRepository<BidEntity, Long> {
 
 	Optional<BidEntity> findTopByMemberEntityOrderByCreatedAtDesc(MemberEntity memberEntity);
 
-	List<BidEntity> findALlByAuctionEntity(AuctionEntity auctionEntity);
+	List<BidEntity> findAllByAuctionEntityOrderByCreatedAtDesc(AuctionEntity auctionEntity);
 
 }
