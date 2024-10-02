@@ -8,12 +8,11 @@ import org.auction.domain.member.domain.entity.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Getter;
 
 @Getter
-public class UserPrincipal implements UserDetails, OAuth2User {
+public class UserPrincipal implements UserDetails {
 
 	private final MemberEntity memberEntity;
 	private Map<String, Object> attributes;
@@ -25,11 +24,6 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 	public UserPrincipal(MemberEntity memberEntity, Map<String, Object> attributes) {
 		this.memberEntity = memberEntity;
 		this.attributes = attributes;
-	}
-
-	@Override
-	public String getName() {
-		return memberEntity.getNickname();
 	}
 
 	@Override

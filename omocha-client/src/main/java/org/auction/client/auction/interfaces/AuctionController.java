@@ -41,7 +41,7 @@ public class AuctionController implements AuctionApi {
 
 	// REFACTOR : 로그인 구현이 완료되면 PathVariable에 있는 User Id를 삭제할 예정
 	@Override
-	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
 		Principal principal,
 		@RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
