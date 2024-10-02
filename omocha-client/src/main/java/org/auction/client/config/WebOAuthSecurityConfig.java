@@ -60,6 +60,8 @@ public class WebOAuthSecurityConfig {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 
 		corsConfiguration.addAllowedOriginPattern("https://api.omocha-auction.com");
+		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
+		corsConfiguration.addAllowedOriginPattern("http://localhost:3001");
 
 		corsConfiguration.addAllowedMethod("PATCH");
 		corsConfiguration.addAllowedMethod("GET");
