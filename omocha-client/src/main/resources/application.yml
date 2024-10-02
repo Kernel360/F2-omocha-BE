@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: omocha-api
+  profiles:
+    active: local # 개발 환경에 따라 변경할 것 (local | prod)
+  output:
+    ansi:
+      enabled: always
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: never
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ${AWS_REGION_NAME}
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+      upload-path: ${S3_IMAGE_PATH}
+
+jwt:
+  access_secret: ${JWT_ACCESS_SECRET}
+  refresh_secret: ${JWT_REFRESH_SECRET}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+url:
+  base: http://localhost:8080
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${AWS_DATASOURCE_URL}
+    username: ${AWS_DATABASE_USERNAME}
+    password: ${AWS_DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+url:
+  base: https://api.omocha-auction.com

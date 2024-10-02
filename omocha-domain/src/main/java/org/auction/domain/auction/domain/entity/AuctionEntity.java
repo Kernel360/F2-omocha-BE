@@ -8,7 +8,7 @@ import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.domain.enums.AuctionType;
 import org.auction.domain.common.domain.entity.TimeTrackableEntity;
 import org.auction.domain.image.domain.entity.ImageEntity;
-import org.auction.domain.user.domain.entity.MemberEntity;
+import org.auction.domain.member.domain.entity.MemberEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

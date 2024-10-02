@@ -1,29 +1,29 @@
 package org.auction.client.exception.auction;
 
-import org.auction.client.common.code.AuctionErrorCode;
+import org.auction.client.common.code.AuctionCode;
 
 import lombok.Getter;
 
 @Getter
 public class AuctionException extends RuntimeException {
 
-	private final AuctionErrorCode auctionErrorCode;
+	private final AuctionCode auctionCode;
 	private final String detailMessage;
 
 	public AuctionException(
-		AuctionErrorCode errorCode
+		AuctionCode auctionCode
 	) {
-		super(errorCode.getResultMsg());
-		this.auctionErrorCode = errorCode;
-		this.detailMessage = errorCode.getResultMsg();
+		super(auctionCode.getResultMsg());
+		this.auctionCode = auctionCode;
+		this.detailMessage = auctionCode.getResultMsg();
 	}
 
 	public AuctionException(
-		AuctionErrorCode errorCode,
+		AuctionCode auctionCode,
 		String detailMessage
 	) {
-		super(errorCode.getResultMsg());
-		this.auctionErrorCode = errorCode;
+		super(auctionCode.getResultMsg());
+		this.auctionCode = auctionCode;
 		this.detailMessage = detailMessage;
 	}
 

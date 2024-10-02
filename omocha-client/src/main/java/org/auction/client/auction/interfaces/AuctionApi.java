@@ -1,5 +1,6 @@
 package org.auction.client.auction.interfaces;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
@@ -31,8 +32,8 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
-		@Parameter(description = "사용자 ID", required = true)
-		Long memberId,
+		@Parameter(description = "사용자 객체 정보", required = true)
+		Principal principal,
 
 		@Parameter(description = "경매 요청 데이터", required = true)
 		CreateAuctionRequest auctionRequest,
@@ -73,6 +74,9 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<Void>> auctionRemove(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		Principal principal,
+		
 		@Parameter(description = "경매 ID", required = true)
 		Long auctionId
 	);
