@@ -1,6 +1,6 @@
 spring:
   application:
-    name: omocha-api
+    name: omocha
   profiles:
     active: local # 개발 환경에 따라 변경할 것 (local | prod)
   output:
@@ -12,14 +12,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     open-in-view: false
-
-  datasource:
-    url: jdbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
 
   sql:
     init:

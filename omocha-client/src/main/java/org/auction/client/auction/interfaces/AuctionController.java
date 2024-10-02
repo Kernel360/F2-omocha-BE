@@ -8,8 +8,15 @@ import java.util.List;
 import org.auction.client.auction.application.AuctionService;
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
+import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +41,7 @@ public class AuctionController implements AuctionApi {
 
 	// REFACTOR : 로그인 구현이 완료되면 PathVariable에 있는 User Id를 삭제할 예정
 	@Override
-	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
 		Principal principal,
 		@RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
@@ -56,6 +63,26 @@ public class AuctionController implements AuctionApi {
 
 		return ResponseEntity
 			.status(AUCTION_CREATE_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@GetMapping("/basic-list")
+	public ResponseEntity<ResultDto<Page<AuctionListResponse>>> auctionList(
+		AuctionSearchCondition condition,
+		@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+		Pageable pageable
+	) {
+		Page<AuctionListResponse> response = auctionService.searchAuction(condition, pageable);
+
+		ResultDto<Page<AuctionListResponse>> resultDto = ResultDto.res(
+			200,
+			"성공",
+			response
+		);
+
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
 			.body(resultDto);
 	}
 
@@ -100,4 +127,5 @@ public class AuctionController implements AuctionApi {
 			.status(AUCTION_DELETE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
+
 }

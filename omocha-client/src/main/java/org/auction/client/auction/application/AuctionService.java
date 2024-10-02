@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
+import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.image.ImageDeletionException;
@@ -19,10 +20,13 @@ import org.auction.client.image.application.AwsS3Service;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
+import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.auction.domain.image.domain.entity.ImageEntity;
 import org.auction.domain.image.infrastructure.ImageRepository;
 import org.auction.domain.member.domain.entity.MemberEntity;
 import org.auction.domain.member.infrastructure.MemberRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -143,4 +147,31 @@ public class AuctionService {
 		auctionRepository.delete(auctionEntity);
 
 	}
+
+	@Transactional(readOnly = true)
+	public Page<AuctionListResponse> searchAuction(
+		AuctionSearchCondition condition,
+		Pageable pageable
+	) {
+		Page<AuctionEntity> auctions = auctionRepository.searchAuctionList(condition, pageable);
+
+		// DTO로 변환
+		Page<AuctionListResponse> content = auctions.map(auction -> {
+			List<String> imageKeys = auction.getImages().stream()
+				.map(ImageEntity::getS3Key)
+				.collect(Collectors.toList());
+			return new AuctionListResponse(
+				auction.getAuctionId(),
+				auction.getTitle(),
+				auction.getStartPrice(),
+				auction.getStartDate(),
+				auction.getEndDate(),
+				imageKeys
+			);
+		});
+
+		return content;
+
+	}
+
 }

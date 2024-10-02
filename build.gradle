@@ -11,7 +11,12 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java-library'
 
+    repositories {
+        mavenCentral()
+    }
+
     dependencies {
+        
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -20,9 +25,7 @@ allprojects {
         testAnnotationProcessor 'org.projectlombok:lombok'
     }
 
-    repositories {
-        mavenCentral()
-    }
+
     tasks.named('test') {
         useJUnitPlatform()
     }
@@ -32,6 +35,7 @@ allprojects {
         }
     }
 }
+
 
 bootJar {
     enabled = false
