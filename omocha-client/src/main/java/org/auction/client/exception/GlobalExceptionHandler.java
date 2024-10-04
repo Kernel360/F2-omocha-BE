@@ -4,6 +4,7 @@ import static org.auction.client.common.code.AuctionCode.*;
 
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.exception.auction.AuctionException;
+import org.auction.client.exception.bid.BidException;
 import org.auction.client.exception.image.ImageException;
 import org.auction.client.exception.jwt.JwtTokenException;
 import org.auction.client.exception.member.MemberException;
@@ -35,6 +36,24 @@ public class GlobalExceptionHandler {
 		);
 		return ResponseEntity
 			.status(e.getAuctionCode().getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(BidException.class)
+	public ResponseEntity<ResultDto<Object>> handleBidException(
+		BidException e,
+		HttpServletRequest request
+	) {
+
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getBidCode(), request.getRequestURI(), e.getDetailMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getBidCode().getStatusCode(),
+			e.getBidCode().getResultMsg()
+		);
+		return ResponseEntity
+			.status(e.getBidCode().getHttpStatus())
 			.body(resultDto);
 	}
 
