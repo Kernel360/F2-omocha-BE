@@ -17,7 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "bids")
+@Entity(name = "bid")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BidEntity extends CreateTimeTrackableEntity {

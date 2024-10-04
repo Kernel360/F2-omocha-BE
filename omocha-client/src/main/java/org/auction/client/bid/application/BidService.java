@@ -72,9 +72,10 @@ public class BidService {
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
-		isAuctionInBiddingStatus(auctionEntity);
+		// TODO : 검증 로직 추후 수정
+		validateAuctionBidStatus(auctionEntity);
 
-		validateBidPriceAgainstStartPrice(auctionEntity, createBidRequest.bidPrice());
+		validateBidPriceHigherThanStartPrice(auctionEntity, createBidRequest.bidPrice());
 
 		isCurrentBidHigherThanLastBid(auctionEntity, createBidRequest.bidPrice());
 
@@ -118,7 +119,7 @@ public class BidService {
 
 	}
 
-	private void isAuctionInBiddingStatus(
+	private void validateAuctionBidStatus(
 		AuctionEntity auctionEntity
 	) {
 
@@ -144,7 +145,7 @@ public class BidService {
 
 	}
 
-	private void validateBidPriceAgainstStartPrice(
+	private void validateBidPriceHigherThanStartPrice(
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {

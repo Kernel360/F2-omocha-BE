@@ -40,13 +40,13 @@ public class BidController implements BidApi {
 		List<BidResponse> bidList = bidService.findBidList(auctionId);
 
 		ResultDto<List<BidResponse>> resultDto = ResultDto.res(
-			BIDDING_GETLIST_SUCCESS.getStatusCode(),
-			BIDDING_GETLIST_SUCCESS.getResultMsg(),
+			BIDDING_GET_SUCCESS.getStatusCode(),
+			BIDDING_GET_SUCCESS.getResultMsg(),
 			bidList
 		);
 
 		return ResponseEntity
-			.status(BIDDING_GETLIST_SUCCESS.getHttpStatus())
+			.status(BIDDING_GET_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -66,13 +66,13 @@ public class BidController implements BidApi {
 		CreateBidResponse createBidResponse = bidService.addBid(auctionId, buyerId, createBidRequest);
 
 		ResultDto<CreateBidResponse> resultDto = ResultDto.res(
-			BIDDING_ADD_SUCCESS.getStatusCode(),
-			BIDDING_ADD_SUCCESS.getResultMsg(),
+			BIDDING_CREATE_SUCCESS.getStatusCode(),
+			BIDDING_CREATE_SUCCESS.getResultMsg(),
 			createBidResponse
 		);
 
 		return ResponseEntity
-			.status(BIDDING_ADD_SUCCESS.getHttpStatus())
+			.status(BIDDING_CREATE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}
