@@ -5,8 +5,15 @@ import java.util.List;
 
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
+import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,4 +87,26 @@ public interface AuctionApi {
 		@Parameter(description = "경매 ID", required = true)
 		Long auctionId
 	);
+
+	@Operation(summary = "경매 목록 조회", description = "경매 목록을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "성공적으로 경매 목록을 조회했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "403", description = "권한이 없습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Page<AuctionListResponse>>> auctionList(
+		@Parameter(description = "검색 조건")
+		AuctionSearchCondition condition,
+		@ParameterObject
+		@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+		Pageable pageable
+	);
+
 }
