@@ -13,12 +13,14 @@ public enum AuctionCode {
 	AUCTION_CREATE_SUCCESS(HttpStatus.OK, "경매가 성공적으로 생성되었습니다."),
 	AUCTION_DELETE_SUCCESS(HttpStatus.OK, "경매가 성공적으로 삭제되었습니다."),
 	AUCTION_DETAIL_SUCCESS(HttpStatus.OK, "경매 상세 정보 조회 성공"),
+	AUCTION_LIST_ACCESS_SUCCESS(HttpStatus.OK, "경매 전체 정보 조회 성공"),
 
 	// EXPLAIN: 404 ERROR
 	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매 게시물을 찾을 수 없습니다."),
 
 	// EXPLAIN: 415 ERROR
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
+	AUCTION_WRONG_STATUS(HttpStatus.UNPROCESSABLE_ENTITY, "경매의 상태가 잘못 되었습니다."),
 
 	// EXPLAIN: 500 SERVER ERROR
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 오류가 발생했습니다.");
