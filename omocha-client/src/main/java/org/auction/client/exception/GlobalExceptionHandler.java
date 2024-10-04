@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(ImageException.class)
-	public ResponseEntity<ResultDto<Object>> handleAuctionException(
+	public ResponseEntity<ResultDto<Object>> handleImageException(
 		ImageException e,
 		HttpServletRequest request
 	) {
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(JwtTokenException.class)
-	public ResponseEntity<ResultDto<Object>> handleAuctionException(
+	public ResponseEntity<ResultDto<Object>> handleJWTException(
 		JwtTokenException e,
 		HttpServletRequest request
 	) {
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(MemberException.class)
-	public ResponseEntity<ResultDto<Object>> handleAuctionException(
+	public ResponseEntity<ResultDto<Object>> handleMemberException(
 		MemberException e,
 		HttpServletRequest request
 	) {
