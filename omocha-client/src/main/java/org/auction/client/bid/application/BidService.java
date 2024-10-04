@@ -56,7 +56,6 @@ public class BidService {
 	}
 
 	// TODO : 최고 입찰가 관련 논의 후 수정 필요
-	// TODO : Log, Error 처리 필요
 	@Transactional
 	public CreateBidResponse addBid(
 		Long auctionId,
@@ -107,7 +106,6 @@ public class BidService {
 
 		} else {
 
-			//TODO : 예외처리 추가 수정 필요
 			bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
 				.map(bid -> {
 					if (bid.getBidPrice() < bidPrice) {
@@ -123,7 +121,7 @@ public class BidService {
 	private void isAuctionInBiddingStatus(
 		AuctionEntity auctionEntity
 	) {
-		//TODO : 예외처리 추가 수정 필요
+
 		if (auctionEntity.getAuctionStatus() != AuctionStatus.BIDDING) {
 			throw new AuctionIllegalStateException(AuctionCode.AUCTION_WRONG_STATUS);
 		}
@@ -139,7 +137,7 @@ public class BidService {
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
-		//TODO : 예외처리 추가 수정 필요
+
 		if (HighestBid.getHighestBid(auctionEntity.getAuctionId()) >= bidPrice) {
 			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
 		}
@@ -150,7 +148,7 @@ public class BidService {
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
-		//TODO : 예외처리 추가 수정 필요
+
 		if (auctionEntity.getStartPrice() > bidPrice) {
 			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_STARTPRICE);
 		}
