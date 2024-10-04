@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,13 +75,13 @@ public class AuctionController implements AuctionApi {
 		Page<AuctionListResponse> response = auctionService.searchAuction(condition, pageable);
 
 		ResultDto<Page<AuctionListResponse>> resultDto = ResultDto.res(
-			200,
-			"성공",
+			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
+			AUCTION_LIST_ACCESS_SUCCESS.getResultMsg(),
 			response
 		);
 
 		return ResponseEntity
-			.status(HttpStatus.CREATED)
+			.status(AUCTION_LIST_ACCESS_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
