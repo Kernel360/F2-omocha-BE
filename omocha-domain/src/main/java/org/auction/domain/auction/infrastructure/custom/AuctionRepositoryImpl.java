@@ -73,24 +73,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
-
-		/*// DTO로 변환
-		List<AuctionListResponse> content = auctions.stream()
-			.map(auction -> {
-				List<String> imageKeys = auction.getImages().stream()
-					.map(ImageEntity::getS3Key)
-					.collect(Collectors.toList());
-				return new AuctionListResponse(
-					auction.getAuctionId(),
-					auction.getTitle(),
-					auction.getStartPrice(),
-					auction.getStartDate(),
-					auction.getEndDate(),
-					imageKeys
-				);
-			})
-			.collect(Collectors.toList());*/
-
+		
 		JPAQuery<Long> countQuery = queryFactory
 			.select(auctionEntity.count())
 			.from(auctionEntity)
