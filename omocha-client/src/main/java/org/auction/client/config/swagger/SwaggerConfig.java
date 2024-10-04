@@ -37,7 +37,7 @@ public class SwaggerConfig {
 
 	@Bean
 	public GroupedOpenApi customTestOpenAPI() {
-		String[] paths = {"/api/v1/auction/*", "/api/v1/auction", "/api/v1/auth/*"};
+		String[] paths = {"/api/v1/auction/*", "/api/v1/auction", "/api/v1/auth/*", "/api/v1/bid/*"};
 
 		return GroupedOpenApi.builder()
 			.group("사용자를 위한 API")
