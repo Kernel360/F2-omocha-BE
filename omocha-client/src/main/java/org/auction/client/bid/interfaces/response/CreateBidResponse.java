@@ -10,7 +10,7 @@ public record CreateBidResponse(
 	Long buyerId,
 	Long bidPrice,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	LocalDateTime createAt
+	LocalDateTime createdAt
 ) {
 	public static CreateBidResponse toDto(
 		BidEntity bidEntity
