@@ -1,7 +1,6 @@
 package org.auction.client.jwt.application;
 
 import java.security.Key;
-import java.util.Optional;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -141,19 +140,11 @@ public class JwtService {
 	public MemberEntity findMemberByRefreshToken(
 		String refreshToken
 	) {
-		Long memberId = Optional.ofNullable(findClaimFromToken(refreshToken, refreshKey, Claims::getId))
-			.map(Long::valueOf)
-			.orElse(null);
-
-		Long savedMemberIdByRefreshToken = RefreshToken.findMemberIdByRefreshToken(refreshToken);
-
-		if (memberId != null && memberId.equals(savedMemberIdByRefreshToken)) {
-			return memberService.findMemberByMemberId(memberId);
-		}
-
-		return null;
+		Long memberId = RefreshToken.findMemberIdByRefreshToken(refreshToken);
+		return memberService.findMemberByMemberId(memberId);
 	}
 
+	// TODO: AccessToken에서 Claim 데이터 가져오는 메서드 (추후 사용을 위해 남겨놓음)
 	private <T> T findClaimFromToken(
 		String token,
 		Key secretKey,

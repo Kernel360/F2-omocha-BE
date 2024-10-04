@@ -40,7 +40,7 @@ public class JwtGenerator {
 		return Jwts.builder()
 			.setHeader(createHeader())
 			.setSubject(String.valueOf(memberEntity.getMemberId()))
-			.setExpiration(new Date(System.currentTimeMillis() + (REFRESH_EXPIRATION * 24)))
+			.setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION))
 			.setIssuedAt(new Date(System.currentTimeMillis()))
 			.signWith(refreshKey)
 			.compact();

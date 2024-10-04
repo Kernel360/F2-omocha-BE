@@ -1,9 +1,6 @@
 package org.auction.client.config.security.filter;
 
-import static org.auction.client.config.security.SecurityConfig.*;
-
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.auction.client.jwt.JwtCategory;
 import org.auction.client.jwt.application.JwtService;
@@ -55,19 +52,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			jwtService.generateRefreshToken(response, memberEntity);
 
 			setAuthenticationToContext(reissuedAccessToken);
-			filterChain.doFilter(request, response);
-			return;
+		} else {
+			jwtService.logout(memberEntity, response);
 		}
 
-		jwtService.logout(memberEntity, response);
-	}
-
-	private boolean isPermittedURI(String requestURI) {
-		return Arrays.stream(PERMITTED_ALL_URI)
-			.anyMatch(permitted -> {
-				String replace = permitted.replace("*", "");
-				return requestURI.contains(replace) || replace.contains(requestURI);
-			});
+		filterChain.doFilter(request, response);
 	}
 
 	private void setAuthenticationToContext(String accessToken) {

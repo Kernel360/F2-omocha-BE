@@ -38,7 +38,6 @@ public class AuctionController implements AuctionApi {
 
 	private final AuctionService auctionService;
 
-	// REFACTOR : 로그인 구현이 완료되면 PathVariable에 있는 User Id를 삭제할 예정
 	@Override
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
@@ -49,7 +48,6 @@ public class AuctionController implements AuctionApi {
 		log.info("Received CreateAuctionRequest: {}", auctionRequest);
 		log.debug("Create auction post started");
 
-		// TODO : 소셜로그인 구현 시 SecurityContextHolder에서 User 정보를 가져올 수 있다.
 		Long memberId = Long.parseLong(principal.getName());
 
 		CreateAuctionResponse response = auctionService.addAuction(auctionRequest, images, memberId);
