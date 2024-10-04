@@ -5,18 +5,27 @@ import java.util.List;
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
+import org.auction.client.common.code.AuctionCode;
+import org.auction.client.common.code.BidCode;
+import org.auction.client.common.code.MemberCode;
+import org.auction.client.exception.auction.AuctionIllegalStateException;
+import org.auction.client.exception.auction.AuctionNotFoundException;
+import org.auction.client.exception.bid.BidIllegalArgumentException;
+import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
 import org.auction.domain.bid.entity.BidEntity;
 import org.auction.domain.bid.infrastructure.BidRepository;
-import org.auction.domain.user.domain.entity.MemberEntity;
-import org.auction.domain.user.infrastructure.MemberRepository;
+import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.infrastructure.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BidService {
@@ -25,13 +34,19 @@ public class BidService {
 	private final AuctionRepository auctionRepository;
 	private final MemberRepository memberRepository;
 
+	// TODO : 동시성 해결 해결 해야 함
+
 	@Transactional(readOnly = true)
 	public List<BidResponse> findBidList(
 		Long auctionId
 	) {
 
+		log.debug("find BidList started : {}", auctionId);
+
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
-			.orElseThrow(() -> new RuntimeException("Auction not found"));
+			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
+
+		log.debug("find BidList finished : {}", auctionId);
 
 		return bidRepository.findAllByAuctionEntityOrderByCreatedAtDesc(auctionEntity)
 			.stream()
@@ -49,23 +64,20 @@ public class BidService {
 		CreateBidRequest createBidRequest
 	) {
 
+		log.debug("Add Bid started auctionId : {} ", auctionId);
+		log.debug("Add Bid started createBidRequest : {} ", createBidRequest);
+
 		MemberEntity memberEntity = memberRepository.findById(buyerId)
-			.orElseThrow(() -> new RuntimeException("Member not found"));
+			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
-			.orElseThrow(() -> new RuntimeException("Auction not found"));
+			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
-		if (!checkLastBidPrice(memberEntity, createBidRequest.bidPrice())) {
-			throw new RuntimeException("Last bid price is incorrect");
-		}
+		isAuctionInBiddingStatus(auctionEntity);
 
-		if (!checkAuctionStatus(auctionEntity)) {
-			throw new RuntimeException("Auction status is incorrect");
-		}
+		validateBidPriceAgainstStartPrice(auctionEntity, createBidRequest.bidPrice());
 
-		if (!checkLastBiddingMember(memberEntity)) {
-			throw new RuntimeException("Last bidding member is incorrect");
-		}
+		isCurrentBidHigherThanLastBid(auctionEntity, createBidRequest.bidPrice());
 
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
@@ -75,37 +87,73 @@ public class BidService {
 
 		bidRepository.save(bidEntity);
 
+		updateHashMap(bidEntity);
+
+		log.debug("Add Bid finished auctionId : {} ", auctionId);
+		log.debug("Add Bid finished createBidRequest : {} ", createBidRequest);
+
 		return CreateBidResponse.toDto(bidEntity);
 
 	}
 
-	private boolean checkLastBidPrice(
-		MemberEntity memberEntity,
+	private void isCurrentBidHigherThanLastBid(
+		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
 
-		return bidRepository.findTopByMemberEntityOrderByBidPriceDesc(memberEntity)
-			.map(bid -> bid.getBidPrice() < bidPrice)
-			.orElse(true);
+		if (HighestBid.hasHighestBid(auctionEntity.getAuctionId())) {
+
+			validateBidPrice(auctionEntity, bidPrice);
+
+		} else {
+
+			//TODO : 예외처리 추가 수정 필요
+			bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
+				.map(bid -> {
+					if (bid.getBidPrice() < bidPrice) {
+						return true; // 조건이 만족되면 true 반환
+					} else {
+						throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID); // 조건이 불만족할 경우 예외 발생
+					}
+				});
+		}
 
 	}
 
-	private boolean checkAuctionStatus(
+	private void isAuctionInBiddingStatus(
 		AuctionEntity auctionEntity
 	) {
+		//TODO : 예외처리 추가 수정 필요
+		if (auctionEntity.getAuctionStatus() != AuctionStatus.BIDDING) {
+			throw new AuctionIllegalStateException(AuctionCode.AUCTION_WRONG_STATUS);
+		}
+	}
 
-		return auctionEntity.getAuctionStatus() == AuctionStatus.BIDDING;
+	private void updateHashMap(
+		BidEntity bidEntity
+	) {
+		HighestBid.setHighestBid(bidEntity.getAuctionEntity().getAuctionId(), bidEntity.getBidPrice());
+	}
+
+	private void validateBidPrice(
+		AuctionEntity auctionEntity,
+		Long bidPrice
+	) {
+		//TODO : 예외처리 추가 수정 필요
+		if (HighestBid.getHighestBid(auctionEntity.getAuctionId()) >= bidPrice) {
+			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
+		}
 
 	}
 
-	// TODO : 재입찰 논의 후 수정
-	private boolean checkLastBiddingMember(
-		MemberEntity memberEntity
+	private void validateBidPriceAgainstStartPrice(
+		AuctionEntity auctionEntity,
+		Long bidPrice
 	) {
-
-		return bidRepository.findTopByMemberEntityOrderByCreatedAtDesc(memberEntity)
-			.map(entity -> entity.getMemberEntity().getMemberId().equals(memberEntity.getMemberId()))
-			.orElse(true);
+		//TODO : 예외처리 추가 수정 필요
+		if (auctionEntity.getStartPrice() > bidPrice) {
+			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_STARTPRICE);
+		}
 
 	}
 

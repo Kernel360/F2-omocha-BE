@@ -1,5 +1,6 @@
 package org.auction.client.bid.interfaces;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
@@ -42,10 +43,10 @@ public interface BidApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		Principal principal,
 		@Parameter(description = "입찰 할 경매", required = true)
 		Long auctionId,
-		@Parameter(description = "입찰 할 멤버", required = true)
-		Long buyerId,
 		@Parameter(description = "입찰 금액", required = true)
 		CreateBidRequest createBidRequest
 	);

@@ -2,6 +2,7 @@ package org.auction.client.bid.interfaces;
 
 import static org.auction.client.common.code.BidCode.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.bid.application.BidService;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bid")
@@ -32,11 +34,14 @@ public class BidController implements BidApi {
 		@PathVariable("auction_id") Long auctionId
 	) {
 
+		log.info("Received GetBidListRequest : {}", auctionId);
+		log.debug("Get bidList started");
+
 		List<BidResponse> bidList = bidService.findBidList(auctionId);
 
 		ResultDto<List<BidResponse>> resultDto = ResultDto.res(
 			BIDDING_GETLIST_SUCCESS.getStatusCode(),
-			BIDDING_GETLIST_SUCCESS.getMessage(),
+			BIDDING_GETLIST_SUCCESS.getResultMsg(),
 			bidList
 		);
 
@@ -46,19 +51,23 @@ public class BidController implements BidApi {
 
 	}
 
-	// TODO : Login 개발 이후 수정 필요
 	@PostMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
+		Principal principal,
 		@PathVariable("auction_id") Long auctionId,
-		@RequestParam("buyer_id") Long buyerId,
 		@RequestBody CreateBidRequest createBidRequest
 	) {
+		log.info("Received BidAddRequest auctionId : {}", auctionId);
+		log.info("Received BidAddRequest createBidRequest : {}", createBidRequest);
+		log.debug("Add bidding started");
+
+		Long buyerId = Long.parseLong(principal.getName());
 
 		CreateBidResponse createBidResponse = bidService.addBid(auctionId, buyerId, createBidRequest);
 
 		ResultDto<CreateBidResponse> resultDto = ResultDto.res(
 			BIDDING_ADD_SUCCESS.getStatusCode(),
-			BIDDING_ADD_SUCCESS.getMessage(),
+			BIDDING_ADD_SUCCESS.getResultMsg(),
 			createBidResponse
 		);
 

@@ -2,7 +2,7 @@ package org.auction.domain.bid.entity;
 
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.common.domain.entity.CreateTimeTrackableEntity;
-import org.auction.domain.user.domain.entity.MemberEntity;
+import org.auction.domain.member.domain.entity.MemberEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
