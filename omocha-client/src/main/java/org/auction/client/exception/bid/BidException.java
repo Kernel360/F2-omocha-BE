@@ -2,6 +2,9 @@ package org.auction.client.exception.bid;
 
 import org.auction.client.common.code.BidCode;
 
+import lombok.Getter;
+
+@Getter
 public class BidException extends RuntimeException {
 	private final BidCode bidCode;
 	private final String detailMessage;
