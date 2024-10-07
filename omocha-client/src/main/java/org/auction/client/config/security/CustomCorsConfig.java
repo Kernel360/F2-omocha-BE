@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CustomCorsConfig implements CorsConfigurationSource {
 	private final List<String> ALLOWED_ORIGIN = List.of(
 		"https://api.omocha-auction.com",
+		"https://www.omocha-auction.com",
 		"http://localhost:3000",
 		"http://localhost:3001"
 	);

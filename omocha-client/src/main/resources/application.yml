@@ -60,4 +60,4 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 url:
-  base: https://api.omocha-auction.com
+  base: https://www.omocha-auction.com
