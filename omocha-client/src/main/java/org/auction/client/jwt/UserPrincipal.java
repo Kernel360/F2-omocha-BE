@@ -28,16 +28,13 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 	}
 
 	@Override
-	public String getName() {
-		return memberEntity.getNickname();
-	}
-
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(new SimpleGrantedAuthority(memberEntity.getRole().name()));
 	}
 
-	public String getNickname() {
+	// TODO : google은 nickname을 반환안하고, naver는 nickname을 반환함. 추후 고민해야함
+	@Override
+	public String getName() {
 		return memberEntity.getNickname();
 	}
 
