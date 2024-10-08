@@ -10,6 +10,7 @@ public record AuctionListResponse(
 	String title,
 	Long startPrice,
 	Long nowPrice,
+	Long bidCount,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime startDate,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

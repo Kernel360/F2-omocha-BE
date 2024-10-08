@@ -126,6 +126,7 @@ public class BidService {
 
 	// EXPLAIN : 현재 최고가 return
 	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
+	@Transactional(readOnly = true)
 	public Long getCurrentHighestBidPrice(
 		AuctionEntity auctionEntity
 	) {
@@ -148,5 +149,12 @@ public class BidService {
 		Long bidPrice = bidEntity.getBidPrice();
 
 		HighestBid.setHighestBid(auctionId, bidPrice);
+	}
+
+	@Transactional(readOnly = true)
+	public Long findBidCount(AuctionEntity auctionEntity) {
+		log.debug("Counting bids for auctionId: {}", auctionEntity.getAuctionId());
+
+		return bidRepository.countByAuctionEntity(auctionEntity);
 	}
 }

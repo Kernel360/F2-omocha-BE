@@ -13,4 +13,6 @@ public interface BidRepository extends JpaRepository<BidEntity, Long> {
 
 	List<BidEntity> findAllByAuctionEntityOrderByCreatedAtDesc(AuctionEntity auctionEntity);
 
+	Long countByAuctionEntity(AuctionEntity auctionEntity);
+
 }
