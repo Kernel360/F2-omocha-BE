@@ -2,7 +2,7 @@ spring:
   application:
     name: omocha
   profiles:
-    active: local # 개발 환경에 따라 변경할 것 (local | prod)
+    active: prod # 개발 환경에 따라 변경할 것 (local | prod)
   output:
     ansi:
       enabled: always
@@ -76,6 +76,7 @@ spring:
 
 url:
   base: http://localhost:8080
+  domain: ""
 ---
 spring:
   config:
@@ -117,3 +118,4 @@ spring:
 
 url:
   base: https://www.omocha-auction.com
+  domain: omocha-auction.com

@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -38,6 +39,8 @@ public class JwtService {
 	private final MemberService memberService;
 	private final CustomUserDetailsService customUserDetailsService;
 
+	@Value("${url.domain}")
+	private String domain;
 	@Value("${jwt.access_secret}")
 	private String ACCESS_SECRET;
 	@Value("${jwt.refresh_secret}")
@@ -89,7 +92,7 @@ public class JwtService {
 			.path("/")
 			.maxAge(maxAgeSeconds)
 			.httpOnly(true)
-			.domain("omocha-auction.com")
+			.domain(StringUtils.hasText(domain) ? domain : null)
 			.sameSite("None")
 			.secure(true)
 			.build();
