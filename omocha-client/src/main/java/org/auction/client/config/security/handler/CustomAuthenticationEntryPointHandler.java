@@ -35,8 +35,7 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			HttpServletResponse.SC_UNAUTHORIZED,
-			authException.getMessage(),
-			null
+			authException.getMessage()
 		);
 
 		ObjectMapper mapper = new ObjectMapper();

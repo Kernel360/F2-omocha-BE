@@ -35,8 +35,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			HttpServletResponse.SC_FORBIDDEN,
-			accessDeniedException.getMessage(),
-			null
+			accessDeniedException.getMessage()
 		);
 
 		ObjectMapper mapper = new ObjectMapper();
