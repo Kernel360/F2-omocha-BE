@@ -2,7 +2,6 @@ package org.auction.client.bid.interfaces;
 
 import static org.auction.client.common.code.BidCode.*;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.bid.application.BidService;
@@ -10,7 +9,9 @@ import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.client.jwt.UserPrincipal;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ public class BidController implements BidApi {
 	private final BidService bidService;
 
 	@GetMapping("/{auction_id}")
+	@Override
 	public ResponseEntity<ResultDto<List<BidResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
 	) {
@@ -52,8 +54,9 @@ public class BidController implements BidApi {
 	}
 
 	@PostMapping("/{auction_id}")
+	@Override
 	public ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
-		Principal principal,
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId,
 		@RequestBody CreateBidRequest createBidRequest
 	) {
@@ -61,7 +64,7 @@ public class BidController implements BidApi {
 		log.info("Received BidAddRequest createBidRequest : {}", createBidRequest);
 		log.debug("Add bidding started");
 
-		Long buyerId = Long.parseLong(principal.getName());
+		Long buyerId = userPrincipal.getId();
 
 		CreateBidResponse createBidResponse = bidService.addBid(auctionId, buyerId, createBidRequest);
 

@@ -2,7 +2,6 @@ package org.auction.client.auction.interfaces;
 
 import static org.auction.client.common.code.AuctionCode.*;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.auction.application.AuctionService;
@@ -11,6 +10,7 @@ import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.client.jwt.UserPrincipal;
 import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,14 +42,15 @@ public class AuctionController implements AuctionApi {
 	@Override
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
-		Principal principal,
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart("auctionRequest") CreateAuctionRequest auctionRequest,
 		@RequestPart(value = "images", required = true) List<MultipartFile> images
 	) {
 		log.info("Received CreateAuctionRequest: {}", auctionRequest);
 		log.debug("Create auction post started");
 
-		Long memberId = Long.parseLong(principal.getName());
+		Long memberId = userPrincipal.getId();
+		log.info("memberId = {}", memberId);
 
 		CreateAuctionResponse response = auctionService.addAuction(auctionRequest, images, memberId);
 
@@ -107,12 +109,12 @@ public class AuctionController implements AuctionApi {
 	@Override
 	@DeleteMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<Void>> auctionRemove(
-		Principal principal,
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
 		log.debug("Remove auction post started");
 
-		auctionService.removeAuction(Long.parseLong(principal.getName()), auctionId);
+		auctionService.removeAuction(userPrincipal.getId(), auctionId);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			AUCTION_DELETE_SUCCESS.getStatusCode(),

@@ -1,13 +1,14 @@
 package org.auction.client.bid.interfaces;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.client.jwt.UserPrincipal;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,7 +45,7 @@ public interface BidApi {
 	})
 	ResponseEntity<ResultDto<CreateBidResponse>> bidAdd(
 		@Parameter(description = "사용자 객체 정보", required = true)
-		Principal principal,
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@Parameter(description = "입찰 할 경매", required = true)
 		Long auctionId,
 		@Parameter(description = "입찰 금액", required = true)

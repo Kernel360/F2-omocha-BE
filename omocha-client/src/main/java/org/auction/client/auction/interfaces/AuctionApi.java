@@ -1,6 +1,5 @@
 package org.auction.client.auction.interfaces;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
@@ -8,6 +7,7 @@ import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.client.jwt.UserPrincipal;
 import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,7 +41,7 @@ public interface AuctionApi {
 	})
 	ResponseEntity<ResultDto<CreateAuctionResponse>> auctionSave(
 		@Parameter(description = "사용자 객체 정보", required = true)
-		Principal principal,
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 
 		@Parameter(description = "경매 요청 데이터", required = true)
 		CreateAuctionRequest auctionRequest,
@@ -82,8 +83,8 @@ public interface AuctionApi {
 	})
 	ResponseEntity<ResultDto<Void>> auctionRemove(
 		@Parameter(description = "사용자 객체 정보", required = true)
-		Principal principal,
-		
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+
 		@Parameter(description = "경매 ID", required = true)
 		Long auctionId
 	);

@@ -21,7 +21,7 @@
         <file>${LOG_DIR}/request1.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/archive/request1.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <maxFileSize>10KB</maxFileSize> <!--로그 파일의 최대 크기-->
+            <maxFileSize>10MB</maxFileSize> <!--로그 파일의 최대 크기-->
             <maxHistory>30</maxHistory> <!--로그 파일 최대 보관주기 (단위: 일)-->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -36,7 +36,7 @@
         <file>${LOG_DIR}/query.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/archive/query.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <maxFileSize>10KB</maxFileSize> <!--로그 파일의 최대 크기-->
+            <maxFileSize>10MB</maxFileSize> <!--로그 파일의 최대 크기-->
             <maxHistory>30</maxHistory> <!--로그 파일 최대 보관주기 (단위: 일)-->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">

@@ -44,7 +44,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 	private String content;
 
 	@Column(name = "start_price")
-	private int startPrice;
+	private Long startPrice;
 
 	@Column(name = "bid_unit")
 	private int bidUnit;
@@ -79,7 +79,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 
 	@Builder
 	public AuctionEntity(
-		String title, String content, int startPrice, int bidUnit, AuctionStatus auctionStatus,
+		String title, String content, Long startPrice, int bidUnit, AuctionStatus auctionStatus,
 		AuctionType auctionType, LocalDateTime startDate, LocalDateTime endDate,
 		MemberEntity memberEntity
 	) {

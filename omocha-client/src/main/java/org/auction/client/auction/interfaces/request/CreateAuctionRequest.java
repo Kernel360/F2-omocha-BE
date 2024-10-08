@@ -13,7 +13,7 @@ public record CreateAuctionRequest(
 	@NotBlank String title,
 	String content,
 	// REFACTOR : 나중에 회의 후 VO를 도입할지 어떻게 처리할지 알아봐야함
-	@NotNull Integer startPrice,
+	@NotNull Long startPrice,
 	@NotNull Integer bidUnit,
 	@NotNull AuctionType auctionType,
 	@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
