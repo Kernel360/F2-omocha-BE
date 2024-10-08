@@ -19,7 +19,7 @@ public enum BidCode {
 
 	// TODO : 관련 공부 후 재분류
 	// EXPLAIN: 추가 분류 필요
-	BIDPRICE_BELOW_STARTPRICE(HttpStatus.UNPROCESSABLE_ENTITY, "입찰 가격이 시작 가격보다 낮습니다."),
+	BIDPRICE_BELOW_STARTPRICE(HttpStatus.UNPROCESSABLE_ENTITY, "입찰 가격이 시작 가격보다 같거나 낮습니다."),
 	BIDPRICE_BELOW_HIGHESTBID(HttpStatus.UNPROCESSABLE_ENTITY, "입찰 가격이 입찰 최고가보다 낮습니다.");
 
 	private final HttpStatus httpStatus;

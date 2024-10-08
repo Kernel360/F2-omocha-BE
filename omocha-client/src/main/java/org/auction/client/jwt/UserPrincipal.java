@@ -31,9 +31,17 @@ public class UserPrincipal implements UserDetails {
 		return Collections.singletonList(new SimpleGrantedAuthority(memberEntity.getRole().name()));
 	}
 
+	public String getNickname() {
+		return memberEntity.getNickname();
+	}
+
+	public Long getId() {
+		return memberEntity.getMemberId();
+	}
+
 	@Override
 	public String getUsername() {
-		return String.valueOf(memberEntity.getMemberId());
+		return memberEntity.getUsername();
 	}
 
 	@Override

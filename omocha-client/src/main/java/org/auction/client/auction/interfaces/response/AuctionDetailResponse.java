@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public record AuctionDetailResponse(
 	String title,
 	String content,
-	Integer startPrice,
+	Long startPrice,
+	Long nowPrice,
 	Integer bidUnit,
 	AuctionType auctionType,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

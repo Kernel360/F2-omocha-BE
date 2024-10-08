@@ -36,6 +36,9 @@ public class MemberEntity extends TimeTrackableEntity {
 	@Column(name = "nickname")
 	private String nickname;
 
+	@Column(name = "username")
+	private String username;
+	
 	@Column(name = "birth")
 	private String birth;
 

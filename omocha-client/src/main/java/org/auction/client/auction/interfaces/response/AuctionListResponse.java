@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public record AuctionListResponse(
 	Long auctionId,
 	String title,
-	int startPrice,
+	Long startPrice,
+	Long nowPrice,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime startDate,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -41,18 +41,19 @@ public class BidService {
 		Long auctionId
 	) {
 
-		log.debug("find BidList started : {}", auctionId);
+		log.debug("find BidList started for auctionId: {}", auctionId);
 
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
-		log.debug("find BidList finished : {}", auctionId);
-
-		return bidRepository.findAllByAuctionEntityOrderByCreatedAtDesc(auctionEntity)
+		List<BidResponse> bidResponses = bidRepository.findAllByAuctionEntityOrderByCreatedAtDesc(auctionEntity)
 			.stream()
 			.map(BidResponse::toDto)
 			.toList();
 
+		log.debug("find BidList finished for auctionId: {}", auctionId);
+
+		return bidResponses;
 	}
 
 	// TODO : 최고 입찰가 관련 논의 후 수정 필요
@@ -63,8 +64,8 @@ public class BidService {
 		CreateBidRequest createBidRequest
 	) {
 
-		log.debug("Add Bid started auctionId : {} ", auctionId);
-		log.debug("Add Bid started createBidRequest : {} ", createBidRequest);
+		log.debug("Add Bid started auctionId : {}, createBidRequest: {}",
+			auctionId, createBidRequest);
 
 		MemberEntity memberEntity = memberRepository.findById(buyerId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
@@ -73,11 +74,9 @@ public class BidService {
 			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
 		// TODO : 검증 로직 추후 수정
-		validateAuctionBidStatus(auctionEntity);
+		validateAuctionStatus(auctionEntity);
 
-		validateBidPriceHigherThanStartPrice(auctionEntity, createBidRequest.bidPrice());
-
-		isCurrentBidHigherThanLastBid(auctionEntity, createBidRequest.bidPrice());
+		validateBidPrice(auctionEntity, createBidRequest.bidPrice());
 
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
@@ -87,39 +86,16 @@ public class BidService {
 
 		bidRepository.save(bidEntity);
 
-		updateHashMap(bidEntity);
+		updateHighestBidPrice(bidEntity);
 
-		log.debug("Add Bid finished auctionId : {} ", auctionId);
-		log.debug("Add Bid finished createBidRequest : {} ", createBidRequest);
+		log.debug("addBid finished for auctionId: {}, createBidRequest: {}",
+			auctionId, createBidRequest);
 
 		return CreateBidResponse.toDto(bidEntity);
 
 	}
 
-	private void isCurrentBidHigherThanLastBid(
-		AuctionEntity auctionEntity,
-		Long bidPrice
-	) {
-
-		if (HighestBid.hasHighestBid(auctionEntity.getAuctionId())) {
-
-			validateBidPrice(auctionEntity, bidPrice);
-
-		} else {
-
-			bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
-				.map(bid -> {
-					if (bid.getBidPrice() < bidPrice) {
-						return true; // 조건이 만족되면 true 반환
-					} else {
-						throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID); // 조건이 불만족할 경우 예외 발생
-					}
-				});
-		}
-
-	}
-
-	private void validateAuctionBidStatus(
+	private void validateAuctionStatus(
 		AuctionEntity auctionEntity
 	) {
 
@@ -128,32 +104,49 @@ public class BidService {
 		}
 	}
 
-	private void updateHashMap(
-		BidEntity bidEntity
-	) {
-		HighestBid.setHighestBid(bidEntity.getAuctionEntity().getAuctionId(), bidEntity.getBidPrice());
-	}
-
+	// EXPLAIN : 가격 검증 메서드
+	// 처음 입찰 : 현재가보다 낮은 입찰 가격이 발생할 때 예외
+	// 이후 입찰 : 입찰 가격 < 현재 최고가 보다 낮을 때 예외 발생
 	private void validateBidPrice(
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
+		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity);
 
-		if (HighestBid.getHighestBid(auctionEntity.getAuctionId()) >= bidPrice) {
-			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
+		if (currentHighestBidPrice != null) {
+			if (bidPrice <= currentHighestBidPrice) {
+				throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
+			}
+		} else {
+			if (bidPrice < auctionEntity.getStartPrice()) {
+				throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_STARTPRICE);
+			}
 		}
-
 	}
 
-	private void validateBidPriceHigherThanStartPrice(
-		AuctionEntity auctionEntity,
-		Long bidPrice
+	// EXPLAIN : 현재 최고가 return
+	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 return
+	public Long getCurrentHighestBidPrice(
+		AuctionEntity auctionEntity
 	) {
+		Long auctionId = auctionEntity.getAuctionId();
 
-		if (auctionEntity.getStartPrice() > bidPrice) {
-			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_STARTPRICE);
+		if (HighestBid.hasHighestBid(auctionId)) {
+			return HighestBid.getHighestBid(auctionId);
+		} else {
+			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
+				.map(BidEntity::getBidPrice)
+				.orElse(null);
 		}
 
 	}
 
+	private void updateHighestBidPrice(
+		BidEntity bidEntity
+	) {
+		Long auctionId = bidEntity.getAuctionEntity().getAuctionId();
+		Long bidPrice = bidEntity.getBidPrice();
+
+		HighestBid.setHighestBid(auctionId, bidPrice);
+	}
 }

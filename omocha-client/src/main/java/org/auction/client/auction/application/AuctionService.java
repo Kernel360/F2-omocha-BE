@@ -11,6 +11,7 @@ import org.auction.client.auction.interfaces.request.CreateAuctionRequest;
 import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
+import org.auction.client.bid.application.BidService;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.image.ImageDeletionException;
 import org.auction.client.exception.image.ImageNotFoundException;
@@ -43,6 +44,7 @@ public class AuctionService {
 	private final AwsS3Service awsS3Service;
 	private final ImageRepository imageRepository;
 	private final MemberRepository memberRepository;
+	private final BidService bidService;
 
 	// TODO: OAUTH2.0 구현되면 User 추가 필요
 	@Transactional
@@ -58,7 +60,7 @@ public class AuctionService {
 		AuctionEntity auctionEntity = AuctionEntity.builder()
 			.title(request.title())
 			.content(request.content())
-			.startPrice(request.startPrice())
+			.startPrice(Long.valueOf(request.startPrice()))
 			.bidUnit(request.bidUnit())
 			.auctionStatus(AuctionStatus.BIDDING)
 			.auctionType(request.auctionType())
@@ -111,6 +113,7 @@ public class AuctionService {
 			auctionEntity.getTitle(),
 			auctionEntity.getContent(),
 			auctionEntity.getStartPrice(),
+			bidService.getCurrentHighestBidPrice(auctionEntity),
 			auctionEntity.getBidUnit(),
 			auctionEntity.getAuctionType(),
 			auctionEntity.getStartDate(),
@@ -164,6 +167,7 @@ public class AuctionService {
 				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getStartPrice(),
+				bidService.getCurrentHighestBidPrice(auction),
 				auction.getStartDate(),
 				auction.getEndDate(),
 				imageKeys
