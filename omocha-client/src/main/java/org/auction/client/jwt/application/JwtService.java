@@ -89,7 +89,8 @@ public class JwtService {
 			.path("/")
 			.maxAge(maxAgeSeconds)
 			.httpOnly(true)
-			.sameSite("Lax")
+			.domain("omocha-auction.com")
+			.sameSite("None")
 			.secure(true)
 			.build();
 	}
