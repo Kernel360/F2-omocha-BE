@@ -33,8 +33,5 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		jwtService.generateAccessToken(response, userPrincipal.getMemberEntity());
 		jwtService.generateRefreshToken(response, userPrincipal.getMemberEntity());
-
-		// TODO: 회원이 아닐 경우 회원가입 처리를 안하고 Redirect URI를 register page로 보낸다 (이 경우는 토큰 발급처리를 안하고 uri를 분기해야함)
-		// TODO: 혹은 회원가입 처리를 시켜버리고 바로 서비스를 이용하게 만든다. (이 경우는 토큰 발급 처리를 해야함)
 	}
 }

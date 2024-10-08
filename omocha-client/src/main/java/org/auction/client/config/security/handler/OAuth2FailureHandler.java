@@ -18,7 +18,6 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 	private final String REDIRECT_URI;
 	private final String ERROR_PARAM_PREFIX = "error";
 
-	// TODO: 실패시 Redirect URI 정해야함 => 아마 home이 아닐까...
 	public OAuth2FailureHandler(@Value("${url.base}") String REDIRECT_URI) {
 		this.REDIRECT_URI = REDIRECT_URI;
 	}
