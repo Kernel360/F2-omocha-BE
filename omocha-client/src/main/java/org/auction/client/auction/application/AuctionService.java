@@ -60,7 +60,7 @@ public class AuctionService {
 		AuctionEntity auctionEntity = AuctionEntity.builder()
 			.title(request.title())
 			.content(request.content())
-			.startPrice(Long.valueOf(request.startPrice()))
+			.startPrice(request.startPrice())
 			.bidUnit(request.bidUnit())
 			.auctionStatus(AuctionStatus.BIDDING)
 			.auctionType(request.auctionType())
