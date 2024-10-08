@@ -88,7 +88,7 @@ public class BidService {
 
 		updateHighestBidPrice(bidEntity);
 
-		log.debug("addBid finished for auctionId: {}, createBidRequest: {}",
+		log.debug("Add Bid finished for auctionId: {}, createBidRequest: {}",
 			auctionId, createBidRequest);
 
 		return CreateBidResponse.toDto(bidEntity);
@@ -125,7 +125,7 @@ public class BidService {
 	}
 
 	// EXPLAIN : 현재 최고가 return
-	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 return
+	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
 	public Long getCurrentHighestBidPrice(
 		AuctionEntity auctionEntity
 	) {
