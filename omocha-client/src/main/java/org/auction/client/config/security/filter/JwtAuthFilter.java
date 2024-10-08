@@ -38,6 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			return;
 		}
 
+		// TODO: userPrincipal에서 memberId 가져와서 비교한 후 진행하도록
 		if (jwtService.validateAccessToken(accessToken)) {
 			setAuthenticationToContext(accessToken);
 			filterChain.doFilter(request, response);

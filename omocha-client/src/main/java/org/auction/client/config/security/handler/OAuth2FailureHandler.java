@@ -11,8 +11,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private final String REDIRECT_URI;
@@ -28,6 +30,9 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 		HttpServletResponse response,
 		AuthenticationException exception
 	) throws IOException, ServletException {
+
+		log.info("OAuth2FailureHandler onAuthenticationFailure");
+
 		String redirectUrl = UriComponentsBuilder.fromUriString(REDIRECT_URI)
 			.queryParam(ERROR_PARAM_PREFIX, exception.getLocalizedMessage())
 			.build()
