@@ -6,6 +6,7 @@ import org.auction.client.config.security.handler.CustomAuthenticationEntryPoint
 import org.auction.client.config.security.handler.OAuth2FailureHandler;
 import org.auction.client.config.security.handler.OAuth2SuccessHandler;
 import org.auction.client.oauth.application.CustomOAuth2UserService;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,7 +18,6 @@ import org.springframework.security.config.annotation.web.configurers.HttpBasicC
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,22 +36,9 @@ public class SecurityConfig {
 
 	public static final String[] PERMITTED_ALL_URI = {
 		"/swagger-ui/**",
-		"/v3/api-docs/**", // Swagger 관련 경로
+		"/v3/api-docs/**",        // Swagger 관련 경로
 		"/api/v1/auth/**"
 	};
-
-	// 스프링 시큐리티 기능 비활성화
-	//TODO: 정적 자원 접근에러 파악해야함
-	@Bean
-	public WebSecurityCustomizer configure() {
-		return (web) -> web.ignoring()
-			.requestMatchers(
-				new AntPathRequestMatcher("/img/**"),
-				new AntPathRequestMatcher("/css/**"),
-				new AntPathRequestMatcher("/js/**"),
-				new AntPathRequestMatcher("/favicon.ico")
-			);
-	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -65,7 +52,6 @@ public class SecurityConfig {
 			)
 
 			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/favicon.ico").denyAll()    // favicon.ico 임시용
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
 				.anyRequest().authenticated()
@@ -89,5 +75,11 @@ public class SecurityConfig {
 			);
 
 		return http.build();
+	}
+
+	// 스프링 시큐리티 기능 비활성화 (정적 자원 시큐리티 ignore)
+	@Bean
+	public WebSecurityCustomizer configure() {
+		return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 	}
 }
