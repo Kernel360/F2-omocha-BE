@@ -114,6 +114,7 @@ public class AuctionService {
 			auctionEntity.getContent(),
 			auctionEntity.getStartPrice(),
 			bidService.getCurrentHighestBidPrice(auctionEntity),
+			bidService.findBidCount(auctionEntity),
 			auctionEntity.getBidUnit(),
 			auctionEntity.getAuctionType(),
 			auctionEntity.getStartDate(),
@@ -168,6 +169,7 @@ public class AuctionService {
 				auction.getTitle(),
 				auction.getStartPrice(),
 				bidService.getCurrentHighestBidPrice(auction),
+				bidService.findBidCount(auction),
 				auction.getStartDate(),
 				auction.getEndDate(),
 				imageKeys

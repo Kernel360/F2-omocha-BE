@@ -12,6 +12,7 @@ public record AuctionDetailResponse(
 	String content,
 	Long startPrice,
 	Long nowPrice,
+	Long bidCount,
 	Integer bidUnit,
 	AuctionType auctionType,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
