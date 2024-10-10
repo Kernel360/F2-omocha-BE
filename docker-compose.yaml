@@ -5,6 +5,25 @@ networks:
     driver: bridge
 
 services:
+  omocha:
+    image: omocha
+    container_name: omocha
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${AWS_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${AWS_DATABASE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${AWS_DATABASE_PASSWORD}
+      SPRING_PROFILES_ACTIVE: prod
+      TZ: "Asia/Seoul"
+    env_file:
+      - .env
+    volumes:
+      - ${POSTGRES_HOME_DIR}/data:/var/lib/postgresql/data # ${POSTGRES_HOME_DIR}/data
+    networks:
+      - backend
+
   database:
     image: postgres:16.4
     container_name: postgres
@@ -22,4 +41,3 @@ services:
       - ${POSTGRES_HOME_DIR}/data:/var/lib/postgresql/data # ${POSTGRES_HOME_DIR}/data
     networks:
       - backend
-
