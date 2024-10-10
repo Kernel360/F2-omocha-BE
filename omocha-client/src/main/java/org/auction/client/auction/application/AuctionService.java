@@ -155,9 +155,10 @@ public class AuctionService {
 	@Transactional(readOnly = true)
 	public Page<AuctionListResponse> searchAuction(
 		AuctionSearchCondition condition,
+		AuctionStatus auctionStatus,
 		Pageable pageable
 	) {
-		Page<AuctionEntity> auctions = auctionRepository.searchAuctionList(condition, pageable);
+		Page<AuctionEntity> auctions = auctionRepository.searchAuctionList(condition, auctionStatus, pageable);
 
 		// DTO로 변환
 		Page<AuctionListResponse> content = auctions.map(auction -> {

@@ -78,6 +78,8 @@ public class BidService {
 
 		validateBidPrice(auctionEntity, createBidRequest.bidPrice());
 
+		// TODO : 시간 관련된 로직 추가 필요 지금 시간 > enddate() 일 때 exception 처리
+
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
 			.memberEntity(memberEntity)

@@ -11,8 +11,10 @@ import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
+import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,10 +72,16 @@ public class AuctionController implements AuctionApi {
 	@GetMapping("/basic-list")
 	public ResponseEntity<ResultDto<Page<AuctionListResponse>>> auctionList(
 		AuctionSearchCondition condition,
-		@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+		@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	) {
-		Page<AuctionListResponse> response = auctionService.searchAuction(condition, pageable);
+		Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
+
+		Page<AuctionListResponse> response = auctionService.searchAuction(condition, auctionStatus, pageable);
 
 		ResultDto<Page<AuctionListResponse>> resultDto = ResultDto.res(
 			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
