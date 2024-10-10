@@ -17,7 +17,7 @@
         <file>./omocha-server/server/logs/request2.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./omocha-server/server/logs/archive/request2.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -38,7 +38,7 @@
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./omocha-server/server/logs/archive/error.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -59,7 +59,7 @@
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./omocha-server/server/logs/archive/warn.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -75,7 +75,7 @@
         <file>./omocha-server/server/logs/query.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./omocha-server/server/logs/archive/query.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
             <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -87,7 +87,7 @@
     </appender>
 
     <!-- 루트 로거 설정 -->
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="CONSOLE2"/>
         <appender-ref ref="REQUEST2"/>
         <appender-ref ref="ERROR"/>
@@ -95,7 +95,7 @@
     </root>
 
     <!-- SQL 로그 로거 설정 -->
-    <logger name="SQL_LOG1" level="INFO" additivity="false">
+    <logger name="SQL_LOG1" level="DEBUG" additivity="false">
         <appender-ref ref="QUERY"/>
     </logger>
 </included>
