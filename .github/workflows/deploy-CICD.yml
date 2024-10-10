@@ -69,9 +69,9 @@ jobs:
 
       - name: Set environment values
         run: |
-          cd ./omocha-client/src/main/resources
-          touch ./env.
-          echo "${{ secrets.ENV }}" > ./env
+          cd ./
+          touch ./.env
+          echo "${{ secrets.ENV }}" > .env
         shell: bash
 
       - name: copy file via ssh key
@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
-          source: "./docker-compose.yaml, ./env"
+          source: "./docker-compose.yaml, ./.env"
           target: ${{ secrets.SCP_TARGET_PATH }}
 
       - name: Test SSH connection
