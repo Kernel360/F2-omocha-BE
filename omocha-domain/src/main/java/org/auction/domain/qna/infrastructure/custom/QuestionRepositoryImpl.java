@@ -34,7 +34,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
 		JPAQuery<QuestionEntity> query = queryFactory
 			.selectFrom(questionEntity)
-			.where(questionEntity.auctionEntity.auctionId.eq(auctionId));
+			.where(questionEntity.auctionEntity.auctionId.eq(auctionId))
+			.where(questionEntity.deleted.isFalse());
 
 		for (Sort.Order o : pageable.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(

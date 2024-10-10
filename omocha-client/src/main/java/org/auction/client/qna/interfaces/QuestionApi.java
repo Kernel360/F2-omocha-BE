@@ -10,7 +10,6 @@ import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 
@@ -32,8 +31,12 @@ public interface QuestionApi {
 	ResponseEntity<ResultDto<Page<QuestionListResponse>>> questionList(
 		@Parameter(description = "경매 ID", required = true)
 		Long auctionId,
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
+		String sort,
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
+		String direction,
 		@ParameterObject
-		@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.ASC)
+		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	);
 

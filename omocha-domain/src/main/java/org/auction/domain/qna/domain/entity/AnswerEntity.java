@@ -1,7 +1,7 @@
 package org.auction.domain.qna.domain.entity;
 
 import org.auction.domain.common.domain.entity.TimeTrackableEntity;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,36 +36,31 @@ public class AnswerEntity extends TimeTrackableEntity {
 	@JoinColumn(name = "question_id")
 	private QuestionEntity questionEntity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private MemberEntity memberEntity;
+	@Column(name = "deleted", nullable = false)
+	@ColumnDefault("false")
+	private boolean deleted;
 
 	@Builder
 	public AnswerEntity(
 		String title,
 		String content,
-		QuestionEntity questionEntity,
-		MemberEntity memberEntity
+		QuestionEntity questionEntity
 	) {
 		this.title = title;
 		this.content = content;
 		this.questionEntity = questionEntity;
-		this.memberEntity = memberEntity;
-	}
-
-	private void setTitle(String title) {
-		this.title = title;
-	}
-
-	private void setContent(String content) {
-		this.content = content;
 	}
 
 	public void updateAnswer(
-		String title, String content
+		String title,
+		String content
 	) {
-		setTitle(title);
-		setContent(content);
+		this.title = title;
+		this.content = content;
+	}
+
+	public void deleteAnswer() {
+		this.deleted = true;
 	}
 
 }

@@ -111,10 +111,10 @@ public class QuestionService {
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
-		QuestionEntity questionEntity = questionRepository.findById(questionId)
+		QuestionEntity questionEntity = questionRepository.findByQuestionIdAndDeletedIsFalse(questionId)
 			.orElseThrow(() -> new QnaNotFoundException(QnACode.QUESTION_NOT_FOUND));
 
-		isOwner(questionEntity, memberEntity);
+		hasQuestionOwnership(questionEntity, memberEntity);
 
 		validModifyAndRemove(questionEntity);
 
@@ -138,14 +138,14 @@ public class QuestionService {
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
-		QuestionEntity questionEntity = questionRepository.findById(questionId)
+		QuestionEntity questionEntity = questionRepository.findByQuestionIdAndDeletedIsFalse(questionId)
 			.orElseThrow(() -> new QnaNotFoundException(QnACode.QUESTION_NOT_FOUND));
 
-		isOwner(questionEntity, memberEntity);
+		hasQuestionOwnership(questionEntity, memberEntity);
 
 		validModifyAndRemove(questionEntity);
 
-		questionRepository.deleteById(questionId);
+		questionEntity.deleteQuestion();
 
 		log.debug("remove question finished for memberId: {}, questionId: {}", memberId, questionId);
 
@@ -155,13 +155,13 @@ public class QuestionService {
 		QuestionEntity questionEntity
 	) {
 
-		if (answerRepository.existsByQuestionEntity(questionEntity)) {
+		if (answerRepository.existsByQuestionEntityAndDeletedIsFalse(questionEntity)) {
 			throw new QnaNotAllowedException(QnACode.QUESTION_DENY);
 		}
 
 	}
 
-	public void isOwner(
+	public void hasQuestionOwnership(
 		QuestionEntity questionEntity,
 		MemberEntity memberEntity
 	) {

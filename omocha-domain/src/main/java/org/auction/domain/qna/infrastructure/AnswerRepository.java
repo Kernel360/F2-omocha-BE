@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
-	Optional<AnswerEntity> findByQuestionEntity(QuestionEntity question);
+	Optional<AnswerEntity> findByAnswerIdAndDeletedIsFalse(Long answerId);
 
-	boolean existsByQuestionEntity(QuestionEntity question);
+	Optional<AnswerEntity> findByQuestionEntityAndDeletedIsFalse(QuestionEntity question);
+
+	boolean existsByQuestionEntityAndDeletedIsFalse(QuestionEntity question);
 }
