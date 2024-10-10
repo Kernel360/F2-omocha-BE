@@ -22,13 +22,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set environment values
-        run: |
-          cd ./omocha-client/src/main/resources
-          touch ./env.
-          echo "${{ secrets.ENV }}" > ./env
-        shell: bash
-
       - name: Gradle Caching
         uses: actions/cache@v4
         with:
@@ -74,6 +67,13 @@ jobs:
               --port ${{ secrets.EC2_SSH_PORT }} \
               --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
+      - name: Set environment values
+        run: |
+          cd ./omocha-client/src/main/resources
+          touch ./env.
+          echo "${{ secrets.ENV }}" > ./env
+        shell: bash
+
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
-          source: "./docker-compose.yaml"
+          source: "./docker-compose.yaml, ./env"
           target: ${{ secrets.SCP_TARGET_PATH }}
 
       - name: Test SSH connection
