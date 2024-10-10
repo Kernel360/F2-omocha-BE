@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.auction.domain.auction.domain.entity.AuctionEntity;
+import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,14 +48,18 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<AuctionEntity> searchAuctionList(AuctionSearchCondition condition, Pageable pageable) {
+	public Page<AuctionEntity> searchAuctionList(
+		AuctionSearchCondition condition,
+		AuctionStatus auctionStatus,
+		Pageable pageable) {
 		// 경매와 이미지를 Fetch Join으로 함께 조회
 		JPAQuery<AuctionEntity> query = queryFactory
 			.selectDistinct(auctionEntity)
 			.from(auctionEntity)
 			.leftJoin(auctionEntity.images, imageEntity).fetchJoin()
 			.where(
-				titleContains(condition.title())
+				titleContains(condition.title()),
+				statusEquals(auctionStatus)
 			);
 
 		for (Sort.Order o : pageable.getSort()) {
@@ -73,7 +78,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
-		
+
 		JPAQuery<Long> countQuery = queryFactory
 			.select(auctionEntity.count())
 			.from(auctionEntity)
@@ -87,6 +92,10 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 
 	private BooleanExpression titleContains(String title) {
 		return isEmpty(title) ? null : auctionEntity.title.containsIgnoreCase(title);
+	}
+
+	private BooleanExpression statusEquals(AuctionStatus auctionStatus) {
+		return auctionStatus == null ? null : auctionEntity.auctionStatus.eq(auctionStatus);
 	}
 
 }

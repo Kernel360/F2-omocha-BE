@@ -8,14 +8,15 @@ import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
+import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -105,9 +106,14 @@ public interface AuctionApi {
 	ResponseEntity<ResultDto<Page<AuctionListResponse>>> auctionList(
 		@Parameter(description = "검색 조건")
 		AuctionSearchCondition condition,
+		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = AuctionStatus.class))
+		@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
 		@ParameterObject
-		@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
-		Pageable pageable
+		@PageableDefault(page = 0, size = 10) Pageable pageable
 	);
 
 }
