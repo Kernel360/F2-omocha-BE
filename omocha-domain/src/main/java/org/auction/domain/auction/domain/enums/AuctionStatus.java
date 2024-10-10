@@ -16,7 +16,7 @@ public enum AuctionStatus {
 	@Schema(description = "경매 종료")
 	CONCLUDED("CONCLUDED"),
 
-	@Schema(description = "경매 완료")
+	@Schema(description = "거래 완료")
 	COMPLETED("COMPLETED");
 
 	private final String value;
