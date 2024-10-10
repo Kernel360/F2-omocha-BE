@@ -1,5 +1,6 @@
 package org.auction.client.bid.application;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
@@ -8,6 +9,7 @@ import org.auction.client.bid.interfaces.response.CreateBidResponse;
 import org.auction.client.common.code.AuctionCode;
 import org.auction.client.common.code.BidCode;
 import org.auction.client.common.code.MemberCode;
+import org.auction.client.exception.auction.AuctionAlreadyEndedException;
 import org.auction.client.exception.auction.AuctionIllegalStateException;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.bid.BidIllegalArgumentException;
@@ -78,8 +80,6 @@ public class BidService {
 
 		validateBidPrice(auctionEntity, createBidRequest.bidPrice());
 
-		// TODO : 시간 관련된 로직 추가 필요 지금 시간 > enddate() 일 때 exception 처리
-
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
 			.memberEntity(memberEntity)
@@ -100,6 +100,11 @@ public class BidService {
 	private void validateAuctionStatus(
 		AuctionEntity auctionEntity
 	) {
+		LocalDateTime now = LocalDateTime.now();
+
+		if (auctionEntity.getEndDate().isBefore(now)) {
+			throw new AuctionAlreadyEndedException(AuctionCode.AUCTION_ALREADY_ENDED);
+		}
 
 		if (auctionEntity.getAuctionStatus() != AuctionStatus.BIDDING) {
 			throw new AuctionIllegalStateException(AuctionCode.AUCTION_WRONG_STATUS);
