@@ -5,7 +5,7 @@ networks:
     driver: bridge
 
 services:
-  application:
+  omocha:
     image: omocha
     container_name: omocha
     restart: always
