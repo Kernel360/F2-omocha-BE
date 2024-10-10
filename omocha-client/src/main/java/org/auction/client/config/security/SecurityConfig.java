@@ -37,7 +37,8 @@ public class SecurityConfig {
 	public static final String[] PERMITTED_ALL_URI = {
 		"/swagger-ui/**",
 		"/v3/api-docs/**",        // Swagger 관련 경로
-		"/api/v1/auth/**"
+		"/api/v1/auth/**",
+		"/health"                // AWS ELB health check 경로
 	};
 
 	@Bean
