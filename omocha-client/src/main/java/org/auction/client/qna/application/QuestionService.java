@@ -69,17 +69,15 @@ public class QuestionService {
 	@Transactional
 	public CreateQuestionResponse addQuestion(
 		Long memberId,
-		Long auctionId,
 		CreateQuestionRequest createQuestionRequest
 	) {
 
-		log.debug("add question started for memberId: {}, auctionId: {}, CreateQuestionRequest: {}", memberId,
-			auctionId, createQuestionRequest);
+		log.debug("add question started for memberId: {}, CreateQuestionRequest: {}", memberId, createQuestionRequest);
 
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
-		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
+		AuctionEntity auctionEntity = auctionRepository.findById(createQuestionRequest.auctionId())
 			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
 		QuestionEntity questionEntity = QuestionEntity.builder()
@@ -91,8 +89,7 @@ public class QuestionService {
 
 		questionRepository.save(questionEntity);
 
-		log.debug("add question finished for memberId: {}, auctionId: {}, CreateQuestionRequest: {}", memberId,
-			auctionId, createQuestionRequest);
+		log.debug("add question finished for memberId: {}, CreateQuestionRequest: {}", memberId, createQuestionRequest);
 
 		return CreateQuestionResponse.toDto(questionEntity);
 

@@ -72,14 +72,13 @@ public class QuestionController implements QuestionApi {
 	@PostMapping()
 	public ResponseEntity<ResultDto<CreateQuestionResponse>> questionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		Long auctionId,
 		@RequestBody CreateQuestionRequest createQuestionRequest
 	) {
 		log.info("received CreateQuestionRequest: {}", createQuestionRequest);
 		log.debug("add question started");
 
 		Long memberId = userPrincipal.getId();
-		CreateQuestionResponse questionResponse = questionService.addQuestion(memberId, auctionId,
+		CreateQuestionResponse questionResponse = questionService.addQuestion(memberId,
 			createQuestionRequest);
 
 		ResultDto<CreateQuestionResponse> resultDto = ResultDto.res(
