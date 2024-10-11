@@ -53,8 +53,7 @@ public class ChatRoomService {
 			throw new NoBidsException(NO_BIDS_FOUND);
 		}
 
-		// TODO : 지금은 경매 제목으로 존재하는 검증이 있으면 채팅방이 생성 안되게 검증을 했는데 변경을 해야함
-		if (roomRepository.existsByRoomName(auctionEntity.getTitle())) {
+		if (roomRepository.existsByAuctionId(auctionId)) {
 			throw new ChatRoomAlreadyExistsException(CHATROOM_ALREADY_EXISTS);
 		}
 
@@ -63,6 +62,7 @@ public class ChatRoomService {
 			.nowPrice(nowPrice)
 			.buyer(buyer)
 			.seller(seller)
+			.auctionId(auctionId)
 			.build();
 		roomRepository.save(chatRoom);
 

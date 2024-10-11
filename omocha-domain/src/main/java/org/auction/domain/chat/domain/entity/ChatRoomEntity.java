@@ -42,20 +42,27 @@ public class ChatRoomEntity extends TimeTrackableEntity {
 	@JoinColumn(name = "seller_id", nullable = false)
 	private MemberEntity seller;
 
+	@Column(name = "auction_id", nullable = false)
+	private Long auctionId;
+
 	@Builder
 	public ChatRoomEntity(
 		String roomName,
 		Long nowPrice,
 		MemberEntity buyer,
-		MemberEntity seller
+		MemberEntity seller,
+		Long auctionId
 	) {
 		this.roomName = roomName;
 		this.nowPrice = nowPrice;
 		this.buyer = buyer;
 		this.seller = seller;
+		this.auctionId = auctionId;
 	}
 
-	public boolean validateParticipant(MemberEntity member) {
+	public boolean validateParticipant(
+		MemberEntity member
+	) {
 		return buyer.equals(member) || seller.equals(member);
 	}
 }
