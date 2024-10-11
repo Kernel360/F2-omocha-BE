@@ -7,6 +7,7 @@ import org.auction.domain.chat.domain.entity.ChatRoomEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record CreateChatRoomResponse(
+	Long auctionId, // 경매 ID
 	Long roomId, // 채팅방 ID
 	String roomName, // 경매 TITLE
 	Long sellerId, // 판매자 ID
@@ -20,6 +21,7 @@ public record CreateChatRoomResponse(
 
 	public static CreateChatRoomResponse toDto(ChatRoomEntity chatRoomEntity) {
 		return new CreateChatRoomResponse(
+			chatRoomEntity.getAuctionId(),
 			chatRoomEntity.getChatRoomId(),
 			chatRoomEntity.getRoomName(),
 			chatRoomEntity.getSeller().getMemberId(),
