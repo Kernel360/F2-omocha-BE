@@ -1,5 +1,7 @@
 package org.auction.domain.member.domain.entity;
 
+import java.util.Objects;
+
 import org.auction.domain.common.domain.entity.TimeTrackableEntity;
 import org.auction.domain.member.domain.enums.Role;
 import org.auction.domain.member.domain.enums.UserStatus;
@@ -38,7 +40,7 @@ public class MemberEntity extends TimeTrackableEntity {
 
 	@Column(name = "username")
 	private String username;
-	
+
 	@Column(name = "birth")
 	private String birth;
 
@@ -84,5 +86,20 @@ public class MemberEntity extends TimeTrackableEntity {
 		this.provider = provider;
 		this.providerId = providerId;
 		this.userStatus = userStatus;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		MemberEntity that = (MemberEntity)o;
+		return Objects.equals(memberId, that.memberId) && Objects.equals(nickname, that.nickname);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(memberId, nickname);
 	}
 }

@@ -42,7 +42,7 @@ public class ChatRoomService {
 
 		MemberEntity seller = auctionEntity.getMemberEntity();
 
-		if (seller.equals(buyer)) {
+		if (seller.getMemberId() == buyer.getMemberId()) {
 			throw new SellerIsBuyerException(SELLER_IS_BUYER);
 		}
 
