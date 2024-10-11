@@ -36,6 +36,8 @@ public class AnswerEntity extends TimeTrackableEntity {
 	@JoinColumn(name = "question_id")
 	private QuestionEntity questionEntity;
 
+	// TODO : SoftDelete 논의 후 결정
+	//  field 추가 or removedAt 추가
 	@Column(name = "deleted", nullable = false)
 	@ColumnDefault("false")
 	private boolean deleted;

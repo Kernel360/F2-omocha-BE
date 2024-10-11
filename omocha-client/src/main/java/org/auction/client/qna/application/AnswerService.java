@@ -44,7 +44,7 @@ public class AnswerService {
 
 		log.debug("find answer started for questionId: {}", questionId);
 
-		// TODO : 추후 리팩토링 예정
+		// TODO : Entity 조회 추후 리팩토링
 		QuestionEntity questionEntity = questionRepository.findByQuestionIdAndDeletedIsFalse(questionId)
 			.orElseThrow(() -> new QnaNotFoundException(QnACode.QUESTION_NOT_FOUND));
 
@@ -67,7 +67,7 @@ public class AnswerService {
 
 		log.debug("add answer started for memberId: {} , CreateAnswerRequest : {}", memberId, createAnswerRequest);
 
-		// TODO : 추후 리팩토링
+		// TODO : Entity 조회 추후 리팩토링
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
@@ -109,7 +109,7 @@ public class AnswerService {
 		AnswerEntity answerEntity = answerRepository.findByAnswerIdAndDeletedIsFalse(answerId)
 			.orElseThrow(() -> new QnaNotFoundException(QnACode.ANSWER_NOT_FOUND));
 
-		hasAnswerOwnership(answerEntity, memberEntity);
+		hasAuctionOwnership(answerEntity.getQuestionEntity().getAuctionEntity(), memberEntity);
 
 		answerEntity.updateAnswer(modifyAnswerRequest.title(), modifyAnswerRequest.content());
 
@@ -135,25 +135,11 @@ public class AnswerService {
 		AnswerEntity answerEntity = answerRepository.findByAnswerIdAndDeletedIsFalse(answerId)
 			.orElseThrow(() -> new QnaNotFoundException(QnACode.ANSWER_NOT_FOUND));
 
-		hasAnswerOwnership(answerEntity, memberEntity);
+		hasAuctionOwnership(answerEntity.getQuestionEntity().getAuctionEntity(), memberEntity);
 
 		answerEntity.deleteAnswer();
 
 		log.debug("remove answer finished for memberId: {} , answerId: {}", memberId, answerId);
-	}
-
-	public void hasAnswerOwnership(
-		AnswerEntity answerEntity,
-		MemberEntity memberEntity
-	) {
-		if (!answerEntity.getQuestionEntity()
-			.getAuctionEntity()
-			.getMemberEntity()
-			.getMemberId()
-			.equals(memberEntity.getMemberId())) {
-			throw new InvalidMemberException(INVALID_MEMBER);
-		}
-
 	}
 
 	public void hasAuctionOwnership(
