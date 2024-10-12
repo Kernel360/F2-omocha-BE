@@ -50,8 +50,6 @@ public interface QuestionApi {
 	ResponseEntity<ResultDto<CreateQuestionResponse>> questionAdd(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		UserPrincipal userPrincipal,
-		@Parameter(description = "질문 ID", required = true)
-		Long questionId,
 		@Parameter(description = "질문 생성 데이터")
 		CreateQuestionRequest createQuestionRequest
 	);
