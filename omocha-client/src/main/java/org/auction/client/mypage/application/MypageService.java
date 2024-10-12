@@ -65,11 +65,11 @@ public class MypageService {
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
-		Page<AuctionEntity> auctionPageList = auctionRepository
+		Page<AuctionEntity> myAuctionList = auctionRepository
 			.searchMyAuctionList(memberEntity.getMemberId(), auctionStatus, pageable);
 
 		// DTO로 변환
-		Page<MypageAuctionListResponse> content = auctionPageList.map(auction -> {
+		Page<MypageAuctionListResponse> content = myAuctionList.map(auction -> {
 			List<String> imageKeys = auction.getImages().stream()
 				.map(ImageEntity::getS3Key)
 				.collect(Collectors.toList());

@@ -72,7 +72,7 @@ public class MypageController implements MypageApi {
 
 	// TODO : 키워드 관련 추가 예정
 
-	@GetMapping("/transaction/auction")
+	@GetMapping("/history/auction")
 	public ResponseEntity<ResultDto<Page<MypageAuctionListResponse>>> myAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
@@ -90,9 +90,8 @@ public class MypageController implements MypageApi {
 		Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
 
-		Page<MypageAuctionListResponse> auctionListResponses = mypageService.findMyAuctionList(memberId,
-			auctionStatus,
-			pageable);
+		Page<MypageAuctionListResponse> auctionListResponses = mypageService
+			.findMyAuctionList(memberId, auctionStatus, pageable);
 
 		ResultDto<Page<MypageAuctionListResponse>> resultDto = ResultDto.res(
 			MypageCode.MY_AUCTION_LIST_SUCCESS.getStatusCode(),
@@ -109,7 +108,7 @@ public class MypageController implements MypageApi {
 
 	}
 
-	@GetMapping("/transaction/bid")
+	@GetMapping("/history/bid")
 	public ResponseEntity<ResultDto<Page<MypageBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,

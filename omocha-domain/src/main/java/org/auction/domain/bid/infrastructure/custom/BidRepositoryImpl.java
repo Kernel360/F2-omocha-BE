@@ -33,8 +33,8 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 
 		JPAQuery<BidEntity> query = queryFactory
 			.selectFrom(bidEntity)
-			.leftJoin(bidEntity.auctionEntity, auctionEntity).fetchJoin()
-			.leftJoin(auctionEntity.images, imageEntity).fetchJoin()
+			.leftJoin(bidEntity.auctionEntity, auctionEntity)
+			.leftJoin(auctionEntity.images, imageEntity)
 			.where(bidEntity.memberEntity.memberId.eq(memberId));
 
 		for (Sort.Order o : pageable.getSort()) {
