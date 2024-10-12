@@ -9,6 +9,7 @@ import org.auction.domain.auction.domain.enums.AuctionType;
 import org.auction.domain.common.domain.entity.TimeTrackableEntity;
 import org.auction.domain.image.domain.entity.ImageEntity;
 import org.auction.domain.member.domain.entity.MemberEntity;
+import org.hibernate.annotations.BatchSize;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -67,6 +68,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 	@Column(name = "end_date", nullable = false)
 	private LocalDateTime endDate;
 
+	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "auctionEntity", fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ImageEntity> images = new ArrayList<>();

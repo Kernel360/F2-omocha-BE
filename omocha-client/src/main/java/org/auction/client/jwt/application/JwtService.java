@@ -47,8 +47,8 @@ public class JwtService {
 	private String REFRESH_SECRET;
 	private SecretKey accessKey;
 	private SecretKey refreshKey;
-	private final static long ACCESS_EXPIRATION = (long)1000 * 60 * 60;
-	private final static long REFRESH_EXPIRATION = (long)1000 * 60 * 60 * 24;
+	private final static long ACCESS_EXPIRATION = 1000L * 60L * 60L;
+	private final static long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
 
 	@PostConstruct
 	public void init() {
@@ -85,12 +85,9 @@ public class JwtService {
 		String tokenPrefix,
 		String token
 	) {
-		long maxAgeSeconds =
-			(tokenPrefix.equals(JwtCategory.ACCESS.getValue())) ? ACCESS_EXPIRATION : REFRESH_EXPIRATION;
-
 		return ResponseCookie.from(tokenPrefix, token)
 			.path("/")
-			.maxAge(maxAgeSeconds)
+			.maxAge(60L * 60L * 24L)
 			.httpOnly(true)
 			.domain(StringUtils.hasText(domain) ? domain : null)
 			.sameSite("None")

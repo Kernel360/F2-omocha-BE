@@ -38,7 +38,7 @@ public class MemberEntity extends TimeTrackableEntity {
 
 	@Column(name = "username")
 	private String username;
-	
+
 	@Column(name = "birth")
 	private String birth;
 

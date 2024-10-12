@@ -13,6 +13,9 @@ public enum BidCode {
 	BIDDING_CREATE_SUCCESS(HttpStatus.OK, "성공적으로 입찰되었습니다."),
 	BIDDING_GET_SUCCESS(HttpStatus.OK, "성공적으로 입찰을 불러왔습니다."),
 
+	// EXPLAIN : 400 ERROR 응답 코드
+	NO_BIDS_FOUND(HttpStatus.BAD_REQUEST, "입찰이 존재하지 않습니다."),
+
 	// EXPLAIN: 404 Not Found 응답 코드
 
 	// EXPLAIN: 500 Internal Server Error 응답 코드
