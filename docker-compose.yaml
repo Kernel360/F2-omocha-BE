@@ -41,4 +41,3 @@ services:
       - ${POSTGRES_HOME_DIR}/data:/var/lib/postgresql/data # ${POSTGRES_HOME_DIR}/data
     networks:
       - backend
-

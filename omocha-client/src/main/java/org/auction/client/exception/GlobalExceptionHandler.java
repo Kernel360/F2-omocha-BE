@@ -5,9 +5,11 @@ import static org.auction.client.common.code.AuctionCode.*;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.exception.auction.AuctionException;
 import org.auction.client.exception.bid.BidException;
+import org.auction.client.exception.chat.ChatException;
 import org.auction.client.exception.image.ImageException;
 import org.auction.client.exception.jwt.JwtTokenException;
 import org.auction.client.exception.member.MemberException;
+import org.auction.client.exception.qna.QnaException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +56,23 @@ public class GlobalExceptionHandler {
 		);
 		return ResponseEntity
 			.status(e.getBidCode().getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(QnaException.class)
+	public ResponseEntity<ResultDto<Object>> handleQnaException(
+		QnaException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getQnaCode(), request.getRequestURI(), e.getDetailMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getQnaCode().getStatusCode(),
+			e.getQnaCode().getResultMsg()
+		);
+		return ResponseEntity
+			.status(e.getQnaCode().getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -105,6 +124,23 @@ public class GlobalExceptionHandler {
 		);
 		return ResponseEntity
 			.status(e.getMemberCode().getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(ChatException.class)
+	public ResponseEntity<ResultDto<Object>> handleMemberException(
+		ChatException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getChatCode(), request.getRequestURI(), e.getDetailMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getChatCode().getStatusCode(),
+			e.getChatCode().getResultMsg()
+		);
+		return ResponseEntity
+			.status(e.getChatCode().getHttpStatus())
 			.body(resultDto);
 	}
 
