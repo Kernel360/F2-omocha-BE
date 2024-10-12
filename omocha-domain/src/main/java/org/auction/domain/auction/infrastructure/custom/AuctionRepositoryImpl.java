@@ -56,7 +56,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		JPAQuery<AuctionEntity> query = queryFactory
 			.selectDistinct(auctionEntity)
 			.from(auctionEntity)
-			.leftJoin(auctionEntity.images, imageEntity).fetchJoin()
+			.leftJoin(auctionEntity.images, imageEntity)
 			.where(
 				titleContains(condition.title()),
 				statusEquals(auctionStatus)
@@ -82,9 +82,9 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		JPAQuery<Long> countQuery = queryFactory
 			.select(auctionEntity.count())
 			.from(auctionEntity)
-			.leftJoin(auctionEntity.images, imageEntity)
 			.where(
-				titleContains(condition.title())
+				titleContains(condition.title()),
+				statusEquals(auctionStatus)
 			);
 
 		return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
