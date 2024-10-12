@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.auction.client.bid.application.BidService;
 import org.auction.client.common.code.MemberCode;
-import org.auction.client.exception.member.InvalidMemberException;
 import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.mypage.interfaces.response.MemberInfoResponse;
 import org.auction.client.mypage.interfaces.response.MypageAuctionListResponse;
@@ -42,12 +41,9 @@ public class MypageService {
 
 		log.debug("find me start for member {}", memberId);
 
+		// TODO : 개선 필요(서버측 문제?) , Exception
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
-
-		if (!memberEntity.getMemberId().equals(memberId)) {
-			throw new InvalidMemberException(MemberCode.INVALID_MEMBER);
-		}
 
 		MemberInfoResponse memberInfoResponse = MemberInfoResponse.toDto(memberEntity);
 
@@ -58,7 +54,7 @@ public class MypageService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<MypageAuctionListResponse> findTransactionAuctionList(
+	public Page<MypageAuctionListResponse> findMyAuctionList(
 		Long memberId,
 		AuctionStatus auctionStatus,
 		Pageable pageable
@@ -69,9 +65,8 @@ public class MypageService {
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
-		Page<AuctionEntity> auctionPageList = auctionRepository.searchMyAuctionList(memberEntity.getMemberId(),
-			auctionStatus,
-			pageable);
+		Page<AuctionEntity> auctionPageList = auctionRepository
+			.searchMyAuctionList(memberEntity.getMemberId(), auctionStatus, pageable);
 
 		// DTO로 변환
 		Page<MypageAuctionListResponse> content = auctionPageList.map(auction -> {
@@ -95,7 +90,7 @@ public class MypageService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<MypageBidListResponse> findTransactionBidList(
+	public Page<MypageBidListResponse> findMyBidList(
 		Long memberId,
 		Pageable pageable
 	) {
@@ -107,6 +102,7 @@ public class MypageService {
 
 		Page<BidEntity> bidPageList = bidRepository.searchMyBidList(memberEntity.getMemberId(), pageable);
 
+		// DTO로 변환
 		Page<MypageBidListResponse> content = bidPageList.map(auction -> {
 			List<String> imageKeys = auction.getAuctionEntity().getImages().stream()
 				.map(ImageEntity::getS3Key)

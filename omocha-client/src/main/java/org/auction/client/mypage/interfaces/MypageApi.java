@@ -47,7 +47,7 @@ public interface MypageApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	void UserInfoModify(
+	void userInfoModify(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	);
@@ -63,7 +63,7 @@ public interface MypageApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Page<MypageAuctionListResponse>>> TransactionAuctionList(
+	ResponseEntity<ResultDto<Page<MypageAuctionListResponse>>> myAuctionList(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = AuctionStatus.class))
@@ -87,7 +87,7 @@ public interface MypageApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Page<MypageBidListResponse>>> TransactionBidList(
+	ResponseEntity<ResultDto<Page<MypageBidListResponse>>> myBidList(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
