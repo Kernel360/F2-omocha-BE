@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/chatroom")
-public class ChatRoomController {
+public class ChatRoomController implements ChatRoomApi {
 
 	private final ChatRoomService chatRoomService;
 
