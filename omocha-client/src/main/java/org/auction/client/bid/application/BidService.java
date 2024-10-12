@@ -118,23 +118,25 @@ public class BidService {
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
-		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity);
+		BidEntity currentHighestBid = getCurrentHighestBid(auctionEntity);
 
-		if (currentHighestBidPrice != null) {
-			if (bidPrice <= currentHighestBidPrice) {
-				throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
-			}
+		if (currentHighestBid != null) {
+			checkBidPrice(bidPrice, currentHighestBid.getBidPrice());
 		} else {
-			if (bidPrice < auctionEntity.getStartPrice()) {
-				throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_STARTPRICE);
-			}
+			checkBidPrice(bidPrice, auctionEntity.getStartPrice());
+		}
+	}
+
+	private void checkBidPrice(Long bidPrice, Long currentPrice) {
+		if (bidPrice < currentPrice) {
+			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
 		}
 	}
 
 	// EXPLAIN : 현재 최고가 return
 	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
 	@Transactional(readOnly = true)
-	public Long getCurrentHighestBidPrice(
+	public BidEntity getCurrentHighestBid(
 		AuctionEntity auctionEntity
 	) {
 		Long auctionId = auctionEntity.getAuctionId();
@@ -143,7 +145,6 @@ public class BidService {
 			return HighestBid.getHighestBid(auctionId);
 		} else {
 			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
-				.map(BidEntity::getBidPrice)
 				.orElse(null);
 		}
 
@@ -153,9 +154,8 @@ public class BidService {
 		BidEntity bidEntity
 	) {
 		Long auctionId = bidEntity.getAuctionEntity().getAuctionId();
-		Long bidPrice = bidEntity.getBidPrice();
 
-		HighestBid.setHighestBid(auctionId, bidPrice);
+		HighestBid.setHighestBid(auctionId, bidEntity);
 	}
 
 	@Transactional(readOnly = true)
