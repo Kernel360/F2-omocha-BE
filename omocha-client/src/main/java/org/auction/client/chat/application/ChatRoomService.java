@@ -47,7 +47,7 @@ public class ChatRoomService {
 		}
 
 		// TODO : 낙찰에서 가격을 조회하는 걸로 변경해야함, 가격이 없으면 예외를 터트려 줘야함
-		Long nowPrice = bidService.getCurrentHighestBidPrice(auctionEntity);
+		Long nowPrice = bidService.getCurrentHighestBid(auctionEntity).getBidPrice();
 
 		if (nowPrice == null) {
 			throw new NoBidsException(NO_BIDS_FOUND);

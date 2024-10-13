@@ -103,4 +103,7 @@ public class AuctionEntity extends TimeTrackableEntity {
 		image.setAuctionEntity(this);
 	}
 
+	public void modifyStatus(AuctionStatus newStatus) {
+		this.auctionStatus = newStatus;
+	}
 }

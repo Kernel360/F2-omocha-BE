@@ -181,4 +181,10 @@ public class AuctionService {
 
 	}
 
+	@Transactional
+	public void modifyAuctionStatus(AuctionEntity auction, AuctionStatus auctionStatus) {
+		auction.modifyStatus(auctionStatus);
+		auctionRepository.save(auction);
+	}
+
 }
