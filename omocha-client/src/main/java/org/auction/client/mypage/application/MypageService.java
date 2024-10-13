@@ -65,6 +65,7 @@ public class MypageService {
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
+		// TODO : 이미지 갯수 논의 필요
 		Page<AuctionEntity> myAuctionList = auctionRepository
 			.searchMyAuctionList(memberEntity.getMemberId(), auctionStatus, pageable);
 
@@ -100,6 +101,7 @@ public class MypageService {
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
+		// TODO : 이미지 갯수 논의 필요
 		Page<BidEntity> bidPageList = bidRepository.searchMyBidList(memberEntity.getMemberId(), pageable);
 
 		// DTO로 변환

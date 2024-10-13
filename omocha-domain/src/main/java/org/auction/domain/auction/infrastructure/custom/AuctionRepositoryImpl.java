@@ -95,9 +95,9 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 
 		JPAQuery<AuctionEntity> query = queryFactory
 			.selectFrom(auctionEntity)
-			.leftJoin(auctionEntity.images, imageEntity).fetchJoin()
-			.where(auctionEntity.memberEntity.memberId.eq(memberId))
-			.where(statusEquals(auctionStatus));
+			.leftJoin(auctionEntity.images, imageEntity)
+			.where(auctionEntity.memberEntity.memberId.eq(memberId)
+				.and(statusEquals(auctionStatus)));
 
 		for (Sort.Order o : pageable.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(
