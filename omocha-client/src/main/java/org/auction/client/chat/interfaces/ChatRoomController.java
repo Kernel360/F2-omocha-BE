@@ -84,7 +84,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 	// EXPLAIN : 내가 참여하고 있는 채팅방 전체 조회 (무한 스크롤로 구현)
 	@GetMapping
-	public ResponseEntity<ResultDto<SliceResponse>> findChatRooms(
+	public ResponseEntity<ResultDto<SliceResponse>> chatRoomsLists(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PageableDefault(page = 0, size = 10)
 		Pageable pageable

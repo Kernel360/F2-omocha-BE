@@ -142,7 +142,7 @@ public interface ChatRoomApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))
 		)
 	})
-	ResponseEntity<ResultDto<SliceResponse>> findChatRooms(
+	ResponseEntity<ResultDto<SliceResponse>> chatRoomsLists(
 		@Parameter(description = "인증된 사용자 정보", required = true, in = ParameterIn.COOKIE)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 
