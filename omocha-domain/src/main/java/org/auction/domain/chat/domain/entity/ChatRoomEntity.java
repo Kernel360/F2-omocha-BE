@@ -59,5 +59,9 @@ public class ChatRoomEntity extends TimeTrackableEntity {
 		this.seller = seller;
 		this.auctionId = auctionId;
 	}
-	
+
+	public boolean validateParticipant(MemberEntity member) {
+		return buyer.equals(member) || seller.equals(member);
+	}
+
 }

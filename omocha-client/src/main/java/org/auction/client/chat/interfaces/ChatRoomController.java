@@ -3,10 +3,15 @@ package org.auction.client.chat.interfaces;
 import static org.auction.client.common.code.ChatCode.*;
 
 import org.auction.client.chat.application.ChatRoomService;
-import org.auction.client.chat.interfaces.response.ChatRoomListResponse;
-import org.auction.client.chat.interfaces.response.CreateChatRoomResponse;
+import org.auction.client.chat.application.ChatService;
+import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
+import org.auction.client.chat.interfaces.response.ChatRoomResponse;
 import org.auction.client.common.dto.ResultDto;
+import org.auction.client.common.dto.SliceResponse;
 import org.auction.client.jwt.UserPrincipal;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,21 +30,22 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatRoomController implements ChatRoomApi {
 
 	private final ChatRoomService chatRoomService;
+	private final ChatService chatService;
 
 	// EXPLAIN : 채팅방 생성
 	// TODO : 낙찰이 되면 바로 채팅방 생성 로직으로 변경
 	@PostMapping("/{auctionId}")
-	public ResponseEntity<ResultDto<CreateChatRoomResponse>> chatRoomSave(
+	public ResponseEntity<ResultDto<ChatRoomResponse>> chatRoomSave(
 		@PathVariable Long auctionId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		// TODO : UserPrincipal 이 유효한 값인지 확인하는 로직 추가 필요
 
 		// 채팅방 생성
-		CreateChatRoomResponse response = chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId);
+		ChatRoomResponse response = chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId);
 
 		// 응답 생성
-		ResultDto<CreateChatRoomResponse> resultDto = ResultDto.res(
+		ResultDto<ChatRoomResponse> resultDto = ResultDto.res(
 			CHATROOM_CREATE_SUCCESS.getStatusCode(),
 			CHATROOM_CREATE_SUCCESS.getResultMsg(),
 			response
@@ -50,18 +56,46 @@ public class ChatRoomController implements ChatRoomApi {
 			.body(resultDto);
 	}
 
-	// TODO : pagination 으로 변경하기
-	@GetMapping
-	public ResponseEntity<ResultDto<ChatRoomListResponse>> findChatRooms(
-		@AuthenticationPrincipal UserPrincipal userPrincipal
+	// EXPLAIN : 채팅방 상세 조회 시 채팅방의 정보와 해당 채팅방 대화 내역을 전부 조회한다 (무한 스크롤로 구현)
+	@GetMapping("/{roomId}")
+	public ResponseEntity<ResultDto<ChatRoomDetailsResponse>> chatRoomMessageLists(
+		@PathVariable Long roomId,
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		Pageable pageable
 	) {
-		log.info("Fetching all chat rooms for user ID: {}", userPrincipal.getMemberEntity().getMemberId());
+		log.info("Fetching chat room messages for room ID: {}", roomId);
 
-		// 채팅방 목록 조회
-		ChatRoomListResponse response = chatRoomService.findMyChatRooms(userPrincipal.getMemberEntity());
+		// 채팅방과 메시지 목록 조회
+		ChatRoomDetailsResponse response = chatService.findChatRoomMessages(roomId,
+			userPrincipal.getMemberEntity(),
+			pageable);
 
 		// 응답 생성
-		ResultDto<ChatRoomListResponse> resultDto = ResultDto.res(
+		ResultDto<ChatRoomDetailsResponse> resultDto = ResultDto.res(
+			CHATROOM_DETAILS_AND_MESSAGES_SUCCESS.getStatusCode(),
+			CHATROOM_DETAILS_AND_MESSAGES_SUCCESS.getResultMsg(),
+			response
+		);
+
+		return ResponseEntity
+			.status(CHATROOM_DETAILS_AND_MESSAGES_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	// EXPLAIN : 내가 참여하고 있는 채팅방 전체 조회 (무한 스크롤로 구현)
+	@GetMapping
+	public ResponseEntity<ResultDto<SliceResponse>> findChatRooms(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+		log.info("Fetching chat rooms for user ID: {}", userPrincipal.getMemberEntity().getMemberId());
+
+		Slice<ChatRoomResponse> chatRooms = chatRoomService.findMyChatRooms(userPrincipal.getMemberEntity(), pageable);
+
+		SliceResponse<ChatRoomResponse> response = new SliceResponse<>(chatRooms);
+
+		ResultDto<SliceResponse> resultDto = ResultDto.res(
 			CHATROOM_LIST_SUCCESS.getStatusCode(),
 			CHATROOM_LIST_SUCCESS.getResultMsg(),
 			response
@@ -71,5 +105,4 @@ public class ChatRoomController implements ChatRoomApi {
 			.status(CHATROOM_LIST_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
-
 }
