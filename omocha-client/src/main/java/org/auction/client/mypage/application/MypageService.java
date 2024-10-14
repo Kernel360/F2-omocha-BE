@@ -78,7 +78,7 @@ public class MypageService {
 				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getAuctionStatus(),
-				bidService.getCurrentHighestBidPrice(auction),
+				bidService.getCurrentHighestBid(auction).getBidPrice(),
 				auction.getEndDate(),
 				imageKeys
 			);

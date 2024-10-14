@@ -35,7 +35,7 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 			.selectFrom(bidEntity)
 			.leftJoin(bidEntity.auctionEntity, auctionEntity)
 			.leftJoin(auctionEntity.images, imageEntity)
-			.where(bidEntity.memberEntity.memberId.eq(memberId));
+			.where(bidEntity.buyerEntity.memberId.eq(memberId));
 
 		for (Sort.Order o : pageable.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(bidEntity.getType(), bidEntity.getMetadata());
