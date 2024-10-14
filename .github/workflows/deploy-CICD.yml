@@ -111,7 +111,6 @@ jobs:
             
             sudo docker images -q ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }} | xargs -r docker rmi
             sudo docker pull ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}
-            sudo docker tag ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DOCKERHUB_REPOSITORY }} omocha
             
             cd ${{ secrets.SCP_TARGET_PATH }}
             sudo docker compose up -d --no-deps ${{ secrets.SERVER_PROJECT_NAME }}
