@@ -7,7 +7,7 @@
         </filter>
         <encoder>
             <pattern>
-                [CONSOLE2] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+                [CONSOLE] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -22,7 +22,7 @@
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                [REQUEST2] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+                [REQUEST] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
             </pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
         </encoder>

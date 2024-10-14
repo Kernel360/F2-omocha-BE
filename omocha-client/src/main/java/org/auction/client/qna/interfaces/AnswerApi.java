@@ -14,7 +14,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "답변 API(AnswerController)", description = "답변 생성, 조회, 수정, 삭제 API 입니다.")
 public interface AnswerApi {
 	@Operation(summary = "답변 조회", description = "답변을 조회합니다.")
 	@ApiResponses(value = {
