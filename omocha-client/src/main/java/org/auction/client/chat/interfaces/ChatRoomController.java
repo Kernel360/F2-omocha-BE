@@ -5,7 +5,7 @@ import static org.auction.client.common.code.ChatCode.*;
 import org.auction.client.chat.application.ChatRoomService;
 import org.auction.client.chat.application.ChatService;
 import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
-import org.auction.client.chat.interfaces.response.ChatRoomInfoResponse;
+import org.auction.client.chat.interfaces.response.ChatRoomInfoDto;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.common.dto.SliceResponse;
 import org.auction.client.jwt.UserPrincipal;
@@ -35,17 +35,17 @@ public class ChatRoomController implements ChatRoomApi {
 	// EXPLAIN : 채팅방 생성
 	// TODO : 낙찰이 되면 바로 채팅방 생성 로직으로 변경
 	@PostMapping("/{auctionId}")
-	public ResponseEntity<ResultDto<ChatRoomInfoResponse>> chatRoomSave(
+	public ResponseEntity<ResultDto<ChatRoomInfoDto>> chatRoomSave(
 		@PathVariable Long auctionId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		// TODO : UserPrincipal 이 유효한 값인지 확인하는 로직 추가 필요
 
 		// 채팅방 생성
-		ChatRoomInfoResponse response = chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId);
+		ChatRoomInfoDto response = chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId);
 
 		// 응답 생성
-		ResultDto<ChatRoomInfoResponse> resultDto = ResultDto.res(
+		ResultDto<ChatRoomInfoDto> resultDto = ResultDto.res(
 			CHATROOM_CREATE_SUCCESS.getStatusCode(),
 			CHATROOM_CREATE_SUCCESS.getResultMsg(),
 			response
@@ -91,10 +91,10 @@ public class ChatRoomController implements ChatRoomApi {
 	) {
 		log.info("Fetching chat rooms for user ID: {}", userPrincipal.getMemberEntity().getMemberId());
 
-		Slice<ChatRoomInfoResponse> chatRooms = chatRoomService.findMyChatRooms(userPrincipal.getMemberEntity(),
+		Slice<ChatRoomInfoDto> chatRooms = chatRoomService.findMyChatRooms(userPrincipal.getMemberEntity(),
 			pageable);
 
-		SliceResponse<ChatRoomInfoResponse> response = new SliceResponse<>(chatRooms);
+		SliceResponse<ChatRoomInfoDto> response = new SliceResponse<>(chatRooms);
 
 		ResultDto<SliceResponse> resultDto = ResultDto.res(
 			CHATROOM_LIST_SUCCESS.getStatusCode(),
