@@ -25,7 +25,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "경매 API(AuctionController)", description = "경매 생성, 상세조회, 전체 조회 API 입니다.")
 public interface AuctionApi {
 
 	// REFACTOR : exception 처리를 제대로 공부한 후 refactoring 해야함
