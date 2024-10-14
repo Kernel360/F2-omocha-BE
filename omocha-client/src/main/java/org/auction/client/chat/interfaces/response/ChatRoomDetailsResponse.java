@@ -5,7 +5,7 @@ import org.auction.domain.chat.domain.entity.ChatRoomEntity;
 import org.springframework.data.domain.Slice;
 
 public record ChatRoomDetailsResponse(
-	ChatRoomResponse chatRoomInfo, // 채팅방 정보
+	ChatRoomInfoResponse chatRoomInfo, // 채팅방 정보
 	SliceResponse<ChatMessageResponse> messages // 메시지 목록
 ) {
 	public static ChatRoomDetailsResponse toDto(
@@ -13,7 +13,7 @@ public record ChatRoomDetailsResponse(
 		Slice<ChatMessageResponse> messages
 	) {
 		return new ChatRoomDetailsResponse(
-			ChatRoomResponse.toDto(chatRoomEntity),
+			ChatRoomInfoResponse.toDto(chatRoomEntity),
 			new SliceResponse<>(messages)
 		);
 	}

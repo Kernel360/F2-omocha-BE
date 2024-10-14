@@ -1,7 +1,7 @@
 package org.auction.client.chat.interfaces;
 
 import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
-import org.auction.client.chat.interfaces.response.ChatRoomResponse;
+import org.auction.client.chat.interfaces.response.ChatRoomInfoResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.common.dto.SliceResponse;
 import org.auction.client.jwt.UserPrincipal;
@@ -46,7 +46,7 @@ public interface ChatRoomApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))
 		)
 	})
-	ResponseEntity<ResultDto<ChatRoomResponse>> chatRoomSave(
+	ResponseEntity<ResultDto<ChatRoomInfoResponse>> chatRoomSave(
 		@Parameter(description = "경매 ID", required = true, example = "12", in = ParameterIn.PATH)
 		@PathVariable Long auctionId,
 

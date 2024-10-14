@@ -5,7 +5,7 @@ import static org.auction.client.common.code.BidCode.*;
 import static org.auction.client.common.code.ChatCode.*;
 
 import org.auction.client.bid.application.BidService;
-import org.auction.client.chat.interfaces.response.ChatRoomResponse;
+import org.auction.client.chat.interfaces.response.ChatRoomInfoResponse;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.bid.NoBidsException;
 import org.auction.client.exception.chat.ChatRoomAlreadyExistsException;
@@ -31,7 +31,7 @@ public class ChatRoomService {
 	private final BidService bidService;
 
 	@Transactional
-	public ChatRoomResponse addChatRoom(
+	public ChatRoomInfoResponse addChatRoom(
 		MemberEntity buyer,
 		Long auctionId
 	) {
@@ -64,16 +64,16 @@ public class ChatRoomService {
 			.build();
 		roomRepository.save(chatRoom);
 
-		return ChatRoomResponse.toDto(chatRoom);
+		return ChatRoomInfoResponse.toDto(chatRoom);
 	}
 
 	@Transactional(readOnly = true)
-	public Slice<ChatRoomResponse> findMyChatRooms(
+	public Slice<ChatRoomInfoResponse> findMyChatRooms(
 		MemberEntity memberEntity,
 		Pageable pageable
 	) {
 		return roomRepository.findChatRoomsByUser(memberEntity, pageable)
-			.map(ChatRoomResponse::toDto);
+			.map(ChatRoomInfoResponse::toDto);
 	}
 
 }
