@@ -15,6 +15,9 @@ public enum AuctionCode {
 	AUCTION_DETAIL_SUCCESS(HttpStatus.OK, "경매 상세 정보 조회 성공"),
 	AUCTION_LIST_ACCESS_SUCCESS(HttpStatus.OK, "경매 전체 정보 조회 성공"),
 
+	// EXPLAIN: 400 ERROR
+	AUCTION_ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 경매입니다."),
+
 	// EXPLAIN: 404 ERROR
 	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매 게시물을 찾을 수 없습니다."),
 

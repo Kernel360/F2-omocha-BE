@@ -16,7 +16,7 @@ public record BidResponse(
 		BidEntity bidEntity
 	) {
 		return new BidResponse(
-			bidEntity.getMemberEntity().getMemberId(),
+			bidEntity.getBuyerEntity().getMemberId(),
 			bidEntity.getBidPrice(),
 			bidEntity.getCreatedAt()
 		);

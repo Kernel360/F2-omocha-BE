@@ -3,19 +3,21 @@ package org.auction.client.bid.application;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.auction.domain.bid.entity.BidEntity;
+
 public class HighestBid {
 
 	// TODO : 인메모리 DB 쓸 경우 수정 필요
-	protected static Map<Long, Long> highestBidMap = new HashMap<>();
+	protected static Map<Long, BidEntity> highestBidMap = new HashMap<>();
 
 	public static void setHighestBid(
 		Long auctionId,
-		Long bidPrice
+		BidEntity highestBid
 	) {
-		highestBidMap.put(auctionId, bidPrice);
+		highestBidMap.put(auctionId, highestBid);
 	}
 
-	public static Long getHighestBid(
+	public static BidEntity getHighestBid(
 		Long auctionId
 	) {
 		return highestBidMap.get(auctionId);

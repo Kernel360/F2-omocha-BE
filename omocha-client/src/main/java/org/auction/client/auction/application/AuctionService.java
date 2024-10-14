@@ -113,7 +113,7 @@ public class AuctionService {
 			auctionEntity.getTitle(),
 			auctionEntity.getContent(),
 			auctionEntity.getStartPrice(),
-			bidService.getCurrentHighestBidPrice(auctionEntity),
+			bidService.getCurrentHighestBid(auctionEntity).getBidPrice(),
 			bidService.findBidCount(auctionEntity),
 			auctionEntity.getBidUnit(),
 			auctionEntity.getAuctionType(),
@@ -169,7 +169,7 @@ public class AuctionService {
 				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getStartPrice(),
-				bidService.getCurrentHighestBidPrice(auction),
+				bidService.getCurrentHighestBid(auction).getBidPrice(),
 				bidService.findBidCount(auction),
 				auction.getStartDate(),
 				auction.getEndDate(),
@@ -179,6 +179,12 @@ public class AuctionService {
 
 		return content;
 
+	}
+
+	@Transactional
+	public void modifyAuctionStatus(AuctionEntity auction, AuctionStatus auctionStatus) {
+		auction.modifyStatus(auctionStatus);
+		auctionRepository.save(auction);
 	}
 
 }

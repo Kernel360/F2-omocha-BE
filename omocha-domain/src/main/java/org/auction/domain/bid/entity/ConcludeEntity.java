@@ -1,7 +1,8 @@
 package org.auction.domain.bid.entity;
 
+import java.time.LocalDateTime;
+
 import org.auction.domain.auction.domain.entity.AuctionEntity;
-import org.auction.domain.common.domain.entity.CreateTimeTrackableEntity;
 import org.auction.domain.member.domain.entity.MemberEntity;
 
 import jakarta.persistence.Column;
@@ -17,18 +18,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "bid")
+@Entity(name = "conclude")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BidEntity extends CreateTimeTrackableEntity {
+public class ConcludeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "bid_id")
-	private Long bidId;
+	@Column(name = "conclude_id")
+	private Long concludeId;
 
-	@Column(name = "bid_price")
-	private Long bidPrice;
+	@Column(name = "conclude_price")
+	private Long concludePrice;
+
+	@Column(name = "concluded_at")
+	private LocalDateTime concludedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "auction_id")
@@ -39,15 +43,15 @@ public class BidEntity extends CreateTimeTrackableEntity {
 	private MemberEntity buyerEntity;
 
 	@Builder
-	public BidEntity(
+	public ConcludeEntity(
 		AuctionEntity auctionEntity,
 		MemberEntity buyerEntity,
-		Long bidPrice
+		Long concludePrice,
+		LocalDateTime concludedAt
 	) {
 		this.auctionEntity = auctionEntity;
 		this.buyerEntity = buyerEntity;
-		this.bidPrice = bidPrice;
-
+		this.concludePrice = concludePrice;
+		this.concludedAt = concludedAt;
 	}
-
 }
