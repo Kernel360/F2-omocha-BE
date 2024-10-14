@@ -32,14 +32,14 @@ public class AnswerController implements AnswerApi {
 
 	private final AnswerService answerService;
 
-	@GetMapping("/{answerId}")
+	@GetMapping("/{questionId}")
 	public ResponseEntity<ResultDto<AnswerResponse>> answerDetail(
-		@PathVariable long answerId
+		@PathVariable long questionId
 	) {
 
 		log.debug("get answerDetail started");
 
-		AnswerResponse answerResponse = answerService.findAnswer(answerId);
+		AnswerResponse answerResponse = answerService.findAnswer(questionId);
 
 		ResultDto<AnswerResponse> resultDto = ResultDto.res(
 			QnACode.ANSWER_ACCESS_SUCCESS.getStatusCode(),
