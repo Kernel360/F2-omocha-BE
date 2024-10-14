@@ -132,8 +132,7 @@ public class BidService {
 			throw new BidIllegalArgumentException(bidCode);
 		}
 	}
-
-	// TODO: 입찰이 없을 경우 null 말고 다른방법으로 처리해야함
+	
 	// EXPLAIN : 현재 최고가 return
 	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
 	@Transactional(readOnly = true)
@@ -145,6 +144,7 @@ public class BidService {
 		if (HighestBid.hasHighestBid(auctionId)) {
 			return HighestBid.getHighestBid(auctionId);
 		} else {
+			// TODO: 입찰 없을 경우 현재는 0L의 BidEntity로 내보내는데 추후 리팩토링 필요
 			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
 				.orElse(new BidEntity(auctionEntity, null, 0L));
 		}

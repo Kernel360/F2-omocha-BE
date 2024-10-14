@@ -44,9 +44,10 @@ public class ChatRoomService {
 			throw new SellerIsBuyerException(SELLER_IS_BUYER);
 		}
 
-		Long nowPrice = bidService.getCurrentHighestBid(auctionEntity).getBidPrice();
+		// TODO: 추후 채팅방 테스트 완료되면 낙찰 테이블에서 데이터 조회해야함
+		Long concludePrice = bidService.getCurrentHighestBid(auctionEntity).getBidPrice();
 
-		if (nowPrice == null) {
+		if (concludePrice == null) {
 			throw new NoBidsException(NO_BIDS_FOUND);
 		}
 
@@ -56,7 +57,7 @@ public class ChatRoomService {
 
 		ChatRoomEntity chatRoom = ChatRoomEntity.builder()
 			.roomName(auctionEntity.getTitle())
-			.concludePrice(nowPrice)
+			.concludePrice(concludePrice)
 			.buyer(buyer)
 			.seller(seller)
 			.auctionId(auctionId)

@@ -9,7 +9,7 @@ public record AuctionListResponse(
 	Long auctionId,
 	String title,
 	Long startPrice,
-	Long nowPrice,
+	Long nowPrice, // TODO: 추후 Conclude Price도 넣기
 	Long bidCount,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime startDate,

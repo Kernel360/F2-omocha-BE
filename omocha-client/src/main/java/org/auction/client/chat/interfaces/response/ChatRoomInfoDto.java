@@ -12,7 +12,7 @@ public record ChatRoomInfoDto(
 	String roomName, // 경매 TITLE
 	Long sellerId, // 판매자 ID
 	String sellerName, // 판매자 NAME
-	Long nowPrice, // 경매 현재 가격 -> 낙찰 가격으로 수정해야함
+	Long concludePrice,
 	Long buyerId, // 구매자 ID
 	String buyerName,
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

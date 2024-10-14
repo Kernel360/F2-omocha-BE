@@ -11,7 +11,7 @@ public record MypageAuctionListResponse(
 	Long auctionId,
 	String title,
 	AuctionStatus auctionStatus,
-	Long nowPrice,
+	Long nowPrice, // TODO: 추후 Conclude Price도 넣기
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	LocalDateTime endDate,
 	List<String> imageKeys
