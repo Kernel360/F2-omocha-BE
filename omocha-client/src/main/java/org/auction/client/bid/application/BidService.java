@@ -1,5 +1,6 @@
 package org.auction.client.bid.application;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
@@ -8,6 +9,7 @@ import org.auction.client.bid.interfaces.response.CreateBidResponse;
 import org.auction.client.common.code.AuctionCode;
 import org.auction.client.common.code.BidCode;
 import org.auction.client.common.code.MemberCode;
+import org.auction.client.exception.auction.AuctionAlreadyEndedException;
 import org.auction.client.exception.auction.AuctionIllegalStateException;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.bid.BidIllegalArgumentException;
@@ -78,11 +80,9 @@ public class BidService {
 
 		validateBidPrice(auctionEntity, createBidRequest.bidPrice());
 
-		// TODO : 시간 관련된 로직 추가 필요 지금 시간 > enddate() 일 때 exception 처리
-
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
-			.memberEntity(memberEntity)
+			.buyerEntity(memberEntity)
 			.bidPrice(createBidRequest.bidPrice())
 			.build();
 
@@ -100,6 +100,11 @@ public class BidService {
 	private void validateAuctionStatus(
 		AuctionEntity auctionEntity
 	) {
+		LocalDateTime now = LocalDateTime.now();
+
+		if (auctionEntity.getEndDate().isBefore(now)) {
+			throw new AuctionAlreadyEndedException(AuctionCode.AUCTION_ALREADY_ENDED);
+		}
 
 		if (auctionEntity.getAuctionStatus() != AuctionStatus.BIDDING) {
 			throw new AuctionIllegalStateException(AuctionCode.AUCTION_WRONG_STATUS);
@@ -113,23 +118,25 @@ public class BidService {
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
-		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity);
+		BidEntity currentHighestBid = getCurrentHighestBid(auctionEntity);
 
-		if (currentHighestBidPrice != null) {
-			if (bidPrice <= currentHighestBidPrice) {
-				throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
-			}
+		if (currentHighestBid != null) {
+			checkBidPrice(bidPrice, currentHighestBid.getBidPrice(), BidCode.BIDPRICE_BELOW_HIGHESTBID);
 		} else {
-			if (bidPrice < auctionEntity.getStartPrice()) {
-				throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_STARTPRICE);
-			}
+			checkBidPrice(bidPrice, auctionEntity.getStartPrice(), BidCode.BIDPRICE_BELOW_STARTPRICE);
+		}
+	}
+
+	private void checkBidPrice(Long bidPrice, Long currentPrice, BidCode bidCode) {
+		if (bidPrice < currentPrice) {
+			throw new BidIllegalArgumentException(bidCode);
 		}
 	}
 
 	// EXPLAIN : 현재 최고가 return
 	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
 	@Transactional(readOnly = true)
-	public Long getCurrentHighestBidPrice(
+	public BidEntity getCurrentHighestBid(
 		AuctionEntity auctionEntity
 	) {
 		Long auctionId = auctionEntity.getAuctionId();
@@ -138,7 +145,6 @@ public class BidService {
 			return HighestBid.getHighestBid(auctionId);
 		} else {
 			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
-				.map(BidEntity::getBidPrice)
 				.orElse(null);
 		}
 
@@ -148,9 +154,8 @@ public class BidService {
 		BidEntity bidEntity
 	) {
 		Long auctionId = bidEntity.getAuctionEntity().getAuctionId();
-		Long bidPrice = bidEntity.getBidPrice();
 
-		HighestBid.setHighestBid(auctionId, bidPrice);
+		HighestBid.setHighestBid(auctionId, bidEntity);
 	}
 
 	@Transactional(readOnly = true)
