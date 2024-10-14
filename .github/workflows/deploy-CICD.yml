@@ -104,6 +104,8 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT }}
           debug: true
           script: |
+            echo ${{ secrets.DOCKERHUB_PASSWORD }} | sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+            
             docker kill ${{ secrets.SERVER_PROJECT_NAME }}
             docker rm -f ${{ secrets.SERVER_PROJECT_NAME }}
             
