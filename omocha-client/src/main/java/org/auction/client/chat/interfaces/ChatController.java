@@ -26,9 +26,11 @@ public class ChatController {
 	private final ChatRoomService chatRoomService;
 
 	@MessageMapping("/{roomId}/messages")
-	public void chat(@DestinationVariable("roomId") Long roomId,
+	public void chat(
+		@DestinationVariable("roomId") Long roomId,
 		ChatMessageRequest chatRequest,
-		@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		@AuthenticationPrincipal UserPrincipal userPrincipal
+	) {
 
 		log.info("Received message: {}", chatRequest);
 

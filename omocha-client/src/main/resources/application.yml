@@ -119,3 +119,4 @@ spring:
 url:
   base: https://www.omocha-auction.com
   domain: omocha-auction.com
+  backend-domain: api.omocha-auction.com
