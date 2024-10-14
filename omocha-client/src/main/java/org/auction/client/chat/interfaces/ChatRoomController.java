@@ -34,6 +34,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 	// EXPLAIN : 채팅방 생성
 	// TODO : 낙찰이 되면 바로 채팅방 생성 로직으로 변경
+	@Override
 	@PostMapping("/{auctionId}")
 	public ResponseEntity<ResultDto<ChatRoomInfoDto>> chatRoomSave(
 		@PathVariable Long auctionId,
@@ -57,6 +58,7 @@ public class ChatRoomController implements ChatRoomApi {
 	}
 
 	// EXPLAIN : 채팅방 상세 조회 시 채팅방의 정보와 해당 채팅방 대화 내역을 전부 조회한다 (무한 스크롤로 구현)
+	@Override
 	@GetMapping("/{roomId}")
 	public ResponseEntity<ResultDto<ChatRoomDetailsResponse>> chatRoomMessageLists(
 		@PathVariable Long roomId,
@@ -83,6 +85,7 @@ public class ChatRoomController implements ChatRoomApi {
 	}
 
 	// EXPLAIN : 내가 참여하고 있는 채팅방 전체 조회 (무한 스크롤로 구현)
+	@Override
 	@GetMapping
 	public ResponseEntity<ResultDto<SliceResponse>> chatRoomsLists(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
