@@ -39,6 +39,7 @@ public class QuestionController implements QuestionApi {
 	private final QuestionService questionService;
 
 	// TODO : response 논의 후 결정 : 질문 답변 같이 보낼지
+	@Override
 	@GetMapping("/{auctionId}/question-list")
 	public ResponseEntity<ResultDto<Page<QuestionListResponse>>> questionList(
 		@PathVariable(value = "auctionId") Long auctionId,
@@ -69,6 +70,7 @@ public class QuestionController implements QuestionApi {
 
 	}
 
+	@Override
 	@PostMapping()
 	public ResponseEntity<ResultDto<CreateQuestionResponse>> questionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -95,6 +97,7 @@ public class QuestionController implements QuestionApi {
 
 	}
 
+	@Override
 	@PatchMapping("/{questionId}")
 	public ResponseEntity<ResultDto<QuestionResponse>> questionModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -122,6 +125,7 @@ public class QuestionController implements QuestionApi {
 
 	}
 
+	@Override
 	@DeleteMapping("/{questionId}")
 	public ResponseEntity<ResultDto<Void>> questionRemove(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
