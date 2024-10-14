@@ -34,6 +34,7 @@ public class MypageController implements MypageApi {
 
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
+	@Override
 	@GetMapping("/me")
 	public ResponseEntity<ResultDto<MemberInfoResponse>> getMe(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
@@ -63,6 +64,7 @@ public class MypageController implements MypageApi {
 	}
 
 	// TODO : 사용자 정보 수정
+	@Override
 	@PatchMapping()
 	public void userInfoModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
@@ -71,7 +73,7 @@ public class MypageController implements MypageApi {
 	}
 
 	// TODO : 키워드 관련 추가 예정
-
+	@Override
 	@GetMapping("/history/auction")
 	public ResponseEntity<ResultDto<Page<MypageAuctionListResponse>>> myAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -108,6 +110,7 @@ public class MypageController implements MypageApi {
 
 	}
 
+	@Override
 	@GetMapping("/history/bid")
 	public ResponseEntity<ResultDto<Page<MypageBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,

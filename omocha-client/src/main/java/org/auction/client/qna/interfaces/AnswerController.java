@@ -32,6 +32,7 @@ public class AnswerController implements AnswerApi {
 
 	private final AnswerService answerService;
 
+	@Override
 	@GetMapping("/{questionId}")
 	public ResponseEntity<ResultDto<AnswerResponse>> answerDetail(
 		@PathVariable long questionId
@@ -55,6 +56,7 @@ public class AnswerController implements AnswerApi {
 
 	}
 
+	@Override
 	@PostMapping()
 	public ResponseEntity<ResultDto<CreateAnswerResponse>> answerAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -80,6 +82,7 @@ public class AnswerController implements AnswerApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@PatchMapping("/{answerId}")
 	public ResponseEntity<ResultDto<AnswerResponse>> answerModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -106,6 +109,7 @@ public class AnswerController implements AnswerApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@DeleteMapping("/{answerId}")
 	public ResponseEntity<ResultDto<Void>> answerRemove(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
