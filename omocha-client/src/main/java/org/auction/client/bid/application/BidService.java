@@ -146,17 +146,7 @@ public class BidService {
 			return HighestBid.getHighestBid(auctionId);
 		} else {
 			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
-				.orElse(null);
-		}
-	}
-
-	public Long getCurrentHighestBidPrice(
-		AuctionEntity auctionEntity
-	) {
-		if (getCurrentHighestBid(auctionEntity) == null) {
-			return 0L;
-		} else {
-			return getCurrentHighestBid(auctionEntity).getBidPrice();
+				.orElse(new BidEntity(auctionEntity, null, 0L));
 		}
 	}
 

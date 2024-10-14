@@ -31,8 +31,8 @@ public class ChatRoomEntity extends TimeTrackableEntity {
 	@Column(name = "room_name", nullable = false)
 	private String roomName;
 
-	@Column(name = "now_price", nullable = false)
-	private Long nowPrice;
+	@Column(name = "conclude_price", nullable = false)
+	private Long concludePrice;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "buyer_id", nullable = false)
@@ -48,13 +48,13 @@ public class ChatRoomEntity extends TimeTrackableEntity {
 	@Builder
 	public ChatRoomEntity(
 		String roomName,
-		Long nowPrice,
+		Long concludePrice,
 		MemberEntity buyer,
 		MemberEntity seller,
 		Long auctionId
 	) {
 		this.roomName = roomName;
-		this.nowPrice = nowPrice;
+		this.concludePrice = concludePrice;
 		this.buyer = buyer;
 		this.seller = seller;
 		this.auctionId = auctionId;

@@ -39,11 +39,16 @@ public class ConcludeService {
 		AuctionEntity auction
 	) {
 		if (auction.getEndDate().isBefore(LocalDateTime.now())) {
-			// 옥션 상태 변경 (입찰중 => 낙찰완료)
+			BidEntity highestBid = bidService.getCurrentHighestBid(auction);
+
+			if (highestBid.getBuyerEntity() == null) {
+				auctionService.modifyAuctionStatus(auction, AuctionStatus.NO_BIDS);
+				return;
+			}
+
 			auctionService.modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
 
-			// 낙찰 row insert
-			createAuctionConclude(auction);
+			createAuctionConclude(auction, highestBid);
 
 			// 채팅방 생성
 			// TODO: 채팅방은 생성만 해주고 response가 없어야 함 => scheduler는 return 값이 없음
@@ -54,12 +59,11 @@ public class ConcludeService {
 	}
 
 	private void createAuctionConclude(
-		AuctionEntity auction
+		AuctionEntity auction,
+		BidEntity highestBid
 	) {
-		BidEntity highestBid = bidService.getCurrentHighestBid(auction);
-
 		ConcludeEntity concludeEntity = ConcludeEntity.builder()
-			.concludePrice(bidService.getCurrentHighestBidPrice(auction))
+			.concludePrice(highestBid.getBidPrice())
 			.concludedAt(highestBid.getCreatedAt())
 			.auctionEntity(auction)
 			.buyerEntity(highestBid.getBuyerEntity())

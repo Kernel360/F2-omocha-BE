@@ -26,7 +26,7 @@ public record ChatRoomInfoDto(
 			chatRoomEntity.getRoomName(),
 			chatRoomEntity.getSeller().getMemberId(),
 			chatRoomEntity.getSeller().getNickname(),
-			chatRoomEntity.getNowPrice(),
+			chatRoomEntity.getConcludePrice(),
 			chatRoomEntity.getBuyer().getMemberId(),
 			chatRoomEntity.getBuyer().getNickname(),
 			chatRoomEntity.getCreatedAt()
