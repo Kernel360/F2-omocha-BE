@@ -3,12 +3,14 @@ package org.auction.client.member.interfaces;
 import static org.auction.client.common.code.MemberCode.*;
 
 import org.auction.client.common.dto.ResultDto;
+import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.jwt.application.JwtService;
 import org.auction.client.member.application.MemberService;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
 import org.auction.domain.member.domain.entity.MemberEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,6 +73,27 @@ public class AuthController implements AuthApi {
 
 		return ResponseEntity
 			.status(MEMBER_LOGIN_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@PostMapping("/logout")
+	public ResponseEntity<ResultDto<Void>> memberLogout(
+		HttpServletResponse response,
+		@AuthenticationPrincipal UserPrincipal userPrincipal
+	) {
+		log.debug("Member logout started");
+
+		jwtService.logout(userPrincipal.getMemberEntity(), response);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			MEMBER_LOGOUT_SUCCESS.getStatusCode(),
+			MEMBER_LOGOUT_SUCCESS.getResultMsg(),
+			null
+		);
+
+		return ResponseEntity
+			.status(MEMBER_LOGOUT_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 }
