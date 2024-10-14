@@ -133,6 +133,7 @@ public class BidService {
 		}
 	}
 
+	// TODO: 입찰이 없을 경우 null 말고 다른방법으로 처리해야함
 	// EXPLAIN : 현재 최고가 return
 	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
 	@Transactional(readOnly = true)
@@ -147,7 +148,16 @@ public class BidService {
 			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
 				.orElse(null);
 		}
+	}
 
+	public Long getCurrentHighestBidPrice(
+		AuctionEntity auctionEntity
+	) {
+		if (getCurrentHighestBid(auctionEntity) == null) {
+			return 0L;
+		} else {
+			return getCurrentHighestBid(auctionEntity).getBidPrice();
+		}
 	}
 
 	private void updateHighestBidPrice(
