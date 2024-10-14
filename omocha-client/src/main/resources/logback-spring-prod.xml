@@ -95,7 +95,7 @@
     </root>
 
     <!-- SQL 로그 로거 설정 -->
-    <logger name="SQL_LOG1" level="DEBUG" additivity="false">
+    <logger name="SQL_LOG" level="INFO" additivity="false">
         <appender-ref ref="QUERY"/>
     </logger>
 </included>

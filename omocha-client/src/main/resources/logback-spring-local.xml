@@ -6,7 +6,7 @@
 
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <appender name="CONSOLE2" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
@@ -17,7 +17,7 @@
         </encoder>
     </appender>
 
-    <appender name="REQUEST1" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/request1.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/archive/request1.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
@@ -49,12 +49,12 @@
 
     <!-- 루트 로거 설정 -->
     <root level="INFO">
-        <appender-ref ref="CONSOLE2"/>
-        <appender-ref ref="REQUEST1"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="REQUEST"/>
     </root>
 
     <!-- SQL 로그 로거 설정 -->
-    <logger name="SQL_LOG1" level="INFO" additivity="false">
+    <logger name="SQL_LOG" level="INFO" additivity="false">
         <appender-ref ref="QUERY"/>
     </logger>
 
