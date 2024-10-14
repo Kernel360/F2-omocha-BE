@@ -6,7 +6,7 @@ networks:
 
 services:
   omocha:
-    image: omocha
+    image: kwlim1120ss/omocha
     container_name: omocha
     restart: always
     ports:

@@ -41,9 +41,9 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://${LOCAL_DATABASE_HOSTNAME}:${LOCAL_DATABASE_PORT}/${LOCAL_DATABASE_NAME}
+    username: ${LOCAL_DATABASE_USERNAME}
+    password: ${LOCAL_DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   security:
