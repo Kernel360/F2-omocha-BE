@@ -1,7 +1,7 @@
 <included>
 
     <!-- 콘솔 앱렌더 -->
-    <appender name="CONSOLE2" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
@@ -13,7 +13,7 @@
     </appender>
 
     <!-- 요청 로그 앱렌더 -->
-    <appender name="REQUEST2" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./omocha-server/server/logs/request2.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./omocha-server/server/logs/archive/request2.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
@@ -88,14 +88,14 @@
 
     <!-- 루트 로거 설정 -->
     <root level="INFO">
-        <appender-ref ref="CONSOLE2"/>
-        <appender-ref ref="REQUEST2"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="REQUEST"/>
         <appender-ref ref="ERROR"/>
         <appender-ref ref="WARN"/>
     </root>
 
     <!-- SQL 로그 로거 설정 -->
-    <logger name="SQL_LOG1" level="DEBUG" additivity="false">
+    <logger name="SQL_LOG1" level="INFO" additivity="false">
         <appender-ref ref="QUERY"/>
     </logger>
 </included>

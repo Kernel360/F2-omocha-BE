@@ -90,6 +90,39 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
 	}
 
+	@Override
+	public Page<AuctionEntity> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable) {
+
+		JPAQuery<AuctionEntity> query = queryFactory
+			.selectFrom(auctionEntity)
+			.leftJoin(auctionEntity.images, imageEntity)
+			.where(auctionEntity.memberEntity.memberId.eq(memberId)
+				.and(statusEquals(auctionStatus)));
+
+		for (Sort.Order o : pageable.getSort()) {
+			PathBuilder<?> pathBuilder = new PathBuilder<>(
+				auctionEntity.getType(),
+				auctionEntity.getMetadata()
+			);
+			query.orderBy(new OrderSpecifier(
+				o.isAscending() ? Order.ASC : Order.DESC,
+				pathBuilder.get(o.getProperty())
+			));
+		}
+
+		// 페이징 적용
+		List<AuctionEntity> auctions = query
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+
+		JPAQuery<Long> countQuery = queryFactory
+			.select(auctionEntity.count())
+			.from(auctionEntity);
+
+		return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
+	}
+
 	private BooleanExpression titleContains(String title) {
 		return isEmpty(title) ? null : auctionEntity.title.containsIgnoreCase(title);
 	}

@@ -77,6 +77,7 @@ spring:
 url:
   base: http://localhost:8080
   domain: ""
+  backend-domain: http://localhost:8080
 ---
 spring:
   config:
@@ -119,3 +120,4 @@ spring:
 url:
   base: https://www.omocha-auction.com
   domain: omocha-auction.com
+  backend-domain: https://api.omocha-auction.com

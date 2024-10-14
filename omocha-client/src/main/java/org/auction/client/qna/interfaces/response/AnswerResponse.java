@@ -7,6 +7,7 @@ import org.auction.domain.qna.domain.entity.AnswerEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record AnswerResponse(
+	Long answerId,
 	String title,
 	String content,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -16,6 +17,7 @@ public record AnswerResponse(
 		AnswerEntity answerEntity
 	) {
 		return new AnswerResponse(
+			answerEntity.getAnswerId(),
 			answerEntity.getTitle(),
 			answerEntity.getContent(),
 			answerEntity.getCreatedAt()
