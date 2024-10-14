@@ -27,14 +27,10 @@ public class ChatService {
 	private final ChatRoomRepository roomRepository;
 
 	public ChatEntity createChat(Long roomId, MemberEntity sender, String message, MessageType type) {
-		// 입력값 검증
-		if (roomId == null || sender == null || message == null || type == null) {
-			throw new IllegalArgumentException("Invalid parameters for creating chat message.");
-		}
-
+		
 		// 채팅방 조회
 		ChatRoomEntity room = roomRepository.findById(roomId)
-			.orElseThrow(() -> new IllegalArgumentException("Chat room not found"));
+			.orElseThrow(() -> new ChatRoomNotFoundException(CHATROOM_NOT_FOUND));
 
 		// 채팅 메시지 생성 및 저장
 		ChatEntity chat = ChatEntity.builder()
