@@ -18,4 +18,10 @@ public interface AuctionRepositoryCustom {
 		AuctionStatus auctionStatus,
 		Pageable pageable
 	);
+
+	Page<AuctionEntity> searchMyAuctionList(
+		Long memberId,
+		AuctionStatus auctionStatus,
+		Pageable pageable
+	);
 }
