@@ -17,6 +17,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class OAuth2UserInfo {
+	private String name;
 	private String email;
 	private String provider;
 	private String providerId;
@@ -31,6 +32,7 @@ public class OAuth2UserInfo {
 
 	private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
 		return OAuth2UserInfo.builder()
+			.name((String)attributes.get("name"))
 			.email((String)attributes.get("email"))
 			.provider("google")
 			.providerId((String)attributes.get("sub"))
@@ -41,6 +43,7 @@ public class OAuth2UserInfo {
 		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
 
 		return OAuth2UserInfo.builder()
+			.name((String)response.get("name"))
 			.email((String)response.get("email"))
 			.provider("naver")
 			.providerId((String)response.get("id"))
@@ -49,6 +52,7 @@ public class OAuth2UserInfo {
 
 	public MemberEntity toEntity() {
 		return MemberEntity.builder()
+			.username(name)
 			.email(email)
 			.role(Role.ROLE_USER)
 			.provider(provider)
