@@ -121,15 +121,15 @@ public class BidService {
 		BidEntity currentHighestBid = getCurrentHighestBid(auctionEntity);
 
 		if (currentHighestBid != null) {
-			checkBidPrice(bidPrice, currentHighestBid.getBidPrice());
+			checkBidPrice(bidPrice, currentHighestBid.getBidPrice(), BidCode.BIDPRICE_BELOW_HIGHESTBID);
 		} else {
-			checkBidPrice(bidPrice, auctionEntity.getStartPrice());
+			checkBidPrice(bidPrice, auctionEntity.getStartPrice(), BidCode.BIDPRICE_BELOW_STARTPRICE);
 		}
 	}
 
-	private void checkBidPrice(Long bidPrice, Long currentPrice) {
+	private void checkBidPrice(Long bidPrice, Long currentPrice, BidCode bidCode) {
 		if (bidPrice < currentPrice) {
-			throw new BidIllegalArgumentException(BidCode.BIDPRICE_BELOW_HIGHESTBID);
+			throw new BidIllegalArgumentException(bidCode);
 		}
 	}
 

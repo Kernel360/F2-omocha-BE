@@ -35,7 +35,7 @@ public class BidEntity extends CreateTimeTrackableEntity {
 	private AuctionEntity auctionEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "buyer_id")
 	private MemberEntity memberEntity;
 
 	@Builder

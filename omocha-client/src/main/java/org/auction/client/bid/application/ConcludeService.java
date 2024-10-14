@@ -35,7 +35,9 @@ public class ConcludeService {
 	}
 
 	@Transactional
-	public void concludeAuctionIfEnded(AuctionEntity auction) {
+	public void concludeAuctionIfEnded(
+		AuctionEntity auction
+	) {
 		if (auction.getEndDate().isBefore(LocalDateTime.now())) {
 			// 옥션 상태 변경 (입찰중 => 낙찰완료)
 			auctionService.modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
@@ -51,7 +53,9 @@ public class ConcludeService {
 		}
 	}
 
-	private void createAuctionConclude(AuctionEntity auction) {
+	private void createAuctionConclude(
+		AuctionEntity auction
+	) {
 		BidEntity highestBid = bidService.getCurrentHighestBid(auction);
 
 		ConcludeEntity concludeEntity = ConcludeEntity.builder()
