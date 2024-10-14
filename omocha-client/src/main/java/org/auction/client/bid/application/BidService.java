@@ -82,7 +82,7 @@ public class BidService {
 
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
-			.memberEntity(memberEntity)
+			.buyerEntity(memberEntity)
 			.bidPrice(createBidRequest.bidPrice())
 			.build();
 
