@@ -13,8 +13,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Tag(name = "회원 API(AuthController)", description = "새로운 회원 생성, 로그인, 로그아웃 API 입니다.")
 public interface AuthApi {
 
 	// REFACTOR : exception 처리를 제대로 공부한 후 refactoring 해야함

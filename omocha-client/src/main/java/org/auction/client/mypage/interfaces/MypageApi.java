@@ -18,7 +18,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "마이페이지 API(MyPageController)", description = "사용자 정보, 수정, 경매 물품 내역.")
 public interface MypageApi {
 	@Operation(summary = "사용자 정보 가져오기", description = "사용자 정보를 가져옵니다.")
 	@ApiResponses(value = {

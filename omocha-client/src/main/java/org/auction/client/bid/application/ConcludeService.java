@@ -59,7 +59,7 @@ public class ConcludeService {
 		BidEntity highestBid = bidService.getCurrentHighestBid(auction);
 
 		ConcludeEntity concludeEntity = ConcludeEntity.builder()
-			.concludePrice(highestBid.getBidPrice())
+			.concludePrice(bidService.getCurrentHighestBidPrice(auction))
 			.concludedAt(highestBid.getCreatedAt())
 			.auctionEntity(auction)
 			.buyerEntity(highestBid.getBuyerEntity())

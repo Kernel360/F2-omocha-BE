@@ -71,13 +71,14 @@ public class MemberEntity extends TimeTrackableEntity {
 	@Builder
 	public MemberEntity(
 		String loginId, String password, String nickname,
-		String birth, String email, String phoneNumber,
-		String profileImageUrl, Role role,
+		String username, String birth, String email,
+		String phoneNumber, String profileImageUrl, Role role,
 		String provider, String providerId, UserStatus userStatus
 	) {
 		this.loginId = loginId;
 		this.password = password;
 		this.nickname = nickname;
+		this.username = username;
 		this.birth = birth;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
