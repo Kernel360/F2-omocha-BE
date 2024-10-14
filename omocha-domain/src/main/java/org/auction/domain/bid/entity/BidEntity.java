@@ -36,12 +36,16 @@ public class BidEntity extends CreateTimeTrackableEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "buyer_id")
-	private MemberEntity memberEntity;
+	private MemberEntity buyerEntity;
 
 	@Builder
-	public BidEntity(AuctionEntity auctionEntity, MemberEntity memberEntity, Long bidPrice) {
+	public BidEntity(
+		AuctionEntity auctionEntity,
+		MemberEntity buyerEntity,
+		Long bidPrice
+	) {
 		this.auctionEntity = auctionEntity;
-		this.memberEntity = memberEntity;
+		this.buyerEntity = buyerEntity;
 		this.bidPrice = bidPrice;
 
 	}

@@ -48,7 +48,7 @@ public class ConcludeService {
 			// 채팅방 생성
 			// TODO: 채팅방은 생성만 해주고 response가 없어야 함 => scheduler는 return 값이 없음
 			//       채팅에 대해서는 추후 수정 필요
-			MemberEntity highestBuyer = bidService.getCurrentHighestBid(auction).getMemberEntity();
+			MemberEntity highestBuyer = bidService.getCurrentHighestBid(auction).getBuyerEntity();
 			chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId());
 		}
 	}
@@ -62,7 +62,7 @@ public class ConcludeService {
 			.concludePrice(highestBid.getBidPrice())
 			.concludedAt(highestBid.getCreatedAt())
 			.auctionEntity(auction)
-			.memberEntity(highestBid.getMemberEntity())
+			.buyerEntity(highestBid.getBuyerEntity())
 			.build();
 
 		concludeRepository.save(concludeEntity);

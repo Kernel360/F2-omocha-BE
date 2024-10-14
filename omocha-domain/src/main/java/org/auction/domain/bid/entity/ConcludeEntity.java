@@ -40,17 +40,17 @@ public class ConcludeEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "buyer_id")
-	private MemberEntity memberEntity;
+	private MemberEntity buyerEntity;
 
 	@Builder
 	public ConcludeEntity(
 		AuctionEntity auctionEntity,
-		MemberEntity memberEntity,
+		MemberEntity buyerEntity,
 		Long concludePrice,
 		LocalDateTime concludedAt
 	) {
 		this.auctionEntity = auctionEntity;
-		this.memberEntity = memberEntity;
+		this.buyerEntity = buyerEntity;
 		this.concludePrice = concludePrice;
 		this.concludedAt = concludedAt;
 	}
