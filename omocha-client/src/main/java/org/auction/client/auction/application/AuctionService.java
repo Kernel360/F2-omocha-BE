@@ -12,6 +12,7 @@ import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.bid.application.BidService;
+import org.auction.client.exception.auction.AuctionHasBidsException;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.image.ImageDeletionException;
 import org.auction.client.exception.image.ImageNotFoundException;
@@ -133,6 +134,10 @@ public class AuctionService {
 
 		if (!auctionEntity.getMemberEntity().getMemberId().equals(memberId)) {
 			throw new InvalidMemberException(INVALID_MEMBER);
+		}
+
+		if (bidService.findBidCount(auctionEntity) != 0) {
+			throw new AuctionHasBidsException(AUCTION_HAS_BIDS);
 		}
 
 		try {
