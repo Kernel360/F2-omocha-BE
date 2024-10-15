@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 public record ChatMessageRequest(
 	@NotBlank
 	MessageType messageType,
+	Long senderId,
 	@NotBlank
 	String message
 ) {

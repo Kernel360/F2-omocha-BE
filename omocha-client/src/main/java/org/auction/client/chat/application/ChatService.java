@@ -26,8 +26,13 @@ public class ChatService {
 	private final ChatRepository chatRepository;
 	private final ChatRoomRepository roomRepository;
 
-	public ChatEntity createChat(Long roomId, MemberEntity sender, String message, MessageType type) {
-		
+	public ChatEntity createChat(
+		Long roomId,
+		MemberEntity sender,
+		String message,
+		MessageType type
+	) {
+
 		// 채팅방 조회
 		ChatRoomEntity room = roomRepository.findById(roomId)
 			.orElseThrow(() -> new ChatRoomNotFoundException(CHATROOM_NOT_FOUND));
