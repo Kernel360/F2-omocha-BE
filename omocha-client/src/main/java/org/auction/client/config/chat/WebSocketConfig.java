@@ -19,7 +19,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		MessageBrokerRegistry config
 	) {
 		// 클라이언트에서 구독할 endpoint를 설정합니다.
-		config.enableSimpleBroker("/sub");
+		config.enableSimpleBroker("/sub")
+			.setHeartbeatValue(new long[] {10000, 10000});
 
 		// 클라이언트에서 메시지를 발행할 endpoint를 설정합니다.
 		config.setApplicationDestinationPrefixes("/pub");
