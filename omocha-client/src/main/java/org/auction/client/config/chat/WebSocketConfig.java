@@ -30,8 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		StompEndpointRegistry registry
 	) {
 		registry.addEndpoint("/omocha-websocket")
-			.setAllowedOriginPatterns("https://local.omocha-auction.com", "https://api.omocha-auction.com",
-				"http://localhost:8080", "http://localhost:3000", "https://www.omocha-auction.com")
+			.setAllowedOriginPatterns("*")
 			.withSockJS();
 	}
 }
