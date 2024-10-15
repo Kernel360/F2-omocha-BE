@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ${POSTGRES_HOME_DIR}/data:/var/lib/postgresql/data # ${POSTGRES_HOME_DIR}/data
+      - ${LOG_HOME_DIR}:/omocha-server
     networks:
       - backend
 
