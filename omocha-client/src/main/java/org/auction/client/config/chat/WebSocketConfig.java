@@ -1,10 +1,8 @@
 package org.auction.client.config.chat;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -21,9 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		MessageBrokerRegistry config
 	) {
 		// 클라이언트에서 구독할 endpoint를 설정합니다.
-		config.enableSimpleBroker("/sub")
-			.setTaskScheduler(taskScheduler())
-			.setHeartbeatValue(new long[] {10000, 10000});
+		config.enableSimpleBroker("/sub");
 
 		// 클라이언트에서 메시지를 발행할 endpoint를 설정합니다.
 		config.setApplicationDestinationPrefixes("/pub");
@@ -38,13 +34,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 			.withSockJS();
 	}
 
-	// TaskScheduler Bean 등록
-	@Bean
-	public ThreadPoolTaskScheduler taskScheduler() {
-		ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-		scheduler.setPoolSize(1); // 스레드 풀 사이즈 설정
-		scheduler.setThreadNamePrefix("wss-heartbeat-thread-");
-		scheduler.initialize();
-		return scheduler;
-	}
 }
