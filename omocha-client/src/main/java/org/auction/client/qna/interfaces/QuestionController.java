@@ -8,6 +8,7 @@ import org.auction.client.qna.application.QuestionService;
 import org.auction.client.qna.interfaces.request.CreateQuestionRequest;
 import org.auction.client.qna.interfaces.request.ModifyQuestionRequest;
 import org.auction.client.qna.interfaces.response.CreateQuestionResponse;
+import org.auction.client.qna.interfaces.response.QnaServiceResponse;
 import org.auction.client.qna.interfaces.response.QuestionListResponse;
 import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,32 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionController implements QuestionApi {
 
 	private final QuestionService questionService;
+
+	// TODO : QueryDSL JOIN 관련 수정 필요
+	@GetMapping("/{auctionId}/qna-list")
+	public ResponseEntity<ResultDto<Page<QnaServiceResponse>>> qnaList(
+		@PathVariable(value = "auctionId") Long auctionId,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "ASC") String direction,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+
+		Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
+
+		Page<QnaServiceResponse> qnaResponseList = questionService.qnaList(auctionId, pageable);
+
+		ResultDto<Page<QnaServiceResponse>> resultDto = ResultDto.res(
+			QNA_LIST_ACCESS_SUCCESS.getStatusCode(),
+			QNA_LIST_ACCESS_SUCCESS.getResultMsg(),
+			qnaResponseList
+		);
+
+		return ResponseEntity
+			.status(QNA_LIST_ACCESS_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
 
 	// TODO : response 논의 후 결정 : 질문 답변 같이 보낼지
 	@Override

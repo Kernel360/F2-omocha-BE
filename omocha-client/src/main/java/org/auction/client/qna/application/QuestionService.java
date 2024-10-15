@@ -3,6 +3,7 @@ package org.auction.client.qna.application;
 import static org.auction.client.common.code.MemberCode.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.auction.client.common.code.AuctionCode;
 import org.auction.client.common.code.MemberCode;
@@ -15,6 +16,7 @@ import org.auction.client.exception.qna.QnaNotFoundException;
 import org.auction.client.qna.interfaces.request.CreateQuestionRequest;
 import org.auction.client.qna.interfaces.request.ModifyQuestionRequest;
 import org.auction.client.qna.interfaces.response.CreateQuestionResponse;
+import org.auction.client.qna.interfaces.response.QnaServiceResponse;
 import org.auction.client.qna.interfaces.response.QuestionListResponse;
 import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
@@ -22,6 +24,7 @@ import org.auction.domain.auction.infrastructure.AuctionRepository;
 import org.auction.domain.member.domain.entity.MemberEntity;
 import org.auction.domain.member.infrastructure.MemberRepository;
 import org.auction.domain.qna.domain.entity.QuestionEntity;
+import org.auction.domain.qna.domain.response.QnaDomainResponse;
 import org.auction.domain.qna.infrastructure.AnswerRepository;
 import org.auction.domain.qna.infrastructure.QuestionRepository;
 import org.springframework.data.domain.Page;
@@ -42,12 +45,36 @@ public class QuestionService {
 	private final AnswerRepository answerRepository;
 	private final MemberRepository memberRepository;
 	private final AuctionRepository auctionRepository;
+	private final AnswerService answerService;
 
 	@Transactional(readOnly = true)
-	public Page<QuestionListResponse> findQuestionList(
+	public PageImpl<QnaServiceResponse> qnaList(
 		Long auctionId,
 		Pageable pageable
 	) {
+
+		log.debug("find qnaList started for auctionId: {}, pageable: {}", auctionId, pageable);
+
+		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
+			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
+
+		Page<QnaDomainResponse> qnaEntityList = questionRepository.findQnaList(auctionEntity.getAuctionId(), pageable);
+
+		List<QnaServiceResponse> qnaResponseList = qnaEntityList.getContent().stream()
+			.map(qnaEntity -> QnaServiceResponse.toDto(
+				qnaEntity.getQuestionEntity(),
+				qnaEntity.getAnswerEntity()
+			))
+			.collect(Collectors.toList());
+
+		log.debug("find qnaList finished");
+
+		return new PageImpl<>(qnaResponseList, pageable, qnaEntityList.getTotalElements());
+
+	}
+
+	@Transactional(readOnly = true)
+	public Page<QuestionListResponse> findQuestionList(Long auctionId, Pageable pageable) {
 
 		log.debug("find questionList started");
 
@@ -67,10 +94,7 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public CreateQuestionResponse addQuestion(
-		Long memberId,
-		CreateQuestionRequest createQuestionRequest
-	) {
+	public CreateQuestionResponse addQuestion(Long memberId, CreateQuestionRequest createQuestionRequest) {
 
 		log.debug("add question started for memberId: {}, CreateQuestionRequest: {}", memberId, createQuestionRequest);
 
@@ -96,11 +120,8 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public QuestionResponse modifyQuestion(
-		Long memberId,
-		Long questionId,
-		ModifyQuestionRequest modifyQuestionRequest
-	) {
+	public QuestionResponse modifyQuestion(Long memberId, Long questionId,
+		ModifyQuestionRequest modifyQuestionRequest) {
 
 		log.debug("modify question started for memberId: {}, questionId: {}, ModifyQuestionRequest: {}", memberId,
 			questionId, modifyQuestionRequest);
@@ -125,10 +146,7 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public void removeQuestion(
-		Long memberId,
-		Long questionId
-	) {
+	public void removeQuestion(Long memberId, Long questionId) {
 
 		log.debug("remove question started for memberId: {}, questionId: {}", memberId, questionId);
 
@@ -148,9 +166,7 @@ public class QuestionService {
 
 	}
 
-	public void validModifyAndRemove(
-		QuestionEntity questionEntity
-	) {
+	public void validModifyAndRemove(QuestionEntity questionEntity) {
 
 		if (answerRepository.existsByQuestionEntityAndDeletedIsFalse(questionEntity)) {
 			throw new QnaNotAllowedException(QnACode.QUESTION_DENY);
@@ -158,10 +174,7 @@ public class QuestionService {
 
 	}
 
-	public void hasQuestionOwnership(
-		QuestionEntity questionEntity,
-		MemberEntity memberEntity
-	) {
+	public void hasQuestionOwnership(QuestionEntity questionEntity, MemberEntity memberEntity) {
 		if (!questionEntity.getMemberEntity().getMemberId().equals(memberEntity.getMemberId())) {
 			throw new InvalidMemberException(INVALID_MEMBER);
 		}

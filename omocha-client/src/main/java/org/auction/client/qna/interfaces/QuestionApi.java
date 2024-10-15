@@ -5,6 +5,7 @@ import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.qna.interfaces.request.CreateQuestionRequest;
 import org.auction.client.qna.interfaces.request.ModifyQuestionRequest;
 import org.auction.client.qna.interfaces.response.CreateQuestionResponse;
+import org.auction.client.qna.interfaces.response.QnaServiceResponse;
 import org.auction.client.qna.interfaces.response.QuestionListResponse;
 import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.springdoc.core.annotations.ParameterObject;
@@ -23,6 +24,24 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "질문 API(QuestionController)", description = "질문 조회, 생성, 수정하는 API 입니다.")
 public interface QuestionApi {
+
+	@Operation(summary = "질문 답변 조회", description = "질문과 답변을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "질문 목록 조회에 성공하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+	})
+	ResponseEntity<ResultDto<Page<QnaServiceResponse>>> qnaList(
+		@Parameter(description = "경매 ID", required = true)
+		Long auctionId,
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
+		String sort,
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
+		String direction,
+		@ParameterObject
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	);
+
 	@Operation(summary = "질문 조회", description = "질문을 조회합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "질문 목록 조회에 성공하였습니다.",
