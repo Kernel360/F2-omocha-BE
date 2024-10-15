@@ -2,6 +2,7 @@ package org.auction.client.config.security.filter;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.auction.client.jwt.JwtCategory;
 import org.auction.client.jwt.application.JwtService;
 import org.auction.domain.member.domain.entity.MemberEntity;
@@ -32,19 +33,44 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		String accessToken = jwtService.resolveTokenFromCookie(request, JwtCategory.ACCESS);
 
 		// TODO: 추후 리팩토링 필요함
-		if (accessToken == null || accessToken.isEmpty()) {
-			SecurityContextHolder.getContext().setAuthentication(null);
-			filterChain.doFilter(request, response);
+		if (StringUtils.isBlank(accessToken)) {
+			skipThisFilter(request, response, filterChain);
 			return;
 		}
 
 		// TODO: userPrincipal에서 memberId 가져와서 비교한 후 진행하도록
 		if (jwtService.validateAccessToken(accessToken)) {
-			setAuthenticationToContext(accessToken);
-			filterChain.doFilter(request, response);
+			passThisFilter(request, response, filterChain, accessToken);
 			return;
 		}
 
+		refreshTokenHandle(request, response, filterChain);
+	}
+
+	private void skipThisFilter(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		FilterChain filterChain
+	) throws IOException, ServletException {
+		SecurityContextHolder.getContext().setAuthentication(null);
+		filterChain.doFilter(request, response);
+	}
+
+	private void passThisFilter(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		FilterChain filterChain,
+		String accessToken
+	) throws IOException, ServletException {
+		setAuthenticationToContext(accessToken);
+		filterChain.doFilter(request, response);
+	}
+
+	private void refreshTokenHandle(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		FilterChain filterChain
+	) throws ServletException, IOException {
 		String refreshToken = jwtService.resolveTokenFromCookie(request, JwtCategory.REFRESH);
 		MemberEntity memberEntity = jwtService.findMemberByRefreshToken(refreshToken);
 
@@ -60,9 +86,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private void setAuthenticationToContext(String accessToken) {
+	private void setAuthenticationToContext(
+		String accessToken
+	) {
 		Authentication authentication = jwtService.getAuthentication(accessToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
-
 }
