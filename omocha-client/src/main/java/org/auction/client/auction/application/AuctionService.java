@@ -53,6 +53,10 @@ public class AuctionService {
 		List<MultipartFile> images,
 		Long memberId
 	) {
+		if (images == null || images.isEmpty()) {
+			// TODO: exception 수정 필요
+			throw new ImageNotFoundException(IMAGE_NOT_FOUND);
+		}
 
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
@@ -68,11 +72,6 @@ public class AuctionService {
 			.endDate(request.endDate())
 			.memberEntity(memberEntity)
 			.build();
-
-		if (images == null || images.isEmpty()) {
-			// TODO: exception 수정 필요
-			throw new ImageNotFoundException(IMAGE_NOT_FOUND);
-		}
 
 		for (MultipartFile image : images) {
 			// image upload

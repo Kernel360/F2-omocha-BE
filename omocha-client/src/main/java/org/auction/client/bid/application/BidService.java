@@ -2,6 +2,7 @@ package org.auction.client.bid.application;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
@@ -112,16 +113,18 @@ public class BidService {
 	}
 
 	// EXPLAIN : 가격 검증 메서드
-	// 처음 입찰 : 현재가보다 낮은 입찰 가격이 발생할 때 예외
+	// 처음 입찰 : 시작가보다 낮은 입찰 가격이 발생할 때 예외
 	// 이후 입찰 : 입찰 가격 < 현재 최고가 보다 낮을 때 예외 발생
-	private void validateBidPrice(
+	// TODO: Transaction을 위해 protected 처리, 추후 리팩토링 필요
+	@Transactional(readOnly = true)
+	protected void validateBidPrice(
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
-		BidEntity currentHighestBid = getCurrentHighestBid(auctionEntity);
+		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity);
 
-		if (currentHighestBid != null) {
-			checkBidPrice(bidPrice, currentHighestBid.getBidPrice(), BidCode.BIDPRICE_BELOW_HIGHESTBID);
+		if (currentHighestBidPrice != 0L) {
+			checkBidPrice(bidPrice, currentHighestBidPrice, BidCode.BIDPRICE_BELOW_HIGHESTBID);
 		} else {
 			checkBidPrice(bidPrice, auctionEntity.getStartPrice(), BidCode.BIDPRICE_BELOW_STARTPRICE);
 		}
@@ -133,31 +136,24 @@ public class BidService {
 		}
 	}
 
-	// TODO: 입찰이 없을 경우 null 말고 다른방법으로 처리해야함
+	// TODO: 추후 getCurrentHighestBidPrice와 함께 리팩토링 필요
 	// EXPLAIN : 현재 최고가 return
-	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return, DB에도 없으면 현재가를 null로 return
+	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return
 	@Transactional(readOnly = true)
-	public BidEntity getCurrentHighestBid(
+	public Optional<BidEntity> getCurrentHighestBid(
 		AuctionEntity auctionEntity
 	) {
 		Long auctionId = auctionEntity.getAuctionId();
 
-		if (HighestBid.hasHighestBid(auctionId)) {
-			return HighestBid.getHighestBid(auctionId);
-		} else {
-			return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity)
-				.orElse(null);
-		}
+		return Optional.ofNullable(HighestBid.getHighestBid(auctionId))
+			.or(() -> bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity));
 	}
 
-	public Long getCurrentHighestBidPrice(
-		AuctionEntity auctionEntity
-	) {
-		if (getCurrentHighestBid(auctionEntity) == null) {
-			return 0L;
-		} else {
-			return getCurrentHighestBid(auctionEntity).getBidPrice();
-		}
+	@Transactional(readOnly = true)
+	public Long getCurrentHighestBidPrice(AuctionEntity auctionEntity) {
+		return getCurrentHighestBid(auctionEntity)
+			.map(BidEntity::getBidPrice)
+			.orElse(0L);
 	}
 
 	private void updateHighestBidPrice(

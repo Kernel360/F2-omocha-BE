@@ -22,13 +22,14 @@ public class HighestBid {
 	) {
 		return highestBidMap.get(auctionId);
 	}
-
+	
 	public static boolean hasHighestBid(
 		Long auctionId
 	) {
 		return highestBidMap.containsKey(auctionId);
 	}
 
+	// TODO : 일정 시간이 지난 이후 삭제처리 해야함
 	public static void removeHighestBid(
 		Long auctionId
 	) {

@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ${POSTGRES_HOME_DIR}/data:/var/lib/postgresql/data # ${POSTGRES_HOME_DIR}/data
+      - ${LOG_HOME_DIR}:/omocha-server
     networks:
       - backend
 
@@ -31,9 +31,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - POSTGRES_USER=${DATABASE_USERNAME}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${LOCAL_DATABASE_NAME}
+      - POSTGRES_USER=${LOCAL_DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${LOCAL_DATABASE_PASSWORD}
       - TZ=Asia/Seoul
     env_file:
       - .env

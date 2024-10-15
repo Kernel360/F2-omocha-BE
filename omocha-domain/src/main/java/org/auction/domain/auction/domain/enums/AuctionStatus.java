@@ -13,7 +13,10 @@ public enum AuctionStatus {
 	@Schema(description = "경매 진행중")
 	BIDDING("BIDDING"),
 
-	@Schema(description = "경매 종료")
+	@Schema(description = "입찰 없음")
+	NO_BIDS("NO_BIDS"),
+
+	@Schema(description = "낙찰 완료")
 	CONCLUDED("CONCLUDED"),
 
 	@Schema(description = "거래 완료")

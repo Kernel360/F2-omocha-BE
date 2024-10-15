@@ -30,6 +30,8 @@ public class ChatRoomService {
 	private final AuctionRepository auctionRepository;
 	private final BidService bidService;
 
+	// TODO: 채팅 테스트 완료되면 로직 변경 필요
+	//       concludePrice 매개변수로 받도록, 판매자 구매자 동일한지 검증 제외
 	@Transactional
 	public ChatRoomInfoDto addChatRoom(
 		MemberEntity buyer,
@@ -40,14 +42,16 @@ public class ChatRoomService {
 
 		MemberEntity seller = auctionEntity.getMemberEntity();
 
+		// TODO: 추후 삭제 예정
 		if (seller.getMemberId() == buyer.getMemberId()) {
 			throw new SellerIsBuyerException(SELLER_IS_BUYER);
 		}
 
-		// TODO : 낙찰에서 가격을 조회하는 걸로 변경해야함, 가격이 없으면 예외를 터트려 줘야함
-		Long nowPrice = bidService.getCurrentHighestBidPrice(auctionEntity);
+		// TODO: 추후 삭제 예정
+		Long concludePrice = bidService.getCurrentHighestBidPrice(auctionEntity);
 
-		if (nowPrice == null) {
+		// TODO: 추후 삭제 예정
+		if (concludePrice == null) {
 			throw new NoBidsException(NO_BIDS_FOUND);
 		}
 
@@ -57,7 +61,7 @@ public class ChatRoomService {
 
 		ChatRoomEntity chatRoom = ChatRoomEntity.builder()
 			.roomName(auctionEntity.getTitle())
-			.nowPrice(nowPrice)
+			.concludePrice(concludePrice)
 			.buyer(buyer)
 			.seller(seller)
 			.auctionId(auctionId)
