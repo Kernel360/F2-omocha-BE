@@ -27,6 +27,7 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 		AuthenticationException authException
 	) throws IOException, ServletException {
 
+		// TODO: 배포서버 디버깅을 위한 임시 코드, 추후 삭제 예정
 		log.info("[CustomAuthenticationEntryPointHandler] :: ----------------------------------");
 		log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getHeader("User-Agent"));
 		log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getRemoteAddr());
