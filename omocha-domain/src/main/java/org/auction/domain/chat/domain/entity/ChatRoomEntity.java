@@ -31,6 +31,7 @@ public class ChatRoomEntity extends TimeTrackableEntity {
 	@Column(name = "room_name", nullable = false)
 	private String roomName;
 
+	// TODO: 테스트 이후 삭제
 	@Column(name = "conclude_price", nullable = false)
 	private Long concludePrice;
 
