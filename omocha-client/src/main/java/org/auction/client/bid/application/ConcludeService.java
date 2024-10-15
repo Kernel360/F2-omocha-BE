@@ -2,10 +2,10 @@ package org.auction.client.bid.application;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.auction.client.auction.application.AuctionService;
 import org.auction.client.chat.application.ChatRoomService;
-import org.auction.client.member.application.MemberService;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
@@ -26,7 +26,6 @@ public class ConcludeService {
 	private final ConcludeRepository concludeRepository;
 	private final BidService bidService;
 	private final AuctionService auctionService;
-	private final MemberService memberService;
 	private final ChatRoomService chatRoomService;
 
 	@Transactional(readOnly = true)
@@ -39,27 +38,28 @@ public class ConcludeService {
 		AuctionEntity auction
 	) {
 		if (auction.getEndDate().isBefore(LocalDateTime.now())) {
-			// 옥션 상태 변경 (입찰중 => 낙찰완료)
-			auctionService.modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
+			Optional<BidEntity> optionalHighestBid = bidService.getCurrentHighestBid(auction);
 
-			// 낙찰 row insert
-			createAuctionConclude(auction);
+			optionalHighestBid.ifPresentOrElse(highestBid -> {
+				auctionService.modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
 
-			// 채팅방 생성
-			// TODO: 채팅방은 생성만 해주고 response가 없어야 함 => scheduler는 return 값이 없음
-			//       채팅에 대해서는 추후 수정 필요
-			MemberEntity highestBuyer = bidService.getCurrentHighestBid(auction).getBuyerEntity();
-			chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId());
+				createAuctionConclude(auction, highestBid);
+
+				// TODO: 채팅방 테스트 이후 highestBid를 매개변수로 넘겨주도록 처리
+				MemberEntity highestBuyer = highestBid.getBuyerEntity();
+				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId());
+			}, () -> {
+				auctionService.modifyAuctionStatus(auction, AuctionStatus.NO_BIDS);
+			});
 		}
 	}
 
 	private void createAuctionConclude(
-		AuctionEntity auction
+		AuctionEntity auction,
+		BidEntity highestBid
 	) {
-		BidEntity highestBid = bidService.getCurrentHighestBid(auction);
-
 		ConcludeEntity concludeEntity = ConcludeEntity.builder()
-			.concludePrice(bidService.getCurrentHighestBidPrice(auction))
+			.concludePrice(highestBid.getBidPrice())
 			.concludedAt(highestBid.getCreatedAt())
 			.auctionEntity(auction)
 			.buyerEntity(highestBid.getBuyerEntity())

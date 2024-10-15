@@ -78,11 +78,10 @@ public class MypageService {
 				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getAuctionStatus(),
-				bidService.getCurrentHighestBid(auction).getBidPrice(),
+				bidService.getCurrentHighestBidPrice(auction),
 				auction.getEndDate(),
 				imageKeys
 			);
-
 		});
 
 		log.debug("get transaction auction list finish for member {}", memberId);

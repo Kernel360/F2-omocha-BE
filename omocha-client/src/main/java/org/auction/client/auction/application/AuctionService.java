@@ -12,6 +12,7 @@ import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.bid.application.BidService;
+import org.auction.client.exception.auction.AuctionHasBidsException;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.image.ImageDeletionException;
 import org.auction.client.exception.image.ImageNotFoundException;
@@ -53,6 +54,10 @@ public class AuctionService {
 		List<MultipartFile> images,
 		Long memberId
 	) {
+		if (images == null || images.isEmpty()) {
+			// TODO: exception 수정 필요
+			throw new ImageNotFoundException(IMAGE_NOT_FOUND);
+		}
 
 		MemberEntity memberEntity = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
@@ -68,11 +73,6 @@ public class AuctionService {
 			.endDate(request.endDate())
 			.memberEntity(memberEntity)
 			.build();
-
-		if (images == null || images.isEmpty()) {
-			// TODO: exception 수정 필요
-			throw new ImageNotFoundException(IMAGE_NOT_FOUND);
-		}
 
 		for (MultipartFile image : images) {
 			// image upload
@@ -133,6 +133,10 @@ public class AuctionService {
 
 		if (!auctionEntity.getMemberEntity().getMemberId().equals(memberId)) {
 			throw new InvalidMemberException(INVALID_MEMBER);
+		}
+
+		if (bidService.findBidCount(auctionEntity) != 0) {
+			throw new AuctionHasBidsException(AUCTION_HAS_BIDS);
 		}
 
 		try {

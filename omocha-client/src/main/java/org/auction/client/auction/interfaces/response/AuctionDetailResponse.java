@@ -11,7 +11,7 @@ public record AuctionDetailResponse(
 	String title,
 	String content,
 	Long startPrice,
-	Long nowPrice,
+	Long nowPrice, // TODO: 추후 Conclude Price도 넣기
 	Long bidCount,
 	Integer bidUnit,
 	AuctionType auctionType,
