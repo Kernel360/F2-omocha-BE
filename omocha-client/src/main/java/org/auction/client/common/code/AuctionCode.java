@@ -17,6 +17,7 @@ public enum AuctionCode {
 
 	// EXPLAIN: 400 ERROR
 	AUCTION_ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 경매입니다."),
+	AUCTION_HAS_BIDS(HttpStatus.BAD_REQUEST, "입찰이 걸려있는 경매입니다. 경매를 종료할 수 없습니다."),
 
 	// EXPLAIN: 404 ERROR
 	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매 게시물을 찾을 수 없습니다."),
