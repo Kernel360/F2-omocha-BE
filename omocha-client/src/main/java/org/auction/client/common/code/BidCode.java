@@ -15,6 +15,8 @@ public enum BidCode {
 
 	// EXPLAIN : 400 ERROR 응답 코드
 	NO_BIDS_FOUND(HttpStatus.BAD_REQUEST, "입찰이 존재하지 않습니다."),
+	SELF_BID_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "자신의 경매에 입찰을 걸 수 없습니다."),
+	INVALID_BID_UNIT(HttpStatus.BAD_REQUEST, "입찰 금액이 입찰 단위에 유효하지 않습니다."),
 
 	// EXPLAIN: 404 Not Found 응답 코드
 
