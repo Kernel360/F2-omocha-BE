@@ -63,21 +63,17 @@ public class MemberService {
 		MemberEntity member = memberRepository.findByEmail(memberLoginRequest.email())
 			.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-		if (!validatePassword(memberLoginRequest, member)) {
-			return null;
-		}
+		validatePassword(memberLoginRequest, member);
 
 		return member;
 	}
 
-	private boolean validatePassword(
+	private void validatePassword(
 		MemberLoginRequest memberLoginRequest,
 		MemberEntity member
 	) {
 		if (!passwordEncoder.matches(memberLoginRequest.password(), member.getPassword())) {
 			throw new InvalidPasswordException(INVALID_PASSWORD);
 		}
-
-		return true;
 	}
 }

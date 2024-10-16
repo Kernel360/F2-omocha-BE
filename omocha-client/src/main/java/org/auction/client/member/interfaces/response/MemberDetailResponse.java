@@ -8,7 +8,7 @@ public record MemberDetailResponse(
 	String email,
 	String nickname,
 	String birth,
-	String phoenNumber,
+	String phoneNumber,
 	String imageUrl,
 	Role role
 ) {
