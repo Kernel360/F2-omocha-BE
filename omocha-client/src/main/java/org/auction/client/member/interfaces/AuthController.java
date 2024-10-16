@@ -7,10 +7,13 @@ import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.jwt.application.JwtService;
 import org.auction.client.member.application.MemberService;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
+import org.auction.client.member.interfaces.request.MemberDuplicateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
+import org.auction.client.member.interfaces.response.MemberDetailResponse;
 import org.auction.domain.member.domain.entity.MemberEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,18 +35,38 @@ public class AuthController implements AuthApi {
 
 	@Override
 	@PostMapping("/register")
-	public ResponseEntity<ResultDto<String>> memberAdd(
+	public ResponseEntity<ResultDto<Void>> memberAdd(
 		@RequestBody @Valid MemberCreateRequest memberCreateRequest
 	) {
-		log.info("Received MemberAddRequest: {}", memberCreateRequest);
 		log.debug("Member register started");
+		log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
-		String response = memberService.addMember(memberCreateRequest);
+		MemberDetailResponse responseMember = memberService.addMember(memberCreateRequest);
 
-		ResultDto<String> resultDto = ResultDto.res(
+		ResultDto<Void> resultDto = ResultDto.res(
+			MEMBER_CREATE_SUCCESS.getStatusCode(),
+			MEMBER_CREATE_SUCCESS.getResultMsg()
+		);
+
+		return ResponseEntity
+			.status(MEMBER_CREATE_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@GetMapping("/validate-email")
+	public ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
+		@RequestBody @Valid MemberDuplicateRequest memberDuplicateRequest
+	) {
+		log.debug("Email Duplication Check started");
+		log.info("Received memberDuplicateRequest: {}", memberDuplicateRequest);
+
+		boolean duplicate = memberService.isEmailDuplicate(memberDuplicateRequest);
+
+		ResultDto<Boolean> resultDto = ResultDto.res(
 			MEMBER_CREATE_SUCCESS.getStatusCode(),
 			MEMBER_CREATE_SUCCESS.getResultMsg(),
-			response
+			duplicate
 		);
 
 		return ResponseEntity
@@ -57,18 +80,17 @@ public class AuthController implements AuthApi {
 		HttpServletResponse response,
 		@RequestBody @Valid MemberLoginRequest memberLoginRequest
 	) {
-		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 		log.debug("Member login started");
+		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
-		MemberEntity requestMember = memberService.findMemberByLoginId(memberLoginRequest);
+		MemberEntity member = memberService.findMember(memberLoginRequest);
 
-		jwtService.generateAccessToken(response, requestMember);
-		jwtService.generateRefreshToken(response, requestMember);
+		jwtService.generateAccessToken(response, member);
+		jwtService.generateRefreshToken(response, member);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			MEMBER_LOGIN_SUCCESS.getStatusCode(),
-			MEMBER_LOGIN_SUCCESS.getResultMsg(),
-			null
+			MEMBER_LOGIN_SUCCESS.getResultMsg()
 		);
 
 		return ResponseEntity
@@ -88,12 +110,12 @@ public class AuthController implements AuthApi {
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			MEMBER_LOGOUT_SUCCESS.getStatusCode(),
-			MEMBER_LOGOUT_SUCCESS.getResultMsg(),
-			null
+			MEMBER_LOGOUT_SUCCESS.getResultMsg()
 		);
 
 		return ResponseEntity
 			.status(MEMBER_LOGOUT_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
+
 }

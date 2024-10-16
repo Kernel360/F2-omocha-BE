@@ -28,8 +28,8 @@ public class MemberEntity extends TimeTrackableEntity {
 	@Column(name = "member_id")
 	private Long memberId;
 
-	@Column(name = "login_id")
-	private String loginId;
+	@Column(name = "email")
+	private String email;
 
 	// TODO: Password VO로 변경해야함
 	@Column(name = "password")
@@ -43,9 +43,6 @@ public class MemberEntity extends TimeTrackableEntity {
 
 	@Column(name = "birth")
 	private String birth;
-
-	@Column(name = "email")
-	private String email;
 
 	@Column(name = "phone_number")
 	private String phoneNumber;
@@ -70,12 +67,11 @@ public class MemberEntity extends TimeTrackableEntity {
 
 	@Builder
 	public MemberEntity(
-		String loginId, String password, String nickname,
-		String username, String birth, String email,
-		String phoneNumber, String profileImageUrl, Role role,
-		String provider, String providerId, UserStatus userStatus
+		String email, String password, String nickname,
+		String username, String birth, String phoneNumber,
+		String profileImageUrl, Role role, String provider,
+		String providerId, UserStatus userStatus
 	) {
-		this.loginId = loginId;
 		this.password = password;
 		this.nickname = nickname;
 		this.username = username;

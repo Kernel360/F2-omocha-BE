@@ -2,11 +2,8 @@ package org.auction.client.member.interfaces.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record MemberLoginRequest(
+public record MemberDuplicateRequest(
 	@NotBlank
-	String email,
-
-	@NotBlank
-	String password
+	String email
 ) {
 }
