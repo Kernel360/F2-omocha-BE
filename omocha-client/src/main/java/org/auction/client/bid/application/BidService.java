@@ -14,6 +14,8 @@ import org.auction.client.exception.auction.AuctionAlreadyEndedException;
 import org.auction.client.exception.auction.AuctionIllegalStateException;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.bid.BidIllegalArgumentException;
+import org.auction.client.exception.bid.InvalidBidUnitException;
+import org.auction.client.exception.bid.SelfBidNotAllowedException;
 import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
@@ -70,21 +72,31 @@ public class BidService {
 		log.debug("Add Bid started auctionId : {}, createBidRequest: {}",
 			auctionId, createBidRequest);
 
-		MemberEntity memberEntity = memberRepository.findById(buyerId)
-			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
+		Long bidPrice = createBidRequest.bidPrice();
 
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
+		if (auctionEntity.getMemberEntity().getMemberId() == buyerId) {
+			throw new SelfBidNotAllowedException(BidCode.SELF_BID_NOT_ALLOWED);
+		}
+
+		if (bidPrice % auctionEntity.getBidUnit() != 0) {
+			throw new InvalidBidUnitException(BidCode.INVALID_BID_UNIT);
+		}
+
 		// TODO : 검증 로직 추후 수정
 		validateAuctionStatus(auctionEntity);
 
-		validateBidPrice(auctionEntity, createBidRequest.bidPrice());
+		validateBidPrice(auctionEntity, bidPrice);
+
+		MemberEntity memberEntity = memberRepository.findById(buyerId)
+			.orElseThrow(() -> new MemberNotFoundException(MemberCode.MEMBER_NOT_FOUND));
 
 		BidEntity bidEntity = BidEntity.builder()
 			.auctionEntity(auctionEntity)
 			.buyerEntity(memberEntity)
-			.bidPrice(createBidRequest.bidPrice())
+			.bidPrice(bidPrice)
 			.build();
 
 		bidRepository.save(bidEntity);

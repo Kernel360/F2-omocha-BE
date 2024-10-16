@@ -12,6 +12,7 @@ import org.auction.client.auction.interfaces.response.AuctionDetailResponse;
 import org.auction.client.auction.interfaces.response.AuctionListResponse;
 import org.auction.client.auction.interfaces.response.CreateAuctionResponse;
 import org.auction.client.bid.application.BidService;
+import org.auction.client.bid.application.ConcludeService;
 import org.auction.client.exception.auction.AuctionHasBidsException;
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.image.ImageDeletionException;
@@ -24,7 +25,6 @@ import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
 import org.auction.domain.auction.infrastructure.condition.AuctionSearchCondition;
 import org.auction.domain.image.domain.entity.ImageEntity;
-import org.auction.domain.image.infrastructure.ImageRepository;
 import org.auction.domain.member.domain.entity.MemberEntity;
 import org.auction.domain.member.infrastructure.MemberRepository;
 import org.springframework.data.domain.Page;
@@ -43,9 +43,9 @@ public class AuctionService {
 
 	private final AuctionRepository auctionRepository;
 	private final AwsS3Service awsS3Service;
-	private final ImageRepository imageRepository;
 	private final MemberRepository memberRepository;
 	private final BidService bidService;
+	private final ConcludeService concludeService;
 
 	// TODO: OAUTH2.0 구현되면 User 추가 필요
 	@Transactional
@@ -110,10 +110,13 @@ public class AuctionService {
 		log.debug("Find auction finished with images {}", imageKeys);
 		log.debug("Find auction finished with auctionId {}", auctionId);
 		return new AuctionDetailResponse(
+			auctionEntity.getMemberEntity().getMemberId(),
 			auctionEntity.getTitle(),
 			auctionEntity.getContent(),
+			auctionEntity.getAuctionStatus(),
 			auctionEntity.getStartPrice(),
 			bidService.getCurrentHighestBidPrice(auctionEntity),
+			concludeService.findConcludePrice(auctionId),
 			bidService.findBidCount(auctionEntity),
 			auctionEntity.getBidUnit(),
 			auctionEntity.getAuctionType(),
@@ -169,11 +172,16 @@ public class AuctionService {
 			List<String> imageKeys = auction.getImages().stream()
 				.map(ImageEntity::getS3Key)
 				.collect(Collectors.toList());
+
+			Long auctionId = auction.getAuctionId();
+
 			return new AuctionListResponse(
-				auction.getAuctionId(),
+				auctionId,
 				auction.getTitle(),
+				auction.getAuctionStatus(),
 				auction.getStartPrice(),
 				bidService.getCurrentHighestBidPrice(auction),
+				concludeService.findConcludePrice(auctionId),
 				bidService.findBidCount(auction),
 				auction.getStartDate(),
 				auction.getEndDate(),
@@ -182,13 +190,6 @@ public class AuctionService {
 		});
 
 		return content;
-
-	}
-
-	@Transactional
-	public void modifyAuctionStatus(AuctionEntity auction, AuctionStatus auctionStatus) {
-		auction.modifyStatus(auctionStatus);
-		auctionRepository.save(auction);
 	}
 
 }
