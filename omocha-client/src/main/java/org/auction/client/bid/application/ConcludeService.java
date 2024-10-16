@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.auction.client.auction.application.AuctionService;
 import org.auction.client.chat.application.ChatRoomService;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
@@ -25,7 +24,6 @@ public class ConcludeService {
 	private final AuctionRepository auctionRepository;
 	private final ConcludeRepository concludeRepository;
 	private final BidService bidService;
-	private final AuctionService auctionService;
 	private final ChatRoomService chatRoomService;
 
 	@Transactional(readOnly = true)
@@ -38,18 +36,18 @@ public class ConcludeService {
 		AuctionEntity auction
 	) {
 		if (auction.getEndDate().isBefore(LocalDateTime.now())) {
+			// TODO : DB에서 바로 꺼내오도록 변경
 			Optional<BidEntity> optionalHighestBid = bidService.getCurrentHighestBid(auction);
 
 			optionalHighestBid.ifPresentOrElse(highestBid -> {
-				auctionService.modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
+				modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
 
 				createAuctionConclude(auction, highestBid);
 
-				// TODO: 채팅방 테스트 이후 highestBid를 매개변수로 넘겨주도록 처리
 				MemberEntity highestBuyer = highestBid.getBuyerEntity();
-				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId());
+				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId(), highestBid.getBidPrice());
 			}, () -> {
-				auctionService.modifyAuctionStatus(auction, AuctionStatus.NO_BIDS);
+				modifyAuctionStatus(auction, AuctionStatus.NO_BIDS);
 			});
 		}
 	}
@@ -66,5 +64,18 @@ public class ConcludeService {
 			.build();
 
 		concludeRepository.save(concludeEntity);
+	}
+
+	@Transactional(readOnly = true)
+	public Long findConcludePrice(Long auctionId) {
+		return concludeRepository.findByAuctionEntityAuctionId(auctionId)
+			.map(ConcludeEntity::getConcludePrice)
+			.orElse(null);
+	}
+
+	// TODO: 순환참조 문제 해결을 위해 여기로 이동, 추후 리팩토링 필요
+	private void modifyAuctionStatus(AuctionEntity auction, AuctionStatus auctionStatus) {
+		auction.modifyStatus(auctionStatus);
+		auctionRepository.save(auction);
 	}
 }

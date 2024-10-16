@@ -2,6 +2,7 @@ package org.auction.domain.chat.infrastructure.custom;
 
 import static org.auction.domain.chat.domain.entity.QChatEntity.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.auction.domain.chat.domain.entity.ChatEntity;
@@ -21,23 +22,26 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 	}
 
 	@Override
-	public Slice<ChatEntity> findChatMessagesByRoomId(Long roomId, Pageable pageable) {
+	public Slice<ChatEntity> findChatMessagesByRoomId(
+		Long roomId,
+		LocalDateTime cursor,
+		Pageable pageable
+	) {
 		List<ChatEntity> messages = queryFactory
 			.selectFrom(chatEntity)
-			.where(chatEntity.chatRoom.chatRoomId.eq(roomId))
+			.where(chatEntity.chatRoom.chatRoomId.eq(roomId)
+				.and(cursor != null ? chatEntity.createdAt.lt(cursor) : null))
 			.orderBy(chatEntity.createdAt.desc()) // 최신 메시지 순으로 정렬!
-			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize() + 1)
 			.fetch();
 
-		return new SliceImpl<>(messages, pageable, hasNextPage(messages, pageable.getPageSize()));
+		boolean hasNext = messages.size() > pageable.getPageSize();
+		
+		if (hasNext) {
+			messages.remove(pageable.getPageSize());
+		}
+
+		return new SliceImpl<>(messages, pageable, hasNext);
 	}
 
-	private boolean hasNextPage(List<ChatEntity> messages, int pageSize) {
-		if (messages.size() > pageSize) {
-			messages.remove(pageSize);
-			return true;
-		}
-		return false;
-	}
 }

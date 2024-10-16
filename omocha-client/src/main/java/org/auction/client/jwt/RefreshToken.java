@@ -2,9 +2,9 @@ package org.auction.client.jwt;
 
 import static org.auction.client.common.code.JwtCode.*;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.auction.client.exception.jwt.InvalidRefreshTokenException;
 
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RefreshToken {
 
-	protected static final Map<String, Long> refreshTokens = new HashMap<>();
+	protected static final Map<String, Long> refreshTokens = new ConcurrentHashMap<>();
 
 	public static Long findMemberIdByRefreshToken(
 		String refreshToken

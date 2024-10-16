@@ -34,9 +34,16 @@ public class SecurityConfig {
 	private final OAuth2SuccessHandler successHandler;
 	private final OAuth2FailureHandler failureHandler;
 
-	public static final String[] PERMITTED_ALL_URI = {"/swagger-ui/**", "/v3/api-docs/**",        // Swagger 관련 경로
-		"/api/v1/auth/**", "/health",                // AWS ELB health check 경로
-		"/sub/**", "/pub/**", "/{roomId}/messages", "/omocha-websocket"};
+	public static final String[] PERMITTED_ALL_URI = {
+		"/swagger-ui/**",
+		"/v3/api-docs/**",        // Swagger 관련 경로
+		"/api/v1/auth/**",
+		"/health",                // AWS ELB health check 경로
+		"/sub/**",
+		"/pub/**",
+		"/{roomId}/messages",
+		"/omocha-websocket/"
+	};
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
