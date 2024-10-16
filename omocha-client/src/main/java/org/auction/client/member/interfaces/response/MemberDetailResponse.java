@@ -3,25 +3,22 @@ package org.auction.client.member.interfaces.response;
 import org.auction.domain.member.domain.entity.MemberEntity;
 import org.auction.domain.member.domain.enums.Role;
 
-public record MemberGetResponse(
-	String loginId,
-	String password,
+// TODO: 넘겨줄 정보들에 대해 추후 정해야함, 일단은 Password 제외하고 다 넘겨줌
+public record MemberDetailResponse(
+	String email,
 	String nickname,
 	String birth,
-	String email,
 	String phoenNumber,
 	String imageUrl,
 	Role role
 ) {
-	public static MemberGetResponse toDto(
+	public static MemberDetailResponse toDto(
 		MemberEntity memberEntity
 	) {
-		return new MemberGetResponse(
-			memberEntity.getLoginId(),
-			memberEntity.getPassword(),
+		return new MemberDetailResponse(
+			memberEntity.getEmail(),
 			memberEntity.getNickname(),
 			memberEntity.getBirth(),
-			memberEntity.getEmail(),
 			memberEntity.getPhoneNumber(),
 			memberEntity.getProfileImageUrl(),
 			memberEntity.getRole()

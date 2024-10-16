@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserPrincipal loadUserByUsername(
 		String memberIdStr
 	) throws UsernameNotFoundException {
-		MemberEntity memberEntity = memberService.findMemberByMemberId(Long.valueOf(memberIdStr));
+		MemberEntity memberEntity = memberService.findMember(Long.valueOf(memberIdStr));
 
 		return new UserPrincipal(memberEntity);
 	}

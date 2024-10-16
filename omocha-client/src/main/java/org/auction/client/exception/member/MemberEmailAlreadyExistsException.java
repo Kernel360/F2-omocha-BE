@@ -2,14 +2,14 @@ package org.auction.client.exception.member;
 
 import org.auction.client.common.code.MemberCode;
 
-public class MemberAlreadyExistsException extends MemberException {
-	public MemberAlreadyExistsException(
+public class MemberEmailAlreadyExistsException extends MemberException {
+	public MemberEmailAlreadyExistsException(
 		MemberCode memberCode
 	) {
 		super(memberCode);
 	}
 
-	public MemberAlreadyExistsException(
+	public MemberEmailAlreadyExistsException(
 		MemberCode memberCode,
 		String detailMessage
 	) {

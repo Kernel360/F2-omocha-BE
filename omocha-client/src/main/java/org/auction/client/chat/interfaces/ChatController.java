@@ -32,7 +32,7 @@ public class ChatController {
 		log.info("Received message: {}", chatRequest);
 
 		MemberEntity member =
-			memberService.findMemberByMemberId(chatRequest.senderId());
+			memberService.findMember(chatRequest.senderId());
 
 		// 채팅 메시지 저장
 		ChatEntity chat = chatService.createChat(
