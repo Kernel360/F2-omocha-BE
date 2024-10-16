@@ -34,16 +34,9 @@ public class SecurityConfig {
 	private final OAuth2SuccessHandler successHandler;
 	private final OAuth2FailureHandler failureHandler;
 
-	public static final String[] PERMITTED_ALL_URI = {
-		"/swagger-ui/**",
-		"/v3/api-docs/**",        // Swagger 관련 경로
-		"/api/v1/auth/**",
-		"/health",                // AWS ELB health check 경로
-		"/sub/**",
-		"/pub/**",
-		"/{roomId}/messages",
-		"/omocha-websocket"
-	};
+	public static final String[] PERMITTED_ALL_URI = {"/swagger-ui/**", "/v3/api-docs/**",        // Swagger 관련 경로
+		"/api/v1/auth/**", "/health",                // AWS ELB health check 경로
+		"/sub/**", "/pub/**", "/{roomId}/messages", "/omocha-websocket"};
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -52,32 +45,28 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.httpBasic(HttpBasicConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			)
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(PERMITTED_ALL_URI).permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
-				.anyRequest().authenticated()
-			)
+			.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMITTED_ALL_URI)
+				.permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*")
+				.permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/question/*")
+				.permitAll()
+				.anyRequest()
+				.authenticated())
 
-			.oauth2Login(oauth -> oauth
-				.authorizationEndpoint(authorization -> authorization
-					.baseUri("/api/v1/oauth/authorize"))
-				.redirectionEndpoint(redirection -> redirection
-					.baseUri("/api/v1/login/oauth2/code/*"))
-				.userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
-				.successHandler(successHandler)
-				.failureHandler(failureHandler)
-			)
+			.oauth2Login(
+				oauth -> oauth.authorizationEndpoint(authorization -> authorization.baseUri("/api/v1/oauth/authorize"))
+					.redirectionEndpoint(redirection -> redirection.baseUri("/api/v1/login/oauth2/code/*"))
+					.userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
+					.successHandler(successHandler)
+					.failureHandler(failureHandler))
 
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-			.exceptionHandling(conf -> conf
-				.accessDeniedHandler(customAccessDeniedHandler)
-				.authenticationEntryPoint(customAuthenticationEntryPointHandler)
-			);
+			.exceptionHandling(conf -> conf.accessDeniedHandler(customAccessDeniedHandler)
+				.authenticationEntryPoint(customAuthenticationEntryPointHandler));
 
 		return http.build();
 	}
