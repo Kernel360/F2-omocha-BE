@@ -5,4 +5,4 @@ LABEL authors="omocha"
 COPY build/libs/omocha-api.jar /docker-springboot.jar
 
 # ENTRYPOINT를 수정하여 prod 프로파일 활성화
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/docker-springboot.jar", "-Duser.timezone=Asia/Seoul"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/docker-springboot.jar"]
