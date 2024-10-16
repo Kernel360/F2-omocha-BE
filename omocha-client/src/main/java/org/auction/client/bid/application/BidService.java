@@ -77,16 +77,12 @@ public class BidService {
 		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
 
+		// TODO : 검증 로직 추후 수정
+		validateAuctionStatus(auctionEntity);
+
 		if (auctionEntity.getMemberEntity().getMemberId() == buyerId) {
 			throw new SelfBidNotAllowedException(BidCode.SELF_BID_NOT_ALLOWED);
 		}
-
-		if (bidPrice % auctionEntity.getBidUnit() != 0) {
-			throw new InvalidBidUnitException(BidCode.INVALID_BID_UNIT);
-		}
-
-		// TODO : 검증 로직 추후 수정
-		validateAuctionStatus(auctionEntity);
 
 		validateBidPrice(auctionEntity, bidPrice);
 
@@ -133,6 +129,10 @@ public class BidService {
 		AuctionEntity auctionEntity,
 		Long bidPrice
 	) {
+		if ((bidPrice - auctionEntity.getStartPrice()) % auctionEntity.getBidUnit() != 0) {
+			throw new InvalidBidUnitException(BidCode.INVALID_BID_UNIT);
+		}
+
 		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity);
 
 		if (currentHighestBidPrice != 0L) {
