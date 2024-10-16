@@ -1,7 +1,6 @@
 package org.auction.client.jwt.application;
 
 import java.security.Key;
-import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
@@ -19,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -47,8 +45,8 @@ public class JwtService {
 	private String REFRESH_SECRET;
 	private SecretKey accessKey;
 	private SecretKey refreshKey;
-	private final static long ACCESS_EXPIRATION = 1000L * 60L * 60L;
-	private final static long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
+	private final static long ACCESS_EXPIRATION = 1000L;
+	private final static long REFRESH_EXPIRATION = 1000L;
 
 	@PostConstruct
 	public void init() {
@@ -142,26 +140,7 @@ public class JwtService {
 		String refreshToken
 	) {
 		Long memberId = RefreshToken.findMemberIdByRefreshToken(refreshToken);
-		return memberService.findMemberByMemberId(memberId);
-	}
-
-	// TODO: AccessToken에서 Claim 데이터 가져오는 메서드 (추후 사용을 위해 남겨놓음)
-	private <T> T findClaimFromToken(
-		String token,
-		Key secretKey,
-		Function<Claims, T> claimsResolver
-	) {
-		if (jwtUtil.validateToken(token, secretKey)) {
-			return null;
-		}
-
-		final Claims claims = Jwts.parserBuilder()
-			.setSigningKey(accessKey)
-			.build()
-			.parseClaimsJws(token)
-			.getBody();
-
-		return claimsResolver.apply(claims);
+		return memberService.findMember(memberId);
 	}
 
 	public void logout(
