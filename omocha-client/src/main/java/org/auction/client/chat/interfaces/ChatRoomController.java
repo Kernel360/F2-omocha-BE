@@ -1,15 +1,21 @@
 package org.auction.client.chat.interfaces;
 
+import static org.auction.client.common.code.AuctionCode.*;
 import static org.auction.client.common.code.ChatCode.*;
 
 import java.time.LocalDateTime;
 
+import org.auction.client.bid.application.BidService;
 import org.auction.client.chat.application.ChatRoomService;
 import org.auction.client.chat.application.ChatService;
 import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.common.dto.SliceResponse;
+import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.jwt.UserPrincipal;
+import org.auction.domain.auction.domain.entity.AuctionEntity;
+import org.auction.domain.auction.infrastructure.AuctionRepository;
+import org.auction.domain.bid.entity.BidEntity;
 import org.auction.domain.chat.domain.dto.ChatRoomInfoDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -34,7 +40,10 @@ public class ChatRoomController implements ChatRoomApi {
 
 	private final ChatRoomService chatRoomService;
 	private final ChatService chatService;
+	private final BidService bidService;
+	private final AuctionRepository auctionRepository;
 
+	// TODO : Refactoring 필요 나중에 제거해야할 용
 	// EXPLAIN : 채팅방 생성 (Front 테스트용)
 	@Override
 	@PostMapping("/{auctionId}")
@@ -42,7 +51,13 @@ public class ChatRoomController implements ChatRoomApi {
 		@PathVariable Long auctionId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-		chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId);
+		AuctionEntity auction = auctionRepository.findById(auctionId)
+			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
+
+		BidEntity bidEntity = bidService.getCurrentHighestBid(auction)
+			.orElseThrow(() -> new IllegalArgumentException("최고가 입찰 없음"));
+
+		chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId, bidEntity.getBidPrice());
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			CHATROOM_CREATE_SUCCESS.getStatusCode(),

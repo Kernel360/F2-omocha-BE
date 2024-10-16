@@ -47,7 +47,7 @@ public class ConcludeService {
 
 				// TODO: 채팅방 테스트 이후 highestBid를 매개변수로 넘겨주도록 처리
 				MemberEntity highestBuyer = highestBid.getBuyerEntity();
-				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId());
+				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId(), highestBid.getBidPrice());
 			}, () -> {
 				auctionService.modifyAuctionStatus(auction, AuctionStatus.NO_BIDS);
 			});
