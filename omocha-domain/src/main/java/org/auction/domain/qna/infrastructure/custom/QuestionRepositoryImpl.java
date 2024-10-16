@@ -33,42 +33,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<QuestionEntity> findQuestionList(Long auctionId, Pageable pageable) {
-
-		JPAQuery<QuestionEntity> query = queryFactory
-			.selectFrom(questionEntity)
-			.where(questionEntity.auctionEntity.auctionId.eq(auctionId),
-				questionEntity.deleted.isFalse());
-
-		for (Sort.Order o : pageable.getSort()) {
-			PathBuilder<?> pathBuilder = new PathBuilder<>(
-				questionEntity.getType(),
-				questionEntity.getMetadata()
-			);
-			query.orderBy(new OrderSpecifier(
-				o.isAscending() ? Order.ASC : Order.DESC,
-				pathBuilder.get(o.getProperty())
-			));
-		}
-
-		// 페이징 적용
-		List<QuestionEntity> questions = query
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.fetch();
-
-		JPAQuery<Long> countQuery = queryFactory
-			.select(questionEntity.count())
-			.from(questionEntity)
-			.where(questionEntity.auctionEntity.auctionId.eq(auctionId)
-				.and(questionEntity.deleted.isFalse()));
-
-		return PageableExecutionUtils.getPage(questions, pageable, countQuery::fetchOne);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Page<QnaDomainResponse> findQnaList(Long auctionId, Pageable pageable) {
+	public Page<QnaDomainResponse> findQnaList(
+		Long auctionId,
+		Pageable pageable
+	) {
 		JPAQuery<QnaDomainResponse> query = queryFactory
 			.select(Projections.constructor(QnaDomainResponse.class, questionEntity, answerEntity))
 			.from(questionEntity)

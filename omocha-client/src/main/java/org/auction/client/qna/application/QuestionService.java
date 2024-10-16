@@ -14,7 +14,6 @@ import org.auction.client.qna.interfaces.request.CreateQuestionRequest;
 import org.auction.client.qna.interfaces.request.ModifyQuestionRequest;
 import org.auction.client.qna.interfaces.response.CreateQuestionResponse;
 import org.auction.client.qna.interfaces.response.QnaServiceResponse;
-import org.auction.client.qna.interfaces.response.QuestionListResponse;
 import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.auction.domain.auction.domain.entity.AuctionEntity;
 import org.auction.domain.auction.infrastructure.AuctionRepository;
@@ -44,10 +43,16 @@ public class QuestionService {
 	private final AnswerService answerService;
 
 	@Transactional(readOnly = true)
-	public Page<QnaServiceResponse> qnaList(Long auctionId, Pageable pageable) {
+	public Page<QnaServiceResponse> qnaList(
+		Long auctionId,
+		Pageable pageable
+	) {
 		log.debug("find qnaList started for auctionId: {}, pageable: {}", auctionId, pageable);
 
-		Page<QnaDomainResponse> qnaEntityList = questionRepository.findQnaList(auctionId, pageable);
+		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
+			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
+
+		Page<QnaDomainResponse> qnaEntityList = questionRepository.findQnaList(auctionEntity.getAuctionId(), pageable);
 
 		Page<QnaServiceResponse> qnaResponseList = qnaEntityList.map(qnaEntity ->
 			QnaServiceResponse.toDto(qnaEntity.getQuestionEntity(), qnaEntity.getAnswerEntity())
@@ -57,27 +62,11 @@ public class QuestionService {
 		return qnaResponseList;
 	}
 
-	@Transactional(readOnly = true)
-	public Page<QuestionListResponse> findQuestionList(Long auctionId, Pageable pageable) {
-
-		log.debug("find questionList started");
-
-		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
-			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
-
-		Page<QuestionEntity> questionEntityList = questionRepository.findQuestionList(auctionEntity.getAuctionId(),
-			pageable);
-
-		Page<QuestionListResponse> questionListResponses = questionEntityList
-			.map(QuestionListResponse::toDto);
-
-		log.debug("find questionList finished");
-
-		return questionListResponses;
-	}
-
 	@Transactional
-	public CreateQuestionResponse addQuestion(Long memberId, CreateQuestionRequest createQuestionRequest) {
+	public CreateQuestionResponse addQuestion(
+		Long memberId,
+		CreateQuestionRequest createQuestionRequest
+	) {
 
 		log.debug("add question started for memberId: {}, CreateQuestionRequest: {}", memberId, createQuestionRequest);
 
@@ -103,8 +92,11 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public QuestionResponse modifyQuestion(Long memberId, Long questionId,
-		ModifyQuestionRequest modifyQuestionRequest) {
+	public QuestionResponse modifyQuestion(
+		Long memberId,
+		Long questionId,
+		ModifyQuestionRequest modifyQuestionRequest
+	) {
 
 		log.debug("modify question started for memberId: {}, questionId: {}, ModifyQuestionRequest: {}", memberId,
 			questionId, modifyQuestionRequest);
@@ -129,7 +121,10 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public void removeQuestion(Long memberId, Long questionId) {
+	public void removeQuestion(
+		Long memberId,
+		Long questionId
+	) {
 
 		log.debug("remove question started for memberId: {}, questionId: {}", memberId, questionId);
 
@@ -149,7 +144,9 @@ public class QuestionService {
 
 	}
 
-	public void validModifyAndRemove(QuestionEntity questionEntity) {
+	public void validModifyAndRemove(
+		QuestionEntity questionEntity
+	) {
 
 		if (answerRepository.existsByQuestionEntityAndDeletedIsFalse(questionEntity)) {
 			throw new QnaNotAllowedException(QnACode.QUESTION_DENY);
@@ -157,7 +154,10 @@ public class QuestionService {
 
 	}
 
-	public void hasQuestionOwnership(QuestionEntity questionEntity, MemberEntity memberEntity) {
+	public void hasQuestionOwnership(
+		QuestionEntity questionEntity,
+		MemberEntity memberEntity
+	) {
 		if (!questionEntity.getMemberEntity().getMemberId().equals(memberEntity.getMemberId())) {
 			throw new InvalidMemberException(INVALID_MEMBER);
 		}

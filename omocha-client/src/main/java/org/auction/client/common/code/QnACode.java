@@ -14,7 +14,6 @@ public enum QnACode {
 	QUESTION_MODIFY_SUCCESS(HttpStatus.OK, "문의가 성공적으로 수정되었습니다."),
 	QUESTION_DELETE_SUCCESS(HttpStatus.OK, "문의가 성공적으로 삭제되었습니다."),
 	QUESTION_ACCESS_SUCCESS(HttpStatus.OK, "문의 조회에 성공하였습니다."),
-	QUESTION_LIST_ACCESS_SUCCESS(HttpStatus.OK, "문의 목록 조회에 성공하였습니다."),
 	QNA_LIST_ACCESS_SUCCESS(HttpStatus.OK, "문의,답변 목록 조회에 성공하였습니다."),
 
 	ANSWER_CREATE_SUCCESS(HttpStatus.OK, "답변이 성공적으로 생성되었습니다."),

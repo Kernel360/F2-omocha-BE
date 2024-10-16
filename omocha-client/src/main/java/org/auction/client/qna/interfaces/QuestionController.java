@@ -9,7 +9,6 @@ import org.auction.client.qna.interfaces.request.CreateQuestionRequest;
 import org.auction.client.qna.interfaces.request.ModifyQuestionRequest;
 import org.auction.client.qna.interfaces.response.CreateQuestionResponse;
 import org.auction.client.qna.interfaces.response.QnaServiceResponse;
-import org.auction.client.qna.interfaces.response.QuestionListResponse;
 import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,38 +62,6 @@ public class QuestionController implements QuestionApi {
 		return ResponseEntity
 			.status(QNA_LIST_ACCESS_SUCCESS.getHttpStatus())
 			.body(resultDto);
-	}
-
-	// TODO : response 논의 후 결정 : 질문 답변 같이 보낼지
-	@Override
-	@GetMapping("/{auctionId}/question-list")
-	public ResponseEntity<ResultDto<Page<QuestionListResponse>>> questionList(
-		@PathVariable(value = "auctionId") Long auctionId,
-		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
-		@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-		@PageableDefault(page = 0, size = 10)
-		Pageable pageable
-	) {
-
-		log.debug("Get questionList started");
-
-		Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
-
-		Page<QuestionListResponse> questionListResponses = questionService.findQuestionList(auctionId, pageable);
-
-		ResultDto<Page<QuestionListResponse>> resultDto = ResultDto.res(
-			QUESTION_LIST_ACCESS_SUCCESS.getStatusCode(),
-			QUESTION_LIST_ACCESS_SUCCESS.getResultMsg(),
-			questionListResponses
-		);
-
-		log.debug("Get questionList finished");
-
-		return ResponseEntity
-			.status(QUESTION_LIST_ACCESS_SUCCESS.getStatusCode())
-			.body(resultDto);
-
 	}
 
 	@Override

@@ -15,6 +15,8 @@ public record QuestionResponse(
 	Long memberId,
 	String email
 
+	//TODO : 유저 정보 수정 필요 ex) profileImageUrl
+
 ) {
 	public static QuestionResponse toDto(
 		QuestionEntity questionEntity

@@ -6,7 +6,6 @@ import org.auction.client.qna.interfaces.request.CreateQuestionRequest;
 import org.auction.client.qna.interfaces.request.ModifyQuestionRequest;
 import org.auction.client.qna.interfaces.response.CreateQuestionResponse;
 import org.auction.client.qna.interfaces.response.QnaServiceResponse;
-import org.auction.client.qna.interfaces.response.QuestionListResponse;
 import org.auction.client.qna.interfaces.response.QuestionResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -27,29 +26,11 @@ public interface QuestionApi {
 
 	@Operation(summary = "질문 답변 조회", description = "질문과 답변을 조회합니다.")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "질문 목록 조회에 성공하였습니다.",
+		@ApiResponse(responseCode = "200", description = "답변 조회에 성공하였습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+
 	})
 	ResponseEntity<ResultDto<Page<QnaServiceResponse>>> qnaList(
-		@Parameter(description = "경매 ID", required = true)
-		Long auctionId,
-		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
-		String sort,
-		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
-		String direction,
-		@ParameterObject
-		@PageableDefault(page = 0, size = 10)
-		Pageable pageable
-	);
-
-	@Operation(summary = "질문 조회", description = "질문을 조회합니다.")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "질문 목록 조회에 성공하였습니다.",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
-		@ApiResponse(responseCode = "404", description = "질문을 찾을 수 없습니다.",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
-	})
-	ResponseEntity<ResultDto<Page<QuestionListResponse>>> questionList(
 		@Parameter(description = "경매 ID", required = true)
 		Long auctionId,
 		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
