@@ -61,6 +61,7 @@ public class ChatRoomController implements ChatRoomApi {
 		@PathVariable Long roomId,
 		@AuthenticationPrincipal
 		UserPrincipal userPrincipal,
+		// TODO : parameter 로 오면 지저분해서 나중에 Header 혹은 Encoding을 해야함
 		@RequestParam(required = false)
 		LocalDateTime cursor,
 		@PageableDefault(size = 10)
