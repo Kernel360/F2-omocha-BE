@@ -14,7 +14,7 @@ public enum QnACode {
 	QUESTION_MODIFY_SUCCESS(HttpStatus.OK, "문의가 성공적으로 수정되었습니다."),
 	QUESTION_DELETE_SUCCESS(HttpStatus.OK, "문의가 성공적으로 삭제되었습니다."),
 	QUESTION_ACCESS_SUCCESS(HttpStatus.OK, "문의 조회에 성공하였습니다."),
-	QUESTION_LIST_ACCESS_SUCCESS(HttpStatus.OK, "문의 목록 조회에 성공하였습니다."),
+	QNA_LIST_ACCESS_SUCCESS(HttpStatus.OK, "문의,답변 목록 조회에 성공하였습니다."),
 
 	ANSWER_CREATE_SUCCESS(HttpStatus.OK, "답변이 성공적으로 생성되었습니다."),
 	ANSWER_MODIFY_SUCCESS(HttpStatus.OK, "답변이 성공적으로 수정되었습니다."),
@@ -30,6 +30,10 @@ public enum QnACode {
 	QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),
 
 	ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "답변을 찾을 수 없습니다."),
+
+	// EXPLAIN: 409 ERROR
+
+	EXISTING_ANSWER_CONFLICT(HttpStatus.CONFLICT, "이미 답변이 존재합니다."),
 
 	// EXPLAIN: 415 ERROR
 

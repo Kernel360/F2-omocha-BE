@@ -10,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class AnswerEntity extends TimeTrackableEntity {
 	@Column(name = "content")
 	private String content;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id")
 	private QuestionEntity questionEntity;
 

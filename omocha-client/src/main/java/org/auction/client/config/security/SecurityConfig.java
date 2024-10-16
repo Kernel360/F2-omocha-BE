@@ -52,32 +52,26 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.httpBasic(HttpBasicConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			)
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
-				.anyRequest().authenticated()
-			)
+				.requestMatchers(HttpMethod.GET, "/api/v1/question/**").permitAll()
+				.anyRequest()
+				.authenticated())
 
-			.oauth2Login(oauth -> oauth
-				.authorizationEndpoint(authorization -> authorization
-					.baseUri("/api/v1/oauth/authorize"))
-				.redirectionEndpoint(redirection -> redirection
-					.baseUri("/api/v1/login/oauth2/code/*"))
-				.userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
-				.successHandler(successHandler)
-				.failureHandler(failureHandler)
-			)
+			.oauth2Login(
+				oauth -> oauth.authorizationEndpoint(authorization -> authorization.baseUri("/api/v1/oauth/authorize"))
+					.redirectionEndpoint(redirection -> redirection.baseUri("/api/v1/login/oauth2/code/*"))
+					.userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
+					.successHandler(successHandler)
+					.failureHandler(failureHandler))
 
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-			.exceptionHandling(conf -> conf
-				.accessDeniedHandler(customAccessDeniedHandler)
-				.authenticationEntryPoint(customAuthenticationEntryPointHandler)
-			);
+			.exceptionHandling(conf -> conf.accessDeniedHandler(customAccessDeniedHandler)
+				.authenticationEntryPoint(customAuthenticationEntryPointHandler));
 
 		return http.build();
 	}
