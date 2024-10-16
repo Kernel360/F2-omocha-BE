@@ -57,7 +57,7 @@ public class AuthController implements AuthApi {
 	@Override
 	@GetMapping("/validate-email")
 	public ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
-		MemberDuplicateRequest memberDuplicateRequest
+		@RequestBody @Valid MemberDuplicateRequest memberDuplicateRequest
 	) {
 		log.debug("Email Duplication Check started");
 		log.info("Received memberDuplicateRequest: {}", memberDuplicateRequest);
