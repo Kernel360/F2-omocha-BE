@@ -38,7 +38,7 @@ public class QuestionEntity extends TimeTrackableEntity {
 	@JoinColumn(name = "auction_id", nullable = false)
 	private AuctionEntity auctionEntity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = false)
 	private MemberEntity memberEntity;
 

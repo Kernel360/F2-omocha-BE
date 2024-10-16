@@ -3,6 +3,7 @@ package org.auction.client.member.interfaces;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
+import org.auction.client.member.interfaces.request.MemberDuplicateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,9 +30,23 @@ public interface AuthApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<String>> memberAdd(
+	ResponseEntity<ResultDto<Void>> memberAdd(
 		@Parameter(description = "회원 생성 데이터", required = true)
 		MemberCreateRequest memberCreateRequest
+	);
+
+	@Operation(summary = "회원 중복체크", description = "중복 회원이 있는지 확인합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "중복 회원이 존재하지 않습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "중복 회원이 존재합니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
+		@Parameter(description = "중복 회원", required = true)
+		MemberDuplicateRequest memberDuplicateRequest
 	);
 
 	@Operation(summary = "회원 로그인", description = "회원 로그인을 수행합니다.")

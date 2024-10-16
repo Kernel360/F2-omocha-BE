@@ -1,15 +1,19 @@
 package org.auction.client.chat.interfaces;
 
+import java.time.LocalDateTime;
+
 import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
-import org.auction.client.chat.interfaces.response.ChatRoomInfoDto;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.common.dto.SliceResponse;
 import org.auction.client.jwt.UserPrincipal;
+import org.auction.domain.chat.domain.dto.ChatRoomInfoDto;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,8 +28,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ChatRoomApi {
 
 	@Operation(
-		summary = "채팅방 생성",
-		description = "특정 경매에 대한 새로운 채팅방을 생성합니다."
+		summary = "채팅방 생성(Front 테스트용)",
+		description = "특정 경매에 대한 새로운 채팅방은 스케줄러로 동작합니다"
 	)
 	@ApiResponses(value = {
 		@ApiResponse(
@@ -64,7 +68,7 @@ public interface ChatRoomApi {
 			)
 		)
 	})
-	ResponseEntity<ResultDto<ChatRoomInfoDto>> chatRoomSave(
+	ResponseEntity<ResultDto<Void>> chatRoomSave(
 		@Parameter(
 			description = "경매 ID",
 			required = true,
@@ -138,12 +142,11 @@ public interface ChatRoomApi {
 		)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 
-		@Parameter(
-			description = "페이징 정보 (예: 페이지 번호와 크기)",
-			required = false,
-			in = ParameterIn.QUERY
-		)
-		Pageable pageable
+		@RequestParam(required = false)
+		LocalDateTime cursor,
+
+		@ParameterObject
+		@PageableDefault(size = 10) Pageable pageable
 	);
 
 	@Operation(
@@ -173,7 +176,7 @@ public interface ChatRoomApi {
 			)
 		)
 	})
-	ResponseEntity<ResultDto<SliceResponse>> chatRoomsLists(
+	ResponseEntity<ResultDto<SliceResponse<ChatRoomInfoDto>>> chatRoomsLists(
 		@Parameter(
 			description = "인증된 사용자 정보",
 			required = true,
@@ -181,11 +184,7 @@ public interface ChatRoomApi {
 		)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 
-		@Parameter(
-			description = "페이지 번호와 페이지 크기",
-			example = "0",
-			in = ParameterIn.QUERY
-		)
+		@ParameterObject
 		@PageableDefault(page = 0, size = 10) Pageable pageable
 	);
 }
