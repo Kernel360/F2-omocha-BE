@@ -35,7 +35,7 @@ public class AuthController implements AuthApi {
 
 	@Override
 	@PostMapping("/register")
-	public ResponseEntity<ResultDto<MemberDetailResponse>> memberAdd(
+	public ResponseEntity<ResultDto<Void>> memberAdd(
 		@RequestBody @Valid MemberCreateRequest memberCreateRequest
 	) {
 		log.debug("Member register started");
@@ -43,10 +43,9 @@ public class AuthController implements AuthApi {
 
 		MemberDetailResponse responseMember = memberService.addMember(memberCreateRequest);
 
-		ResultDto<MemberDetailResponse> resultDto = ResultDto.res(
+		ResultDto<Void> resultDto = ResultDto.res(
 			MEMBER_CREATE_SUCCESS.getStatusCode(),
-			MEMBER_CREATE_SUCCESS.getResultMsg(),
-			responseMember
+			MEMBER_CREATE_SUCCESS.getResultMsg()
 		);
 
 		return ResponseEntity
@@ -77,7 +76,7 @@ public class AuthController implements AuthApi {
 
 	@Override
 	@PostMapping("/login")
-	public ResponseEntity<ResultDto<MemberDetailResponse>> memberLogin(
+	public ResponseEntity<ResultDto<Void>> memberLogin(
 		HttpServletResponse response,
 		@RequestBody @Valid MemberLoginRequest memberLoginRequest
 	) {
@@ -89,10 +88,9 @@ public class AuthController implements AuthApi {
 		jwtService.generateAccessToken(response, member);
 		jwtService.generateRefreshToken(response, member);
 
-		ResultDto<MemberDetailResponse> resultDto = ResultDto.res(
+		ResultDto<Void> resultDto = ResultDto.res(
 			MEMBER_LOGIN_SUCCESS.getStatusCode(),
-			MEMBER_LOGIN_SUCCESS.getResultMsg(),
-			MemberDetailResponse.toDto(member)
+			MEMBER_LOGIN_SUCCESS.getResultMsg()
 		);
 
 		return ResponseEntity
@@ -112,8 +110,7 @@ public class AuthController implements AuthApi {
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			MEMBER_LOGOUT_SUCCESS.getStatusCode(),
-			MEMBER_LOGOUT_SUCCESS.getResultMsg(),
-			null
+			MEMBER_LOGOUT_SUCCESS.getResultMsg()
 		);
 
 		return ResponseEntity

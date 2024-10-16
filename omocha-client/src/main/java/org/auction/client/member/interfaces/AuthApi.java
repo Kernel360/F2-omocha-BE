@@ -5,7 +5,6 @@ import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
 import org.auction.client.member.interfaces.request.MemberDuplicateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
-import org.auction.client.member.interfaces.response.MemberDetailResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -31,7 +30,7 @@ public interface AuthApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<MemberDetailResponse>> memberAdd(
+	ResponseEntity<ResultDto<Void>> memberAdd(
 		@Parameter(description = "회원 생성 데이터", required = true)
 		MemberCreateRequest memberCreateRequest
 	);
@@ -61,7 +60,7 @@ public interface AuthApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<MemberDetailResponse>> memberLogin(
+	ResponseEntity<ResultDto<Void>> memberLogin(
 		@Parameter(description = "요청 응답", required = true)
 		HttpServletResponse response,
 
