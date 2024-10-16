@@ -31,7 +31,6 @@ public class ChatRoomService {
 	private final BidService bidService;
 
 	// TODO: 채팅 테스트 완료되면 로직 변경 필요
-	//       concludePrice 매개변수로 받도록, 판매자 구매자 동일한지 검증 제외
 	@Transactional
 	public void addChatRoom(
 		MemberEntity buyer,

@@ -36,19 +36,14 @@ public class ChatRoomController implements ChatRoomApi {
 	private final ChatService chatService;
 
 	// EXPLAIN : 채팅방 생성
-	// TODO : 낙찰이 되면 바로 채팅방 생성 로직으로 변경
 	@Override
 	@PostMapping("/{auctionId}")
 	public ResponseEntity<ResultDto<Void>> chatRoomSave(
 		@PathVariable Long auctionId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-		// TODO : UserPrincipal 이 유효한 값인지 확인하는 로직 추가 필요
-
-		// 채팅방 생성
 		chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId);
 
-		// 응답 생성
 		ResultDto<Void> resultDto = ResultDto.res(
 			CHATROOM_CREATE_SUCCESS.getStatusCode(),
 			CHATROOM_CREATE_SUCCESS.getResultMsg()
@@ -73,7 +68,6 @@ public class ChatRoomController implements ChatRoomApi {
 	) {
 		log.info("Fetching chat room messages for room ID: {}", roomId);
 
-		// 채팅방과 메시지 목록 조회
 		ChatRoomDetailsResponse response = chatService.findChatRoomMessages(
 			roomId,
 			userPrincipal.getMemberEntity(),
@@ -81,7 +75,6 @@ public class ChatRoomController implements ChatRoomApi {
 			pageable
 		);
 
-		// 응답 생성
 		ResultDto<ChatRoomDetailsResponse> resultDto = ResultDto.res(
 			CHATROOM_DETAILS_AND_MESSAGES_SUCCESS.getStatusCode(),
 			CHATROOM_DETAILS_AND_MESSAGES_SUCCESS.getResultMsg(),
