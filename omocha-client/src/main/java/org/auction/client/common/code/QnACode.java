@@ -32,6 +32,10 @@ public enum QnACode {
 
 	ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "답변을 찾을 수 없습니다."),
 
+	// EXPLAIN: 409 ERROR
+
+	EXISTING_ANSWER_CONFLICT(HttpStatus.CONFLICT, "이미 답변이 존재합니다."),
+
 	// EXPLAIN: 415 ERROR
 
 	//허용 글자 수 초과

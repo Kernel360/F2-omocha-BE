@@ -5,7 +5,6 @@ import static org.auction.domain.qna.domain.entity.QQuestionEntity.*;
 
 import java.util.List;
 
-import org.auction.domain.qna.domain.entity.AnswerEntity;
 import org.auction.domain.qna.domain.entity.QuestionEntity;
 import org.auction.domain.qna.domain.response.QnaDomainResponse;
 import org.springframework.data.domain.Page;
@@ -38,8 +37,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
 		JPAQuery<QuestionEntity> query = queryFactory
 			.selectFrom(questionEntity)
-			.where(questionEntity.auctionEntity.auctionId.eq(auctionId))
-			.where(questionEntity.deleted.isFalse());
+			.where(questionEntity.auctionEntity.auctionId.eq(auctionId),
+				questionEntity.deleted.isFalse());
 
 		for (Sort.Order o : pageable.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(
@@ -60,7 +59,9 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
 		JPAQuery<Long> countQuery = queryFactory
 			.select(questionEntity.count())
-			.from(questionEntity);
+			.from(questionEntity)
+			.where(questionEntity.auctionEntity.auctionId.eq(auctionId)
+				.and(questionEntity.deleted.isFalse()));
 
 		return PageableExecutionUtils.getPage(questions, pageable, countQuery::fetchOne);
 	}
@@ -68,38 +69,18 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<QnaDomainResponse> findQnaList(Long auctionId, Pageable pageable) {
-
-		// 질문을 필터링하는 서브쿼리
-		JPAQuery<QuestionEntity> questionSubquery = queryFactory
-			.selectFrom(questionEntity)
-			.where(questionEntity.auctionEntity.auctionId.eq(auctionId)
-				.and(questionEntity.deleted.isFalse())); // 서브쿼리 실행
-
-		// 답변을 필터링하는 서브쿼리
-		JPAQuery<AnswerEntity> answerSubquery = queryFactory
-			.selectFrom(answerEntity)
-			.where(answerEntity.deleted.isFalse()); // 서브쿼리 실행
-
-		// 메인 쿼리
 		JPAQuery<QnaDomainResponse> query = queryFactory
 			.select(Projections.constructor(QnaDomainResponse.class, questionEntity, answerEntity))
-			.from(questionEntity) // 직접 questionEntity를 사용
-			.leftJoin(answerEntity) // answerEntity와 leftJoin
-			.on(questionEntity.questionId.eq(answerEntity.questionEntity.questionId))
-			.where(
-				questionEntity.in(questionSubquery)
-					.and(
-						answerEntity.in(answerSubquery)
-							.or(answerEntity.isNull())
-					)
-					.and(questionEntity.auctionEntity.auctionId.eq(auctionId))
-			);
+			.from(questionEntity)
+			.leftJoin(answerEntity)
+			.on(questionEntity.questionId.eq(answerEntity.questionEntity.questionId)
+				.and(answerEntity.deleted.isFalse()))
+			.where(questionEntity.auctionEntity.auctionId.eq(auctionId)
+				.and(questionEntity.deleted.isFalse()));
 
+		// 정렬 처리
 		for (Sort.Order o : pageable.getSort()) {
-			PathBuilder<?> pathBuilder = new PathBuilder<>(
-				questionEntity.getType(),
-				questionEntity.getMetadata()
-			);
+			PathBuilder<QuestionEntity> pathBuilder = new PathBuilder<>(QuestionEntity.class, "questionEntity");
 			query.orderBy(new OrderSpecifier(
 				o.isAscending() ? Order.ASC : Order.DESC,
 				pathBuilder.get(o.getProperty())
@@ -107,17 +88,19 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 		}
 
 		// 페이징 적용
-		List<QnaDomainResponse> questions = query
+		List<QnaDomainResponse> qnaList = query
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
 
+		// 카운트 쿼리
 		JPAQuery<Long> countQuery = queryFactory
 			.select(questionEntity.count())
-			.from(questionEntity);
+			.from(questionEntity)
+			.where(questionEntity.auctionEntity.auctionId.eq(auctionId)
+				.and(questionEntity.deleted.isFalse()));
 
-		return PageableExecutionUtils.getPage(questions, pageable, countQuery::fetchOne);
-
+		return PageableExecutionUtils.getPage(qnaList, pageable, countQuery::fetchOne);
 	}
 
 }

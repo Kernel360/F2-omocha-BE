@@ -2,9 +2,6 @@ package org.auction.client.qna.application;
 
 import static org.auction.client.common.code.MemberCode.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.auction.client.common.code.AuctionCode;
 import org.auction.client.common.code.MemberCode;
 import org.auction.client.common.code.QnACode;
@@ -28,7 +25,6 @@ import org.auction.domain.qna.domain.response.QnaDomainResponse;
 import org.auction.domain.qna.infrastructure.AnswerRepository;
 import org.auction.domain.qna.infrastructure.QuestionRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,29 +44,17 @@ public class QuestionService {
 	private final AnswerService answerService;
 
 	@Transactional(readOnly = true)
-	public PageImpl<QnaServiceResponse> qnaList(
-		Long auctionId,
-		Pageable pageable
-	) {
-
+	public Page<QnaServiceResponse> qnaList(Long auctionId, Pageable pageable) {
 		log.debug("find qnaList started for auctionId: {}, pageable: {}", auctionId, pageable);
 
-		AuctionEntity auctionEntity = auctionRepository.findById(auctionId)
-			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
+		Page<QnaDomainResponse> qnaEntityList = questionRepository.findQnaList(auctionId, pageable);
 
-		Page<QnaDomainResponse> qnaEntityList = questionRepository.findQnaList(auctionEntity.getAuctionId(), pageable);
-
-		List<QnaServiceResponse> qnaResponseList = qnaEntityList.getContent().stream()
-			.map(qnaEntity -> QnaServiceResponse.toDto(
-				qnaEntity.getQuestionEntity(),
-				qnaEntity.getAnswerEntity()
-			))
-			.collect(Collectors.toList());
-
+		Page<QnaServiceResponse> qnaResponseList = qnaEntityList.map(qnaEntity ->
+			QnaServiceResponse.toDto(qnaEntity.getQuestionEntity(), qnaEntity.getAnswerEntity())
+		);
 		log.debug("find qnaList finished");
 
-		return new PageImpl<>(qnaResponseList, pageable, qnaEntityList.getTotalElements());
-
+		return qnaResponseList;
 	}
 
 	@Transactional(readOnly = true)
@@ -84,13 +68,12 @@ public class QuestionService {
 		Page<QuestionEntity> questionEntityList = questionRepository.findQuestionList(auctionEntity.getAuctionId(),
 			pageable);
 
-		List<QuestionListResponse> questionListResponses = questionEntityList.stream()
-			.map(QuestionListResponse::toDto)
-			.toList();
+		Page<QuestionListResponse> questionListResponses = questionEntityList
+			.map(QuestionListResponse::toDto);
 
 		log.debug("find questionList finished");
 
-		return new PageImpl<>(questionListResponses, pageable, questionEntityList.getTotalElements());
+		return questionListResponses;
 	}
 
 	@Transactional

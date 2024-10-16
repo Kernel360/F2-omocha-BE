@@ -9,6 +9,7 @@ import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.member.InvalidMemberException;
 import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.exception.qna.QnaNotFoundException;
+import org.auction.client.exception.qna.QnaResponseStatusException;
 import org.auction.client.qna.interfaces.request.CreateAnswerRequest;
 import org.auction.client.qna.interfaces.request.ModifyAnswerRequest;
 import org.auction.client.qna.interfaces.response.AnswerResponse;
@@ -80,6 +81,8 @@ public class AnswerService {
 
 		hasAuctionOwnership(auctionEntity, memberEntity);
 
+		validateAnswerNotExists(questionEntity);
+
 		AnswerEntity answerEntity = AnswerEntity.builder()
 			.title(createAnswerRequest.title())
 			.content(createAnswerRequest.content())
@@ -149,6 +152,15 @@ public class AnswerService {
 		if (!auctionEntity.getMemberEntity().getMemberId().equals(memberEntity.getMemberId())) {
 			throw new InvalidMemberException(INVALID_MEMBER);
 		}
+	}
+
+	public void validateAnswerNotExists(
+		QuestionEntity questionEntity
+	) {
+		if (answerRepository.existsByQuestionEntityAndDeletedIsFalse(questionEntity)) {
+			throw new QnaResponseStatusException(QnACode.EXISTING_ANSWER_CONFLICT);
+		}
+
 	}
 
 }
