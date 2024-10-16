@@ -2,6 +2,8 @@ package org.auction.client.chat.application;
 
 import static org.auction.client.common.code.ChatCode.*;
 
+import java.time.LocalDateTime;
+
 import org.auction.client.chat.interfaces.response.ChatMessageResponse;
 import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
 import org.auction.client.exception.chat.ChatRoomAccessException;
@@ -51,6 +53,7 @@ public class ChatService {
 	public ChatRoomDetailsResponse findChatRoomMessages(
 		Long roomId,
 		MemberEntity memberEntity,
+		LocalDateTime cursor,
 		Pageable pageable
 	) {
 		// 채팅방 조회
@@ -62,8 +65,9 @@ public class ChatService {
 			throw new ChatRoomAccessException(CHATROOM_ACCESS_UNAUTHORIZED);
 		}
 
-		Slice<ChatMessageResponse> messages = chatRepository.findChatMessagesByRoomId(roomId, pageable)
-			.map(ChatMessageResponse::toDto);
+		Slice<ChatMessageResponse> messages = chatRepository.findChatMessagesByRoomId(
+			roomId, cursor, pageable
+		).map(ChatMessageResponse::toDto);
 
 		return ChatRoomDetailsResponse.toDto(roomEntity, messages);
 	}

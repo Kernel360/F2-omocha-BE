@@ -42,7 +42,7 @@ public class SecurityConfig {
 		"/sub/**",
 		"/pub/**",
 		"/{roomId}/messages",
-		"/omocha-websocket"
+		"/omocha-websocket/"
 	};
 
 	@Bean

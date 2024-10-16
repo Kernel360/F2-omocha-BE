@@ -36,6 +36,7 @@ public class ConcludeService {
 		AuctionEntity auction
 	) {
 		if (auction.getEndDate().isBefore(LocalDateTime.now())) {
+			// TODO : DB에서 바로 꺼내오도록 변경
 			Optional<BidEntity> optionalHighestBid = bidService.getCurrentHighestBid(auction);
 
 			optionalHighestBid.ifPresentOrElse(highestBid -> {
@@ -43,9 +44,8 @@ public class ConcludeService {
 
 				createAuctionConclude(auction, highestBid);
 
-				// TODO: 채팅방 테스트 이후 highestBid를 매개변수로 넘겨주도록 처리
 				MemberEntity highestBuyer = highestBid.getBuyerEntity();
-				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId());
+				chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId(), highestBid.getBidPrice());
 			}, () -> {
 				modifyAuctionStatus(auction, AuctionStatus.NO_BIDS);
 			});
