@@ -3,15 +3,19 @@ package org.auction.client.auction.interfaces.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.auction.domain.auction.domain.enums.AuctionType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record AuctionDetailResponse(
+	Long sellerId,
 	String title,
 	String content,
+	AuctionStatus status,
 	Long startPrice,
-	Long nowPrice, // TODO: 추후 Conclude Price도 넣기
+	Long nowPrice,
+	Long concludePrice,
 	Long bidCount,
 	Integer bidUnit,
 	AuctionType auctionType,
