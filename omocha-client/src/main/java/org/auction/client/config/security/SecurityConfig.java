@@ -47,12 +47,10 @@ public class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-			.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMITTED_ALL_URI)
-				.permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*")
-				.permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/question/*")
-				.permitAll()
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers(PERMITTED_ALL_URI).permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/question/*").permitAll()
 				.anyRequest()
 				.authenticated())
 
