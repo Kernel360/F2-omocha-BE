@@ -35,7 +35,7 @@ public class ChatRoomController implements ChatRoomApi {
 	private final ChatRoomService chatRoomService;
 	private final ChatService chatService;
 
-	// EXPLAIN : 채팅방 생성
+	// EXPLAIN : 채팅방 생성 (Front 테스트용)
 	@Override
 	@PostMapping("/{auctionId}")
 	public ResponseEntity<ResultDto<Void>> chatRoomSave(

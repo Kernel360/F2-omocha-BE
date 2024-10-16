@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ChatRoomApi {
 
 	@Operation(
-		summary = "채팅방 생성",
+		summary = "채팅방 생성(Front 테스트용)",
 		description = "특정 경매에 대한 새로운 채팅방을 생성합니다."
 	)
 	@ApiResponses(value = {
