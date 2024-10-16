@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.auction.domain.chat.domain.dto.ChatRoomInfoDto;
+import org.auction.domain.chat.domain.dto.QChatRoomInfoDto;
 import org.auction.domain.chat.domain.entity.QChatEntity;
 import org.auction.domain.chat.domain.entity.QChatRoomEntity;
 import org.auction.domain.member.domain.entity.MemberEntity;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -50,8 +50,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 			lastMessageTimeOrder.coalesce(chatRoom.createdAt);
 
 		List<ChatRoomInfoDto> chatRooms = queryFactory
-			.select(Projections.constructor(
-				ChatRoomInfoDto.class,
+			.select(new QChatRoomInfoDto(
 				chatRoom.auctionId,
 				chatRoom.chatRoomId,
 				chatRoom.roomName,
