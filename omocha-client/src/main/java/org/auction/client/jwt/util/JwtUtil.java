@@ -51,6 +51,8 @@ public class JwtUtil {
 		Cookie cookie = new Cookie(tokenPrefix.getValue(), null);
 		cookie.setMaxAge(0);
 		cookie.setPath("/");
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
 		return cookie;
 	}
 }
