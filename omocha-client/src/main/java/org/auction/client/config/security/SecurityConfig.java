@@ -57,6 +57,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/auction/favicon.ico").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/question/**").permitAll()
 				.anyRequest()
 				.authenticated())
@@ -80,7 +81,6 @@ public class SecurityConfig {
 	@Bean
 	public WebSecurityCustomizer configure() {
 		return (web) -> web.ignoring()
-			.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-			.requestMatchers("/favicon.ico");
+			.requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 	}
 }
