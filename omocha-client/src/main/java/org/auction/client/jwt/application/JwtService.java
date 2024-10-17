@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -37,8 +36,6 @@ public class JwtService {
 	private final MemberService memberService;
 	private final CustomUserDetailsService customUserDetailsService;
 
-	@Value("${url.domain}")
-	private String domain;
 	@Value("${jwt.access_secret}")
 	private String ACCESS_SECRET;
 	@Value("${jwt.refresh_secret}")
@@ -59,7 +56,7 @@ public class JwtService {
 		MemberEntity memberEntity
 	) {
 		String accessToken = jwtGenerator.generateAccessToken(memberEntity, accessKey, ACCESS_EXPIRATION);
-		ResponseCookie cookie = setTokenToCookie(JwtCategory.ACCESS.getValue(), accessToken);
+		ResponseCookie cookie = jwtUtil.setTokenToCookie(JwtCategory.ACCESS.getValue(), accessToken);
 		response.addHeader("Set-Cookie", cookie.toString());
 
 		return accessToken;
@@ -73,24 +70,10 @@ public class JwtService {
 		RefreshToken.removeUserRefreshToken(memberEntity.getMemberId());
 		RefreshToken.putRefreshToken(refreshToken, memberEntity.getMemberId());
 
-		ResponseCookie cookie = setTokenToCookie(JwtCategory.REFRESH.getValue(), refreshToken);
+		ResponseCookie cookie = jwtUtil.setTokenToCookie(JwtCategory.REFRESH.getValue(), refreshToken);
 		response.addHeader("Set-Cookie", cookie.toString());
 
 		return refreshToken;
-	}
-
-	public ResponseCookie setTokenToCookie(
-		String tokenPrefix,
-		String token
-	) {
-		return ResponseCookie.from(tokenPrefix, token)
-			.path("/")
-			.maxAge(60L * 60L * 24L)
-			.httpOnly(true)
-			.domain(StringUtils.hasText(domain) ? domain : null)
-			.sameSite("None")
-			.secure(true)
-			.build();
 	}
 
 	public boolean validateAccessToken(
@@ -149,10 +132,10 @@ public class JwtService {
 	) {
 		RefreshToken.removeUserRefreshToken(requestMember.getMemberId());
 
-		Cookie accessCookie = jwtUtil.resetToken(JwtCategory.ACCESS);
-		Cookie refreshCookie = jwtUtil.resetToken(JwtCategory.REFRESH);
+		ResponseCookie accessCookie = jwtUtil.resetTokenToCookie(JwtCategory.ACCESS);
+		ResponseCookie refreshCookie = jwtUtil.resetTokenToCookie(JwtCategory.REFRESH);
 
-		response.addCookie(accessCookie);
-		response.addCookie(refreshCookie);
+		response.addHeader("Set-Cookie", accessCookie.toString());
+		response.addHeader("Set-Cookie", refreshCookie.toString());
 	}
 }
