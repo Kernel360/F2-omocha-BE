@@ -157,10 +157,10 @@ public class BidService {
 		Long auctionId
 	) {
 		return Optional.ofNullable(HighestBid.getHighestBid(auctionId))
-			.or(() -> findTopBid(auctionId));
+			.or(() -> findHighestBid(auctionId));
 	}
 
-	private Optional<BidEntity> findTopBid(
+	private Optional<BidEntity> findHighestBid(
 		Long auctionId
 	) {
 		AuctionEntity auction = auctionRepository.findById(auctionId)
