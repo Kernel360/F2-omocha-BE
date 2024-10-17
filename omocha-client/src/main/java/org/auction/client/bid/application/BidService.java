@@ -194,7 +194,7 @@ public class BidService {
 	}
 
 	public NowPriceResponse findNowPrice(Long auctionId) {
-		return findTopBid(auctionId)
+		return findHighestBid(auctionId)
 			.map(NowPriceResponse::toDto)
 			.orElseGet(() -> new NowPriceResponse(0L, null));
 	}
