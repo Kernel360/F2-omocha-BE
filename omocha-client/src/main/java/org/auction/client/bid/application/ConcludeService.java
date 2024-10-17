@@ -37,7 +37,7 @@ public class ConcludeService {
 	) {
 		if (auction.getEndDate().isBefore(LocalDateTime.now())) {
 			// TODO : DB에서 바로 꺼내오도록 변경
-			Optional<BidEntity> optionalHighestBid = bidService.getCurrentHighestBid(auction);
+			Optional<BidEntity> optionalHighestBid = bidService.getCurrentHighestBid(auction.getAuctionId());
 
 			optionalHighestBid.ifPresentOrElse(highestBid -> {
 				modifyAuctionStatus(auction, AuctionStatus.CONCLUDED);
