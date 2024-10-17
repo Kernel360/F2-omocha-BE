@@ -56,8 +56,7 @@ public class SecurityConfig {
 
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/auction/favicon.ico").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/auction/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/question/**").permitAll()
 				.anyRequest().authenticated())
 
@@ -79,7 +78,6 @@ public class SecurityConfig {
 	// 스프링 시큐리티 기능 비활성화 (정적 자원 시큐리티 ignore)
 	@Bean
 	public WebSecurityCustomizer configure() {
-		return (web) -> web.ignoring()
-			.requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+		return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 	}
 }

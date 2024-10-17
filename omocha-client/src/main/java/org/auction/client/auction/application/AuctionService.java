@@ -99,7 +99,6 @@ public class AuctionService {
 	public AuctionDetailResponse findAuctionDetails(
 		Long auctionId
 	) {
-
 		AuctionEntity auctionEntity = auctionRepository.findByIdWithImages(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
 
@@ -115,7 +114,7 @@ public class AuctionService {
 			auctionEntity.getContent(),
 			auctionEntity.getAuctionStatus(),
 			auctionEntity.getStartPrice(),
-			bidService.getCurrentHighestBidPrice(auctionEntity),
+			bidService.getCurrentHighestBidPrice(auctionId),
 			concludeService.findConcludePrice(auctionId),
 			bidService.findBidCount(auctionEntity),
 			auctionEntity.getBidUnit(),
@@ -173,15 +172,13 @@ public class AuctionService {
 				.map(ImageEntity::getS3Key)
 				.collect(Collectors.toList());
 
-			Long auctionId = auction.getAuctionId();
-
 			return new AuctionListResponse(
-				auctionId,
+				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getAuctionStatus(),
 				auction.getStartPrice(),
-				bidService.getCurrentHighestBidPrice(auction),
-				concludeService.findConcludePrice(auctionId),
+				bidService.getCurrentHighestBidPrice(auction.getAuctionId()),
+				concludeService.findConcludePrice(auction.getAuctionId()),
 				bidService.findBidCount(auction),
 				auction.getStartDate(),
 				auction.getEndDate(),
