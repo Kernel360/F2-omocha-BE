@@ -44,7 +44,11 @@ public class MemberService {
 	public boolean isEmailDuplicate(
 		String email
 	) {
-		return memberRepository.existsByEmailAndProviderIsNull(email);
+		if (memberRepository.existsByEmailAndProviderIsNull(email)) {
+			throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
+		}
+
+		return true;
 	}
 
 	// TODO : 아래 두개의 메서드에서 에러가 발생했을 경우 각각 식별이 필요함
