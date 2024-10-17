@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
+import org.auction.client.bid.interfaces.response.NowPriceResponse;
 import org.auction.client.common.code.AuctionCode;
 import org.auction.client.common.code.BidCode;
 import org.auction.client.common.code.MemberCode;
@@ -133,7 +134,7 @@ public class BidService {
 			throw new InvalidBidUnitException(BidCode.INVALID_BID_UNIT);
 		}
 
-		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity);
+		Long currentHighestBidPrice = getCurrentHighestBidPrice(auctionEntity.getAuctionId());
 
 		if (currentHighestBidPrice != 0L) {
 			checkBidPrice(bidPrice, currentHighestBidPrice, BidCode.BIDPRICE_BELOW_HIGHESTBID);
@@ -153,17 +154,26 @@ public class BidService {
 	// In-Memory-DB 에 값이 있으면 바로 return, 없으면 DB에 조회에서 return
 	@Transactional(readOnly = true)
 	public Optional<BidEntity> getCurrentHighestBid(
-		AuctionEntity auctionEntity
+		Long auctionId
 	) {
-		Long auctionId = auctionEntity.getAuctionId();
-
 		return Optional.ofNullable(HighestBid.getHighestBid(auctionId))
-			.or(() -> bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auctionEntity));
+			.or(() -> findTopBid(auctionId));
+	}
+
+	private Optional<BidEntity> findTopBid(
+		Long auctionId
+	) {
+		AuctionEntity auction = auctionRepository.findById(auctionId)
+			.orElseThrow(() -> new AuctionNotFoundException(AuctionCode.AUCTION_NOT_FOUND));
+
+		return bidRepository.findTopByAuctionEntityOrderByBidPriceDesc(auction);
 	}
 
 	@Transactional(readOnly = true)
-	public Long getCurrentHighestBidPrice(AuctionEntity auctionEntity) {
-		return getCurrentHighestBid(auctionEntity)
+	public Long getCurrentHighestBidPrice(
+		Long auctionId
+	) {
+		return getCurrentHighestBid(auctionId)
 			.map(BidEntity::getBidPrice)
 			.orElse(0L);
 	}
@@ -181,5 +191,11 @@ public class BidService {
 		log.debug("Counting bids for auctionId: {}", auctionEntity.getAuctionId());
 
 		return bidRepository.countByAuctionEntity(auctionEntity);
+	}
+
+	public NowPriceResponse findNowPrice(Long auctionId) {
+		return findTopBid(auctionId)
+			.map(NowPriceResponse::toDto)
+			.orElseGet(() -> new NowPriceResponse(0L, null));
 	}
 }

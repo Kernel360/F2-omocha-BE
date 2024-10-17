@@ -5,6 +5,7 @@ import java.util.List;
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
+import org.auction.client.bid.interfaces.response.NowPriceResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,20 @@ public interface BidApi {
 		Long auctionId,
 		@Parameter(description = "입찰 금액", required = true)
 		CreateBidRequest createBidRequest
+	);
+
+	@Operation(summary = "현재가 조회", description = "해당 경매의 현재가를 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "현재가 조회에 성공하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<NowPriceResponse>> nowPrice(
+		@Parameter(description = "현재가를 조회할 경매", required = true)
+		Long auctionId
 	);
 
 }

@@ -54,7 +54,7 @@ public class ChatRoomController implements ChatRoomApi {
 		AuctionEntity auction = auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
 
-		BidEntity bidEntity = bidService.getCurrentHighestBid(auction)
+		BidEntity bidEntity = bidService.getCurrentHighestBid(auction.getAuctionId())
 			.orElseThrow(() -> new IllegalArgumentException("최고가 입찰 없음"));
 
 		chatRoomService.addChatRoom(userPrincipal.getMemberEntity(), auctionId, bidEntity.getBidPrice());
