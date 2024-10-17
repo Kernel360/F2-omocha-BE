@@ -45,8 +45,8 @@ public class JwtService {
 	private String REFRESH_SECRET;
 	private SecretKey accessKey;
 	private SecretKey refreshKey;
-	private final static long ACCESS_EXPIRATION = 1000L;
-	private final static long REFRESH_EXPIRATION = 1000L;
+	private final static long ACCESS_EXPIRATION = 1000L * 60L * 60L;
+	private final static long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
 
 	@PostConstruct
 	public void init() {
