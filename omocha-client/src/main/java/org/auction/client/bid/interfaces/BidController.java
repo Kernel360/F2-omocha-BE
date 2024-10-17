@@ -4,10 +4,12 @@ import static org.auction.client.common.code.BidCode.*;
 
 import java.util.List;
 
+import org.auction.client.auction.application.AuctionService;
 import org.auction.client.bid.application.BidService;
 import org.auction.client.bid.interfaces.request.CreateBidRequest;
 import org.auction.client.bid.interfaces.response.BidResponse;
 import org.auction.client.bid.interfaces.response.CreateBidResponse;
+import org.auction.client.bid.interfaces.response.NowPriceResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +31,15 @@ import lombok.extern.slf4j.Slf4j;
 public class BidController implements BidApi {
 
 	private final BidService bidService;
+	private final AuctionService auctionService;
 
 	@GetMapping("/{auction_id}")
 	@Override
 	public ResponseEntity<ResultDto<List<BidResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
 	) {
-
-		log.info("Received GetBidListRequest : {}", auctionId);
 		log.debug("Get bidList started");
+		log.info("Received GetBidListRequest : {}", auctionId);
 
 		List<BidResponse> bidList = bidService.findBidList(auctionId);
 
@@ -50,7 +52,6 @@ public class BidController implements BidApi {
 		return ResponseEntity
 			.status(BIDDING_GET_SUCCESS.getHttpStatus())
 			.body(resultDto);
-
 	}
 
 	@PostMapping("/{auction_id}")
@@ -60,9 +61,9 @@ public class BidController implements BidApi {
 		@PathVariable("auction_id") Long auctionId,
 		@RequestBody CreateBidRequest createBidRequest
 	) {
+		log.debug("Add bidding started");
 		log.info("Received BidAddRequest auctionId : {}", auctionId);
 		log.info("Received BidAddRequest createBidRequest : {}", createBidRequest);
-		log.debug("Add bidding started");
 
 		Long buyerId = userPrincipal.getId();
 
@@ -77,7 +78,26 @@ public class BidController implements BidApi {
 		return ResponseEntity
 			.status(BIDDING_CREATE_SUCCESS.getHttpStatus())
 			.body(resultDto);
-
 	}
 
+	@GetMapping("/{auction_id}/now-price")
+	@Override
+	public ResponseEntity<ResultDto<NowPriceResponse>> nowPrice(
+		@PathVariable("auction_id") Long auctionId
+	) {
+		log.debug("Get nowPrice started");
+		log.info("Received nowPrice auctionId : {}", auctionId);
+
+		NowPriceResponse nowPriceResponse = bidService.findNowPrice(auctionId);
+
+		ResultDto<NowPriceResponse> resultDto = ResultDto.res(
+			NOW_PRICE_GET_SUCCESS.getStatusCode(),
+			NOW_PRICE_GET_SUCCESS.getResultMsg(),
+			nowPriceResponse
+		);
+
+		return ResponseEntity
+			.status(NOW_PRICE_GET_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
 }
