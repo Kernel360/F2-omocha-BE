@@ -3,10 +3,10 @@ package org.auction.client.member.interfaces;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
-import org.auction.client.member.interfaces.request.MemberDuplicateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +32,7 @@ public interface AuthApi {
 	})
 	ResponseEntity<ResultDto<Void>> memberAdd(
 		@Parameter(description = "회원 생성 데이터", required = true)
-		MemberCreateRequest memberCreateRequest
+		@RequestBody MemberCreateRequest memberCreateRequest
 	);
 
 	@Operation(summary = "회원 중복체크", description = "중복 회원이 있는지 확인합니다.")
@@ -46,7 +46,7 @@ public interface AuthApi {
 	})
 	ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
 		@Parameter(description = "중복 회원", required = true)
-		MemberDuplicateRequest memberDuplicateRequest
+		String email
 	);
 
 	@Operation(summary = "회원 로그인", description = "회원 로그인을 수행합니다.")
@@ -65,7 +65,7 @@ public interface AuthApi {
 		HttpServletResponse response,
 
 		@Parameter(description = "회원 로그인 데이터", required = true)
-		MemberLoginRequest memberLoginRequest
+		@RequestBody MemberLoginRequest memberLoginRequest
 	);
 
 	@Operation(summary = "회원 로그아웃", description = "회원 로그아웃을 수행합니다.")

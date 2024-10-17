@@ -13,6 +13,7 @@ public enum MemberCode {
 	MEMBER_CREATE_SUCCESS(HttpStatus.OK, "회원을 성공적으로 생성하였습니다."),
 	MEMBER_LOGIN_SUCCESS(HttpStatus.OK, "로그인이 완료되었습니다."),
 	MEMBER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃이 완료되었습니다."),
+	VALIDATE_EMAIL_SUCCESS(HttpStatus.OK, "사용 가능한 이메일입니다."),
 
 	// EXPLAIN: 400 ERROR
 	MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 회원입니다."),
