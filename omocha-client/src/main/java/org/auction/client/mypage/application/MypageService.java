@@ -74,11 +74,12 @@ public class MypageService {
 			List<String> imageKeys = auction.getImages().stream()
 				.map(ImageEntity::getS3Key)
 				.collect(Collectors.toList());
+			
 			return new MypageAuctionListResponse(
 				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getAuctionStatus(),
-				bidService.getCurrentHighestBidPrice(auction),
+				bidService.getCurrentHighestBidPrice(auction.getAuctionId()),
 				auction.getEndDate(),
 				imageKeys
 			);

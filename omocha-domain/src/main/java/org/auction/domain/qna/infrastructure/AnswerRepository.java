@@ -12,5 +12,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
 	Optional<AnswerEntity> findByQuestionEntityAndDeletedIsFalse(QuestionEntity question);
 
-	boolean existsByQuestionEntityAndDeletedIsFalse(QuestionEntity question);
+	boolean existsByQuestionEntityAndDeletedIsFalse(QuestionEntity questionEntity);
+
 }
