@@ -7,7 +7,6 @@ import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.jwt.application.JwtService;
 import org.auction.client.member.application.MemberService;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
-import org.auction.client.member.interfaces.request.MemberDuplicateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
 import org.auction.client.member.interfaces.response.MemberDetailResponse;
 import org.auction.domain.member.domain.entity.MemberEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -56,21 +56,21 @@ public class AuthController implements AuthApi {
 	@Override
 	@GetMapping("/validate-email")
 	public ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
-		@RequestBody @Valid MemberDuplicateRequest memberDuplicateRequest
+		@RequestParam String email
 	) {
 		log.debug("Email Duplication Check started");
-		log.info("Received memberDuplicateRequest: {}", memberDuplicateRequest);
+		log.info("Received memberDuplicateRequest: {}", email);
 
-		boolean duplicate = memberService.isEmailDuplicate(memberDuplicateRequest);
+		boolean duplicate = memberService.isEmailDuplicate(email);
 
 		ResultDto<Boolean> resultDto = ResultDto.res(
-			MEMBER_CREATE_SUCCESS.getStatusCode(),
-			MEMBER_CREATE_SUCCESS.getResultMsg(),
+			VALIDATE_EMAIL_SUCCESS.getStatusCode(),
+			VALIDATE_EMAIL_SUCCESS.getResultMsg(),
 			duplicate
 		);
 
 		return ResponseEntity
-			.status(MEMBER_CREATE_SUCCESS.getHttpStatus())
+			.status(VALIDATE_EMAIL_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
