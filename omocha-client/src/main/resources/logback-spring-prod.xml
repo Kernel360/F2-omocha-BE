@@ -14,7 +14,7 @@
 
     <!-- 요청 로그 앱렌더 -->
     <appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./omocha-server/server/logs/request2.log</file>
+        <file>./omocha-server/server/logs/request.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./omocha-server/server/logs/archive/request2.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->

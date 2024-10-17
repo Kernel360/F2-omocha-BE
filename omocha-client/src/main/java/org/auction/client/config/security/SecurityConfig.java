@@ -79,6 +79,8 @@ public class SecurityConfig {
 	// 스프링 시큐리티 기능 비활성화 (정적 자원 시큐리티 ignore)
 	@Bean
 	public WebSecurityCustomizer configure() {
-		return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+		return (web) -> web.ignoring()
+			.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+			.requestMatchers("/favicon.ico");
 	}
 }
