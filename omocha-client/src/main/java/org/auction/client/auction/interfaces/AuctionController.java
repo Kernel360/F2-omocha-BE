@@ -117,8 +117,8 @@ public class AuctionController implements AuctionApi {
 
 	// TODO : 임시로 favicon 에러 막아놓음 (지워야함)
 	@GetMapping("/favicon.ico")
-	public void ignoreFavicon() {
-
+	public ResponseEntity<Void> ignoreFavicon() {
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
