@@ -4,7 +4,7 @@ FROM pg_indexes
 WHERE tablename = 'auction';
 
 -- auction table index 추가
-CREATE INDEX index_auction_endDate_status ON auction (end_date, auction_status);
+CREATE INDEX index_auction_endDate_status ON auction (end_date);
 
 -- auction table index 삭제
 DROP INDEX index_auction_endDate_status;
