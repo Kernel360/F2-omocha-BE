@@ -58,8 +58,7 @@ public class SecurityConfig {
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/question/**").permitAll()
-				.anyRequest()
-				.authenticated())
+				.anyRequest().authenticated())
 
 			.oauth2Login(
 				oauth -> oauth.authorizationEndpoint(authorization -> authorization.baseUri("/api/v1/oauth/authorize"))
