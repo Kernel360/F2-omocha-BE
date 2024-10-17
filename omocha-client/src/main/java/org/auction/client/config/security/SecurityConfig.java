@@ -56,8 +56,9 @@ public class SecurityConfig {
 
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/auction/*").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/auction/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/question/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/bid/**").permitAll()
 				.anyRequest()
 				.authenticated())
 
