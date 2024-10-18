@@ -85,6 +85,28 @@ public class MemberEntity extends TimeTrackableEntity {
 		this.userStatus = userStatus;
 	}
 
+	public void updateMember(
+		String password, String nickname,
+		String email, String phoneNumber
+	) {
+		this.password = password;
+		this.nickname = nickname;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void updateProfileImage(
+		String profileImageUrl
+	) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void updatePassword(
+		String password
+	) {
+		this.password = password;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -99,4 +121,5 @@ public class MemberEntity extends TimeTrackableEntity {
 	public int hashCode() {
 		return Objects.hashCode(memberId);
 	}
+
 }

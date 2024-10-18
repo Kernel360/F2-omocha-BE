@@ -4,22 +4,30 @@ import org.auction.client.common.code.MypageCode;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.mypage.application.MypageService;
+import org.auction.client.mypage.interfaces.request.MemberModifyRequest;
+import org.auction.client.mypage.interfaces.request.PasswordModifyReuqest;
 import org.auction.client.mypage.interfaces.response.MemberInfoResponse;
+import org.auction.client.mypage.interfaces.response.MemberModifyResponse;
 import org.auction.client.mypage.interfaces.response.MypageAuctionListResponse;
 import org.auction.client.mypage.interfaces.response.MypageBidListResponse;
+import org.auction.client.mypage.interfaces.response.ProfileImageResponse;
 import org.auction.domain.auction.domain.enums.AuctionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,12 +71,90 @@ public class MypageController implements MypageApi {
 
 	}
 
+	@Override
+	@PatchMapping(value = "/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResultDto<ProfileImageResponse>> profileImageModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestPart(value = "profileImage", required = true) MultipartFile profileImage
+	) {
+
+		log.info("memberProfileImageModify started");
+		log.debug("memberProfileImageModify profileImage {}", profileImage);
+
+		Long memberId = userPrincipal.getId();
+
+		System.out.println(profileImage);
+
+		ProfileImageResponse profileImageResponse = mypageService.modifyProfileImage(memberId, profileImage);
+
+		ResultDto<ProfileImageResponse> resultDto = ResultDto.res(
+			MypageCode.PROFILE_IMAGE_UPDATED.getStatusCode(),
+			MypageCode.PROFILE_IMAGE_UPDATED.getResultMsg(),
+			profileImageResponse
+		);
+
+		log.info("memberProfileImageModify finished");
+		log.debug("memberProfileImageModify resultDto {}", resultDto);
+
+		return ResponseEntity
+			.status(MypageCode.PROFILE_IMAGE_UPDATED.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@PatchMapping("/password")
+	public ResponseEntity<ResultDto<Void>> passwordModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		PasswordModifyReuqest passwordModifyReuqest
+	) {
+
+		log.info("passwordModify started");
+		log.debug("passwordModify passwordModifyReuqest {}", passwordModifyReuqest);
+
+		Long memberId = userPrincipal.getId();
+		mypageService.modifyPassword(memberId, passwordModifyReuqest);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			MypageCode.PASSWORD_UPDATED.getStatusCode(),
+			MypageCode.PASSWORD_UPDATED.getResultMsg()
+		);
+
+		log.info("passwordModify finished");
+		log.debug("passwordModify resultDto {}", resultDto);
+
+		return ResponseEntity
+			.status(MypageCode.PASSWORD_UPDATED.getHttpStatus())
+			.body(resultDto);
+
+	}
+
 	// TODO : 사용자 정보 수정
 	@Override
-	@PatchMapping()
-	public void userInfoModify(
-		@AuthenticationPrincipal UserPrincipal userPrincipal
+	@PatchMapping("/basic-info")
+	public ResponseEntity<ResultDto<MemberModifyResponse>> memberInfoModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestBody MemberModifyRequest memberModifyRequest
 	) {
+
+		log.info("memberInfoModify started");
+		log.debug("memberInfoModify request {}", memberModifyRequest);
+
+		Long memberId = userPrincipal.getId();
+		MemberModifyResponse memberModifyResponse = mypageService.modifyBasicInfoMember(memberId,
+			memberModifyRequest);
+
+		ResultDto<MemberModifyResponse> resultDto = ResultDto.res(
+			MypageCode.MEMBER_INFO_UPDATED.getStatusCode(),
+			MypageCode.MEMBER_INFO_UPDATED.getResultMsg(),
+			memberModifyResponse
+		);
+
+		log.info("memberInfoModify finished");
+		log.debug("memberInfoModify resultDto {}", resultDto);
+
+		return ResponseEntity
+			.status(MypageCode.MEMBER_INFO_UPDATED.getHttpStatus())
+			.body(resultDto);
 
 	}
 
@@ -144,4 +230,5 @@ public class MypageController implements MypageApi {
 			.body(resultDto);
 
 	}
+
 }
