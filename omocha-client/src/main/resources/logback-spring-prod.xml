@@ -1,0 +1,101 @@
+<included>
+
+    <!-- 콘솔 앱렌더 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>
+                [CONSOLE] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 요청 로그 앱렌더 -->
+    <appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./omocha-server/server/logs/request.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./omocha-server/server/logs/archive/request2.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [REQUEST] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+            </pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
+        </encoder>
+    </appender>
+
+    <!-- 에러 로그 앱렌더 -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./omocha-server/server/logs/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./omocha-server/server/logs/archive/error.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [ERROR] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+            </pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
+        </encoder>
+    </appender>
+
+    <!-- 경고 로그 앱렌더 -->
+    <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./omocha-server/server/logs/warn.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./omocha-server/server/logs/archive/warn.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [WARN] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+            </pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
+        </encoder>
+    </appender>
+
+    <!-- 쿼리 로그 앱렌더 -->
+    <appender name="QUERY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./omocha-server/server/logs/query.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./omocha-server/server/logs/archive/query.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>1MB</maxFileSize> <!-- 로그 파일의 최대 크기 -->
+            <maxHistory>30</maxHistory> <!-- 로그 파일 최대 보관주기 (단위: 일) -->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [QUERY] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n
+            </pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader> <!-- 파일 헤더 형식 -->
+        </encoder>
+    </appender>
+
+    <!-- 루트 로거 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="REQUEST"/>
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="WARN"/>
+    </root>
+
+    <!-- SQL 로그 로거 설정 -->
+    <logger name="SQL_LOG" level="INFO" additivity="false">
+        <appender-ref ref="QUERY"/>
+    </logger>
+</included>

@@ -1,0 +1,4 @@
+rootProject.name = 'omocha'
+include 'omocha-client'
+include 'omocha-domain'
+
