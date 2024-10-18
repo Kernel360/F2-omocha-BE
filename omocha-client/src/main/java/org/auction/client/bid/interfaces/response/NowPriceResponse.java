@@ -9,14 +9,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public record NowPriceResponse(
 	Long nowPrice,
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	LocalDateTime createdAt
+	LocalDateTime createdAt,
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	LocalDateTime calledAt
 ) {
 	public static NowPriceResponse toDto(
 		BidEntity bidEntity
 	) {
 		return new NowPriceResponse(
 			bidEntity.getBidPrice(),
-			bidEntity.getCreatedAt()
+			bidEntity.getCreatedAt(),
+			LocalDateTime.now()
 		);
 	}
 }
