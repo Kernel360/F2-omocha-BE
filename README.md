@@ -9,6 +9,11 @@
 
 ---
 
+## ⭐ **노션 Page**
+- https://www.notion.so/Final_-_1-Omocha-eff998bfd0524dd3926822834f9cd433?pvs=4
+
+---
+
 ## ⭐ **주요 기능**
 
 ### **로그인 페이지 | 메인 페이지**
