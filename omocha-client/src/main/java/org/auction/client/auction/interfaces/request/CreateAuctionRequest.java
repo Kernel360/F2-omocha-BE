@@ -2,7 +2,7 @@ package org.auction.client.auction.interfaces.request;
 
 import java.time.LocalDateTime;
 
-import org.auction.domain.auction.domain.enums.AuctionType;
+import org.auction.domain.auction.AuctionType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

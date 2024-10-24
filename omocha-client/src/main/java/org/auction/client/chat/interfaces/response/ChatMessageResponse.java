@@ -2,8 +2,8 @@ package org.auction.client.chat.interfaces.response;
 
 import java.time.LocalDateTime;
 
-import org.auction.domain.chat.domain.entity.ChatEntity;
-import org.auction.domain.chat.domain.enums.MessageType;
+import org.auction.domain.chat.ChatEntity;
+import org.auction.domain.chat.MessageType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

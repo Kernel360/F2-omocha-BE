@@ -1,6 +1,6 @@
 package org.auction.client.chat.interfaces.request;
 
-import org.auction.domain.chat.domain.enums.MessageType;
+import org.auction.domain.chat.MessageType;
 
 import jakarta.validation.constraints.NotBlank;
 

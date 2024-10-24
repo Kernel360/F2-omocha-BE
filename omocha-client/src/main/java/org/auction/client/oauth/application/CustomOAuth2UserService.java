@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.oauth.OAuth2UserInfo;
-import org.auction.domain.member.domain.entity.MemberEntity;
-import org.auction.domain.member.infrastructure.MemberRepository;
+import org.auction.domain.member.MemberEntity;
+import org.auction.infra.MemberRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

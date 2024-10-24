@@ -5,9 +5,9 @@ import static org.auction.client.common.code.OauthCode.*;
 import java.util.Map;
 
 import org.auction.client.exception.oauth.UnsupportedOAuthProviderException;
-import org.auction.domain.member.domain.entity.MemberEntity;
-import org.auction.domain.member.domain.enums.Role;
-import org.auction.domain.member.domain.enums.UserStatus;
+import org.auction.domain.member.MemberEntity;
+import org.auction.domain.member.Role;
+import org.auction.domain.member.UserStatus;
 
 import lombok.Builder;
 import lombok.Getter;

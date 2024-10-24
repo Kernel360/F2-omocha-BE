@@ -8,10 +8,10 @@ import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
 import org.auction.client.member.interfaces.response.MemberDetailResponse;
-import org.auction.domain.member.domain.entity.MemberEntity;
-import org.auction.domain.member.domain.enums.Role;
-import org.auction.domain.member.domain.enums.UserStatus;
-import org.auction.domain.member.infrastructure.MemberRepository;
+import org.auction.domain.member.MemberEntity;
+import org.auction.domain.member.Role;
+import org.auction.domain.member.UserStatus;
+import org.auction.infra.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

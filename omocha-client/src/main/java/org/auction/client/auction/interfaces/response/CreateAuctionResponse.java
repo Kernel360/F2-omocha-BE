@@ -1,6 +1,6 @@
 package org.auction.client.auction.interfaces.response;
 
-import org.auction.domain.auction.domain.entity.AuctionEntity;
+import org.auction.domain.auction.AuctionEntity;
 
 public record CreateAuctionResponse(
 	Long auctionId

@@ -3,8 +3,8 @@ package org.auction.client.auction.interfaces.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.auction.domain.auction.domain.enums.AuctionStatus;
-import org.auction.domain.auction.domain.enums.AuctionType;
+import org.auction.domain.auction.AuctionStatus;
+import org.auction.domain.auction.AuctionType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

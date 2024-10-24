@@ -18,21 +18,19 @@ import org.auction.client.exception.bid.BidIllegalArgumentException;
 import org.auction.client.exception.bid.InvalidBidUnitException;
 import org.auction.client.exception.bid.SelfBidNotAllowedException;
 import org.auction.client.exception.member.MemberNotFoundException;
-import org.auction.domain.auction.domain.entity.AuctionEntity;
-import org.auction.domain.auction.domain.enums.AuctionStatus;
-import org.auction.domain.auction.infrastructure.AuctionRepository;
-import org.auction.domain.bid.entity.BidEntity;
-import org.auction.domain.bid.infrastructure.BidRepository;
-import org.auction.domain.member.domain.entity.MemberEntity;
-import org.auction.domain.member.infrastructure.MemberRepository;
-import org.springframework.stereotype.Service;
+import org.auction.domain.auction.AuctionEntity;
+import org.auction.domain.auction.AuctionStatus;
+import org.auction.domain.bid.BidEntity;
+import org.auction.domain.member.MemberEntity;
+import org.auction.infra.AuctionRepository;
+import org.auction.infra.BidRepository;
+import org.auction.infra.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class BidService {
 

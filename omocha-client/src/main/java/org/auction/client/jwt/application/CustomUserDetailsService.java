@@ -2,7 +2,7 @@ package org.auction.client.jwt.application;
 
 import org.auction.client.jwt.UserPrincipal;
 import org.auction.client.member.application.MemberService;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.MemberEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

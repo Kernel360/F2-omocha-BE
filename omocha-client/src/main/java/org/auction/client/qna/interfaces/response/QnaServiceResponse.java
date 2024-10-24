@@ -1,7 +1,7 @@
 package org.auction.client.qna.interfaces.response;
 
-import org.auction.domain.qna.domain.entity.AnswerEntity;
-import org.auction.domain.qna.domain.entity.QuestionEntity;
+import org.auction.domain.qna.AnswerEntity;
+import org.auction.domain.qna.QuestionEntity;
 
 public record QnaServiceResponse(
 	QuestionResponse questionResponse,

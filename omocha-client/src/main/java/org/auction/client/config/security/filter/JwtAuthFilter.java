@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.auction.client.jwt.JwtCategory;
 import org.auction.client.jwt.application.JwtService;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.MemberEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

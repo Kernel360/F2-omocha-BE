@@ -1,7 +1,7 @@
 package org.auction.client.member.interfaces.response;
 
-import org.auction.domain.member.domain.entity.MemberEntity;
-import org.auction.domain.member.domain.enums.Role;
+import org.auction.domain.member.MemberEntity;
+import org.auction.domain.member.Role;
 
 // TODO: 넘겨줄 정보들에 대해 추후 정해야함, 일단은 Password 제외하고 다 넘겨줌
 public record MemberDetailResponse(

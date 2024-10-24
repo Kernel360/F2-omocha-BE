@@ -1,8 +1,8 @@
 package org.auction.client.chat.interfaces.response;
 
 import org.auction.client.common.dto.SliceResponse;
-import org.auction.domain.chat.domain.dto.ChatRoomInfoDto;
-import org.auction.domain.chat.domain.entity.ChatRoomEntity;
+import org.auction.domain.chat.ChatRoomInfoDto;
+import org.auction.domain.chat.ChatRoomEntity;
 import org.springframework.data.domain.Slice;
 
 public record ChatRoomDetailsResponse(

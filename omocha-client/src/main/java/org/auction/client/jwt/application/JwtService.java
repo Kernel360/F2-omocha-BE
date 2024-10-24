@@ -9,7 +9,7 @@ import org.auction.client.jwt.RefreshToken;
 import org.auction.client.jwt.util.JwtGenerator;
 import org.auction.client.jwt.util.JwtUtil;
 import org.auction.client.member.application.MemberService;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.MemberEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

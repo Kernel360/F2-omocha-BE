@@ -3,7 +3,7 @@ package org.auction.client.bid.application;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.auction.domain.bid.entity.BidEntity;
+import org.auction.domain.bid.BidEntity;
 
 public class HighestBid {
 

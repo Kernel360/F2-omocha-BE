@@ -9,7 +9,7 @@ import org.auction.client.member.application.MemberService;
 import org.auction.client.member.interfaces.request.MemberCreateRequest;
 import org.auction.client.member.interfaces.request.MemberLoginRequest;
 import org.auction.client.member.interfaces.response.MemberDetailResponse;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.MemberEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;

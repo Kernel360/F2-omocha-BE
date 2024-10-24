@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.auction.client.chat.application.ChatRoomService;
-import org.auction.domain.auction.domain.entity.AuctionEntity;
-import org.auction.domain.auction.domain.enums.AuctionStatus;
-import org.auction.domain.auction.infrastructure.AuctionRepository;
-import org.auction.domain.bid.entity.BidEntity;
-import org.auction.domain.bid.entity.ConcludeEntity;
-import org.auction.domain.bid.infrastructure.ConcludeRepository;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.auction.AuctionEntity;
+import org.auction.domain.auction.AuctionStatus;
+import org.auction.infra.AuctionRepository;
+import org.auction.domain.bid.BidEntity;
+import org.auction.domain.bid.ConcludeEntity;
+import org.auction.infra.ConcludeRepository;
+import org.auction.domain.member.MemberEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

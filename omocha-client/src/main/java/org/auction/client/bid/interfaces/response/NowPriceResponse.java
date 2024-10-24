@@ -2,7 +2,7 @@ package org.auction.client.bid.interfaces.response;
 
 import java.time.LocalDateTime;
 
-import org.auction.domain.bid.entity.BidEntity;
+import org.auction.domain.bid.BidEntity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

@@ -6,7 +6,7 @@ import org.auction.client.chat.interfaces.response.ChatRoomDetailsResponse;
 import org.auction.client.common.dto.ResultDto;
 import org.auction.client.common.dto.SliceResponse;
 import org.auction.client.jwt.UserPrincipal;
-import org.auction.domain.chat.domain.dto.ChatRoomInfoDto;
+import org.auction.domain.chat.ChatRoomInfoDto;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

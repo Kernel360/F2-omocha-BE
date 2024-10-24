@@ -2,7 +2,7 @@ package org.auction.client.bid.application;
 
 import java.util.List;
 
-import org.auction.domain.auction.domain.entity.AuctionEntity;
+import org.auction.domain.auction.AuctionEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

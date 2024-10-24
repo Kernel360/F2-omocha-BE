@@ -9,14 +9,14 @@ import org.auction.client.exception.member.MemberNotFoundException;
 import org.auction.client.mypage.interfaces.response.MemberInfoResponse;
 import org.auction.client.mypage.interfaces.response.MypageAuctionListResponse;
 import org.auction.client.mypage.interfaces.response.MypageBidListResponse;
-import org.auction.domain.auction.domain.entity.AuctionEntity;
-import org.auction.domain.auction.domain.enums.AuctionStatus;
-import org.auction.domain.auction.infrastructure.AuctionRepository;
-import org.auction.domain.bid.entity.BidEntity;
-import org.auction.domain.bid.infrastructure.BidRepository;
-import org.auction.domain.image.domain.entity.ImageEntity;
-import org.auction.domain.member.domain.entity.MemberEntity;
-import org.auction.domain.member.infrastructure.MemberRepository;
+import org.auction.domain.auction.AuctionEntity;
+import org.auction.domain.auction.AuctionStatus;
+import org.auction.infra.AuctionRepository;
+import org.auction.domain.bid.BidEntity;
+import org.auction.infra.BidRepository;
+import org.auction.domain.image.ImageEntity;
+import org.auction.domain.member.MemberEntity;
+import org.auction.infra.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -74,7 +74,7 @@ public class MypageService {
 			List<String> imageKeys = auction.getImages().stream()
 				.map(ImageEntity::getS3Key)
 				.collect(Collectors.toList());
-			
+
 			return new MypageAuctionListResponse(
 				auction.getAuctionId(),
 				auction.getTitle(),

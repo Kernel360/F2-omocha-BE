@@ -7,7 +7,7 @@ import org.auction.client.mypage.application.MypageService;
 import org.auction.client.mypage.interfaces.response.MemberInfoResponse;
 import org.auction.client.mypage.interfaces.response.MypageAuctionListResponse;
 import org.auction.client.mypage.interfaces.response.MypageBidListResponse;
-import org.auction.domain.auction.domain.enums.AuctionStatus;
+import org.auction.domain.auction.AuctionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

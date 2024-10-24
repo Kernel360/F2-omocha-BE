@@ -1,6 +1,6 @@
 package org.auction.client.mypage.interfaces.response;
 
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.member.MemberEntity;
 
 public record MemberInfoResponse(
 	// TODO : 회원 가입 정보 추가 후 변경

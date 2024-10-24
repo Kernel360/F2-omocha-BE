@@ -2,7 +2,7 @@ package org.auction.client.qna.interfaces.response;
 
 import java.time.LocalDateTime;
 
-import org.auction.domain.qna.domain.entity.AnswerEntity;
+import org.auction.domain.qna.AnswerEntity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

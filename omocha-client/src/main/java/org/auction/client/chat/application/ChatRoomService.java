@@ -5,12 +5,12 @@ import static org.auction.client.common.code.ChatCode.*;
 
 import org.auction.client.exception.auction.AuctionNotFoundException;
 import org.auction.client.exception.chat.ChatRoomAlreadyExistsException;
-import org.auction.domain.auction.domain.entity.AuctionEntity;
-import org.auction.domain.auction.infrastructure.AuctionRepository;
-import org.auction.domain.chat.domain.dto.ChatRoomInfoDto;
-import org.auction.domain.chat.domain.entity.ChatRoomEntity;
-import org.auction.domain.chat.infrastructure.ChatRoomRepository;
-import org.auction.domain.member.domain.entity.MemberEntity;
+import org.auction.domain.auction.AuctionEntity;
+import org.auction.infra.AuctionRepository;
+import org.auction.domain.chat.ChatRoomInfoDto;
+import org.auction.domain.chat.ChatRoomEntity;
+import org.auction.infra.ChatRoomRepository;
+import org.auction.domain.member.MemberEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
