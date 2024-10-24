@@ -1,8 +1,6 @@
 dependencies {
     implementation project(':omocha-core')
     implementation project(':omocha-domain')
-
-    
 }
 
 bootJar {
