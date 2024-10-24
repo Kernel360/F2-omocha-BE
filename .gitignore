@@ -73,4 +73,8 @@ out/
 ../images/
 /logs/
 
-omocha-common
+!omocha-api/*
+!omocha-core/*
+!omocha-domain/*
+!omocha-infra/*
+!omocha-batch/*
