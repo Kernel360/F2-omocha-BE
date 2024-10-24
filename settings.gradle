@@ -1,5 +1,4 @@
 rootProject.name = 'omocha'
-include 'omocha-core'
 include 'omocha-api'
 include 'omocha-domain'
 include 'omocha-infra'

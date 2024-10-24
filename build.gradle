@@ -16,16 +16,24 @@ allprojects {
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        
 
-        // swagger 추가
-        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0' // swagger 추가
+        // TODO : 추후 어디에 저장해야할 지 고민해야함
+        // MapStruct
+        implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+        annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
+        annotationProcessor(
+                'org.projectlombok:lombok',
+                'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        )
 
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
 
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-        // Test dependencies
+        // lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
         testCompileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
     }

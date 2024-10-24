@@ -1,0 +1,29 @@
+package org.omocha.api.application;
+
+import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.AuctionService;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class AuctionFacade {
+
+	private final AuctionService auctionService;
+
+	public Long addAuction(AuctionCommand.RegisterAuction registerAuction) {
+		var auctionId = auctionService.registerAuction(registerAuction);
+		return auctionId;
+	}
+
+	/*public Page<AuctionInfo.Main> searchAuction(
+		AuctionCommand.SearchAuction searchAuction,
+		Pageable pageable
+	) {
+		return auctionService.searchAuction(searchAuction, pageable);
+	}*/
+
+}

@@ -1,0 +1,61 @@
+<included>
+
+    <!-- LOG_DIR과 LOG_PATTERN을 직접 정의 -->
+    <property name="LOG_DIR" value="./omocha-server/server/logs"/>
+    <property name="LOG_PATTERN" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n"/>
+
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern><![CDATA[
+    [CONSOLE] %clr([%-5level]){magenta} %clr(%d{yyyy-MM-dd HH:mm:ss}){yellow} [%clr(%thread){green}] [%clr(%logger{0}){cyan}:%clr(%line){blue}] - %msg%n]]>
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/request1.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/archive/request1.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize> <!--로그 파일의 최대 크기-->
+            <maxHistory>30</maxHistory> <!--로그 파일 최대 보관주기 (단위: 일)-->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [REQUEST] ${LOG_PATTERN}
+            </pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader> <!--File Header Form-->
+        </encoder>
+    </appender>
+
+    <appender name="QUERY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/query.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/archive/query.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize> <!--로그 파일의 최대 크기-->
+            <maxHistory>30</maxHistory> <!--로그 파일 최대 보관주기 (단위: 일)-->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [QUERY] ${LOG_PATTERN}
+            </pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader> <!--File Header Form-->
+        </encoder>
+    </appender>
+
+    <!-- 루트 로거 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="REQUEST"/>
+    </root>
+
+    <!-- SQL 로그 로거 설정 -->
+    <logger name="SQL_LOG" level="INFO" additivity="false">
+        <appender-ref ref="QUERY"/>
+    </logger>
+
+</included>
