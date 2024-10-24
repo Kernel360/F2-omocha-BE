@@ -1,0 +1,14 @@
+dependencies {
+    implementation project(':omocha-core')
+    implementation project(':omocha-domain')
+
+    
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = false
+}

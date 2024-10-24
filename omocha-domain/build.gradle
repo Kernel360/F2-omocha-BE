@@ -1,4 +1,6 @@
 dependencies {
+    implementation project(':omocha-core')
+
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     api 'org.springframework.boot:spring-boot-starter-security'
 
@@ -10,8 +12,7 @@ dependencies {
     // java 8 date module added
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
     runtimeOnly 'org.postgresql:postgresql'
-
-
+    
     //Querydsl dependency
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
@@ -44,5 +45,5 @@ bootJar {
 }
 
 jar {
-    enabled = true
+    enabled = false
 }

@@ -1,0 +1,55 @@
+package org.omocha.domain.auction.bid;
+
+import java.time.LocalDateTime;
+
+import org.omocha.domain.auction.AuctionEntity;
+import org.omocha.domain.member.MemberEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ConcludeEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "conclude_id")
+	private Long concludeId;
+
+	@Column(name = "conclude_price")
+	private Long concludePrice;
+
+	@Column(name = "concluded_at")
+	private LocalDateTime concludedAt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "auction_id")
+	private AuctionEntity auctionEntity;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "buyer_id")
+	private MemberEntity buyerEntity;
+
+	@Builder
+	public ConcludeEntity(
+		AuctionEntity auctionEntity,
+		MemberEntity buyerEntity,
+		Long concludePrice,
+		LocalDateTime concludedAt
+	) {
+		this.auctionEntity = auctionEntity;
+		this.buyerEntity = buyerEntity;
+		this.concludePrice = concludePrice;
+		this.concludedAt = concludedAt;
+	}
+}
