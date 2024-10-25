@@ -26,13 +26,13 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 	public List<Image> store(Auction auction, AuctionCommand.RegisterAuction requestAuction) {
 		return requestAuction.images().stream()
 			.map(auctionImageRequest -> {
-				var imagePath = imageProvider.uploadFile(auctionImageRequest);
-				var fileName = auctionImageRequest.getOriginalFilename();
+				String imagePath = imageProvider.uploadFile(auctionImageRequest);
+				String fileName = auctionImageRequest.getOriginalFilename();
 
-				var registerAuctionImage = new ImageCommand.RegisterAuctionImage
+				ImageCommand.RegisterAuctionImage registerAuctionImage = new ImageCommand.RegisterAuctionImage
 					(fileName, imagePath, auction);
 
-				var image = registerAuctionImage.toEntity(fileName, imagePath, auction);
+				Image image = registerAuctionImage.toEntity(fileName, imagePath, auction);
 				imageStore.store(image);
 
 				return image;

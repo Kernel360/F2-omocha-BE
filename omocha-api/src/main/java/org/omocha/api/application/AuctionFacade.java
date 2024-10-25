@@ -18,7 +18,7 @@ public class AuctionFacade {
 	private final AuctionService auctionService;
 
 	public Long addAuction(AuctionCommand.RegisterAuction registerAuction) {
-		var auctionId = auctionService.registerAuction(registerAuction);
+		Long auctionId = auctionService.registerAuction(registerAuction);
 		return auctionId;
 	}
 

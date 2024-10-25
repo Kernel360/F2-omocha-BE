@@ -24,7 +24,7 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional
 	public Long registerAuction(AuctionCommand.RegisterAuction requestAuction) {
-		var auction = auctionStore.store(requestAuction.toEntity());
+		Auction auction = auctionStore.store(requestAuction.toEntity());
 		auctionImagesFactory.store(auction, requestAuction);
 		return auction.getAuctionId();
 	}
@@ -35,9 +35,9 @@ public class AuctionServiceImpl implements AuctionService {
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
-		var auctions = auctionReader.searchAuctionList(searchAuction, pageable);
+		Page<Auction> auctions = auctionReader.searchAuctionList(searchAuction, pageable);
 
-		var auctionInfoPage = auctions.map(auction -> {
+		Page<AuctionInfo.Main> auctionInfoPage = auctions.map(auction -> {
 			List<String> imagePaths = auction.getImages().stream()
 				.map(Image::getImagePath)
 				.collect(Collectors.toList());

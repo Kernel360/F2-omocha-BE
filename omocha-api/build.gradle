@@ -2,11 +2,11 @@ def jarName = "omocha-api.jar"
 
 dependencies {
     implementation project(':omocha-domain')
-    implementation project(':omocha-infrastructure')
+    implementation project(':omocha-infra')
 
     // java 8 date module added
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
-
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
 
 bootJar {
