@@ -59,8 +59,14 @@ public class Auction extends BaseEntity {
 	// TODO: MemberID 추가
 
 	@Builder
-	public Auction(String title, String content, Long startPrice, Long bidUnit, LocalDateTime startDate,
-		LocalDateTime endDate) {
+	public Auction(
+		String title,
+		String content,
+		Long startPrice,
+		Long bidUnit,
+		LocalDateTime startDate,
+		LocalDateTime endDate
+	) {
 
 		this.title = title;
 		this.content = content;

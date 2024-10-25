@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 // TODO : exception 처리 + 코드 리펙토링 (조금 더 좋은 설계)
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class S3Provider implements ImageProvider {
 

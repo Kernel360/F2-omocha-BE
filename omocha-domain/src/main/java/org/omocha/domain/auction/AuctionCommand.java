@@ -37,7 +37,6 @@ public class AuctionCommand {
 		String title,
 		AuctionStatus auctionStatus
 	) {
-
 	}
 
 }

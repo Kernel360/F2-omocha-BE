@@ -9,13 +9,13 @@ import org.omocha.domain.auction.AuctionImagesFactory;
 import org.omocha.domain.image.Image;
 import org.omocha.domain.image.ImageCommand;
 import org.omocha.domain.image.ImageStore;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 

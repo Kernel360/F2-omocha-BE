@@ -7,8 +7,6 @@ dependencies {
     // java 8 date module added
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
 
-    // TODO : common 고
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
 bootJar {

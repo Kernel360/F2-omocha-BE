@@ -37,7 +37,11 @@ public class Image {
 	private Auction auction;
 
 	@Builder
-	public Image(String fileName, String imagePath, Auction auction) {
+	public Image(
+		String fileName,
+		String imagePath,
+		Auction auction
+	) {
 		this.fileName = fileName;
 		this.imagePath = imagePath;
 		this.auction = auction;

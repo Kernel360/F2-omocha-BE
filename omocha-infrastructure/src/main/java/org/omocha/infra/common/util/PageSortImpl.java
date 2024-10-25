@@ -12,7 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class PageSortImpl implements PageSort {
 	@Override
-	public Pageable sortPage(Pageable pageable, String sort, String direction) {
+	public Pageable sortPage(
+		Pageable pageable,
+		String sort,
+		String direction
+	) {
 		Sort.Direction sortDirection = Sort.Direction.fromOptionalString(direction).orElse(Sort.Direction.DESC);
 		return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
 	}

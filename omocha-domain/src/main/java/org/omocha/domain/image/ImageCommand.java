@@ -9,7 +9,11 @@ public class ImageCommand {
 		String imagePath,
 		Auction auction
 	) {
-		public Image toEntity(String fileName, String imagePath, Auction auction) {
+		public Image toEntity(
+			String fileName,
+			String imagePath,
+			Auction auction
+		) {
 			return Image.builder()
 				.fileName(fileName)
 				.imagePath(imagePath)
