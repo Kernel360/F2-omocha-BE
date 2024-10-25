@@ -24,7 +24,7 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional
 	public Long registerAuction(AuctionCommand.RegisterAuction requestAuction) {
-		Auction auction = auctionStore.store(requestAuction.toEntity());
+		var auction = auctionStore.store(requestAuction.toEntity());
 		auctionImagesFactory.store(auction, requestAuction);
 		return auction.getAuctionId();
 	}
