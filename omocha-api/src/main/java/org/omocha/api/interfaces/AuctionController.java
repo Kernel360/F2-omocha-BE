@@ -48,7 +48,11 @@ public class AuctionController {
 		var auctionId = auctionFacade.addAuction(auctionCommand);
 		var response = auctionDtoMapper.of(auctionId);
 
-		var result = ResultDto.success(response, "OK");
+		var result = ResultDto.res(
+			AUCTION_CREATE_SUCCESS.getStatusCode(),
+			AUCTION_CREATE_SUCCESS.getResultMsg(),
+			response
+		);
 
 		return ResponseEntity
 			.status(AuctionCode.AUCTION_CREATE_SUCCESS.getHttpStatus())
@@ -71,7 +75,11 @@ public class AuctionController {
 
 		var response = auctionDtoMapper.of(searchResult);
 
-		var result = ResultDto.success(response, "auction list retrieved");
+		var result = ResultDto.res(
+			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
+			AUCTION_LIST_ACCESS_SUCCESS.getResultMsg(),
+			response
+		);
 
 		return ResponseEntity
 			.status(AUCTION_LIST_ACCESS_SUCCESS.getHttpStatus())

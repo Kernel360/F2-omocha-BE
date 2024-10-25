@@ -1,43 +1,16 @@
 package org.omocha.api.common.response;
 
-import org.omocha.domain.exception.code.ErrorCode;
+public record ResultDto<T>(int statusCode, String resultMsg, T resultData) {
 
-import lombok.Builder;
-
-@Builder
-public record ResultDto<T>(Result result, String resultMsg, T resultData, String errorCode, String errorName) {
-
-	public static <T> ResultDto<T> success(T data, String resultMsg) {
-		return (ResultDto<T>)ResultDto.builder()
-			.result(Result.SUCCESS)
-			.resultMsg(resultMsg)
-			.resultData(data)
-			.build();
+	public ResultDto(int statusCode, String resultMsg) {
+		this(statusCode, resultMsg, null);
 	}
 
-	public static <T> ResultDto<T> success(T data) {
-		return success(data, null);
+	public static <T> ResultDto<T> res(final int statusCode, final String resultMsg) {
+		return new ResultDto<>(statusCode, resultMsg, null);
 	}
 
-	public static ResultDto fail(String resultMsg, String errorCode, String errorName) {
-		return ResultDto.builder()
-			.result(Result.FAIL)
-			.resultMsg(resultMsg)
-			.errorCode(errorCode)
-			.errorName(errorName)
-			.build();
-	}
-
-	public static ResultDto fail(ErrorCode errorCode) {
-		return ResultDto.builder()
-			.result(Result.FAIL)
-			.resultMsg(errorCode.getErrorMsg())
-			.errorCode(errorCode.getHttpStatus())
-			.errorName(errorCode.name())
-			.build();
-	}
-
-	public enum Result {
-		SUCCESS, FAIL
+	public static <T> ResultDto<T> res(final int statusCode, final String resultMsg, final T t) {
+		return new ResultDto<>(statusCode, resultMsg, t);
 	}
 }
