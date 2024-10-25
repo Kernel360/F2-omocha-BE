@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(':omocha-domain')
+
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    
+}
+
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
