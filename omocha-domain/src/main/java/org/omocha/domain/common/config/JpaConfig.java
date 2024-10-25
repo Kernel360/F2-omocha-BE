@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaAuditing
-@EntityScan(basePackages = {"org.omocha.domain", "org.omocha.infra"})
-@EnableJpaRepositories(basePackages = {"org.omocha.domain", "org.omocha.infra"})
+@EntityScan(basePackages = {"org.omocha.domain"})
+@EnableJpaRepositories(basePackages = {"org.omocha"})
 public class JpaConfig {
 }

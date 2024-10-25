@@ -1,4 +1,3 @@
-/*
 package org.omocha.infra.repository;
 
 import static org.omocha.domain.auction.QAuction.*;
@@ -8,11 +7,9 @@ import java.util.List;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
-import org.omocha.domain.auction.AuctionReader;
 import org.omocha.domain.auction.AuctionStatus;
 import org.omocha.domain.auction.QAuction;
 import org.omocha.domain.image.QImage;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,8 +26,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 
 @Repository
-@Primary
-public class AuctionRepositoryImpl implements AuctionReader {
+public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 
 	private final JPAQueryFactory queryFactory;
 
@@ -38,7 +34,6 @@ public class AuctionRepositoryImpl implements AuctionReader {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
-	@Override
 	public Page<Auction> searchAuctionList(AuctionCommand.SearchAuction searchAuction, Pageable pageable) {
 		QAuction auction = QAuction.auction;
 		QImage image = QImage.image;
@@ -93,4 +88,3 @@ public class AuctionRepositoryImpl implements AuctionReader {
 	}
 
 }
-*/

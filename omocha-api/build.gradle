@@ -2,6 +2,7 @@ def jarName = "omocha-api.jar"
 
 dependencies {
     implementation project(':omocha-domain')
+    implementation project(':omocha-infrastructure')
 
     // java 8 date module added
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'

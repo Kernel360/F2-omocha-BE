@@ -19,14 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
-	private final ImageProvider imageService;
+	private final ImageProvider imageProvider;
 	private final ImageStore imageStore;
 
 	@Override
 	public List<Image> store(Auction auction, AuctionCommand.RegisterAuction requestAuction) {
 		return requestAuction.images().stream()
 			.map(auctionImageRequest -> {
-				var imagePath = imageService.uploadFile(auctionImageRequest);
+				var imagePath = imageProvider.uploadFile(auctionImageRequest);
 				var fileName = auctionImageRequest.getOriginalFilename();
 
 				var registerAuctionImage = new ImageCommand.RegisterAuctionImage
