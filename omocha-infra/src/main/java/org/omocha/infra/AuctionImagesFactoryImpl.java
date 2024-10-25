@@ -1,15 +1,14 @@
-package org.omocha.infra.repository;
+package org.omocha.infra;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionImagesFactory;
 import org.omocha.domain.image.Image;
 import org.omocha.domain.image.ImageCommand;
-import org.omocha.domain.image.ImageService;
 import org.omocha.domain.image.ImageStore;
-import org.omocha.infra.entity.AuctionEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -20,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
-	private final ImageService imageService;
+	private final ImageProvider imageService;
 	private final ImageStore imageStore;
 
 	@Override
-	public List<Image> store(AuctionEntity auction, AuctionCommand.RegisterAuction requestAuction) {
+	public List<Image> store(Auction auction, AuctionCommand.RegisterAuction requestAuction) {
 		return requestAuction.images().stream()
 			.map(auctionImageRequest -> {
 				var imagePath = imageService.uploadFile(auctionImageRequest);

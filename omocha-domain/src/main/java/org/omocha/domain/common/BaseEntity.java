@@ -1,4 +1,4 @@
-package org.omocha.infra.entity;
+package org.omocha.domain.common;
 
 import java.time.ZonedDateTime;
 

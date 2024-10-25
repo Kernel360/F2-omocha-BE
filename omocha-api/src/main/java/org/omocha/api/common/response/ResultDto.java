@@ -1,6 +1,6 @@
 package org.omocha.api.common.response;
 
-import org.omocha.core.exception.code.ErrorCode;
+import org.omocha.domain.exception.code.ErrorCode;
 
 import lombok.Builder;
 

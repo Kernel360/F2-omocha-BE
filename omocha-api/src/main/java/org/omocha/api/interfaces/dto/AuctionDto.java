@@ -3,7 +3,7 @@ package org.omocha.api.interfaces.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.auction.domain.auction.AuctionStatus;
+import org.omocha.domain.auction.AuctionStatus;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

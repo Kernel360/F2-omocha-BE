@@ -1,7 +1,10 @@
 package org.omocha.api.application;
 
 import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.AuctionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -19,11 +22,11 @@ public class AuctionFacade {
 		return auctionId;
 	}
 
-	/*public Page<AuctionInfo.Main> searchAuction(
+	public Page<AuctionInfo.Main> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
 		return auctionService.searchAuction(searchAuction, pageable);
-	}*/
+	}
 
 }

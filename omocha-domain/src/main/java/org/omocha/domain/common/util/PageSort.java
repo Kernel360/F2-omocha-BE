@@ -1,4 +1,4 @@
-package org.omocha.api.common.util;
+package org.omocha.domain.common.util;
 
 import org.springframework.data.domain.Pageable;
 

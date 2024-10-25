@@ -1,6 +1,6 @@
-package org.omocha.infra.repository;
+package org.omocha.infra.common.util;
 
-import org.auction.domain.auction.PageSort;
+import org.omocha.domain.common.util.PageSort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

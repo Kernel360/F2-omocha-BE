@@ -1,4 +1,4 @@
-package org.omocha.infra.config;
+package org.omocha.infra.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,13 @@
 package org.omocha.domain.auction;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.omocha.domain.image.Image;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +19,7 @@ public class AuctionServiceImpl implements AuctionService {
 
 	private final AuctionStore auctionStore;
 	private final AuctionImagesFactory auctionImagesFactory;
+	private final AuctionReader auctionReader;
 
 	@Override
 	@Transactional
@@ -21,7 +29,7 @@ public class AuctionServiceImpl implements AuctionService {
 		return auction.getAuctionId();
 	}
 
-	/*@Override
+	@Override
 	@Transactional(readOnly = true)
 	public Page<AuctionInfo.Main> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
@@ -48,5 +56,5 @@ public class AuctionServiceImpl implements AuctionService {
 			);
 		});
 		return auctionInfoPage;
-	}*/
+	}
 }

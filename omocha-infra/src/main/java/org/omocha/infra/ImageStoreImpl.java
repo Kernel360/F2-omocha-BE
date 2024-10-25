@@ -1,7 +1,8 @@
-package org.omocha.infra.repository;
+package org.omocha.infra;
 
-import org.auction.domain.image.Image;
-import org.auction.domain.image.ImageStore;
+import org.omocha.domain.image.Image;
+import org.omocha.domain.image.ImageStore;
+import org.omocha.infra.repository.ImageRepository;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;

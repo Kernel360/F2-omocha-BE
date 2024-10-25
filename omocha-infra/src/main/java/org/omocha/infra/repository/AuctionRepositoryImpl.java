@@ -1,17 +1,17 @@
 /*
 package org.omocha.infra.repository;
 
-import static org.auction.domain.auction.QAuction.*;
+import static org.omocha.domain.auction.QAuction.*;
 import static org.springframework.util.ObjectUtils.*;
 
 import java.util.List;
 
-import org.auction.domain.auction.Auction;
-import org.auction.domain.auction.AuctionCommand;
-import org.auction.domain.auction.AuctionReader;
-import org.auction.domain.auction.AuctionStatus;
-import org.auction.domain.auction.QAuction;
-import org.auction.domain.image.QImage;
+import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.AuctionReader;
+import org.omocha.domain.auction.AuctionStatus;
+import org.omocha.domain.auction.QAuction;
+import org.omocha.domain.image.QImage;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

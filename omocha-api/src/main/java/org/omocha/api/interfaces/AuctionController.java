@@ -1,16 +1,24 @@
 package org.omocha.api.interfaces;
 
+import static org.omocha.domain.exception.code.AuctionCode.*;
+
 import java.util.List;
 
 import org.omocha.api.application.AuctionFacade;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.AuctionDto;
 import org.omocha.api.interfaces.mapper.AuctionDtoMapper;
+import org.omocha.domain.auction.AuctionStatus;
+import org.omocha.domain.common.util.PageSort;
 import org.omocha.domain.exception.code.AuctionCode;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +34,7 @@ public class AuctionController {
 
 	private final AuctionFacade auctionFacade;
 	private final AuctionDtoMapper auctionDtoMapper;
-	// private final PageSort pageSort;
+	private final PageSort pageSort;
 
 	@PostMapping(
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -47,7 +55,7 @@ public class AuctionController {
 			.body(result);
 	}
 
-	/*@GetMapping("/basic-list")
+	@GetMapping("/basic-list")
 	public ResponseEntity<ResultDto> auctionList(
 		AuctionDto.AuctionSearchCondition condition,
 		@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
@@ -69,5 +77,4 @@ public class AuctionController {
 			.status(AUCTION_LIST_ACCESS_SUCCESS.getHttpStatus())
 			.body(result);
 	}
-*/
 }

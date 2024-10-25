@@ -1,7 +1,8 @@
-package org.omocha.infra.repository;
+package org.omocha.infra;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionStore;
+import org.omocha.infra.repository.AuctionRepository;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;

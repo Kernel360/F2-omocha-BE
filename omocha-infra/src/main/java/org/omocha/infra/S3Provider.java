@@ -1,10 +1,9 @@
-package org.omocha.infra.repository;
+package org.omocha.infra;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import org.auction.domain.image.ImageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ImageServiceImpl implements ImageService {
+public class S3Provider implements ImageProvider {
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucketName;
