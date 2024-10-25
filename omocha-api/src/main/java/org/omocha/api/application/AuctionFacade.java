@@ -22,7 +22,7 @@ public class AuctionFacade {
 		return auctionId;
 	}
 
-	public Page<AuctionInfo.Main> searchAuction(
+	public Page<AuctionInfo.AuctionListResponse> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {

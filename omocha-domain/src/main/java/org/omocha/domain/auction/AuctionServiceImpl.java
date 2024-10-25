@@ -31,18 +31,18 @@ public class AuctionServiceImpl implements AuctionService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<AuctionInfo.Main> searchAuction(
+	public Page<AuctionInfo.AuctionListResponse> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
 		Page<Auction> auctions = auctionReader.searchAuctionList(searchAuction, pageable);
 
-		Page<AuctionInfo.Main> auctionInfoPage = auctions.map(auction -> {
+		Page<AuctionInfo.AuctionListResponse> auctionInfoPage = auctions.map(auction -> {
 			List<String> imagePaths = auction.getImages().stream()
 				.map(Image::getImagePath)
 				.collect(Collectors.toList());
 
-			return new AuctionInfo.Main(
+			return new AuctionInfo.AuctionListResponse(
 				auction.getAuctionId(),
 				auction.getTitle(),
 				auction.getContent(),

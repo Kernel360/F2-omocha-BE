@@ -7,7 +7,7 @@ public interface AuctionService {
 
 	Long registerAuction(AuctionCommand.RegisterAuction registerAuction);
 
-	Page<AuctionInfo.Main> searchAuction(
+	Page<AuctionInfo.AuctionListResponse> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	);

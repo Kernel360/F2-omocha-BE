@@ -27,7 +27,7 @@ public interface AuctionDtoMapper {
 
 	AuctionCommand.SearchAuction of(AuctionDto.AuctionSearchCondition condition, AuctionStatus auctionStatus);
 
-	default Page<AuctionDto.AuctionListResponse> of(Page<AuctionInfo.Main> auctionListResult) {
+	default Page<AuctionDto.AuctionListResponse> of(Page<AuctionInfo.AuctionListResponse> auctionListResult) {
 		List<AuctionDto.AuctionListResponse> content = auctionListResult.getContent().stream()
 			.map(this::of)
 			.collect(Collectors.toList());
@@ -35,5 +35,5 @@ public interface AuctionDtoMapper {
 		return new PageImpl<>(content, auctionListResult.getPageable(), auctionListResult.getTotalElements());
 	}
 
-	AuctionDto.AuctionListResponse of(AuctionInfo.Main auctionInfo);
+	AuctionDto.AuctionListResponse of(AuctionInfo.AuctionListResponse auctionInfo);
 }

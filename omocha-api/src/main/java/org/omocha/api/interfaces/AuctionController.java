@@ -48,8 +48,8 @@ public class AuctionController {
 		@RequestPart(value = "images", required = true) List<MultipartFile> images
 	) {
 		AuctionCommand.RegisterAuction auctionCommand = auctionDtoMapper.of(auctionRequest, images);
-		Long saveResult = auctionFacade.addAuction(auctionCommand);
-		AuctionDto.CreateAuctionResponse response = auctionDtoMapper.of(saveResult);
+		Long auctionId = auctionFacade.addAuction(auctionCommand);
+		AuctionDto.CreateAuctionResponse response = auctionDtoMapper.of(auctionId);
 
 		ResultDto<AuctionDto.CreateAuctionResponse> result = ResultDto.res(
 			AUCTION_CREATE_SUCCESS.getStatusCode(),
@@ -74,7 +74,7 @@ public class AuctionController {
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 		AuctionCommand.SearchAuction auctionCommand = auctionDtoMapper.of(condition, auctionStatus);
 
-		Page<AuctionInfo.Main> searchResult = auctionFacade.searchAuction(auctionCommand, sortPage);
+		Page<AuctionInfo.AuctionListResponse> searchResult = auctionFacade.searchAuction(auctionCommand, sortPage);
 
 		Page<AuctionDto.AuctionListResponse> response = auctionDtoMapper.of(searchResult);
 
