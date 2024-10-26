@@ -40,6 +40,7 @@ allprojects {
         testCompileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
 
+        // TODO : 추후 어디에 저장해야할 지 고민해야함
         //Querydsl dependency
         implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
         annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
