@@ -28,6 +28,7 @@ public class Member extends BaseEntity {
 	@Column(name = "member_id")
 	private Long memberId;
 
+	// TODO : VO 로 변경 필요
 	@Column(name = "email")
 	private String email;
 

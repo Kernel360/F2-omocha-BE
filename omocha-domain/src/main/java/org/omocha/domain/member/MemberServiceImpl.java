@@ -15,9 +15,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
 
 	@Override
-	public MemberInfo.MemberDetailInfo addMember(
-		MemberCommand.MemberCreateCommand memberCreateCommand
-	) {
+	public MemberInfo.MemberDetailInfo addMember(MemberCommand.MemberCreateCommand memberCreateCommand) {
 
 		Member member = Member.builder()
 			.email(memberCreateCommand.email())

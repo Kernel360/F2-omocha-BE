@@ -17,7 +17,6 @@ allprojects {
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'jakarta.validation:jakarta.validation-api'
 
 
         // TODO : 추후 어디에 저장해야할 지 고민해야함

@@ -7,6 +7,7 @@ dependencies {
     // java 8 date module added
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'jakarta.validation:jakarta.validation-api'
 }
 
 bootJar {
