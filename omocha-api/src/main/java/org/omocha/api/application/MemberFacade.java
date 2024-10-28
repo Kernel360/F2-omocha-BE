@@ -15,15 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberFacade {
 
 	private final MemberService memberService;
-	private final MemberValidator memberValidateService;
+	private final MemberValidator memberValidator;
 
 	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
 		return memberService.addMember(memberCreateCommand);
-
 	}
 
 	public boolean isEmailDuplicate(String email) {
-		return memberValidateService.isEmailDuplicate(email);
+		return memberValidator.isEmailDuplicate(email);
 	}
 
 	// public Member findMember(
