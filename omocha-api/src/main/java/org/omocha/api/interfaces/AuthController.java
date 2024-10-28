@@ -3,12 +3,15 @@ package org.omocha.api.interfaces;
 import static org.omocha.domain.exception.code.MemberCode.*;
 
 import org.omocha.api.application.MemberFacade;
+import org.omocha.api.common.auth.jwt.JwtProvider;
+import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.MemberDto;
 import org.omocha.api.interfaces.mapper.MemberDtoMapper;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +32,7 @@ public class AuthController {
 
 	private final MemberFacade memberFacade;
 	private final MemberDtoMapper memberDtoMapper;
-	// private final JwtService jwtService;
+	private final JwtProvider jwtProvider;
 
 	@PostMapping("/register")
 	public ResponseEntity<ResultDto<MemberDto.MemberDetailResponse>> memberAdd(
@@ -76,50 +80,44 @@ public class AuthController {
 			.body(resultDto);
 	}
 
-	// TODO : security 추가 이후에 작업 필요
-	// @Override
-	// @PostMapping("/login")
-	// public ResponseEntity<ResultDto<Void>> memberLogin(
-	// 	HttpServletResponse response,
-	// 	@RequestBody @Valid MemberDto.MemberLoginRequest memberLoginRequest
-	// ) {
-	// 	log.debug("Member login started");
-	// 	log.info("Received MemberLoginRequest: {}", memberLoginRequest);
-	//
-	// 	Member member = memberFacade.findMember(memberLoginRequest);
-	//
-	// 	jwtService.generateAccessToken(response, member);
-	// 	jwtService.generateRefreshToken(response, member);
-	//
-	// 	ResultDto<Void> resultDto = ResultDto.res(
-	// 		MEMBER_LOGIN_SUCCESS.getStatusCode(),
-	// 		MEMBER_LOGIN_SUCCESS.getResultMsg()
-	// 	);
-	//
-	// 	return ResponseEntity
-	// 		.status(MEMBER_LOGIN_SUCCESS.getHttpStatus())
-	// 		.body(resultDto);
-	// }
+	@PostMapping("/login")
+	public ResponseEntity<ResultDto<Void>> memberLogin(
+		@RequestBody @Valid MemberDto.MemberLoginRequest memberLoginRequest,
+		HttpServletResponse response
+	) {
+		log.debug("Member login started");
+		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
-	// TODO : security 추가 이후에 작업 필요
-	// @Override
-	// @PostMapping("/logout")
-	// public ResponseEntity<ResultDto<Void>> memberLogout(
-	// 	HttpServletResponse response,
-	// 	@AuthenticationPrincipal UserPrincipal userPrincipal
-	// ) {
-	// 	log.debug("Member logout started");
-	//
-	// 	jwtService.logout(userPrincipal.getMemberEntity(), response);
-	//
-	// 	ResultDto<Void> resultDto = ResultDto.res(
-	// 		MEMBER_LOGOUT_SUCCESS.getStatusCode(),
-	// 		MEMBER_LOGOUT_SUCCESS.getResultMsg()
-	// 	);
-	//
-	// 	return ResponseEntity
-	// 		.status(MEMBER_LOGOUT_SUCCESS.getHttpStatus())
-	// 		.body(resultDto);
-	// }
+		MemberCommand.MemberLogin memberLogin = memberDtoMapper.of(memberLoginRequest);
 
+		memberFacade.memberLogin(memberLogin, response);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			MEMBER_LOGIN_SUCCESS.getStatusCode(),
+			MEMBER_LOGIN_SUCCESS.getResultMsg()
+		);
+
+		return ResponseEntity
+			.status(MEMBER_LOGIN_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<ResultDto<Void>> memberLogout(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		HttpServletResponse response
+	) {
+		log.debug("Member logout started");
+
+		jwtProvider.logout(userPrincipal.getMember().getMemberId(), response);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			MEMBER_LOGOUT_SUCCESS.getStatusCode(),
+			MEMBER_LOGOUT_SUCCESS.getResultMsg()
+		);
+
+		return ResponseEntity
+			.status(MEMBER_LOGOUT_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
 }

@@ -1,5 +1,7 @@
 package org.omocha.domain.member;
 
+import java.util.Optional;
+
 public interface MemberReader {
 
 	boolean existsByEmail(String email);
@@ -8,7 +10,7 @@ public interface MemberReader {
 
 	Member findByEmail(String email);
 
-	Member findByProviderAndProviderId(String provider, String providerId);
+	Optional<Member> getOptionalMember(MemberCommand.OAuthProvider oAuthProvider);
 
 	boolean existsByEmailAndProviderIsNull(String email);
 }

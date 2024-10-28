@@ -12,7 +12,6 @@ public class MemberServiceImpl implements MemberService {
 
 	// private final PasswordEncoder passwordEncoder;
 	private final MemberStore memberStore;
-	private final MemberValidator memberValidator;
 	private final MemberReader memberReader;
 
 	@Override
@@ -29,11 +28,9 @@ public class MemberServiceImpl implements MemberService {
 		return MemberInfo.MemberDetail.toDto(memberReader.findById(memberId));
 	}
 
-	// TODO : JWT 와 관련하여 협의 필요(INFO 객체)
-	public MemberInfo.MemberDetail findMember(MemberCommand.MemberLogin memberLoginCommand) {
-		Member member = memberReader.findByEmail(memberLoginCommand.email());
-		memberValidator.validatePassword(memberLoginCommand.password(), member.getPassword());
-		return MemberInfo.MemberDetail.toDto(member);
-	}
+	public MemberInfo.Login findMember(String email) {
+		Member member = memberReader.findByEmail(email);
 
+		return MemberInfo.Login.toDto(member);
+	}
 }
