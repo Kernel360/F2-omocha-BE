@@ -1,7 +1,5 @@
-package org.omocha.infra;
+package org.omocha.domain.member;
 
-import org.omocha.domain.member.MemberReader;
-import org.omocha.domain.member.MemberValidator;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -14,8 +12,10 @@ class MemberValidatorImpl implements MemberValidator {
 
 	private final MemberReader memberReader;
 
+	// TODO : VO 구성 후 MemberPasswordValidator, MemberEmailValidator 논의
+
 	@Override
-	public boolean isEmailDuplicate(String email) {
+	public boolean isEmailDuplicateForOauth(String email) {
 
 		// TODO : Exception 설정 후 수정 필요
 		if (memberReader.existsByEmailAndProviderIsNull(email)) {

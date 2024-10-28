@@ -22,7 +22,7 @@ public class MemberFacade {
 	}
 
 	public boolean isEmailDuplicate(String email) {
-		return memberValidator.isEmailDuplicate(email);
+		return memberValidator.isEmailDuplicateForOauth(email);
 	}
 
 	// public Member findMember(
