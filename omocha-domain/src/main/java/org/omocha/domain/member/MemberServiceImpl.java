@@ -15,14 +15,9 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
 
 	@Override
-	public MemberInfo.MemberDetailInfo addMember(MemberCommand.MemberCreateCommand memberCreateCommand) {
+	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
 
-		Member member = Member.builder()
-			.email(memberCreateCommand.email())
-			.password(memberCreateCommand.password())
-			.role(Role.ROLE_USER)
-			.userStatus(UserStatus.ACTIVATE)
-			.build();
+		Member member = memberCreateCommand.toEntity();
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
 		// Member member = Member.builder()
@@ -32,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
 		// 	.userStatus(UserStatus.ACTIVATE)
 		// 	.build();
 
-		return MemberInfo.MemberDetailInfo.toDto(memberStore.addMember(member));
+		return MemberInfo.MemberDetail.toDto(memberStore.addMember(member));
 	}
 
 	// public boolean isEmailDuplicate(
@@ -75,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 	// }
 
 	// TODO : exception 수정 필요
-	private void validateEmail(MemberCommand.MemberCreateCommand memberCreateCommand) {
+	private void validateEmail(MemberCommand.MemberCreate memberCreateCommand) {
 		if (memberReader.existsByEmail(memberCreateCommand.email())) {
 			// throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
 		}

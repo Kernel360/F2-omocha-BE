@@ -2,7 +2,7 @@ package org.omocha.domain.member;
 
 public class MemberInfo {
 
-	public record MemberDetailInfo(
+	public record MemberDetail(
 
 		String email,
 		String nickname,
@@ -11,10 +11,10 @@ public class MemberInfo {
 		String imageUrl,
 		Role role
 	) {
-		public static MemberDetailInfo toDto(
+		public static MemberDetail toDto(
 			Member member
 		) {
-			return new MemberDetailInfo(
+			return new MemberDetail(
 				member.getEmail(),
 				member.getNickname(),
 				member.getBirth(),

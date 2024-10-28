@@ -15,10 +15,8 @@ public class MemberFacade {
 
 	private final MemberService memberService;
 
-	public MemberInfo.MemberDetailInfo addMember(MemberCommand.MemberCreateCommand memberCreateCommand) {
-		MemberInfo.MemberDetailInfo memberDetailInfo = memberService.addMember(memberCreateCommand);
-
-		return memberDetailInfo;
+	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
+		return memberService.addMember(memberCreateCommand);
 
 	}
 

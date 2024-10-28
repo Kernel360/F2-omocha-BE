@@ -2,7 +2,7 @@ package org.omocha.domain.member;
 
 public interface MemberService {
 
-	public MemberInfo.MemberDetailInfo addMember(MemberCommand.MemberCreateCommand memberCreateCommand);
+	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand);
 
 	// public boolean isEmailDuplicate(MemberCommand.MemberDuplicateCommand memberDuplicateCommand);
 

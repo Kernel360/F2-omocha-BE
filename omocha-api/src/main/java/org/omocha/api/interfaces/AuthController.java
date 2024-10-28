@@ -35,9 +35,9 @@ public class AuthController {
 		// log.debug("Member register started");
 		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
-		MemberCommand.MemberCreateCommand memberCreateCommand = memberDtoMapper.of(memberCreateRequest);
+		MemberCommand.MemberCreate memberCreateCommand = memberDtoMapper.of(memberCreateRequest);
 
-		MemberInfo.MemberDetailInfo memberDetailInfo = memberFacade.addMember(memberCreateCommand);
+		MemberInfo.MemberDetail memberDetailInfo = memberFacade.addMember(memberCreateCommand);
 
 		MemberDto.MemberDetailResponse memberDetailResponse = memberDtoMapper.of(memberDetailInfo);
 

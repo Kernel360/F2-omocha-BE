@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import org.omocha.domain.common.BaseEntity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,44 +24,32 @@ public class Member extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "member_id")
 	private Long memberId;
 
 	// TODO : VO 로 변경 필요
-	@Column(name = "email")
 	private String email;
 
 	// TODO: Password VO로 변경해야함
-	@Column(name = "password")
 	private String password;
 
-	@Column(name = "nickname")
 	private String nickname;
 
-	@Column(name = "username")
 	private String username;
 
-	@Column(name = "birth")
 	private String birth;
 
-	@Column(name = "phone_number")
 	private String phoneNumber;
 
-	@Column(name = "profile_image_url")
 	private String profileImageUrl;
 
-	@Column(name = "role", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	// TODO: 추후 통합 로그인으로 수정해야함
-	@Column(name = "provider")
 	private String provider;
 
-	@Column(name = "provider_id")
 	private String providerId;
 
-	@Column(name = "user_status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;
 

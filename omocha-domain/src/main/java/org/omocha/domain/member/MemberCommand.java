@@ -1,20 +1,29 @@
 package org.omocha.domain.member;
 
 public class MemberCommand {
-	public record MemberCreateCommand(
+	public record MemberCreate(
 		String email,
 		String password
 	) {
+		// TODO : 사용자 정보 확정 후 추가 수정 필요
+		public Member toEntity() {
+			return Member.builder()
+				.email(email)
+				.password(password)
+				.role(Role.ROLE_USER)
+				.userStatus(UserStatus.ACTIVATE)
+				.build();
+		}
 
 	}
 
-	public record MemberDuplicateCommand(
+	public record MemberDuplicate(
 		String email
 	) {
 
 	}
 
-	public record MemberLoginCommand(
+	public record MemberLogin(
 		String email,
 		String password
 	) {
