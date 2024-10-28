@@ -23,4 +23,21 @@ class MemberValidatorImpl implements MemberValidator {
 		}
 		return true;
 	}
+
+	// TODO : exception 수정 필요
+	@Override
+	public void validateEmail(String email) {
+		if (memberReader.existsByEmail(email)) {
+			// throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
+		}
+	}
+
+	// TODO : security 추가 후 수정 필요
+	@Override
+	public void validatePassword(String commandPassword, String memberPassword) {
+		if (!passwordEncoder.matches(commandPassword, memberPassword)) {
+			throw new InvalidPasswordException(INVALID_PASSWORD);
+		}
+	}
+
 }
