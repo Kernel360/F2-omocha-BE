@@ -9,9 +9,11 @@ import org.omocha.api.interfaces.mapper.MemberDtoMapper;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -54,27 +56,25 @@ public class AuthController {
 	}
 
 	// TODO : security 추가 이후에 작업 필요
-	// @GetMapping("/validate-email")
-	// public ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
-	// 	@RequestParam String email
-	// ) {
-	// 	// log.debug("Email Duplication Check started");
-	// 	// log.info("Received memberDuplicateRequest: {}", email);
-	//
-	// 	MemberCommand.MemberDuplicateCommand memberDuplicateCommand = memberDtoMapper.of(email);
-	//
-	// 	boolean duplicate = memberFacade.isEmailDuplicate(email);
-	//
-	// 	ResultDto<Boolean> resultDto = ResultDto.res(
-	// 		VALIDATE_EMAIL_SUCCESS.getStatusCode(),
-	// 		VALIDATE_EMAIL_SUCCESS.getResultMsg(),
-	// 		duplicate
-	// 	);
-	//
-	// 	return ResponseEntity
-	// 		.status(VALIDATE_EMAIL_SUCCESS.getHttpStatus())
-	// 		.body(resultDto);
-	// }
+	@GetMapping("/validate-email")
+	public ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
+		@RequestParam String email
+	) {
+		// log.debug("Email Duplication Check started");
+		// log.info("Received memberDuplicateRequest: {}", email);
+
+		boolean duplicate = memberFacade.isEmailDuplicate(email);
+
+		ResultDto<Boolean> resultDto = ResultDto.res(
+			VALIDATE_EMAIL_SUCCESS.getStatusCode(),
+			VALIDATE_EMAIL_SUCCESS.getResultMsg(),
+			duplicate
+		);
+
+		return ResponseEntity
+			.status(VALIDATE_EMAIL_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
 
 	// TODO : security 추가 이후에 작업 필요
 	// @Override
