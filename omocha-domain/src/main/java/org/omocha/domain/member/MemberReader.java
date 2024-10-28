@@ -1,14 +1,14 @@
 package org.omocha.domain.member;
 
-import java.util.Optional;
-
 public interface MemberReader {
 
 	boolean existsByEmail(String email);
 
-	Optional<Member> findByEmail(String email);
+	Member findById(Long memberId);
 
-	Optional<Member> findByProviderAndProviderId(String provider, String providerId);
+	Member findByEmail(String email);
+
+	Member findByProviderAndProviderId(String provider, String providerId);
 
 	boolean existsByEmailAndProviderIsNull(String email);
 }

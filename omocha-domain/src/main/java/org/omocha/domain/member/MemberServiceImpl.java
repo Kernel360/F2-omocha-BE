@@ -12,67 +12,28 @@ public class MemberServiceImpl implements MemberService {
 
 	// private final PasswordEncoder passwordEncoder;
 	private final MemberStore memberStore;
+	private final MemberValidator memberValidator;
 	private final MemberReader memberReader;
 
 	@Override
 	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
 
-		Member member = memberCreateCommand.toEntity();
-
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
-		// Member member = Member.builder()
-		// 	.email(memberCreateCommand.email())
-		// 	.password(passwordEncoder.encode(memberCreateCommand.password()))
-		// 	.role(Role.ROLE_USER)
-		// 	.userStatus(UserStatus.ACTIVATE)
-		// 	.build();
-
+		Member member = memberCreateCommand.toEntity();
 		return MemberInfo.MemberDetail.toDto(memberStore.addMember(member));
 	}
 
-	// public boolean isEmailDuplicate(
-	// 	String email
-	// ) {
-	// 	if (memberReader.existsByEmailAndProviderIsNull(email)) {
-	// 		throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
-	// 	}
-	//
-	// 	return true;
-	// }
-
 	// TODO : 아래 두개의 메서드에서 에러가 발생했을 경우 각각 식별이 필요함
 	//  Exception의 명확한 네이밍 => MemberNotFoundByIdException, MemberNotFoundByEmailException
-	// public Member findMember(
-	// 	Long memberId
-	// ) {
-	// 	return memberRepository.findById(memberId)
-	// 		.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-	// }
-
-	// public Member findMember(
-	// 	MemberCommand.MemberLoginCommand memberLoginCommand
-	// ) {
-	// 	Member member = memberReader.findByEmail(memberLoginCommand.email())
-	// 		.orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-	//
-	// 	validatePassword(memberLoginRequest, member);
-	//
-	// 	return member;
-	// }
-
-	// private void validatePassword(
-	// 	MemberLoginRequest memberLoginRequest,
-	// 	Member member
-	// ) {
-	// 	if (!passwordEncoder.matches(memberLoginRequest.password(), member.getPassword())) {
-	// 		throw new InvalidPasswordException(INVALID_PASSWORD);
-	// 	}
-	// }
-
-	// TODO : exception 수정 필요
-	private void validateEmail(MemberCommand.MemberCreate memberCreateCommand) {
-		if (memberReader.existsByEmail(memberCreateCommand.email())) {
-			// throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
-		}
+	public MemberInfo.MemberDetail findMember(Long memberId) {
+		return MemberInfo.MemberDetail.toDto(memberReader.findById(memberId));
 	}
+
+	// TODO : JWT 와 관련하여 협의 필요(INFO 객체)
+	public MemberInfo.MemberDetail findMember(MemberCommand.MemberLogin memberLoginCommand) {
+		Member member = memberReader.findByEmail(memberLoginCommand.email());
+		memberValidator.validatePassword(memberLoginCommand.password(), member.getPassword());
+		return MemberInfo.MemberDetail.toDto(member);
+	}
+
 }

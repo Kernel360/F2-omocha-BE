@@ -1,6 +1,6 @@
 package org.omocha.infra;
 
-import java.util.Optional;
+import static org.omocha.domain.exception.code.MemberCode.*;
 
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
@@ -17,19 +17,29 @@ public class MemberReaderImpl implements MemberReader {
 
 	private final MemberRepository memberRepository;
 
+	// TODO : Exception 관련 수정 필요
+
 	@Override
 	public boolean existsByEmail(String email) {
 		return memberRepository.existsByEmail(email);
 	}
 
 	@Override
-	public Optional<Member> findByEmail(String email) {
-		return memberRepository.findByEmail(email);
+	public Member findById(Long memberId) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
 	}
 
 	@Override
-	public Optional<Member> findByProviderAndProviderId(String provider, String providerId) {
-		return memberRepository.findByProviderAndProviderId(provider, providerId);
+	public Member findByEmail(String email) {
+		return memberRepository.findByEmail(email)
+			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
+	}
+
+	@Override
+	public Member findByProviderAndProviderId(String provider, String providerId) {
+		return memberRepository.findByProviderAndProviderId(provider, providerId)
+			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
 	}
 
 	@Override
