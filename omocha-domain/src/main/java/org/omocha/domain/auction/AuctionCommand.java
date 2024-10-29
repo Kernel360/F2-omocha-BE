@@ -39,4 +39,9 @@ public class AuctionCommand {
 	) {
 	}
 
+	public record RetrieveAuction(
+		Long auctionId
+	) {
+	}
+
 }

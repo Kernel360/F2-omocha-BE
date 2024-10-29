@@ -29,4 +29,8 @@ public class AuctionFacade {
 		return auctionService.searchAuction(searchAuction, pageable);
 	}
 
+	public AuctionInfo.AuctionDetailResponse findAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuctionId) {
+		return auctionService.retrieveAuctionDetail(retrieveAuctionId);
+	}
+
 }

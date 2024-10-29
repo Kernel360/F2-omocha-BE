@@ -55,6 +55,10 @@ allprojects {
             languageVersion = JavaLanguageVersion.of(17)
         }
     }
+    // MapStruct Verbose 활성화 ArrayList 문제 해결
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += "-Amapstruct.verbose=true"
+    }
 }
 
 

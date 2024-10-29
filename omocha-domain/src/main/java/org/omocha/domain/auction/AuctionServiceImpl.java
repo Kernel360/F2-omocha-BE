@@ -20,6 +20,7 @@ public class AuctionServiceImpl implements AuctionService {
 	private final AuctionStore auctionStore;
 	private final AuctionImagesFactory auctionImagesFactory;
 	private final AuctionReader auctionReader;
+	private final AuctionInfoMapper auctionInfoMapper;
 
 	@Override
 	@Transactional
@@ -56,5 +57,18 @@ public class AuctionServiceImpl implements AuctionService {
 			);
 		});
 		return auctionInfoPage;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction) {
+		Auction auction = auctionReader.findByAuctionId(retrieveAuction.auctionId());
+
+		List<String> imagePaths = auction.getImages().stream()
+			.map(Image::getImagePath)
+			.collect(Collectors.toList());
+
+		// TODO : nowPrice, concludePrice, bidCount 추가해야함
+		return auctionInfoMapper.toResponse(auction, imagePaths);
 	}
 }

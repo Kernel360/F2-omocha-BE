@@ -8,8 +8,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class AuctionInfo {
 
 	public record AuctionDetailResponse(
-		Long sellerId,
-		// TODO : sellerId 추가 예정
+		Long auctionId,
+		// TODO : seller ID 추가 해야함 Member 완성되면
+		// Long sellerId,
 		String title,
 		String content,
 		AuctionStatus auctionStatus,
