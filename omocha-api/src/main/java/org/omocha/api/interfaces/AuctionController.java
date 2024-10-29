@@ -99,7 +99,7 @@ public class AuctionController {
 
 		ResultDto<AuctionDto.AuctionDetailListResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
-			AUCTION_DELETE_SUCCESS.getResultMsg(),
+			AUCTION_DETAIL_SUCCESS.getResultMsg(),
 			response
 		);
 
