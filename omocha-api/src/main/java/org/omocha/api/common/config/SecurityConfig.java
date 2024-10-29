@@ -39,7 +39,7 @@ public class SecurityConfig {
 		"/health",                                                           // AWS ELB health check 경로
 		"/swagger-ui/**", "/v3/api-docs/**",                                 // Swagger 관련 경로
 		"/sub/**", "/pub/**", "/{roomId}/messages", "/omocha-websocket/",    // websoket 경로
-		"/api/v1/auth/**"
+		"/api/v2/auth/**"
 	};
 
 	@Bean
@@ -53,14 +53,14 @@ public class SecurityConfig {
 
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/auction/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/bid/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v1/question/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/auction/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/bid/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/question/**").permitAll()
 				.anyRequest().authenticated())
 
 			.oauth2Login(
-				oauth -> oauth.authorizationEndpoint(authorization -> authorization.baseUri("/api/v1/oauth/authorize"))
-					.redirectionEndpoint(redirection -> redirection.baseUri("/api/v1/login/oauth2/code/*"))
+				oauth -> oauth.authorizationEndpoint(authorization -> authorization.baseUri("/api/v2/oauth/authorize"))
+					.redirectionEndpoint(redirection -> redirection.baseUri("/api/v2/login/oauth2/code/*"))
 					// .userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
 					.successHandler(successHandler)
 					.failureHandler(failureHandler))
