@@ -12,6 +12,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// private final PasswordEncoder passwordEncoder;
 	private final MemberStore memberStore;
+	private final MemberValidator memberValidator;
 	private final MemberReader memberReader;
 
 	@Override
