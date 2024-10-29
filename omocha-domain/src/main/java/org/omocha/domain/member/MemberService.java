@@ -6,6 +6,5 @@ public interface MemberService {
 
 	MemberInfo.MemberDetail findMember(Long memberId);
 
-	MemberInfo.MemberDetail findMember(MemberCommand.MemberLogin memberLoginCommand);
-
+	MemberInfo.Login findMember(String email);
 }

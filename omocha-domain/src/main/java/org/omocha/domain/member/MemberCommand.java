@@ -1,5 +1,7 @@
 package org.omocha.domain.member;
 
+import lombok.Builder;
+
 public class MemberCommand {
 	public record MemberCreate(
 		String email,
@@ -26,6 +28,14 @@ public class MemberCommand {
 	public record MemberLogin(
 		String email,
 		String password
+	) {
+
+	}
+
+	@Builder
+	public record OAuthProvider(
+		String provider,
+		String providerId
 	) {
 
 	}

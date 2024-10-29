@@ -2,7 +2,10 @@ package org.omocha.infra;
 
 import static org.omocha.domain.exception.code.MemberCode.*;
 
+import java.util.Optional;
+
 import org.omocha.domain.member.Member;
+import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberReader;
 import org.omocha.infra.repository.MemberRepository;
 import org.springframework.stereotype.Component;
@@ -37,9 +40,8 @@ public class MemberReaderImpl implements MemberReader {
 	}
 
 	@Override
-	public Member findByProviderAndProviderId(String provider, String providerId) {
-		return memberRepository.findByProviderAndProviderId(provider, providerId)
-			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
+	public Optional<Member> getOptionalMember(MemberCommand.OAuthProvider oAuthProvider) {
+		return memberRepository.findByProviderAndProviderId(oAuthProvider.provider(), oAuthProvider.providerId());
 	}
 
 	@Override

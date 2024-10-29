@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 class MemberValidatorImpl implements MemberValidator {
 
 	private final MemberReader memberReader;
+	// private final PasswordEncoder passwordEncoder;
 
 	// TODO : VO 구성 후 MemberPasswordValidator, MemberEmailValidator 논의
 
@@ -33,11 +34,12 @@ class MemberValidatorImpl implements MemberValidator {
 	}
 
 	// TODO : security 추가 후 수정 필요
+	// TODO : passwordEncoder가 security 패키지 내부에 존재해서 domain에서 사용 불가
 	@Override
 	public void validatePassword(String commandPassword, String memberPassword) {
-		if (!passwordEncoder.matches(commandPassword, memberPassword)) {
-			throw new InvalidPasswordException(INVALID_PASSWORD);
-		}
+		// if (!passwordEncoder.matches(commandPassword, memberPassword)) {
+		// 	throw new InvalidPasswordException(INVALID_PASSWORD);
+		// }
 	}
 
 }
