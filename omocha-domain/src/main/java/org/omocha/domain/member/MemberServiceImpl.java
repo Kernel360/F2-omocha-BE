@@ -12,6 +12,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// private final PasswordEncoder passwordEncoder;
 	private final MemberStore memberStore;
+	private final MemberValidator memberValidator;
 	private final MemberReader memberReader;
 
 	@Override
@@ -24,10 +25,12 @@ public class MemberServiceImpl implements MemberService {
 
 	// TODO : 아래 두개의 메서드에서 에러가 발생했을 경우 각각 식별이 필요함
 	//  Exception의 명확한 네이밍 => MemberNotFoundByIdException, MemberNotFoundByEmailException
+	@Override
 	public MemberInfo.MemberDetail findMember(Long memberId) {
 		return MemberInfo.MemberDetail.toDto(memberReader.findById(memberId));
 	}
 
+	@Override
 	public MemberInfo.Login findMember(String email) {
 		Member member = memberReader.findByEmail(email);
 
