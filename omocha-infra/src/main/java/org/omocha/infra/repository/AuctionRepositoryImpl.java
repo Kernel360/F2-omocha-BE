@@ -66,6 +66,38 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
 	}
 
+	// public Page<Auction> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable) {
+	//
+	// 	JPAQuery<Auction> query = queryFactory
+	// 		.selectFrom(auction)
+	// 		.leftJoin(auction.images, image)
+	// 		.where(auction.member.memberId.eq(memberId)
+	// 			.and(statusEquals(auctionStatus)));
+	//
+	// 	for (Sort.Order o : pageable.getSort()) {
+	// 		PathBuilder<?> pathBuilder = new PathBuilder<>(
+	// 			auction.getType(),
+	// 			auction.getMetadata()
+	// 		);
+	// 		query.orderBy(new OrderSpecifier(
+	// 			o.isAscending() ? Order.ASC : Order.DESC,
+	// 			pathBuilder.get(o.getProperty())
+	// 		));
+	// 	}
+	//
+	// 	// 페이징 적용
+	// 	List<Auction> auctions = query
+	// 		.offset(pageable.getOffset())
+	// 		.limit(pageable.getPageSize())
+	// 		.fetch();
+	//
+	// 	JPAQuery<Long> countQuery = queryFactory
+	// 		.select(auction.count())
+	// 		.from(auction);
+	//
+	// 	return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
+	// }
+
 	private static void applySorting(Pageable pageable, QAuction auction, JPAQuery<Auction> query) {
 		for (Sort.Order o : pageable.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(

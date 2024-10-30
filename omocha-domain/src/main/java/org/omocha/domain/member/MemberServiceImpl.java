@@ -1,5 +1,7 @@
 package org.omocha.domain.member;
 
+import static org.omocha.domain.exception.code.MemberCode.*;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,11 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
+
+		// TODO : Validator과 함께 수정 필요
+		if (memberReader.existsByEmail(memberCreateCommand.email())) {
+			throw new RuntimeException(MEMBER_ALREADY_EXISTS.getResultMsg());
+		}
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
 		Member member = memberCreateCommand.toEntity();
