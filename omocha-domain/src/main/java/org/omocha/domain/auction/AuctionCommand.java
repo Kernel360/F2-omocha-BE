@@ -20,7 +20,7 @@ public class AuctionCommand {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
 		List<MultipartFile> images,
-		MultipartFile thumbnail
+		MultipartFile thumbnailPath
 
 	) {
 		public Auction toEntity() {

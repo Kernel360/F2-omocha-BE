@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AuctionDtoMapper {
 
 	AuctionCommand.RegisterAuction toCommand(AuctionDto.CreateAuctionRequest auctionRequest, Long memberId,
-		List<MultipartFile> images, MultipartFile thumbnail);
+		List<MultipartFile> images, MultipartFile thumbnailPath);
 
 	AuctionCommand.SearchAuction toCommand(AuctionDto.AuctionSearchCondition condition, AuctionStatus auctionStatus);
 

@@ -48,7 +48,7 @@ public class Auction extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
 
-	private String thumbnail;
+	private String thumbnailPath;
 
 	private LocalDateTime startDate;
 
@@ -66,7 +66,7 @@ public class Auction extends BaseEntity {
 		String content,
 		Long startPrice,
 		Long bidUnit,
-		String thumbnail,
+		String thumbnailPath,
 		LocalDateTime startDate,
 		LocalDateTime endDate
 	) {
@@ -75,14 +75,14 @@ public class Auction extends BaseEntity {
 		this.content = content;
 		this.startPrice = startPrice;
 		this.bidUnit = bidUnit;
-		this.thumbnail = thumbnail;
+		this.thumbnailPath = thumbnailPath;
 		this.auctionStatus = AuctionStatus.BIDDING;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
 
-	public void thumbnailUpload(String thumbnail) {
-		this.thumbnail = thumbnail;
+	public void thumbnailPathUpload(String thumbnailPath) {
+		this.thumbnailPath = thumbnailPath;
 	}
 
 }
