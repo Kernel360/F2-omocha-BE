@@ -29,7 +29,7 @@ public class MypageController {
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
 	@GetMapping("/me")
-	public ResponseEntity<ResultDto<MypageDto.MemberInfoResponse>> getMe(
+	public ResponseEntity<ResultDto<MypageDto.MemberInfoResponse>> currentMemberInfo(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 
@@ -39,7 +39,7 @@ public class MypageController {
 
 		log.debug("get me getId {}", userPrincipal.getId());
 
-		MypageInfo.MemberInfoResponse mypageInfoResponse = mypageFacade.findMe(memberId);
+		MypageInfo.MemberInfoResponse mypageInfoResponse = mypageFacade.findCurrentMemberInfo(memberId);
 
 		MypageDto.MemberInfoResponse mypageDtoResponse = mypageDtoMapper.of(mypageInfoResponse);
 

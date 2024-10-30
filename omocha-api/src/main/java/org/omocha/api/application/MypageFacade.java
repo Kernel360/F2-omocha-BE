@@ -14,9 +14,9 @@ public class MypageFacade {
 
 	private final MypageService mypageService;
 
-	public MypageInfo.MemberInfoResponse findMe(Long memberId) {
+	public MypageInfo.MemberInfoResponse findCurrentMemberInfo(Long memberId) {
 
-		MypageInfo.MemberInfoResponse memberInfoResponse = mypageService.findMe(memberId);
+		MypageInfo.MemberInfoResponse memberInfoResponse = mypageService.findCurrentMemberInfo(memberId);
 
 		return memberInfoResponse;
 

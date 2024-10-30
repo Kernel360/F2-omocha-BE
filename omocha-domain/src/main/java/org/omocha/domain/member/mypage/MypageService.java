@@ -2,7 +2,7 @@ package org.omocha.domain.member.mypage;
 
 public interface MypageService {
 
-	MypageInfo.MemberInfoResponse findMe(Long memberId);
+	MypageInfo.MemberInfoResponse findCurrentMemberInfo(Long memberId);
 
 	// Page<AuctionInfo.MypageAuctionListResponse> findMyAuctionList(
 	// 	Long memberId,

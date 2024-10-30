@@ -23,7 +23,7 @@ public class MypageServiceImpl implements MypageService {
 	// private final BidService bidService;
 
 	@Override
-	public MypageInfo.MemberInfoResponse findMe(Long memberId) {
+	public MypageInfo.MemberInfoResponse findCurrentMemberInfo(Long memberId) {
 		log.debug("find me start for member {}", memberId);
 
 		Member member = memberReader.findById(memberId);
