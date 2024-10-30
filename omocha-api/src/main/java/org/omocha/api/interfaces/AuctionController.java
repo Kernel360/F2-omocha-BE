@@ -5,6 +5,7 @@ import static org.omocha.domain.exception.code.AuctionCode.*;
 import java.util.List;
 
 import org.omocha.api.application.AuctionFacade;
+import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.AuctionDto;
 import org.omocha.api.interfaces.mapper.AuctionDtoMapper;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,11 +46,15 @@ public class AuctionController {
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 		produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public ResponseEntity<ResultDto> auctionSave(
+	public ResponseEntity<ResultDto<AuctionDto.CreateAuctionResponse>> auctionSave(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart("auctionRequest") AuctionDto.CreateAuctionRequest auctionRequest,
-		@RequestPart(value = "images", required = true) List<MultipartFile> images
+		@RequestPart(value = "images", required = true) List<MultipartFile> images,
+		@RequestPart(value = "thumbnail", required = true) MultipartFile thumbnail
 	) {
-		AuctionCommand.RegisterAuction auctionCommand = auctionDtoMapper.toCommand(auctionRequest, images);
+		Long memberId = userPrincipal.getId();
+		AuctionCommand.RegisterAuction auctionCommand = auctionDtoMapper.toCommand(
+			auctionRequest, memberId, images, thumbnail);
 		Long auctionId = auctionFacade.addAuction(auctionCommand);
 		AuctionDto.CreateAuctionResponse response = auctionDtoMapper.toResponse(auctionId);
 
@@ -64,7 +70,7 @@ public class AuctionController {
 	}
 
 	@GetMapping("/basic-list")
-	public ResponseEntity<ResultDto> auctionList(
+	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionListResponse>>> auctionList(
 		AuctionDto.AuctionSearchCondition condition,
 		@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
@@ -73,6 +79,7 @@ public class AuctionController {
 		Pageable pageable
 	) {
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
 		AuctionCommand.SearchAuction auctionCommand = auctionDtoMapper.toCommand(condition, auctionStatus);
 
 		Page<AuctionInfo.AuctionListResponse> searchResult = auctionFacade.searchAuction(auctionCommand, sortPage);
@@ -91,7 +98,9 @@ public class AuctionController {
 	}
 
 	@GetMapping("/{auction_id}")
-	public ResponseEntity<ResultDto> auctionDetail(@PathVariable("auction_id") Long auctionId) {
+	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailListResponse>> auctionDetail(
+		@PathVariable("auction_id") Long auctionId
+	) {
 
 		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId);
 		AuctionInfo.AuctionDetailResponse detailResult = auctionFacade.findAuctionDetail(auctionCommand);
@@ -99,7 +108,7 @@ public class AuctionController {
 
 		ResultDto<AuctionDto.AuctionDetailListResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
-			AUCTION_DETAIL_SUCCESS.getResultMsg(),
+			AUCTION_DELETE_SUCCESS.getResultMsg(),
 			response
 		);
 

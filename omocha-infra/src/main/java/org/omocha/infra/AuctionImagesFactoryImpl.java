@@ -24,6 +24,10 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
 	@Override
 	public List<Image> store(Auction auction, AuctionCommand.RegisterAuction requestAuction) {
+
+		String thumbnail = imageProvider.uploadFile(requestAuction.thumbnail());
+		auction.thumbnailUpload(thumbnail);
+
 		return requestAuction.images().stream()
 			.map(auctionImageRequest -> {
 				String imagePath = imageProvider.uploadFile(auctionImageRequest);

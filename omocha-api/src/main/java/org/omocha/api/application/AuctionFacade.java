@@ -18,8 +18,7 @@ public class AuctionFacade {
 	private final AuctionService auctionService;
 
 	public Long addAuction(AuctionCommand.RegisterAuction registerAuction) {
-		Long auctionId = auctionService.registerAuction(registerAuction);
-		return auctionId;
+		return auctionService.registerAuction(registerAuction);
 	}
 
 	public Page<AuctionInfo.AuctionListResponse> searchAuction(
@@ -27,6 +26,10 @@ public class AuctionFacade {
 		Pageable pageable
 	) {
 		return auctionService.searchAuction(searchAuction, pageable);
+	}
+
+	public AuctionInfo.AuctionDetailResponse findAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuctionId) {
+		return auctionService.retrieveAuctionDetail(retrieveAuctionId);
 	}
 
 }

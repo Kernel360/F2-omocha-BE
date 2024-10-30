@@ -35,6 +35,8 @@ public class Auction extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long auctionId;
 
+	private Long memberId;
+
 	private String title;
 
 	private String content;
@@ -46,6 +48,8 @@ public class Auction extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
 
+	private String thumbnail;
+
 	private LocalDateTime startDate;
 
 	private LocalDateTime endDate;
@@ -55,26 +59,30 @@ public class Auction extends BaseEntity {
 		cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images = new ArrayList<>();
 
-	// TODO: ImageEntity 연관관계 추가
-	// TODO: MemberID 추가
-
 	@Builder
 	public Auction(
+		Long memberId,
 		String title,
 		String content,
 		Long startPrice,
 		Long bidUnit,
+		String thumbnail,
 		LocalDateTime startDate,
 		LocalDateTime endDate
 	) {
-
+		this.memberId = memberId;
 		this.title = title;
 		this.content = content;
 		this.startPrice = startPrice;
 		this.bidUnit = bidUnit;
+		this.thumbnail = thumbnail;
 		this.auctionStatus = AuctionStatus.BIDDING;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+
+	public void thumbnailUpload(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 }

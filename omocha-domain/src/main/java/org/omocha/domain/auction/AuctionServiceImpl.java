@@ -35,26 +35,21 @@ public class AuctionServiceImpl implements AuctionService {
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
-		Page<Auction> auctions = auctionReader.searchAuctionList(searchAuction, pageable);
-
-		Page<AuctionInfo.AuctionListResponse> auctionInfoPage = auctions.map(auction -> {
-			List<String> imagePaths = auction.getImages().stream()
-				.map(Image::getImagePath)
-				.collect(Collectors.toList());
-
-			return new AuctionInfo.AuctionListResponse(
-				auction.getAuctionId(),
-				auction.getTitle(),
-				auction.getContent(),
-				auction.getAuctionStatus(),
-				auction.getStartPrice(),
-				auction.getBidUnit(),
-				auction.getStartDate(),
-				auction.getEndDate(),
-				auction.getCreatedAt().toLocalDateTime(),
-				imagePaths
-			);
-		});
-		return auctionInfoPage;
+		// TODO : nowPrice, concludePrice, bidCount 추가해야함
+		return auctionReader.searchAuctionList(searchAuction, pageable);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction) {
+		Auction auction = auctionReader.findByAuctionId(retrieveAuction.auctionId());
+
+		List<String> imagePaths = auction.getImages().stream()
+			.map(Image::getImagePath)
+			.collect(Collectors.toList());
+
+		// TODO : nowPrice, concludePrice, bidCount 추가해야함
+		return new AuctionInfo.AuctionDetailResponse(auction, imagePaths);
+	}
+
 }

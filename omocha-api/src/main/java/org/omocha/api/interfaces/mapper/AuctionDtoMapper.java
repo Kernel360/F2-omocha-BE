@@ -21,19 +21,25 @@ import org.springframework.web.multipart.MultipartFile;
 )
 public interface AuctionDtoMapper {
 
-	AuctionCommand.RegisterAuction of(AuctionDto.CreateAuctionRequest auctionRequest, List<MultipartFile> images);
+	AuctionCommand.RegisterAuction toCommand(AuctionDto.CreateAuctionRequest auctionRequest, Long memberId,
+		List<MultipartFile> images, MultipartFile thumbnail);
 
-	AuctionDto.CreateAuctionResponse of(Long auctionId);
+	AuctionCommand.SearchAuction toCommand(AuctionDto.AuctionSearchCondition condition, AuctionStatus auctionStatus);
 
-	AuctionCommand.SearchAuction of(AuctionDto.AuctionSearchCondition condition, AuctionStatus auctionStatus);
+	AuctionCommand.RetrieveAuction toCommand(Long auctionId);
 
-	default Page<AuctionDto.AuctionListResponse> of(Page<AuctionInfo.AuctionListResponse> auctionListResult) {
+	AuctionDto.CreateAuctionResponse toResponse(Long auctionId);
+
+	default Page<AuctionDto.AuctionListResponse> toResponse(Page<AuctionInfo.AuctionListResponse> auctionListResult) {
 		List<AuctionDto.AuctionListResponse> content = auctionListResult.getContent().stream()
-			.map(this::of)
+			.map(this::toResponse)
 			.collect(Collectors.toList());
 
 		return new PageImpl<>(content, auctionListResult.getPageable(), auctionListResult.getTotalElements());
 	}
 
-	AuctionDto.AuctionListResponse of(AuctionInfo.AuctionListResponse auctionInfo);
+	AuctionDto.AuctionListResponse toResponse(AuctionInfo.AuctionListResponse auctionInfo);
+
+	AuctionDto.AuctionDetailListResponse toResponse(AuctionInfo.AuctionDetailResponse auctionDetailResponse);
+
 }

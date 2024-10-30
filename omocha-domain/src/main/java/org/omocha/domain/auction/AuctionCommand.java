@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class AuctionCommand {
 
 	public record RegisterAuction(
+		Long memberId,
 		String title,
 		String content,
 		Long startPrice,
@@ -18,11 +19,13 @@ public class AuctionCommand {
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
-		List<MultipartFile> images
+		List<MultipartFile> images,
+		MultipartFile thumbnail
 
 	) {
 		public Auction toEntity() {
 			return Auction.builder()
+				.memberId(memberId)
 				.title(title)
 				.content(content)
 				.startPrice(startPrice)
@@ -36,6 +39,11 @@ public class AuctionCommand {
 	public record SearchAuction(
 		String title,
 		AuctionStatus auctionStatus
+	) {
+	}
+
+	public record RetrieveAuction(
+		Long auctionId
 	) {
 	}
 
