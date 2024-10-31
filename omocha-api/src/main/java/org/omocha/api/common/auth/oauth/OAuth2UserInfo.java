@@ -1,7 +1,5 @@
 package org.omocha.api.common.auth.oauth;
 
-import static org.omocha.domain.exception.code.OauthCode.*;
-
 import java.util.Map;
 
 import org.omocha.domain.exception.UnsupportedOAuthProviderException;
@@ -26,7 +24,7 @@ public class OAuth2UserInfo {
 		return switch (provider) {
 			case "google" -> ofGoogle(attributes);
 			case "naver" -> ofNaver(attributes);
-			default -> throw new UnsupportedOAuthProviderException(UNSUPPORTED_OAUTH_PROVIDER);
+			default -> throw new UnsupportedOAuthProviderException(provider);
 		};
 	}
 

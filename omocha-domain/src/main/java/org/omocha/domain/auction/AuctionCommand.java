@@ -38,7 +38,7 @@ public class AuctionCommand {
 
 	public record SearchAuction(
 		String title,
-		AuctionStatus auctionStatus
+		Auction.AuctionStatus auctionStatus
 	) {
 	}
 

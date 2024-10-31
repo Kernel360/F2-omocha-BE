@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.hibernate.annotations.BatchSize;
 import org.omocha.domain.common.BaseEntity;
+import org.omocha.domain.exception.AuctionAlreadyEndedException;
+import org.omocha.domain.exception.AuctionNotInBiddingStateException;
 import org.omocha.domain.image.Image;
 
 import jakarta.persistence.CascadeType;
@@ -22,6 +24,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -81,9 +84,32 @@ public class Auction extends BaseEntity {
 		this.endDate = endDate;
 	}
 
+	@Getter
+	@RequiredArgsConstructor
+	public enum AuctionStatus {
+		PREBID("PREBID"),
+		BIDDING("BIDDING"),
+		NO_BIDS("NO_BIDS"),
+		CONCLUDED("CONCLUDED"),
+		COMPLETED("COMPLETED");
+
+		private final String description;
+	}
+
 	public void thumbnailPathUpload(String thumbnailPath) {
 		this.thumbnailPath = thumbnailPath;
 	}
 
+	public void validateAuctionStatus() {
+		LocalDateTime now = LocalDateTime.now();
+
+		if (getEndDate().isBefore(now)) {
+			throw new AuctionAlreadyEndedException(auctionId);
+		}
+
+		if (getAuctionStatus() != AuctionStatus.BIDDING) {
+			throw new AuctionNotInBiddingStateException(auctionId, auctionStatus);
+		}
+	}
 }
 
