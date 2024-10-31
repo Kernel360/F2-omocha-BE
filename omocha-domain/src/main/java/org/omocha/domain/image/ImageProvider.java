@@ -1,4 +1,4 @@
-package org.omocha.infra;
+package org.omocha.domain.image;
 
 import org.springframework.web.multipart.MultipartFile;
 

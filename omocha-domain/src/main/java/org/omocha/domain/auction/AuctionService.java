@@ -11,4 +11,6 @@ public interface AuctionService {
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	);
+
+	AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction);
 }

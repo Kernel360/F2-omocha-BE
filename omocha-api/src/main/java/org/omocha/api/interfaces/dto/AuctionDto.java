@@ -33,15 +33,37 @@ public class AuctionDto {
 
 	public record AuctionListResponse(
 		Long auctionId,
-		// TODO : sellerId 추가 예정
 		String title,
 		String content,
-		AuctionStatus auctionStatus,
 		Long startPrice,
+		Long bidUnit,
+		AuctionStatus auctionStatus,
+		String thumbnailPath,
 		// Long nowPrice,
 		// Long concludePrice,
 		// Long bidCount,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime startDate,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime createdAt
+	) {
+	}
+
+	public record AuctionDetailResponse(
+		Long auctionId,
+		// TODO : 추가
+		// Long memberId,
+		String title,
+		String content,
+		Long startPrice,
 		Long bidUnit,
+		AuctionStatus auctionStatus,
+		String thumbnailPath,
+		// Long nowPrice,
+		// Long concludePrice,
+		// Long bidCount,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

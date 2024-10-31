@@ -2,6 +2,7 @@ package org.omocha.infra;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.AuctionReader;
 import org.omocha.infra.repository.AuctionRepository;
 import org.springframework.data.domain.Page;
@@ -19,8 +20,17 @@ public class AuctionReaderImpl implements AuctionReader {
 	private final AuctionRepository auctionRepository;
 
 	@Override
-	public Page<Auction> searchAuctionList(AuctionCommand.SearchAuction searchAuction, Pageable pageable) {
+	public Page<AuctionInfo.AuctionListResponse> searchAuctionList(
+		AuctionCommand.SearchAuction searchAuction,
+		Pageable pageable
+	) {
 		return auctionRepository.searchAuctionList(searchAuction, pageable);
+	}
+
+	@Override
+	public Auction findByAuctionId(Long auctionId) {
+		return auctionRepository.findById(auctionId)
+			.orElseThrow(RuntimeException::new);
 	}
 
 	// @Override

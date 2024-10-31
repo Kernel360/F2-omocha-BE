@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import org.omocha.domain.image.ImageProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

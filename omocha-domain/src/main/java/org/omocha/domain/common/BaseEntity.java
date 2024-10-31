@@ -1,6 +1,6 @@
 package org.omocha.domain.common;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,9 +16,9 @@ import lombok.Getter;
 public abstract class BaseEntity {
 
 	@CreationTimestamp
-	private ZonedDateTime createdAt;
+	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
-	private ZonedDateTime updatedAt;
+	private LocalDateTime updatedAt;
 
 }
