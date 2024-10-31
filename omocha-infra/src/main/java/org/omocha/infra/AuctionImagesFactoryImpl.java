@@ -8,6 +8,7 @@ import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionImagesFactory;
 import org.omocha.domain.image.Image;
 import org.omocha.domain.image.ImageCommand;
+import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.image.ImageStore;
 import org.springframework.stereotype.Component;
 
