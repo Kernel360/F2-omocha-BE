@@ -41,11 +41,11 @@ public class AuthController {
 		// log.debug("Member register started");
 		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
-		MemberCommand.MemberCreate memberCreateCommand = memberDtoMapper.of(memberCreateRequest);
+		MemberCommand.MemberCreate memberCreateCommand = memberDtoMapper.toCommand(memberCreateRequest);
 
 		MemberInfo.MemberDetail memberDetailInfo = memberFacade.addMember(memberCreateCommand);
 
-		MemberDto.MemberDetailResponse memberDetailResponse = memberDtoMapper.of(memberDetailInfo);
+		MemberDto.MemberDetailResponse memberDetailResponse = memberDtoMapper.toResponse(memberDetailInfo);
 
 		ResultDto<MemberDto.MemberDetailResponse> resultDto = ResultDto.res(
 			MEMBER_CREATE_SUCCESS.getStatusCode(),
@@ -88,7 +88,7 @@ public class AuthController {
 		log.debug("Member login started");
 		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
-		MemberCommand.MemberLogin memberLogin = memberDtoMapper.of(memberLoginRequest);
+		MemberCommand.MemberLogin memberLogin = memberDtoMapper.toCommand(memberLoginRequest);
 
 		memberFacade.memberLogin(memberLogin, response);
 

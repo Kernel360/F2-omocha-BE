@@ -14,12 +14,12 @@ import org.omocha.domain.member.MemberInfo;
 )
 public interface MemberDtoMapper {
 
-	MemberCommand.MemberCreate of(MemberDto.MemberCreateRequest memberCreateRequest);
+	MemberCommand.MemberCreate toCommand(MemberDto.MemberCreateRequest memberCreateRequest);
 
-	MemberCommand.MemberLogin of(MemberDto.MemberLoginRequest memberLoginRequest);
+	MemberCommand.MemberLogin toCommand(MemberDto.MemberLoginRequest memberLoginRequest);
 
-	MemberCommand.MemberDuplicate of(MemberDto.MemberDuplicateRequest memberDuplicateRequest);
+	MemberCommand.MemberDuplicate toCommand(MemberDto.MemberDuplicateRequest memberDuplicateRequest);
 
-	MemberDto.MemberDetailResponse of(MemberInfo.MemberDetail memberDetailInfo);
+	MemberDto.MemberDetailResponse toResponse(MemberInfo.MemberDetail memberDetailInfo);
 
 }

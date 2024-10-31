@@ -1,5 +1,7 @@
 package org.omocha.domain.member;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Builder;
 
 public class MemberCommand {
@@ -36,6 +38,27 @@ public class MemberCommand {
 	public record OAuthProvider(
 		String provider,
 		String providerId
+	) {
+
+	}
+
+	public record MemberModify(
+		Long memberId,
+		String nickName,
+		String phoneNumber
+	) {
+	}
+
+	public record PasswordModify(
+		Long memberId,
+		String currentPassword,
+		String newPassword
+	) {
+	}
+
+	public record ProfileImageModify(
+		Long memberId,
+		MultipartFile profileImage
 	) {
 
 	}

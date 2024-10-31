@@ -7,12 +7,19 @@ import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.MypageDto;
 import org.omocha.api.interfaces.mapper.MypageDtoMapper;
-import org.omocha.domain.member.mypage.MypageInfo;
+import org.omocha.domain.exception.code.MypageCode;
+import org.omocha.domain.member.MemberCommand;
+import org.omocha.domain.member.MemberInfo;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,9 +46,9 @@ public class MypageController {
 
 		log.debug("get me getId {}", userPrincipal.getId());
 
-		MypageInfo.MemberInfoResponse mypageInfoResponse = mypageFacade.findCurrentMemberInfo(memberId);
+		MemberInfo.CurrentMemberInfo memberInfoResponse = mypageFacade.findCurrentMemberInfo(memberId);
 
-		MypageDto.MemberInfoResponse mypageDtoResponse = mypageDtoMapper.of(mypageInfoResponse);
+		MypageDto.MemberInfoResponse mypageDtoResponse = mypageDtoMapper.toResponse(memberInfoResponse);
 
 		ResultDto<MypageDto.MemberInfoResponse> resultDto = ResultDto.res(
 			MEMBER_INFO_RETRIEVE_SUCCESS.getStatusCode(),
@@ -58,13 +65,101 @@ public class MypageController {
 
 	}
 
+	@PatchMapping(value = "/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResultDto<MypageDto.ProfileImageModifyResponse>> profileImageModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestPart(value = "profileImage", required = true) MultipartFile profileImage
+	) {
+
+		log.info("memberProfileImageModify started");
+		log.debug("memberProfileImageModify profileImage {}", profileImage);
+
+		Long memberId = userPrincipal.getId();
+
+		MemberCommand.ProfileImageModify modifyProfileImageCommand = new MemberCommand.ProfileImageModify(
+			memberId, profileImage);
+
+		MemberInfo.ProfileImageInfo profileImageInfo = mypageFacade.modifyProfileImage(modifyProfileImageCommand);
+
+		MypageDto.ProfileImageModifyResponse profileImageResponse = mypageDtoMapper.toResponse(profileImageInfo);
+
+		ResultDto<MypageDto.ProfileImageModifyResponse> resultDto = ResultDto.res(
+			PROFILE_IMAGE_UPDATED.getStatusCode(),
+			PROFILE_IMAGE_UPDATED.getResultMsg(),
+			profileImageResponse
+		);
+
+		log.info("memberProfileImageModify finished");
+		log.debug("memberProfileImageModify resultDto {}", resultDto);
+
+		return ResponseEntity
+			.status(MypageCode.PROFILE_IMAGE_UPDATED.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@PatchMapping("/password")
+	public ResponseEntity<ResultDto<Void>> passwordModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestBody MypageDto.PasswordModifyReuqest passwordModifyReuqest
+	) {
+
+		log.info("passwordModify started");
+		log.debug("passwordModify passwordModifyReuqest {}", passwordModifyReuqest);
+
+		Long memberId = userPrincipal.getId();
+
+		MemberCommand.PasswordModify passwordModifyCommand = mypageDtoMapper.toCommand(memberId,
+			passwordModifyReuqest);
+
+		mypageFacade.modifyPassword(passwordModifyCommand);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			MypageCode.PASSWORD_UPDATED.getStatusCode(),
+			MypageCode.PASSWORD_UPDATED.getResultMsg()
+		);
+
+		log.info("passwordModify finished");
+		log.debug("passwordModify resultDto {}", resultDto);
+
+		return ResponseEntity
+			.status(MypageCode.PASSWORD_UPDATED.getHttpStatus())
+			.body(resultDto);
+
+	}
+
 	// TODO : 사용자 정보 수정
-	// @PatchMapping()
-	// public void userInfoModify(
-	// 	@AuthenticationPrincipal UserPrincipal userPrincipal
-	// ) {
-	//
-	// }
+	@PatchMapping("/basic-info")
+	public ResponseEntity<ResultDto<MypageDto.MemberModifyResponse>> memberInfoModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestBody MypageDto.MemberModifyRequest memberModifyRequest
+	) {
+
+		log.info("memberInfoModify started");
+		log.debug("memberInfoModify request {}", memberModifyRequest);
+
+		Long memberId = userPrincipal.getId();
+
+		MemberCommand.MemberModify memberModifyCommand = mypageDtoMapper.toCommand(memberId,
+			memberModifyRequest);
+
+		MemberInfo.MemberModifyInfo memberModifyInfo = mypageFacade.modifyBasicInfoMember(memberModifyCommand);
+
+		MypageDto.MemberModifyResponse memberModifyResponse = mypageDtoMapper.toResponse(memberModifyInfo);
+
+		ResultDto<MypageDto.MemberModifyResponse> resultDto = ResultDto.res(
+			MEMBER_INFO_UPDATED.getStatusCode(),
+			MEMBER_INFO_UPDATED.getResultMsg(),
+			memberModifyResponse
+		);
+
+		log.info("memberInfoModify finished");
+		log.debug("memberInfoModify resultDto {}", resultDto);
+
+		return ResponseEntity
+			.status(MypageCode.MEMBER_INFO_UPDATED.getHttpStatus())
+			.body(resultDto);
+
+	}
 
 	// TODO : bid 추가 후 추가 수정
 	// TODO : 키워드 관련 추가 예정
