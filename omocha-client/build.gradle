@@ -1,0 +1,71 @@
+def jarName = "omocha-api.jar"
+
+dependencies {
+    // root project -> settings.gradle에 선언한 값과 동일해야함
+    implementation project(':omocha-domain')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    // .env 파일 사용 라이브러리
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+    // jackson data
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // java 8 date module added
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // lombok
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    //test 롬복 사용
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    // OAuth 2.0
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+tasks.named("bootJar") {
+    bootJar.getArchiveFileName().set(jarName) // JAR 이름 설정
+
+    doLast {
+        copy {
+            from "build/libs/$jarName" // 생성된 JAR 파일 경로
+            into "../build/libs" // 복사할 경로
+        }
+    }
+}
