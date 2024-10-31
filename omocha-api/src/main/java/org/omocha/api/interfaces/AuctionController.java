@@ -50,11 +50,11 @@ public class AuctionController {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart("auctionRequest") AuctionDto.CreateAuctionRequest auctionRequest,
 		@RequestPart(value = "images", required = true) List<MultipartFile> images,
-		@RequestPart(value = "thumbnailPathUrl", required = true) MultipartFile thumbnailPathUrl
+		@RequestPart(value = "thumbnailPath", required = true) MultipartFile thumbnailPath
 	) {
 		Long memberId = userPrincipal.getId();
 		AuctionCommand.RegisterAuction auctionCommand = auctionDtoMapper.toCommand(
-			auctionRequest, memberId, images, thumbnailPathUrl);
+			auctionRequest, memberId, images, thumbnailPath);
 
 		Long auctionId = auctionFacade.addAuction(auctionCommand);
 		AuctionDto.CreateAuctionResponse response = auctionDtoMapper.toResponse(auctionId);
