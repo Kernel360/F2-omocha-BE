@@ -40,6 +40,6 @@ public interface AuctionDtoMapper {
 
 	AuctionDto.AuctionListResponse toResponse(AuctionInfo.AuctionListResponse auctionInfo);
 
-	AuctionDto.AuctionDetailListResponse toResponse(AuctionInfo.AuctionDetailResponse auctionDetailResponse);
+	AuctionDto.AuctionDetailResponse toResponse(AuctionInfo.AuctionDetailResponse auctionDetailResponse);
 
 }

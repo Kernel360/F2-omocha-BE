@@ -51,7 +51,7 @@ public class AuctionDto {
 	) {
 	}
 
-	public record AuctionDetailListResponse(
+	public record AuctionDetailResponse(
 		Long auctionId,
 		// TODO : 추가
 		// Long memberId,

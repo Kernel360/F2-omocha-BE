@@ -99,15 +99,15 @@ public class AuctionController {
 	}
 
 	@GetMapping("/{auction_id}")
-	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailListResponse>> auctionDetail(
+	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailResponse>> auctionDetail(
 		@PathVariable("auction_id") Long auctionId
 	) {
 
 		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId);
 		AuctionInfo.AuctionDetailResponse detailResult = auctionFacade.findAuctionDetail(auctionCommand);
-		AuctionDto.AuctionDetailListResponse response = auctionDtoMapper.toResponse(detailResult);
+		AuctionDto.AuctionDetailResponse response = auctionDtoMapper.toResponse(detailResult);
 
-		ResultDto<AuctionDto.AuctionDetailListResponse> result = ResultDto.res(
+		ResultDto<AuctionDto.AuctionDetailResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
 			AUCTION_DELETE_SUCCESS.getResultMsg(),
 			response
