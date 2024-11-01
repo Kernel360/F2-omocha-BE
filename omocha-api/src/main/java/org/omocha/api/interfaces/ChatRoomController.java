@@ -1,7 +1,7 @@
 package org.omocha.api.interfaces;
 
 import static org.omocha.domain.auction.chat.ChatCommand.*;
-import static org.omocha.domain.exception.code.ChatCode.*;
+import static org.omocha.domain.exception.code.SuccessCode.*;
 
 import java.time.LocalDateTime;
 
@@ -50,7 +50,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 		ResultDto<Void> result = ResultDto.res(
 			CHATROOM_CREATE_SUCCESS.getStatusCode(),
-			CHATROOM_CREATE_SUCCESS.getResultMsg()
+			CHATROOM_CREATE_SUCCESS.getDescription()
 		);
 
 		return ResponseEntity
@@ -77,7 +77,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 		ResultDto<SliceResponse<ChatInfo.MyChatRoomInfo>> result = ResultDto.res(
 			CHATROOM_LIST_SUCCESS.getStatusCode(),
-			CHATROOM_LIST_SUCCESS.getResultMsg(),
+			CHATROOM_LIST_SUCCESS.getDescription(),
 			response
 		);
 
@@ -109,7 +109,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 		ResultDto<SliceResponse<ChatInfo.ChatMessage>> result = ResultDto.res(
 			CHATROOM_MESSAGES_SUCCESS.getStatusCode(),
-			CHATROOM_MESSAGES_SUCCESS.getResultMsg(),
+			CHATROOM_MESSAGES_SUCCESS.getDescription(),
 			response
 		);
 
