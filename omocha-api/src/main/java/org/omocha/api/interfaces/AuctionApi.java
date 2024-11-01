@@ -35,27 +35,13 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<AuctionDto.CreateAuctionResponse>> auctionSave(
-		@Parameter(
-			description = "사용자 객체 정보",
-			required = true
-		)
+		@Parameter(description = "사용자 객체 정보", required = true)
 		UserPrincipal userPrincipal,
-
-		@Parameter(
-			description = "경매 요청 데이터",
-			required = true
-		)
+		@Parameter(description = "경매 요청 데이터", required = true)
 		AuctionDto.CreateAuctionRequest auctionRequest,
-
-		@Parameter(
-			description = "이미지 파일 리스트",
-			required = true
-		)
+		@Parameter(description = "이미지 파일 리스트", required = true)
 		List<MultipartFile> images,
-
-		@Parameter(
-			description = "thumbnail 이미지 파일"
-		)
+		@Parameter(description = "thumbnail 이미지 파일", required = true)
 		MultipartFile thumbnailPath
 	);
 
@@ -71,25 +57,13 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<Page<AuctionDto.AuctionListResponse>>> auctionList(
-		@Parameter(
-			description = "검색 조건",
-			required = false
-		)
+		@Parameter(description = "검색 조건", required = false)
 		AuctionDto.AuctionSearchCondition condition,
-		@Parameter(
-			description = "경매 상태 필터",
-			schema = @Schema(implementation = Auction.AuctionStatus.class)
-		)
+		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = Auction.AuctionStatus.class))
 		Auction.AuctionStatus auctionStatus,
-		@Parameter(
-			description = "정렬 기준 필드 (예: createdAt, startPrice 등)",
-			example = "createdAt"
-		)
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
 		String sort,
-		@Parameter(
-			description = "정렬 방향 (ASC 또는 DESC)",
-			example = "DESC"
-		)
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
 		String direction,
 		@ParameterObject
 		Pageable pageable
@@ -107,10 +81,7 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<AuctionDto.AuctionDetailResponse>> auctionDetail(
-		@Parameter(
-			description = "경매 ID",
-			required = true
-		)
+		@Parameter(description = "경매 ID", required = true)
 		Long auctionId
 	);
 
