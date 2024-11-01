@@ -35,10 +35,4 @@ public class HighestBidManager {
 		return Optional.ofNullable(getHighestBid(auctionId))
 			.or(() -> bidReader.getHighestBid(auctionId));
 	}
-
-	public static Long getCurrentHighestBidPrice(Long auctionId, BidReader bidReader) {
-		return getCurrentHighestBid(auctionId, bidReader)
-			.map(Bid::getBidPrice)
-			.orElse(0L);
-	}
 }

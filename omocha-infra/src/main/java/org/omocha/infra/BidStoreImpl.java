@@ -19,12 +19,17 @@ public class BidStoreImpl implements BidStore {
 
 	@Override
 	public Bid store(Auction auction, Member buyer, Long bidPrice) {
-		Bid bid = Bid.builder()
-			.auction(auction)
-			.buyer(buyer)
-			.bidPrice(bidPrice)
-			.build();
 
-		return bidRepository.save(bid);
+		Bid savedBid = bidRepository.save(
+			Bid.builder()
+				.auction(auction)
+				.buyer(buyer)
+				.bidPrice(bidPrice)
+				.build()
+		);
+
+		auction.updateNowPrice(bidPrice);
+
+		return savedBid;
 	}
 }
