@@ -3,7 +3,7 @@ package org.omocha.domain.member.mypage;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.omocha.domain.auction.AuctionStatus;
+import org.omocha.domain.auction.Auction;
 import org.omocha.domain.member.Member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,7 +28,7 @@ public class MypageInfo {
 	public record MypageAuctionListResponse(
 		Long auctionId,
 		String title,
-		AuctionStatus auctionStatus,
+		Auction.AuctionStatus auctionStatus,
 		Long nowPrice, // TODO: 추후 Conclude Price도 넣기
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,

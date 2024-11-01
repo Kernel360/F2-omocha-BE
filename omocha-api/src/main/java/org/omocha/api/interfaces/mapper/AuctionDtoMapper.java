@@ -7,9 +7,9 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.omocha.api.interfaces.dto.AuctionDto;
+import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
-import org.omocha.domain.auction.AuctionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +24,10 @@ public interface AuctionDtoMapper {
 	AuctionCommand.RegisterAuction toCommand(AuctionDto.CreateAuctionRequest auctionRequest, Long memberId,
 		List<MultipartFile> images, MultipartFile thumbnailPath);
 
-	AuctionCommand.SearchAuction toCommand(AuctionDto.AuctionSearchCondition condition, AuctionStatus auctionStatus);
+	AuctionCommand.SearchAuction toCommand(
+		AuctionDto.AuctionSearchCondition condition,
+		Auction.AuctionStatus auctionStatus
+	);
 
 	AuctionCommand.RetrieveAuction toCommand(Long auctionId);
 

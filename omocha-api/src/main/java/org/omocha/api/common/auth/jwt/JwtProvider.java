@@ -48,8 +48,8 @@ public class JwtProvider {
 
 	public String generateRefreshToken(Long memberId, HttpServletResponse response) {
 		String refreshToken = jwtGenerator.generateRefreshToken(memberId, refreshKey, REFRESH_EXPIRATION);
-		RefreshTokenStore.removeUserRefreshToken(memberId);
-		RefreshTokenStore.putRefreshToken(refreshToken, memberId);
+		RefreshTokenManager.removeUserRefreshToken(memberId);
+		RefreshTokenManager.putRefreshToken(refreshToken, memberId);
 
 		ResponseCookie cookie = jwtUtil.setTokenToCookie(JwtCategory.REFRESH.getValue(), refreshToken);
 		response.addHeader("Set-Cookie", cookie.toString());
@@ -89,7 +89,7 @@ public class JwtProvider {
 	// }
 
 	public void logout(Long memberId, HttpServletResponse response) {
-		RefreshTokenStore.removeUserRefreshToken(memberId);
+		RefreshTokenManager.removeUserRefreshToken(memberId);
 
 		ResponseCookie accessCookie = jwtUtil.resetTokenToCookie(JwtCategory.ACCESS);
 		ResponseCookie refreshCookie = jwtUtil.resetTokenToCookie(JwtCategory.REFRESH);

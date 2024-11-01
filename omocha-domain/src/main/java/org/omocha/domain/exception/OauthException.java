@@ -1,28 +1,17 @@
 package org.omocha.domain.exception;
 
-import org.omocha.domain.exception.code.OauthCode;
+import org.omocha.domain.exception.code.ErrorCode;
 
 import lombok.Getter;
 
 @Getter
 public class OauthException extends RuntimeException {
-	private final OauthCode oauthCode;
-	private final String detailMessage;
+	private final ErrorCode errorCode;
+	private final String message;
 
-	public OauthException(
-		OauthCode oauthCode
-	) {
-		super(oauthCode.getResultMsg());
-		this.oauthCode = oauthCode;
-		this.detailMessage = oauthCode.getResultMsg();
-	}
-
-	public OauthException(
-		OauthCode oauthCode,
-		String detailMessage
-	) {
-		super(oauthCode.getResultMsg());
-		this.oauthCode = oauthCode;
-		this.detailMessage = detailMessage;
+	public OauthException(ErrorCode errorCode, String message) {
+		super(message);
+		this.errorCode = errorCode;
+		this.message = message;
 	}
 }
