@@ -83,7 +83,7 @@ public class ChatServiceImpl implements ChatService {
 		Pageable pageable) {
 		ChatRoom chatRoom = chatReader.findChatRoom(chatRoomMessage.roomId());
 
-		if (chatRoom.validateParticipant(chatRoomMessage.memberId())) {
+		if (!chatRoom.validateParticipant(chatRoomMessage.memberId())) {
 			throw new ChatRoomAccessException(chatRoomMessage.memberId());
 		}
 

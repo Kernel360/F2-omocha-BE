@@ -90,7 +90,6 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 			.orderBy(
 				orderTime.desc()
 			)
-			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize() + 1)
 			.fetch();
 

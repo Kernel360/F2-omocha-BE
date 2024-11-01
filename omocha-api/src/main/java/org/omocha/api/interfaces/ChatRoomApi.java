@@ -169,15 +169,34 @@ public interface ChatRoomApi {
 		)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 
+		@Parameter(
+			description = "cursor 기준",
+			example = "2024-10-31T09:15:00",
+			required = false
+		)
 		@RequestParam(required = false)
 		LocalDateTime cursor,
+
+		@Parameter(
+			description = "페이지 Sort",
+			example = "createdAt",
+			required = false
+		)
+		@RequestParam(defaultValue = "createdAt", required = false) String sort,
+
+		@Parameter(
+			description = "페이지 Direction",
+			example = "DESC",
+			required = false
+		)
+		@RequestParam(defaultValue = "DESC", required = false) String direction,
 
 		@Parameter(
 			description = "페이지 크기",
 			example = "10",
 			required = false
 		)
-		@RequestParam(defaultValue = "10") int size
+		@RequestParam(defaultValue = "10", required = false) int size
 	);
 
 }

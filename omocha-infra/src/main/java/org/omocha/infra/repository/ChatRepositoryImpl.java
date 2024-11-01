@@ -10,7 +10,12 @@ import org.omocha.domain.member.QMember;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
@@ -31,7 +36,7 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 		QChat chat = QChat.chat;
 		QMember member = QMember.member;
 
-		List<ChatInfo.ChatMessage> messages = queryFactory
+		JPAQuery<ChatInfo.ChatMessage> query = queryFactory
 			.select(new QChatInfo_ChatMessage(
 				chat.messageType,
 				chat.senderId,
@@ -44,8 +49,13 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 			.from(chat)
 			.leftJoin(member).on(member.memberId.eq(chat.senderId))
 			.where(chat.roomId.eq(retrieveMessage.roomId())
-				.and(retrieveMessage.cursor() != null ? chat.createdAt.lt(retrieveMessage.cursor()) : null))
-			.orderBy(chat.createdAt.desc())
+				.and(retrieveMessage.cursor() != null ? chat.createdAt.lt(retrieveMessage.cursor()) : null));
+
+		applySorting(pageable, chat, query);
+
+		query.orderBy(chat.createdAt.desc());
+
+		List<ChatInfo.ChatMessage> messages = query
 			.limit(pageable.getPageSize() + 1)
 			.fetch();
 
@@ -56,5 +66,22 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 		}
 
 		return new SliceImpl<>(messages, pageable, hasNext);
+	}
+
+	private static <T> void applySorting(
+		Pageable pageable,
+		QChat chat,
+		JPAQuery<T> query
+	) {
+		for (Sort.Order o : pageable.getSort()) {
+			PathBuilder<?> pathBuilder = new PathBuilder<>(
+				chat.getType(),
+				chat.getMetadata()
+			);
+			query.orderBy(new OrderSpecifier(
+				o.isAscending() ? Order.ASC : Order.DESC,
+				pathBuilder.get(o.getProperty())
+			));
+		}
 	}
 }

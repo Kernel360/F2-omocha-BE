@@ -11,6 +11,7 @@ import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.response.SliceResponseDto.SliceResponse;
 import org.omocha.api.interfaces.mapper.ChatDtoMapper;
 import org.omocha.domain.auction.chat.ChatInfo;
+import org.omocha.domain.common.util.PageSort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -34,6 +35,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 	private final ChatDtoMapper chatDtoMapper;
 	private final ChatFacade chatFacade;
+	private final PageSort pageSort;
 
 	// TODO : Front 테스트 용입니다
 	@PostMapping("/{auctionId}")
@@ -93,16 +95,20 @@ public class ChatRoomController implements ChatRoomApi {
 	public ResponseEntity<ResultDto<SliceResponse<ChatInfo.ChatMessage>>> chatMessageList(
 		@PathVariable Long roomId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestParam(required = false)
 		LocalDateTime cursor,
+		String sort,
+		String direction,
 		int size
 	) {
 		Pageable pageable = PageRequest.of(0, size);
+
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
 		Long memberId = userPrincipal.getId();
 
 		RetrieveChatRoomMessage chatCommand = chatDtoMapper.toCommand(roomId, memberId, cursor);
 
-		Slice<ChatInfo.ChatMessage> messageResponse = chatFacade.findChatRoomMessages(chatCommand, pageable);
+		Slice<ChatInfo.ChatMessage> messageResponse = chatFacade.findChatRoomMessages(chatCommand, sortPage);
 
 		SliceResponse<ChatInfo.ChatMessage> response = new SliceResponse<>(
 			messageResponse);
