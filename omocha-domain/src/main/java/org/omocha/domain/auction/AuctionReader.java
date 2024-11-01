@@ -9,7 +9,7 @@ public interface AuctionReader {
 		Pageable pageable
 	);
 
-	Auction findByAuctionId(Long auctionId);
+	Auction findAuction(Long auctionId);
 
 	// Page<Auction> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable);
 }

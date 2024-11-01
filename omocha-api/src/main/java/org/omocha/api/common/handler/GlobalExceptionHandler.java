@@ -5,6 +5,7 @@ import static org.omocha.domain.exception.code.ErrorCode.*;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.exception.AuctionException;
 import org.omocha.domain.exception.BidException;
+import org.omocha.domain.exception.ChatException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -124,23 +125,22 @@ public class GlobalExceptionHandler {
 	// 		.body(resultDto);
 	// }
 
-	// @ExceptionHandler(ChatException.class)
-	// public ResponseEntity<ResultDto<Object>> handleMemberException(
-	// 	ChatException e,
-	// 	HttpServletRequest request
-	// ) {
-	// 	log.error("errorCode: {}, url: {}, message: {}",
-	// 		e.getChatCode(), request.getRequestURI(), e.getDetailMessage(), e);
-	//
-	// 	ResultDto<Object> resultDto = ResultDto.res(
-	// 		e.getChatCode().getStatusCode(),
-	// 		e.getChatCode().getResultMsg()
-	// 	);
-	// 	return ResponseEntity
-	// 		.status(e.getChatCode().getHttpStatus())
-	// 		.body(resultDto);
-	// }
+	@ExceptionHandler(ChatException.class)
+	public ResponseEntity<ResultDto<Object>> handleMemberException(
+		ChatException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getErrorCode(), request.getRequestURI(), e.getMessage(), e);
 
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getErrorCode().getStatusCode(),
+			e.getErrorCode().getDescription()
+		);
+		return ResponseEntity
+			.status(e.getErrorCode().getHttpStatus())
+			.body(resultDto);
+	}
 	// @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 	// public ResponseEntity<ResultDto<Object>> handleHttpMediaTypeNotSupported(
 	// 	HttpMediaTypeNotSupportedException e,

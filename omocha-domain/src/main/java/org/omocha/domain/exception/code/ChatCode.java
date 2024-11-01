@@ -13,7 +13,7 @@ public enum ChatCode {
 	CHATROOM_LIST_SUCCESS(HttpStatus.OK, "채팅방 목록 조회 성공"),
 	CHAT_MESSAGES_FETCH_SUCCESS(HttpStatus.OK, "메세지 리스트 조회 성공"),
 	CHATROOM_CREATE_SUCCESS(HttpStatus.CREATED, "채팅방 생성 성공"),
-	CHATROOM_DETAILS_AND_MESSAGES_SUCCESS(HttpStatus.OK, "채팅방 상세 정보 및 전체 메시지 조회 성공"),
+	CHATROOM_MESSAGES_SUCCESS(HttpStatus.OK, "전체 메시지 조회 성공"),
 
 	// EXPLAIN : 400 ERROR 응답 코드
 	SELLER_IS_BUYER(HttpStatus.BAD_REQUEST, "판매자와 구매자가 동일할 수 없습니다."),

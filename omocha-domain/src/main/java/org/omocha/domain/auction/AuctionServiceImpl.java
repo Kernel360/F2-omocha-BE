@@ -42,7 +42,7 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional(readOnly = true)
 	public AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction) {
-		Auction auction = auctionReader.findByAuctionId(retrieveAuction.auctionId());
+		Auction auction = auctionReader.findAuction(retrieveAuction.auctionId());
 
 		List<String> imagePaths = auction.getImages().stream()
 			.map(Image::getImagePath)
