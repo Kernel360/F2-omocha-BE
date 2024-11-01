@@ -25,6 +25,7 @@ public enum ErrorCode {
 	AUCTION_NOT_IN_BIDDING_STATUS(HttpStatus.BAD_REQUEST, "경매의 상태가 입찰중이 아닙니다."),
 
 	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매를 찾을 수 없습니다."),
+	AUCTION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "경매이미지를 찾을 수 없습니다."),
 
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
 

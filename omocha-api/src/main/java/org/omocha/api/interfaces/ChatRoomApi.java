@@ -174,7 +174,6 @@ public interface ChatRoomApi {
 			example = "2024-10-31T09:15:00",
 			required = false
 		)
-		@RequestParam(required = false)
 		LocalDateTime cursor,
 
 		@Parameter(
@@ -182,21 +181,21 @@ public interface ChatRoomApi {
 			example = "createdAt",
 			required = false
 		)
-		@RequestParam(defaultValue = "createdAt", required = false) String sort,
+		String sort,
 
 		@Parameter(
 			description = "페이지 Direction",
 			example = "DESC",
 			required = false
 		)
-		@RequestParam(defaultValue = "DESC", required = false) String direction,
+		String direction,
 
 		@Parameter(
 			description = "페이지 크기",
 			example = "10",
 			required = false
 		)
-		@RequestParam(defaultValue = "10", required = false) int size
+		int size
 	);
 
 }

@@ -95,10 +95,10 @@ public class ChatRoomController implements ChatRoomApi {
 	public ResponseEntity<ResultDto<SliceResponse<ChatInfo.ChatMessage>>> chatMessageList(
 		@PathVariable Long roomId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		LocalDateTime cursor,
-		String sort,
-		String direction,
-		int size
+		@RequestParam(required = false) LocalDateTime cursor,
+		@RequestParam(defaultValue = "createdAt", required = false) String sort,
+		@RequestParam(defaultValue = "DESC", required = false) String direction,
+		@RequestParam(defaultValue = "10", required = false) int size
 	) {
 		Pageable pageable = PageRequest.of(0, size);
 
