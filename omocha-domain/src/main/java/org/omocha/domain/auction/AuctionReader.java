@@ -1,5 +1,7 @@
 package org.omocha.domain.auction;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,6 +12,8 @@ public interface AuctionReader {
 	);
 
 	Auction findByAuctionId(Long auctionId);
+
+	List<Auction> findExpiredBiddingAuctions();
 
 	// Page<Auction> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable);
 }
