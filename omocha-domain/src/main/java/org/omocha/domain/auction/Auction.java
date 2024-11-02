@@ -46,6 +46,10 @@ public class Auction extends BaseEntity {
 
 	private Long startPrice;
 
+	private Long nowPrice;
+
+	private Integer bidCount;
+
 	private Long bidUnit;
 
 	@Enumerated(EnumType.STRING)
@@ -68,6 +72,8 @@ public class Auction extends BaseEntity {
 		String title,
 		String content,
 		Long startPrice,
+		Long nowPrice,
+		Integer bidCount,
 		Long bidUnit,
 		String thumbnailPath,
 		LocalDateTime startDate,
@@ -77,6 +83,8 @@ public class Auction extends BaseEntity {
 		this.title = title;
 		this.content = content;
 		this.startPrice = startPrice;
+		this.nowPrice = nowPrice;
+		this.bidCount = bidCount;
 		this.bidUnit = bidUnit;
 		this.thumbnailPath = thumbnailPath;
 		this.auctionStatus = AuctionStatus.BIDDING;
@@ -98,6 +106,11 @@ public class Auction extends BaseEntity {
 
 	public void thumbnailPathUpload(String thumbnailPath) {
 		this.thumbnailPath = thumbnailPath;
+	}
+
+	public void updateNowPrice(Long newPrice) {
+		this.nowPrice = newPrice;
+		this.bidCount += 1;
 	}
 
 	public void validateAuctionStatus() {

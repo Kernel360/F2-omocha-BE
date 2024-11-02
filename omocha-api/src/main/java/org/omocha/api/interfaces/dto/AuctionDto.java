@@ -33,6 +33,7 @@ public class AuctionDto {
 
 	public record AuctionListResponse(
 		Long auctionId,
+		// Long memberId
 		String title,
 		String content,
 		Long startPrice,

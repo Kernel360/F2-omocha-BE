@@ -28,6 +28,8 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
+	// TODO: Mypage 진행하며 확인 필요
+
 	@Override
 	public Page<Bid> searchMyBidList(Long memberId, Pageable pageable) {
 

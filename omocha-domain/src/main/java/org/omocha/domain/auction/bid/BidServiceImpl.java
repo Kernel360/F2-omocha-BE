@@ -44,7 +44,7 @@ public class BidServiceImpl implements BidService {
 		Long auctionId = addBid.auctionId();
 		Long bidPrice = addBid.bidPrice();
 
-		Auction auction = auctionReader.findByAuctionId(auctionId);
+		Auction auction = auctionReader.findAuction(auctionId);
 		auction.validateAuctionStatus();
 
 		bidValidator.validate(auction, buyerId, bidPrice);

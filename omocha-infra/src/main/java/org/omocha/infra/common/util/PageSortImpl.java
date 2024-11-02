@@ -20,4 +20,5 @@ public class PageSortImpl implements PageSort {
 		Sort.Direction sortDirection = Sort.Direction.fromOptionalString(direction).orElse(Sort.Direction.DESC);
 		return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
 	}
+
 }
