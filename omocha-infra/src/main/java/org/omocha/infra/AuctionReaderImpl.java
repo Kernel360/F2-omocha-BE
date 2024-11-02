@@ -4,6 +4,7 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.AuctionReader;
+import org.omocha.domain.exception.AuctionNotFoundException;
 import org.omocha.infra.repository.AuctionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,9 @@ public class AuctionReaderImpl implements AuctionReader {
 	}
 
 	@Override
-	public Auction findByAuctionId(Long auctionId) {
+	public Auction findAuction(Long auctionId) {
 		return auctionRepository.findById(auctionId)
-			.orElseThrow(RuntimeException::new);
+			.orElseThrow(() -> new AuctionNotFoundException(auctionId));
 	}
 
 	// @Override

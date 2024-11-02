@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/auction")
-public class AuctionController {
+public class AuctionController implements AuctionApi {
 
 	private final AuctionFacade auctionFacade;
 	private final AuctionDtoMapper auctionDtoMapper;
