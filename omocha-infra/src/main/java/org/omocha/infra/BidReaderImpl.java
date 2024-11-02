@@ -27,9 +27,4 @@ public class BidReaderImpl implements BidReader {
 	public Optional<Bid> getHighestBid(Long auctionId) {
 		return bidRepository.findTopByAuctionAuctionIdOrderByBidPriceDesc(auctionId);
 	}
-
-	@Override
-	public Long getBidCount(Long auctionId) {
-		return bidRepository.countByAuctionAuctionId(auctionId);
-	}
 }

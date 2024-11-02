@@ -22,7 +22,6 @@ public class BidDto {
 	}
 
 	public record BidAddResponse(
-		Long bidId,
 		Long buyerId,
 		Long bidPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
