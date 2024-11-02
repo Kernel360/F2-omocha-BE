@@ -7,6 +7,8 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
 import org.omocha.domain.auction.bid.Bid;
 import org.omocha.domain.auction.bid.BidReader;
+import org.omocha.domain.auction.chat.ChatCommand;
+import org.omocha.domain.auction.chat.ChatService;
 import org.omocha.domain.member.Member;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 	private final BidReader bidReader;
 	private final ConcludeStore concludeStore;
 	private final ConcludeReader concludeReader;
-	// private final ChatRoomService chatRoomService;
+	private final ChatService chatService;
 
 	@Transactional
 	public void concludeAuction() {
@@ -36,8 +38,10 @@ public class ConcludeServiceImpl implements ConcludeService {
 				concludeStore.store(auction, highestBid);
 
 				Member highestBuyer = highestBid.getBuyer();
-				// TODO: 채팅 로직 추가되면 넣어야 함
-				// chatRoomService.addChatRoom(highestBuyer, auction.getAuctionId(), highestBid.getBidPrice());
+
+				var chatRoomCommand = new ChatCommand.CreateChatRoom(
+					auction.getAuctionId(), highestBuyer.getMemberId(), highestBid.getBidPrice());
+				chatService.addChatRoom(chatRoomCommand);
 
 				auction.statusConcluded();
 			}, () -> {

@@ -10,6 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,9 +27,11 @@ public class Conclude {
 	private Long concludeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "auction_id")
 	private Auction auction;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "buyer_id")
 	private Member buyer;
 
 	private Long concludePrice;
