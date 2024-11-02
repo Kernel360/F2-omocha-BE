@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/bid")
-public class BidController {
+public class BidController implements BidApi {
 
 	private final BidFacade bidFacade;
 	private final BidDtoMapper bidDtoMapper;
