@@ -12,6 +12,7 @@ import org.omocha.domain.auction.qna.AnswerInfo;
 import org.omocha.domain.exception.code.QnACode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,6 +94,33 @@ public class AnswerController {
 
 		return ResponseEntity
 			.status(ANSWER_MODIFY_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@DeleteMapping("/{answerId}")
+	public ResponseEntity<ResultDto<Void>> answerRemove(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable(value = "answerId") Long answerId
+	) {
+
+		log.info("received answerId : {} ", answerId);
+		log.debug("remove answer started");
+
+		Long memberId = userPrincipal.getId();
+
+		AnswerCommand.DeleteAnswer deleteAnswerModify = answerDtoMapper.toCommand(memberId, answerId);
+
+		qnaFacade.removeAnswer(deleteAnswerModify);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			QnACode.ANSWER_DELETE_SUCCESS.getStatusCode(),
+			QnACode.ANSWER_DELETE_SUCCESS.getResultMsg()
+		);
+
+		log.debug("remove answer finished");
+
+		return ResponseEntity
+			.status(QnACode.ANSWER_DELETE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 

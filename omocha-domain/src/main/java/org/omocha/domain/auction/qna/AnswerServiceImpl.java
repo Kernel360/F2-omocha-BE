@@ -70,4 +70,21 @@ public class AnswerServiceImpl implements AnswerService {
 
 		return AnswerInfo.AnswerResponse.toDto(answer);
 	}
+
+	@Override
+	public void removeAnswer(AnswerCommand.DeleteAnswer deleteAnswerModify) {
+
+		log.debug("remove answer started for deleteAnswerModify : {} ", deleteAnswerModify);
+
+		Member member = memberReader.findById(deleteAnswerModify.memberId());
+
+		Answer answer = answerReader.findAnswer(deleteAnswerModify.answerId());
+
+		answerValidator.hasAuctionOwnership(answer.getQuestion().getAuction(), member);
+
+		answer.deleteAnswer();
+
+		log.debug("remove answer finished for deleteAnswerModify : {} ", deleteAnswerModify);
+
+	}
 }

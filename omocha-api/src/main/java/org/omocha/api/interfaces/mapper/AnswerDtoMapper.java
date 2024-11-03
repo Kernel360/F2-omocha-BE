@@ -21,4 +21,6 @@ public interface AnswerDtoMapper {
 		AnswerDto.ModifyAnswerRequest modifyAnswerRequest);
 
 	AnswerDto.AnswerResponse toDto(AnswerInfo.AnswerResponse modifyAnswerInfo);
+
+	AnswerCommand.DeleteAnswer toCommand(Long memberId, Long answerId);
 }

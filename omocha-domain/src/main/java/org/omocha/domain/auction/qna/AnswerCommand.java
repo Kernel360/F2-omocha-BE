@@ -17,4 +17,12 @@ public class AnswerCommand {
 	) {
 	}
 
+	public record DeleteAnswer(
+		Long memberId,
+		Long answerId,
+		String title,
+		String content
+	) {
+	}
+
 }

@@ -36,4 +36,8 @@ public class QnaFacade {
 	public AnswerInfo.AnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
 		return answerService.modifyAnswer(modifyAnswerCommand);
 	}
+
+	public void removeAnswer(AnswerCommand.DeleteAnswer deleteAnswerModify) {
+		answerService.removeAnswer(deleteAnswerModify);
+	}
 }

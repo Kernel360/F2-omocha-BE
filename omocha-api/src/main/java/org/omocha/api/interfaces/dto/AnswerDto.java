@@ -29,11 +29,7 @@ public class AnswerDto {
 	}
 
 	public record AnswerResponse(
-		Long answerId,
-		String title,
-		String content,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime createdAt
+		Long answerId
 	) {
 
 	}
