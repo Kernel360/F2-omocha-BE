@@ -1,6 +1,7 @@
 dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
-
+    // websocket
+    api 'org.springframework.boot:spring-boot-starter-websocket'
 
 }
 

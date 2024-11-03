@@ -3,7 +3,7 @@ package org.omocha.api.interfaces.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.omocha.domain.auction.AuctionStatus;
+import org.omocha.domain.auction.Auction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -33,11 +33,12 @@ public class AuctionDto {
 
 	public record AuctionListResponse(
 		Long auctionId,
+		// Long memberId
 		String title,
 		String content,
 		Long startPrice,
 		Long bidUnit,
-		AuctionStatus auctionStatus,
+		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		// Long nowPrice,
 		// Long concludePrice,
@@ -59,7 +60,7 @@ public class AuctionDto {
 		String content,
 		Long startPrice,
 		Long bidUnit,
-		AuctionStatus auctionStatus,
+		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		// Long nowPrice,
 		// Long concludePrice,

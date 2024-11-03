@@ -5,9 +5,9 @@ import static org.springframework.util.ObjectUtils.*;
 
 import java.util.List;
 
+import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
-import org.omocha.domain.auction.AuctionStatus;
 import org.omocha.domain.auction.QAuction;
 import org.omocha.domain.auction.QAuctionInfo_AuctionListResponse;
 import org.springframework.data.domain.Page;
@@ -102,7 +102,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return isEmpty(title) ? null : auction.title.containsIgnoreCase(title);
 	}
 
-	private BooleanExpression statusEquals(AuctionStatus auctionStatus) {
+	private BooleanExpression statusEquals(Auction.AuctionStatus auctionStatus) {
 		return auctionStatus == null ? null : auction.auctionStatus.eq(auctionStatus);
 	}
 

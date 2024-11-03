@@ -2,6 +2,7 @@ package org.omocha.api.common.config;
 
 // import org.omocha.api.common.auth.oauth.CustomOAuth2UserService;
 
+import org.omocha.api.common.auth.oauth.CustomOAuth2UserService;
 import org.omocha.api.common.filter.JwtAuthFilter;
 import org.omocha.api.common.handler.CustomAccessDeniedHandler;
 import org.omocha.api.common.handler.CustomAuthenticationEntryPointHandler;
@@ -29,7 +30,7 @@ public class SecurityConfig {
 
 	private final CustomCorsConfig customCorsConfig;
 	private final JwtAuthFilter jwtAuthFilter;
-	// private final CustomOAuth2UserService customOAuth2UserService;
+	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
 	private final OAuth2SuccessHandler successHandler;
@@ -61,7 +62,7 @@ public class SecurityConfig {
 			.oauth2Login(
 				oauth -> oauth.authorizationEndpoint(authorization -> authorization.baseUri("/api/v2/oauth/authorize"))
 					.redirectionEndpoint(redirection -> redirection.baseUri("/api/v2/login/oauth2/code/*"))
-					// .userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
+					.userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
 					.successHandler(successHandler)
 					.failureHandler(failureHandler))
 

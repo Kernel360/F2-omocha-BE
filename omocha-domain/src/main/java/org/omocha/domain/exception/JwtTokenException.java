@@ -1,28 +1,17 @@
 package org.omocha.domain.exception;
 
-import org.omocha.domain.exception.code.JwtCode;
+import org.omocha.domain.exception.code.ErrorCode;
 
 import lombok.Getter;
 
 @Getter
 public class JwtTokenException extends RuntimeException {
-	private final JwtCode jwtCode;
-	private final String detailMessage;
+	private final ErrorCode errorCode;
+	private final String message;
 
-	public JwtTokenException(
-		JwtCode jwtCode
-	) {
-		super(jwtCode.getResultMsg());
-		this.jwtCode = jwtCode;
-		this.detailMessage = jwtCode.getResultMsg();
-	}
-
-	public JwtTokenException(
-		JwtCode jwtCode,
-		String detailMessage
-	) {
-		super(jwtCode.getResultMsg());
-		this.jwtCode = jwtCode;
-		this.detailMessage = detailMessage;
+	public JwtTokenException(ErrorCode errorCode, String message) {
+		super(message);
+		this.errorCode = errorCode;
+		this.message = message;
 	}
 }

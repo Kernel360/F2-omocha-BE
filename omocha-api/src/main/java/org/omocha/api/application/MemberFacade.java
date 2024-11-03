@@ -42,6 +42,7 @@ public class MemberFacade {
 
 		MemberInfo.Login loginInfo = memberService.findMember(memberLoginCommand.email());
 
+		//  TODO : exception 추가 필요
 		if (!passwordEncoder.matches(memberLoginCommand.password(), loginInfo.password())) {
 			throw new RuntimeException("Current password is incorrect");
 		}

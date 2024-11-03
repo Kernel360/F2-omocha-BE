@@ -3,6 +3,7 @@ package org.omocha.domain.auction;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.omocha.domain.exception.AuctionImageNotFoundException;
 import org.omocha.domain.image.Image;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,10 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional
 	public Long registerAuction(AuctionCommand.RegisterAuction requestAuction) {
+		if (requestAuction.images() == null || requestAuction.images().isEmpty()) {
+			throw new AuctionImageNotFoundException(requestAuction.memberId());
+		}
+
 		Auction auction = auctionStore.store(requestAuction.toEntity());
 		auctionImagesFactory.store(auction, requestAuction);
 		return auction.getAuctionId();
@@ -35,6 +40,7 @@ public class AuctionServiceImpl implements AuctionService {
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
+		
 		// TODO : nowPrice, concludePrice, bidCount 추가해야함
 		return auctionReader.searchAuctionList(searchAuction, pageable);
 	}
@@ -42,7 +48,7 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional(readOnly = true)
 	public AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction) {
-		Auction auction = auctionReader.findByAuctionId(retrieveAuction.auctionId());
+		Auction auction = auctionReader.findAuction(retrieveAuction.auctionId());
 
 		List<String> imagePaths = auction.getImages().stream()
 			.map(Image::getImagePath)

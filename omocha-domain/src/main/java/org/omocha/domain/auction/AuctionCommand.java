@@ -29,6 +29,7 @@ public class AuctionCommand {
 				.title(title)
 				.content(content)
 				.startPrice(startPrice)
+				.bidCount(0)
 				.bidUnit(bidUnit)
 				.startDate(startDate)
 				.endDate(endDate)
@@ -38,7 +39,7 @@ public class AuctionCommand {
 
 	public record SearchAuction(
 		String title,
-		AuctionStatus auctionStatus
+		Auction.AuctionStatus auctionStatus
 	) {
 	}
 

@@ -1,6 +1,6 @@
 package org.omocha.api.interfaces;
 
-import static org.omocha.domain.exception.code.AuctionCode.*;
+import static org.omocha.domain.exception.code.SuccessCode.*;
 
 import java.util.List;
 
@@ -9,11 +9,10 @@ import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.AuctionDto;
 import org.omocha.api.interfaces.mapper.AuctionDtoMapper;
+import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
-import org.omocha.domain.auction.AuctionStatus;
 import org.omocha.domain.common.util.PageSort;
-import org.omocha.domain.exception.code.AuctionCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -36,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/auction")
-public class AuctionController {
+public class AuctionController implements AuctionApi {
 
 	private final AuctionFacade auctionFacade;
 	private final AuctionDtoMapper auctionDtoMapper;
@@ -61,19 +60,19 @@ public class AuctionController {
 
 		ResultDto<AuctionDto.CreateAuctionResponse> result = ResultDto.res(
 			AUCTION_CREATE_SUCCESS.getStatusCode(),
-			AUCTION_CREATE_SUCCESS.getResultMsg(),
+			AUCTION_CREATE_SUCCESS.getDescription(),
 			response
 		);
 
 		return ResponseEntity
-			.status(AuctionCode.AUCTION_CREATE_SUCCESS.getHttpStatus())
+			.status(AUCTION_CREATE_SUCCESS.getHttpStatus())
 			.body(result);
 	}
 
 	@GetMapping("/basic-list")
 	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionListResponse>>> auctionList(
 		AuctionDto.AuctionSearchCondition condition,
-		@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
+		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
 		@PageableDefault(page = 0, size = 10)
@@ -89,7 +88,7 @@ public class AuctionController {
 
 		ResultDto<Page<AuctionDto.AuctionListResponse>> result = ResultDto.res(
 			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
-			AUCTION_LIST_ACCESS_SUCCESS.getResultMsg(),
+			AUCTION_LIST_ACCESS_SUCCESS.getDescription(),
 			response
 		);
 
@@ -109,7 +108,7 @@ public class AuctionController {
 
 		ResultDto<AuctionDto.AuctionDetailResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
-			AUCTION_DELETE_SUCCESS.getResultMsg(),
+			AUCTION_DELETE_SUCCESS.getDescription(),
 			response
 		);
 
