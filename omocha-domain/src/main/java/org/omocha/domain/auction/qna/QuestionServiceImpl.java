@@ -68,4 +68,22 @@ public class QuestionServiceImpl implements QuestionService {
 
 		return QuestionInfo.ModifyQuestion.toDto(question);
 	}
+
+	@Override
+	public void questionRemove(QuestionCommand.DeleteQuestion deleteQuestionCommand) {
+		log.debug("remove question started for deleteQuestionCommand: {}", deleteQuestionCommand);
+
+		Member member = memberReader.findById(deleteQuestionCommand.memberId());
+
+		Question question = questionReader.findQuestion(deleteQuestionCommand.questionId());
+
+		questionValidator.hasQuestionOwnership(question, member);
+
+		questionValidator.validModifyAndRemove(question);
+
+		question.deleteQuestion();
+
+		log.debug("remove question finished for deleteQuestionCommand: {}", deleteQuestionCommand);
+
+	}
 }

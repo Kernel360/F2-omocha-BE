@@ -11,6 +11,7 @@ import org.omocha.domain.auction.qna.QuestionCommand;
 import org.omocha.domain.auction.qna.QuestionInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,6 +93,33 @@ public class QuestionController {
 			.status(QUESTION_MODIFY_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
+	}
+
+	@DeleteMapping("/{questionId}")
+	public ResponseEntity<ResultDto<Void>> questionRemove(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable(value = "questionId") Long questionId
+	) {
+
+		log.info("received questionId: {}", questionId);
+		log.debug("remove question started");
+
+		Long memberId = userPrincipal.getId();
+
+		QuestionCommand.DeleteQuestion deleteQuestionCommand = questionDtoMapper.toCommand(memberId, questionId);
+
+		qnaFacade.removeQuestion(deleteQuestionCommand);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			QUESTION_DELETE_SUCCESS.getStatusCode(),
+			QUESTION_DELETE_SUCCESS.getResultMsg()
+		);
+
+		log.debug("remove question finished");
+
+		return ResponseEntity
+			.status(QUESTION_DELETE_SUCCESS.getStatusCode())
+			.body(resultDto);
 	}
 
 }

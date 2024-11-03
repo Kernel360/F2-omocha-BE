@@ -17,4 +17,10 @@ public class QuestionCommand {
 	) {
 	}
 
+	public record DeleteQuestion(
+		Long memberId,
+		Long questionId
+	) {
+	}
+
 }

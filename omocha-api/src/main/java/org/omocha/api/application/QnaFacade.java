@@ -20,4 +20,8 @@ public class QnaFacade {
 	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
 		return questionService.modifyQuestion(modifyQuestionCommand);
 	}
+
+	public void removeQuestion(QuestionCommand.DeleteQuestion deleteQuestionCommand) {
+		questionService.questionRemove(deleteQuestionCommand);
+	}
 }

@@ -7,4 +7,6 @@ public interface QuestionService {
 	QuestionInfo.CreateQuestionResponse addQuestion(QuestionCommand.CreateQuestion createQuestionCommand);
 
 	QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand);
+
+	void questionRemove(QuestionCommand.DeleteQuestion deleteQuestionCommand);
 }

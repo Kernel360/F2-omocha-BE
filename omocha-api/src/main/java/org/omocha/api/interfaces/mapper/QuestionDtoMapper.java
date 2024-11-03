@@ -22,4 +22,6 @@ public interface QuestionDtoMapper {
 	QuestionDto.CreateQuestionResponse toDto(QuestionInfo.CreateQuestionResponse createQuestionInfo);
 
 	QuestionDto.QuestionResponse toDto(QuestionInfo.ModifyQuestion modifyQuestionInfo);
+
+	QuestionCommand.DeleteQuestion toCommand(Long memberId, Long questionId);
 }
