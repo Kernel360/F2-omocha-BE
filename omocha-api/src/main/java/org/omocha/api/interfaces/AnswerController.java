@@ -1,5 +1,7 @@
 package org.omocha.api.interfaces;
 
+import static org.omocha.domain.exception.code.QnACode.*;
+
 import org.omocha.api.application.QnaFacade;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
@@ -10,6 +12,8 @@ import org.omocha.domain.auction.qna.AnswerInfo;
 import org.omocha.domain.exception.code.QnACode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +30,7 @@ public class AnswerController {
 
 	private final QnaFacade qnaFacade;
 	private final AnswerDtoMapper answerDtoMapper;
+	private final QnaFacade qnaFacadeImpl;
 
 	@PostMapping()
 	public ResponseEntity<ResultDto<AnswerDto.CreateAnswerResponse>> answerAdd(
@@ -38,7 +43,7 @@ public class AnswerController {
 
 		Long memberId = userPrincipal.getId();
 
-		AnswerCommand.CreateAnswerRequest createAnswerCommand = answerDtoMapper.toCommand(memberId,
+		AnswerCommand.CreateAnswer createAnswerCommand = answerDtoMapper.toCommand(memberId,
 			createAnswerRequest);
 
 		AnswerInfo.CreateAnswer createAnswerInfo = qnaFacade.addAnswer(createAnswerCommand);
@@ -56,6 +61,38 @@ public class AnswerController {
 
 		return ResponseEntity
 			.status(QnACode.ANSWER_CREATE_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@PatchMapping("/{answerId}")
+	public ResponseEntity<ResultDto<AnswerDto.AnswerResponse>> answerModify(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable("answerId") Long answerId,
+		@RequestBody AnswerDto.ModifyAnswerRequest modifyAnswerRequest
+	) {
+
+		log.info("received answerId : {} , ModifyAnswerRequest : {}", answerId, modifyAnswerRequest);
+		log.debug("modify answer started");
+
+		Long memberId = userPrincipal.getId();
+
+		AnswerCommand.ModifyAnswer modifyAnswerCommand = answerDtoMapper.toCommand(memberId, answerId,
+			modifyAnswerRequest);
+
+		AnswerInfo.AnswerResponse modifyAnswerInfo = qnaFacade.modifyAnswer(modifyAnswerCommand);
+
+		AnswerDto.AnswerResponse modifyAnswerResponse = answerDtoMapper.toDto(modifyAnswerInfo);
+
+		ResultDto<AnswerDto.AnswerResponse> resultDto = ResultDto.res(
+			ANSWER_MODIFY_SUCCESS.getStatusCode(),
+			ANSWER_MODIFY_SUCCESS.getResultMsg(),
+			modifyAnswerResponse
+		);
+
+		log.debug("modify answer finished");
+
+		return ResponseEntity
+			.status(ANSWER_MODIFY_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 

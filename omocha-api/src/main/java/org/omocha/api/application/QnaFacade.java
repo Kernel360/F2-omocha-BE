@@ -29,7 +29,11 @@ public class QnaFacade {
 		questionService.questionRemove(deleteQuestionCommand);
 	}
 
-	public AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswerRequest createAnswerCommand) {
+	public AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswer createAnswerCommand) {
 		return answerService.addAnswer(createAnswerCommand);
+	}
+
+	public AnswerInfo.AnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
+		return answerService.modifyAnswer(modifyAnswerCommand);
 	}
 }

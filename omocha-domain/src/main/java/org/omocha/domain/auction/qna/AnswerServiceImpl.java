@@ -5,6 +5,7 @@ import org.omocha.domain.auction.AuctionReader;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +19,12 @@ public class AnswerServiceImpl implements AnswerService {
 	private final QuestionReader questionReader;
 	private final AuctionReader auctionReader;
 	private final AnswerStore answerStore;
+	private final AnswerReader answerReader;
 
 	private final AnswerValidator answerValidator;
 
 	@Override
-	public AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswerRequest createAnswerCommand) {
+	public AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswer createAnswerCommand) {
 		log.debug("add answer started for createAnswerCommand: {}", createAnswerCommand);
 
 		// TODO : Entity 조회 추후 리팩토링
@@ -47,5 +49,25 @@ public class AnswerServiceImpl implements AnswerService {
 		answerStore.store(answer);
 
 		return AnswerInfo.CreateAnswer.toDto(answer);
+	}
+
+	@Override
+	@Transactional
+	public AnswerInfo.AnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
+		log.debug("modify answer started for modifyAnswerCommand : {}", modifyAnswerCommand);
+
+		Member member = memberReader.findById(modifyAnswerCommand.memberId());
+
+		Answer answer = answerReader.findAnswer(modifyAnswerCommand.answerId());
+
+		answerValidator.hasAuctionOwnership(answer.getQuestion().getAuction(), member);
+
+		answer.updateAnswer(modifyAnswerCommand.title(), modifyAnswerCommand.content());
+
+		// log.debug("modify answer finished for memberId: {} , answerId: {}, ModifyAnswerRequest : {}", memberId,
+		// 	answerId,
+		// 	modifyAnswerRequest);
+
+		return AnswerInfo.AnswerResponse.toDto(answer);
 	}
 }

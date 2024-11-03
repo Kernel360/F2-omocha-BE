@@ -26,4 +26,24 @@ public class AnswerInfo {
 		}
 	}
 
+	public record AnswerResponse(
+		Long answerId,
+		String title,
+		String content,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime createdAt
+	) {
+		public static AnswerResponse toDto(
+			Answer answer
+		) {
+			return new AnswerResponse(
+				answer.getAnswerId(),
+				answer.getTitle(),
+				answer.getContent(),
+				answer.getCreatedAt()
+			);
+
+		}
+	}
+
 }

@@ -5,12 +5,7 @@ import org.omocha.domain.member.Member;
 
 public interface AnswerValidator {
 
-	void hasAuctionOwnership(
-		Auction auction,
-		Member member
-	);
+	void hasAuctionOwnership(Auction auction, Member member);
 
-	void validateAnswerNotExists(
-		Question question
-	);
+	void validateAnswerNotExists(Question question);
 }
