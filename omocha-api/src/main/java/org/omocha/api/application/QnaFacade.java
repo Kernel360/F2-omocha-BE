@@ -16,4 +16,8 @@ public class QnaFacade {
 	public QuestionInfo.CreateQuestionResponse addQuestion(QuestionCommand.CreateQuestion createQuestionCommand) {
 		return questionService.addQuestion(createQuestionCommand);
 	}
+
+	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
+		return questionService.modifyQuestion(modifyQuestionCommand);
+	}
 }

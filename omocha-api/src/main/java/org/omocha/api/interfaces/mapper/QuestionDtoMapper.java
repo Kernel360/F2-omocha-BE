@@ -14,7 +14,12 @@ import org.omocha.domain.auction.qna.QuestionInfo;
 )
 public interface QuestionDtoMapper {
 
+	QuestionCommand.ModifyQuestion toCommand(Long memberId, Long questionId,
+		QuestionDto.ModifyQuestionRequest modifyQuestionRequest);
+
 	QuestionCommand.CreateQuestion toCommand(Long memberId, QuestionDto.CreateQuestionRequest request);
 
 	QuestionDto.CreateQuestionResponse toDto(QuestionInfo.CreateQuestionResponse createQuestionInfo);
+
+	QuestionDto.QuestionResponse toDto(QuestionInfo.ModifyQuestion modifyQuestionInfo);
 }

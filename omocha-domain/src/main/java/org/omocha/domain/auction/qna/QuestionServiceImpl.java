@@ -18,6 +18,9 @@ public class QuestionServiceImpl implements QuestionService {
 	private final MemberReader memberReader;
 	private final AuctionReader auctionReader;
 	private final QuestionStore questionStore;
+	private final QuestionReader questionReader;
+
+	private final QuestionValidator questionValidator;
 
 	@Override
 	@Transactional
@@ -44,5 +47,25 @@ public class QuestionServiceImpl implements QuestionService {
 
 		return QuestionInfo.CreateQuestionResponse.toDto(question);
 
+	}
+
+	@Override
+	@Transactional
+	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
+
+		Member member = memberReader.findById(modifyQuestionCommand.memberId());
+
+		Question question = questionReader.findQuestion(modifyQuestionCommand.questionId());
+
+		questionValidator.hasQuestionOwnership(question, member);
+
+		questionValidator.validModifyAndRemove(question);
+
+		question.updateQuestion(modifyQuestionCommand.title(), modifyQuestionCommand.content());
+
+		// log.debug("modify question finished for memberId: {}, questionId: {}, ModifyQuestionRequest: {}", memberId,
+		// 	questionId, modifyQuestionRequest);
+
+		return QuestionInfo.ModifyQuestion.toDto(question);
 	}
 }

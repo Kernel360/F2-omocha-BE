@@ -8,4 +8,13 @@ public class QuestionCommand {
 		String content
 	) {
 	}
+
+	public record ModifyQuestion(
+		Long memberId,
+		Long questionId,
+		String title,
+		String content
+	) {
+	}
+
 }
