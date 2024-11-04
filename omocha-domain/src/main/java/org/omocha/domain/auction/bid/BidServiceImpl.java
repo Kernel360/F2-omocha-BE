@@ -28,7 +28,7 @@ public class BidServiceImpl implements BidService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<BidInfo.BidList> getBidList(Long auctionId) {
+	public List<BidInfo.BidList> retrieveBids(Long auctionId) {
 		return bidReader.getBidList(auctionId)
 			.stream()
 			.map(BidInfo.BidList::toInfo)
@@ -60,7 +60,7 @@ public class BidServiceImpl implements BidService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public BidInfo.NowPrice getNowPrice(Long auctionId) {
+	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
 		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
 			.map(BidInfo.NowPrice::toInfo)
 			.orElseGet(() -> new BidInfo.NowPrice(0L, null, LocalDateTime.now()));

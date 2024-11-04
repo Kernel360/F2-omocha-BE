@@ -41,7 +41,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 				Member highestBuyer = highestBid.getBuyer();
 
 				var chatRoomCommand = new ChatCommand.CreateChatRoom(
-					auction.getAuctionId(), highestBuyer.getMemberId(), highestBid.getBidPrice());
+					auction.getAuctionId(), highestBuyer.getMemberId());
 				chatService.addChatRoom(chatRoomCommand);
 
 				auction.statusConcluded();

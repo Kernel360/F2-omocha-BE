@@ -36,7 +36,7 @@ public class BidController implements BidApi {
 	public ResponseEntity<ResultDto<List<BidDto.BidListResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
 	) {
-		List<BidInfo.BidList> bidList = bidFacade.getBidList(auctionId);
+		List<BidInfo.BidList> bidList = bidFacade.retrieveBids(auctionId);
 
 		List<BidDto.BidListResponse> response = bidDtoMapper.toResponse(bidList);
 
@@ -78,7 +78,7 @@ public class BidController implements BidApi {
 	public ResponseEntity<ResultDto<BidDto.NowPriceResponse>> nowPrice(
 		@PathVariable("auction_id") Long auctionId
 	) {
-		BidInfo.NowPrice nowPrice = bidFacade.getNowPrice(auctionId);
+		BidInfo.NowPrice nowPrice = bidFacade.retrieveNowPrice(auctionId);
 		BidDto.NowPriceResponse response = bidDtoMapper.toResponse(nowPrice);
 
 		ResultDto<BidDto.NowPriceResponse> resultDto = ResultDto.res(
