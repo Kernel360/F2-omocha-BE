@@ -28,7 +28,7 @@ public class ChatReaderImpl implements ChatReader {
 	}
 
 	@Override
-	public Slice<ChatInfo.RetrieveMyChatRoom> getMyChatRooms(
+	public Slice<ChatInfo.RetrieveMyChatRoom> getMyChatRoomList(
 		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	) {
@@ -36,7 +36,7 @@ public class ChatReaderImpl implements ChatReader {
 	}
 
 	@Override
-	public Slice<ChatInfo.RetrieveChatRoomMessage> getChatRoomMessages(
+	public Slice<ChatInfo.RetrieveChatRoomMessage> getChatRoomMessageList(
 		ChatCommand.RetrieveChatRoomMessage chatMessageCommand,
 		Pageable pageable
 	) {

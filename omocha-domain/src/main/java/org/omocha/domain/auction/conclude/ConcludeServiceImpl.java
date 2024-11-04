@@ -30,7 +30,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 	@Override
 	@Transactional
 	public void concludeAuction() {
-		List<Auction> expiredBiddingAuctions = auctionReader.findExpiredBiddingAuctions();
+		List<Auction> expiredBiddingAuctions = auctionReader.getExpiredBiddingAuctionList();
 
 		for (Auction auction : expiredBiddingAuctions) {
 			Optional<Bid> optionalHighestBid = bidReader.findHighestBid(auction.getAuctionId());

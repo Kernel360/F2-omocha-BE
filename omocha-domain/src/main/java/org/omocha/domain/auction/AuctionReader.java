@@ -13,7 +13,7 @@ public interface AuctionReader {
 
 	Auction getAuction(Long auctionId);
 
-	List<Auction> findExpiredBiddingAuctions();
+	List<Auction> getExpiredBiddingAuctionList();
 
 	void removeAuction(Auction auction);
 

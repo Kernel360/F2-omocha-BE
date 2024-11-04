@@ -51,7 +51,7 @@ public class ChatServiceImpl implements ChatService {
 		Pageable pageable
 	) {
 
-		return chatReader.getMyChatRooms(retrieveCommand, pageable);
+		return chatReader.getMyChatRoomList(retrieveCommand, pageable);
 	}
 
 	@Override
@@ -93,6 +93,6 @@ public class ChatServiceImpl implements ChatService {
 			throw new ChatRoomAccessException(chatMessageCommand.memberId());
 		}
 
-		return chatReader.getChatRoomMessages(chatMessageCommand, pageable);
+		return chatReader.getChatRoomMessageList(chatMessageCommand, pageable);
 	}
 }
