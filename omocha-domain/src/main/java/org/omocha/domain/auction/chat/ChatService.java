@@ -7,7 +7,7 @@ public interface ChatService {
 
 	void addChatRoom(ChatCommand.AddChatRoom addChatRoom);
 
-	Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRoom(
+	Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRooms(
 		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	);
@@ -16,7 +16,7 @@ public interface ChatService {
 
 	void sendChatMessage(Chat chatMessage);
 
-	Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessage(
+	Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessages(
 		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
 		Pageable pageable
 	);

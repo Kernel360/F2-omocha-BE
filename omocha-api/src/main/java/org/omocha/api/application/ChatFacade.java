@@ -26,7 +26,7 @@ public class ChatFacade {
 		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	) {
-		return chatService.retrieveMyChatRoom(retrieveCommand, pageable);
+		return chatService.retrieveMyChatRooms(retrieveCommand, pageable);
 	}
 
 	public void processChatMessage(ChatCommand.AddChatMessage chatMessage) {
@@ -38,7 +38,7 @@ public class ChatFacade {
 		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
 		Pageable pageable
 	) {
-		return chatService.retrieveChatRoomMessage(chatRoomMessage, pageable);
+		return chatService.retrieveChatRoomMessages(chatRoomMessage, pageable);
 	}
 
 }
