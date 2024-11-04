@@ -1,5 +1,8 @@
 package org.omocha.infra;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
@@ -29,9 +32,15 @@ public class AuctionReaderImpl implements AuctionReader {
 	}
 
 	@Override
-	public Auction findAuction(Long auctionId) {
+	public Auction getAuction(Long auctionId) {
 		return auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(auctionId));
+	}
+
+	@Override
+	public List<Auction> findExpiredBiddingAuctions() {
+		return auctionRepository.findAllByAuctionStatusAndEndDateBefore(
+			Auction.AuctionStatus.BIDDING, LocalDateTime.now());
 	}
 
 	// @Override

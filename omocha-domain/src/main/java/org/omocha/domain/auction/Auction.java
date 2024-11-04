@@ -124,5 +124,13 @@ public class Auction extends BaseEntity {
 			throw new AuctionNotInBiddingStateException(auctionId, auctionStatus);
 		}
 	}
+
+	public void statusConcluded() {
+		this.auctionStatus = AuctionStatus.CONCLUDED;
+	}
+
+	public void statusNoBids() {
+		this.auctionStatus = AuctionStatus.NO_BIDS;
+	}
 }
 

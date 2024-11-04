@@ -1,7 +1,8 @@
-package org.omocha.domain.auction.bid;
+package org.omocha.domain.auction.conclude;
+
+import java.time.LocalDateTime;
 
 import org.omocha.domain.auction.Auction;
-import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.member.Member;
 
 import jakarta.persistence.Entity;
@@ -16,20 +17,16 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@Getter
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "bid")
-public class Bid extends BaseEntity {
+@Table(name = "conclude")
+public class Conclude {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long bidId;
-
-	private Long bidPrice;
+	private Long concludeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "auction_id")
@@ -39,14 +36,20 @@ public class Bid extends BaseEntity {
 	@JoinColumn(name = "buyer_id")
 	private Member buyer;
 
+	private Long concludePrice;
+
+	private LocalDateTime concludedAt;
+
 	@Builder
-	public Bid(
+	public Conclude(
 		Auction auction,
 		Member buyer,
-		Long bidPrice
+		Long concludePrice,
+		LocalDateTime concludedAt
 	) {
 		this.auction = auction;
 		this.buyer = buyer;
-		this.bidPrice = bidPrice;
+		this.concludePrice = concludePrice;
+		this.concludedAt = concludedAt;
 	}
 }

@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/bid")
-public class BidController {
+public class BidController implements BidApi {
 
 	private final BidFacade bidFacade;
 	private final BidDtoMapper bidDtoMapper;
@@ -36,9 +36,9 @@ public class BidController {
 	public ResponseEntity<ResultDto<List<BidDto.BidListResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
 	) {
-		List<BidInfo.BidListResponse> bidListResponse = bidFacade.getBidList(auctionId);
+		List<BidInfo.BidList> bidList = bidFacade.getBidList(auctionId);
 
-		List<BidDto.BidListResponse> response = bidDtoMapper.toResponse(bidListResponse);
+		List<BidDto.BidListResponse> response = bidDtoMapper.toResponse(bidList);
 
 		ResultDto<List<BidDto.BidListResponse>> resultDto = ResultDto.res(
 			BIDDING_GET_SUCCESS.getStatusCode(),
@@ -60,8 +60,8 @@ public class BidController {
 		Long buyerId = userPrincipal.getId();
 		BidCommand.AddBid addBidCommand = bidDtoMapper.toCommand(buyerId, auctionId, addRequest);
 
-		BidInfo.AddBidResponse addBidResponse = bidFacade.addBid(addBidCommand);
-		BidDto.BidAddResponse response = bidDtoMapper.toResponse(addBidResponse);
+		BidInfo.AddBid addBid = bidFacade.addBid(addBidCommand);
+		BidDto.BidAddResponse response = bidDtoMapper.toResponse(addBid);
 
 		ResultDto<BidDto.BidAddResponse> resultDto = ResultDto.res(
 			BIDDING_CREATE_SUCCESS.getStatusCode(),
@@ -78,8 +78,8 @@ public class BidController {
 	public ResponseEntity<ResultDto<BidDto.NowPriceResponse>> nowPrice(
 		@PathVariable("auction_id") Long auctionId
 	) {
-		BidInfo.NowPriceResponse nowPriceResponse = bidFacade.getNowPrice(auctionId);
-		BidDto.NowPriceResponse response = bidDtoMapper.toResponse(nowPriceResponse);
+		BidInfo.NowPrice nowPrice = bidFacade.getNowPrice(auctionId);
+		BidDto.NowPriceResponse response = bidDtoMapper.toResponse(nowPrice);
 
 		ResultDto<BidDto.NowPriceResponse> resultDto = ResultDto.res(
 			NOW_PRICE_GET_SUCCESS.getStatusCode(),
