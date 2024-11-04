@@ -27,6 +27,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 	private final ConcludeReader concludeReader;
 	private final ChatService chatService;
 
+	@Override
 	@Transactional
 	public void concludeAuction() {
 		List<Auction> expiredBiddingAuctions = auctionReader.findExpiredBiddingAuctions();
@@ -50,6 +51,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 		}
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public Long findConcludePrice(Long auctionId) {
 		return concludeReader.findConclude(auctionId).getConcludePrice();
