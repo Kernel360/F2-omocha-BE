@@ -52,14 +52,13 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.auctionStatus,
 				auction.thumbnailPath,
 				auction.nowPrice,
-				conclude.concludePrice,
+				// conclude.concludePrice,
 				auction.bidCount,
 				auction.startDate,
 				auction.endDate,
 				auction.createdAt
 			))
 			.from(auction)
-			.leftJoin(auction).on(auction.auctionId.eq(conclude.auction.auctionId))
 			.where(
 				titleContains(searchAuction.title()),
 				statusEquals(searchAuction.auctionStatus())

@@ -75,7 +75,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 				seller.nickname,
 				seller.profileImageUrl,
 				auction.thumbnailPath,
-				conclude.concludePrice,
+				// conclude.concludePrice,
 				buyer.memberId,
 				buyer.nickname,
 				buyer.profileImageUrl,
@@ -87,7 +87,6 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 			.leftJoin(seller).on(seller.memberId.eq(chatRoom.sellerId))
 			.leftJoin(buyer).on(buyer.memberId.eq(chatRoom.buyerId))
 			.leftJoin(auction).on(auction.auctionId.eq(chatRoom.auctionId))
-			.leftJoin(auction).on(auction.auctionId.eq(conclude.auction.auctionId))
 			.where(chatRoom.buyerId.eq(retrieveMyChatRoom.memberId())
 				.or(chatRoom.sellerId.eq(retrieveMyChatRoom.memberId())))
 			.orderBy(

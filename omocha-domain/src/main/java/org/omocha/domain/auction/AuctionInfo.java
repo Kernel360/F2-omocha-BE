@@ -55,7 +55,7 @@ public class AuctionInfo {
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
-		Long concludePrice,
+		// Long concludePrice,
 		Long bidCount,
 		LocalDateTime startDate,
 		LocalDateTime endDate,
@@ -72,7 +72,7 @@ public class AuctionInfo {
 			Auction.AuctionStatus auctionStatus,
 			String thumbnailPath,
 			Long nowPrice,
-			Long concludePrice,
+			// Long concludePrice,
 			Long bidCount,
 			LocalDateTime startDate,
 			LocalDateTime endDate,
@@ -87,7 +87,7 @@ public class AuctionInfo {
 			this.auctionStatus = auctionStatus;
 			this.thumbnailPath = thumbnailPath;
 			this.nowPrice = nowPrice;
-			this.concludePrice = concludePrice;
+			// this.concludePrice = concludePrice;
 			this.bidCount = bidCount;
 			this.startDate = startDate;
 			this.endDate = endDate;

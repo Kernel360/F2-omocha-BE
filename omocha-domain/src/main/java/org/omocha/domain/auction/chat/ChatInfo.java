@@ -19,7 +19,7 @@ public class ChatInfo {
 		String sellerName,
 		String sellerProfileImage,
 		String thumbnailPath,
-		Long concludePrice,
+		// Long concludePrice,
 		Long buyerId,
 		String buyerName,
 		String buyerProfileImage,
@@ -38,7 +38,7 @@ public class ChatInfo {
 			String sellerName,
 			String sellerProfileImage,
 			String thumbnailPath,
-			Long concludePrice,
+			// Long concludePrice,
 			Long buyerId,
 			String buyerName,
 			String buyerProfileImage,
@@ -53,7 +53,7 @@ public class ChatInfo {
 			this.sellerName = sellerName;
 			this.sellerProfileImage = sellerProfileImage;
 			this.thumbnailPath = thumbnailPath;
-			this.concludePrice = concludePrice;
+			// this.concludePrice = concludePrice;
 			this.buyerId = buyerId;
 			this.buyerName = buyerName;
 			this.buyerProfileImage = buyerProfileImage;
