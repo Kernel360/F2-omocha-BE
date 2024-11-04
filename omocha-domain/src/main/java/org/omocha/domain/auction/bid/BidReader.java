@@ -7,5 +7,5 @@ public interface BidReader {
 
 	public List<Bid> getBidList(Long auctionId);
 
-	public Optional<Bid> getHighestBid(Long auctionId);
+	public Optional<Bid> findHighestBid(Long auctionId);
 }

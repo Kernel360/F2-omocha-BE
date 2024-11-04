@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class BidInfo {
 
-	public record BidListResponse(
+	public record BidList(
 		Long buyerId,
 		Long bidPrice,
 		LocalDateTime createdAt
 	) {
-		public static BidListResponse toResponse(
+		public static BidList toInfo(
 			Bid bid
 		) {
-			return new BidListResponse(
+			return new BidList(
 				bid.getBuyer().getMemberId(),
 				bid.getBidPrice(),
 				bid.getCreatedAt()
@@ -20,16 +20,16 @@ public class BidInfo {
 		}
 	}
 
-	public record AddBidResponse(
+	public record AddBid(
 		Long bidId,
 		Long buyerId,
 		Long bidPrice,
 		LocalDateTime createdAt
 	) {
-		public static AddBidResponse toDto(
+		public static AddBid toInfo(
 			Bid bid
 		) {
-			return new AddBidResponse(
+			return new AddBid(
 				bid.getBidId(),
 				bid.getBuyer().getMemberId(),
 				bid.getBidPrice(),
@@ -38,15 +38,15 @@ public class BidInfo {
 		}
 	}
 
-	public record NowPriceResponse(
+	public record NowPrice(
 		Long nowPrice,
 		LocalDateTime createdAt,
 		LocalDateTime calledAt
 	) {
-		public static NowPriceResponse toResponse(
+		public static NowPrice toInfo(
 			Bid bid
 		) {
-			return new NowPriceResponse(
+			return new NowPrice(
 				bid.getBidPrice(),
 				bid.getCreatedAt(),
 				LocalDateTime.now()

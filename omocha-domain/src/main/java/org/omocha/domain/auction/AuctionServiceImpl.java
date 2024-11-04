@@ -40,7 +40,7 @@ public class AuctionServiceImpl implements AuctionService {
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
-		
+
 		// TODO : nowPrice, concludePrice, bidCount 추가해야함
 		return auctionReader.searchAuctionList(searchAuction, pageable);
 	}
@@ -48,7 +48,7 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional(readOnly = true)
 	public AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction) {
-		Auction auction = auctionReader.findAuction(retrieveAuction.auctionId());
+		Auction auction = auctionReader.getAuction(retrieveAuction.auctionId());
 
 		List<String> imagePaths = auction.getImages().stream()
 			.map(Image::getImagePath)

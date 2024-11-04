@@ -32,7 +32,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 		List<Auction> expiredBiddingAuctions = auctionReader.findExpiredBiddingAuctions();
 
 		for (Auction auction : expiredBiddingAuctions) {
-			Optional<Bid> optionalHighestBid = bidReader.getHighestBid(auction.getAuctionId());
+			Optional<Bid> optionalHighestBid = bidReader.findHighestBid(auction.getAuctionId());
 
 			optionalHighestBid.ifPresentOrElse(highestBid -> {
 				concludeStore.store(auction, highestBid);

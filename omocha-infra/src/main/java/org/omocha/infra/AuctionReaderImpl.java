@@ -32,7 +32,7 @@ public class AuctionReaderImpl implements AuctionReader {
 	}
 
 	@Override
-	public Auction findAuction(Long auctionId) {
+	public Auction getAuction(Long auctionId) {
 		return auctionRepository.findById(auctionId)
 			.orElseThrow(() -> new AuctionNotFoundException(auctionId));
 	}

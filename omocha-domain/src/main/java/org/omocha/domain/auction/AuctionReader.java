@@ -11,7 +11,7 @@ public interface AuctionReader {
 		Pageable pageable
 	);
 
-	Auction findAuction(Long auctionId);
+	Auction getAuction(Long auctionId);
 
 	List<Auction> findExpiredBiddingAuctions();
 
