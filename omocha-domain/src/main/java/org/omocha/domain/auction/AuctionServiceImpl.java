@@ -3,6 +3,7 @@ package org.omocha.domain.auction;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.omocha.domain.auction.conclude.ConcludeReader;
 import org.omocha.domain.exception.AuctionHasBidException;
 import org.omocha.domain.exception.AuctionImageDeleteFailException;
 import org.omocha.domain.exception.AuctionImageNotFoundException;
@@ -26,6 +27,7 @@ public class AuctionServiceImpl implements AuctionService {
 	private final AuctionImagesFactory auctionImagesFactory;
 	private final AuctionReader auctionReader;
 	private final ImageProvider imageProvider;
+	private final ConcludeReader concludeReader;
 
 	@Override
 	@Transactional
@@ -59,7 +61,6 @@ public class AuctionServiceImpl implements AuctionService {
 			.map(Image::getImagePath)
 			.collect(Collectors.toList());
 
-		// TODO : nowPrice, concludePrice, bidCount 추가해야함
 		return new AuctionInfo.RetrieveAuction(auction, imagePaths);
 	}
 

@@ -17,7 +17,6 @@ public class AuctionInfo {
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
-		// Long concludePrice,
 		Long bidCount,
 		LocalDateTime startDate,
 		LocalDateTime endDate,
@@ -34,9 +33,8 @@ public class AuctionInfo {
 				auction.getBidUnit(),
 				auction.getAuctionStatus(),
 				auction.getThumbnailPath(),
-				auction.getNowPrice(), // 예시 메서드
-				// auction.getConcludePrice(), // 예시 메서드
-				auction.getBidCount(), // 예시 메서드
+				auction.getNowPrice(),
+				auction.getBidCount(),
 				auction.getStartDate(),
 				auction.getEndDate(),
 				auction.getCreatedAt(),
@@ -55,7 +53,7 @@ public class AuctionInfo {
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
-		// Long concludePrice,
+		Long concludePrice,
 		Long bidCount,
 		LocalDateTime startDate,
 		LocalDateTime endDate,
@@ -72,7 +70,7 @@ public class AuctionInfo {
 			Auction.AuctionStatus auctionStatus,
 			String thumbnailPath,
 			Long nowPrice,
-			// Long concludePrice,
+			Long concludePrice,
 			Long bidCount,
 			LocalDateTime startDate,
 			LocalDateTime endDate,
@@ -87,7 +85,7 @@ public class AuctionInfo {
 			this.auctionStatus = auctionStatus;
 			this.thumbnailPath = thumbnailPath;
 			this.nowPrice = nowPrice;
-			// this.concludePrice = concludePrice;
+			this.concludePrice = concludePrice;
 			this.bidCount = bidCount;
 			this.startDate = startDate;
 			this.endDate = endDate;

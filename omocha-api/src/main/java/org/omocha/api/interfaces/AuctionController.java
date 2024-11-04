@@ -107,7 +107,6 @@ public class AuctionController implements AuctionApi {
 
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
-		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
 		log.info("Received auction details request: {}", auctionId);
@@ -116,7 +115,7 @@ public class AuctionController implements AuctionApi {
 		AuctionInfo.RetrieveAuction detailInfo = auctionFacade.retrieveAuction(auctionCommand);
 		AuctionDto.AuctionDetailsResponse response = auctionDtoMapper.toResponse(detailInfo);
 
-		log.info("Auction details retrieved by memberId : {}", userPrincipal.getId());
+		log.info("Auction details retrieved auctionId : {}", auctionId);
 
 		ResultDto<AuctionDto.AuctionDetailsResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),

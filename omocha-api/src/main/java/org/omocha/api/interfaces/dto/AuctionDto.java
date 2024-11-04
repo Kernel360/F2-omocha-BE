@@ -41,7 +41,7 @@ public class AuctionDto {
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
-		// Long concludePrice,
+		Long concludePrice,
 		Long bidCount,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
@@ -62,7 +62,6 @@ public class AuctionDto {
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
-		// Long concludePrice,
 		Long bidCount,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
