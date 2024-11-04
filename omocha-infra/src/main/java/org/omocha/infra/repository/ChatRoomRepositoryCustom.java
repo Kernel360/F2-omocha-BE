@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface ChatRoomRepositoryCustom {
-	Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
+	Slice<ChatInfo.RetrieveMyChatRoom> getMyChatRooms(
 		ChatCommand.RetrieveMyChatRoom retrieveMyChatRoom,
 		Pageable pageable
 	);

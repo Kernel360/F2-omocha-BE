@@ -15,5 +15,5 @@ public interface ChatInfoMapper {
 
 	@Mapping(source = "savedChat.createdAt", target = "createdAt")
 	@Mapping(source = "sender.profileImageUrl", target = "senderProfileImage")
-	ChatInfo.ChatMessage toResponse(Member sender, Chat savedChat);
+	ChatInfo.RetrieveChatRoomMessage toResponse(Member sender, Chat savedChat);
 }

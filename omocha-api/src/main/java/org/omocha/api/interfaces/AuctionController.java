@@ -19,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,24 +46,30 @@ public class AuctionController implements AuctionApi {
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 		produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public ResponseEntity<ResultDto<AuctionDto.CreateAuctionResponse>> auctionSave(
+	public ResponseEntity<ResultDto<AuctionDto.AuctionAddResponse>> auctionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestPart("auctionRequest") AuctionDto.CreateAuctionRequest auctionRequest,
+		@RequestPart("auctionRequest") AuctionDto.AuctionAddRequest auctionRequest,
 		@RequestPart(value = "images", required = true) List<MultipartFile> images,
 		@RequestPart(value = "thumbnailPath", required = true) MultipartFile thumbnailPath
 	) {
+		log.info("Received auction add request: {}", auctionRequest);
+
 		Long memberId = userPrincipal.getId();
-		AuctionCommand.RegisterAuction auctionCommand = auctionDtoMapper.toCommand(
+
+		AuctionCommand.AddAuction auctionCommand = auctionDtoMapper.toCommand(
 			auctionRequest, memberId, images, thumbnailPath);
 
 		Long auctionId = auctionFacade.addAuction(auctionCommand);
-		AuctionDto.CreateAuctionResponse response = auctionDtoMapper.toResponse(auctionId);
 
-		ResultDto<AuctionDto.CreateAuctionResponse> result = ResultDto.res(
+		AuctionDto.AuctionAddResponse response = auctionDtoMapper.toResponse(auctionId);
+
+		ResultDto<AuctionDto.AuctionAddResponse> result = ResultDto.res(
 			AUCTION_CREATE_SUCCESS.getStatusCode(),
 			AUCTION_CREATE_SUCCESS.getDescription(),
 			response
 		);
+
+		log.info("Auction created by memberId : {}", memberId);
 
 		return ResponseEntity
 			.status(AUCTION_CREATE_SUCCESS.getHttpStatus())
@@ -70,23 +77,24 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@GetMapping("/basic-list")
-	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionListResponse>>> auctionList(
-		AuctionDto.AuctionSearchCondition condition,
+	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
+		AuctionDto.AuctionSearchRequest searchRequest,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
 		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	) {
+
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		AuctionCommand.SearchAuction auctionCommand = auctionDtoMapper.toCommand(condition, auctionStatus);
+		AuctionCommand.SearchAuction searchCommand = auctionDtoMapper.toCommand(searchRequest, auctionStatus);
 
-		Page<AuctionInfo.AuctionListResponse> searchResult = auctionFacade.searchAuction(auctionCommand, sortPage);
+		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuction(searchCommand, sortPage);
 
-		Page<AuctionDto.AuctionListResponse> response = auctionDtoMapper.toResponse(searchResult);
+		Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toResponse(searchInfo);
 
-		ResultDto<Page<AuctionDto.AuctionListResponse>> result = ResultDto.res(
+		ResultDto<Page<AuctionDto.AuctionSearchResponse>> result = ResultDto.res(
 			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
 			AUCTION_LIST_ACCESS_SUCCESS.getDescription(),
 			response
@@ -98,23 +106,51 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@GetMapping("/{auction_id}")
-	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailResponse>> auctionDetail(
+	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
 		@PathVariable("auction_id") Long auctionId
 	) {
+		log.info("Received auction details request: {}", auctionId);
 
 		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId);
-		AuctionInfo.AuctionDetailResponse detailResult = auctionFacade.findAuctionDetail(auctionCommand);
-		AuctionDto.AuctionDetailResponse response = auctionDtoMapper.toResponse(detailResult);
+		AuctionInfo.RetrieveAuction detailInfo = auctionFacade.retrieveAuction(auctionCommand);
+		AuctionDto.AuctionDetailsResponse response = auctionDtoMapper.toResponse(detailInfo);
 
-		ResultDto<AuctionDto.AuctionDetailResponse> result = ResultDto.res(
+		log.info("Auction details retrieved auctionId : {}", auctionId);
+
+		ResultDto<AuctionDto.AuctionDetailsResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
-			AUCTION_DELETE_SUCCESS.getDescription(),
+			AUCTION_DETAIL_SUCCESS.getDescription(),
 			response
 		);
 
 		return ResponseEntity
-			.status(AUCTION_LIST_ACCESS_SUCCESS.getHttpStatus())
+			.status(AUCTION_DETAIL_SUCCESS.getHttpStatus())
 			.body(result);
 
+	}
+
+	@Override
+	@DeleteMapping("/{auction_id}")
+	public ResponseEntity<ResultDto<Void>> auctionRemove(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable("auction_id") Long auctionId
+	) {
+		log.info("Received auction remove request: {}, memberId: {}", auctionId, userPrincipal.getId());
+
+		AuctionCommand.RemoveAuction removeCommand =
+			auctionDtoMapper.toCommand(userPrincipal.getId(), auctionId);
+
+		auctionFacade.removeAuction(removeCommand);
+
+		log.info("Auction removed by memberId: {}, auctionId: {}", userPrincipal.getId(), auctionId);
+
+		ResultDto<Void> result = ResultDto.res(
+			AUCTION_DELETE_SUCCESS.getStatusCode(),
+			AUCTION_DELETE_SUCCESS.getDescription()
+		);
+
+		return ResponseEntity
+			.status(AUCTION_DELETE_SUCCESS.getHttpStatus())
+			.body(result);
 	}
 }

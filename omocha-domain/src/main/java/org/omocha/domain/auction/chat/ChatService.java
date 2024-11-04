@@ -5,18 +5,18 @@ import org.springframework.data.domain.Slice;
 
 public interface ChatService {
 
-	void addChatRoom(ChatCommand.CreateChatRoom addChatRoom);
+	void addChatRoom(ChatCommand.AddChatRoom addChatRoom);
 
-	Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
-		ChatCommand.RetrieveMyChatRoom retriveMyChatRoom,
+	Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRooms(
+		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	);
 
-	Chat saveChatMessage(ChatCommand.SaveChatMessage chatMessage);
+	Chat saveChatMessage(ChatCommand.AddChatMessage chatMessage);
 
 	void sendChatMessage(Chat chatMessage);
 
-	Slice<ChatInfo.ChatMessage> findChatRoomMessages(
+	Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessages(
 		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
 		Pageable pageable
 	);
