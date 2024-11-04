@@ -30,7 +30,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 	@Override
 	@Transactional
 	public void concludeAuction() {
-		List<Auction> expiredBiddingAuctions = auctionReader.findExpiredBiddingAuctions();
+		List<Auction> expiredBiddingAuctions = auctionReader.getExpiredBiddingAuctionList();
 
 		for (Auction auction : expiredBiddingAuctions) {
 			Optional<Bid> optionalHighestBid = bidReader.findHighestBid(auction.getAuctionId());
@@ -40,8 +40,8 @@ public class ConcludeServiceImpl implements ConcludeService {
 
 				Member highestBuyer = highestBid.getBuyer();
 
-				var chatRoomCommand = new ChatCommand.CreateChatRoom(
-					auction.getAuctionId(), highestBuyer.getMemberId(), highestBid.getBidPrice());
+				var chatRoomCommand = new ChatCommand.AddChatRoom(
+					auction.getAuctionId(), highestBuyer.getMemberId());
 				chatService.addChatRoom(chatRoomCommand);
 
 				auction.statusConcluded();

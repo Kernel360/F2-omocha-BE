@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface AuctionRepositoryCustom {
-	Page<AuctionInfo.AuctionListResponse> searchAuctionList(
+	Page<AuctionInfo.SearchAuction> getAuctionList(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	);

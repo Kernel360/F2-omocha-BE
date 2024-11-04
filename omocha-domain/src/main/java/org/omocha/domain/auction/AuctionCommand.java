@@ -5,19 +5,16 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class AuctionCommand {
 
-	public record RegisterAuction(
+	public record AddAuction(
 		Long memberId,
 		String title,
 		String content,
 		Long startPrice,
 		Long bidUnit,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		// TODO : VO 날짜 format 추가
 		LocalDateTime startDate,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
 		List<MultipartFile> images,
 		MultipartFile thumbnailPath
@@ -29,7 +26,7 @@ public class AuctionCommand {
 				.title(title)
 				.content(content)
 				.startPrice(startPrice)
-				.bidCount(0)
+				.bidCount(0L)
 				.bidUnit(bidUnit)
 				.startDate(startDate)
 				.endDate(endDate)
@@ -44,6 +41,12 @@ public class AuctionCommand {
 	}
 
 	public record RetrieveAuction(
+		Long auctionId
+	) {
+	}
+
+	public record RemoveAuction(
+		Long memberId,
 		Long auctionId
 	) {
 	}

@@ -48,7 +48,7 @@ public class Auction extends BaseEntity {
 
 	private Long nowPrice;
 
-	private Integer bidCount;
+	private Long bidCount;
 
 	private Long bidUnit;
 
@@ -73,7 +73,7 @@ public class Auction extends BaseEntity {
 		String content,
 		Long startPrice,
 		Long nowPrice,
-		Integer bidCount,
+		Long bidCount,
 		Long bidUnit,
 		String thumbnailPath,
 		LocalDateTime startDate,

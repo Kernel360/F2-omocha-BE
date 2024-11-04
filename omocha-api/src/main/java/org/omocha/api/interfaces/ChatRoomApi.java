@@ -38,7 +38,7 @@ public interface ChatRoomApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))
 		)
 	})
-	ResponseEntity<ResultDto> chatRoomSave(
+	ResponseEntity<ResultDto> chatRoomAdd(
 		@Parameter(description = "경매 ID", required = true, example = "12", in = ParameterIn.PATH)
 		@PathVariable Long auctionId,
 
@@ -61,7 +61,7 @@ public interface ChatRoomApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))
 		)
 	})
-	ResponseEntity<ResultDto<SliceResponseDto.SliceResponse<ChatInfo.MyChatRoomInfo>>> myChatRoomList(
+	ResponseEntity<ResultDto<SliceResponseDto.SliceResponse<ChatInfo.RetrieveMyChatRoom>>> myChatRoomList(
 		@Parameter(description = "인증된 사용자 정보", required = true, in = ParameterIn.COOKIE)
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 
@@ -92,7 +92,7 @@ public interface ChatRoomApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))
 		)
 	})
-	ResponseEntity<ResultDto<SliceResponseDto.SliceResponse<ChatInfo.ChatMessage>>> chatMessageList(
+	ResponseEntity<ResultDto<SliceResponseDto.SliceResponse<ChatInfo.RetrieveChatRoomMessage>>> chatMessageList(
 		@Parameter(description = "채팅방 ID", required = true, example = "1", in = ParameterIn.PATH)
 		@PathVariable Long roomId,
 

@@ -9,7 +9,8 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.QAuction;
-import org.omocha.domain.auction.QAuctionInfo_AuctionListResponse;
+import org.omocha.domain.auction.QAuctionInfo_SearchAuction;
+import org.omocha.domain.auction.conclude.QConclude;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,13 +35,14 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
-	public Page<AuctionInfo.AuctionListResponse> searchAuctionList(
+	public Page<AuctionInfo.SearchAuction> getAuctionList(
 		AuctionCommand.SearchAuction searchAuction, Pageable pageable) {
 
 		QAuction auction = QAuction.auction;
+		QConclude conclude = QConclude.conclude;
 
-		JPAQuery<AuctionInfo.AuctionListResponse> query = queryFactory
-			.select(new QAuctionInfo_AuctionListResponse(
+		JPAQuery<AuctionInfo.SearchAuction> query = queryFactory
+			.select(new QAuctionInfo_SearchAuction(
 				auction.auctionId,
 				auction.memberId,
 				auction.title,
@@ -49,11 +51,15 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.bidUnit,
 				auction.auctionStatus,
 				auction.thumbnailPath,
+				auction.nowPrice,
+				conclude.concludePrice,
+				auction.bidCount,
 				auction.startDate,
 				auction.endDate,
 				auction.createdAt
 			))
 			.from(auction)
+			.leftJoin(conclude).on(conclude.auction.eq(auction))
 			.where(
 				titleContains(searchAuction.title()),
 				statusEquals(searchAuction.auctionStatus())
@@ -61,7 +67,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 
 		applySorting(pageable, auction, query);
 
-		List<AuctionInfo.AuctionListResponse> results = query
+		List<AuctionInfo.SearchAuction> results = query
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();

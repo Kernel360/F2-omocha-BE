@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ChatCommand {
 
-	public record CreateChatRoom(
+	public record AddChatRoom(
 		Long auctionId,
 		Long buyerId
 	) {
@@ -27,7 +27,7 @@ public class ChatCommand {
 	) {
 	}
 
-	public record SaveChatMessage(
+	public record AddChatMessage(
 		Chat.MessageType messageType,
 		Long senderId,
 		String message,

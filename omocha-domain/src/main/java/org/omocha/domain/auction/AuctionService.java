@@ -5,12 +5,14 @@ import org.springframework.data.domain.Pageable;
 
 public interface AuctionService {
 
-	Long registerAuction(AuctionCommand.RegisterAuction registerAuction);
+	Long addAuction(AuctionCommand.AddAuction addCommand);
 
-	Page<AuctionInfo.AuctionListResponse> searchAuction(
+	Page<AuctionInfo.SearchAuction> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	);
 
-	AuctionInfo.AuctionDetailResponse retrieveAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuction);
+	AuctionInfo.RetrieveAuction retrieveAuction(AuctionCommand.RetrieveAuction retrieveCommand);
+
+	void removeAuction(AuctionCommand.RemoveAuction removeCommand);
 }
