@@ -3,12 +3,10 @@ package org.omocha.domain.auction;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.omocha.domain.auction.conclude.ConcludeReader;
 import org.omocha.domain.exception.AuctionHasBidException;
 import org.omocha.domain.exception.AuctionImageNotFoundException;
 import org.omocha.domain.exception.MemberInvalidException;
 import org.omocha.domain.image.Image;
-import org.omocha.domain.image.ImageProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,8 +23,6 @@ public class AuctionServiceImpl implements AuctionService {
 	private final AuctionStore auctionStore;
 	private final AuctionImagesFactory auctionImagesFactory;
 	private final AuctionReader auctionReader;
-	private final ImageProvider imageProvider;
-	private final ConcludeReader concludeReader;
 
 	@Override
 	@Transactional
