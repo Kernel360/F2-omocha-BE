@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.omocha.domain.auction.conclude.ConcludeReader;
 import org.omocha.domain.exception.AuctionHasBidException;
-import org.omocha.domain.exception.AuctionImageDeleteFailException;
 import org.omocha.domain.exception.AuctionImageNotFoundException;
 import org.omocha.domain.exception.MemberInvalidException;
 import org.omocha.domain.image.Image;
@@ -77,16 +76,6 @@ public class AuctionServiceImpl implements AuctionService {
 
 		if (auction.getBidCount() != null && auction.getBidCount() != 0) {
 			throw new AuctionHasBidException(auction.getAuctionId());
-		}
-
-		try {
-			List<Image> images = auction.getImages();
-			for (Image image : images) {
-				imageProvider.deleteFile(image.getImagePath());
-			}
-			imageProvider.deleteFile(auction.getThumbnailPath());
-		} catch (Exception e) {
-			throw new AuctionImageDeleteFailException(auction.getAuctionId());
 		}
 
 		auctionReader.removeAuction(auction);
