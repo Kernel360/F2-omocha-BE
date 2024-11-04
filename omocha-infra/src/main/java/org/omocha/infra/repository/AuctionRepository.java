@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
 	List<Auction> findAllByAuctionStatusAndEndDateBefore(Auction.AuctionStatus status, LocalDateTime endDate);
+	
 }

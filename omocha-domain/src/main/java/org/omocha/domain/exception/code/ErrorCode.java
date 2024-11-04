@@ -26,7 +26,8 @@ public enum ErrorCode {
 
 	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매를 찾을 수 없습니다."),
 	AUCTION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "경매이미지를 찾을 수 없습니다."),
-
+	AUCTION_MEMBER_INVALID(HttpStatus.BAD_REQUEST, "경매를 생성한 회원이 아니여서 삭제를 할 수 없습니다."),
+	AUCTION_IMAGE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "경매에서 생성된 이미지를 삭제할 수 없습니다."),
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
 
 	// Bid Code

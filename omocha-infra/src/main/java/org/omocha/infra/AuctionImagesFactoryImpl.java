@@ -24,20 +24,20 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 	private final ImageStore imageStore;
 
 	@Override
-	public List<Image> store(Auction auction, AuctionCommand.RegisterAuction requestAuction) {
+	public List<Image> store(Auction auction, AuctionCommand.AddAuction addCommand) {
 
-		String thumbnailPath = imageProvider.uploadFile(requestAuction.thumbnailPath());
+		String thumbnailPath = imageProvider.uploadFile(addCommand.thumbnailPath());
 		auction.thumbnailPathUpload(thumbnailPath);
 
-		return requestAuction.images().stream()
+		return addCommand.images().stream()
 			.map(auctionImageRequest -> {
 				String imagePath = imageProvider.uploadFile(auctionImageRequest);
 				String fileName = auctionImageRequest.getOriginalFilename();
 
-				ImageCommand.RegisterAuctionImage registerAuctionImage = new ImageCommand.RegisterAuctionImage
+				ImageCommand.AddAuctionImage addImageCommand = new ImageCommand.AddAuctionImage
 					(fileName, imagePath, auction);
 
-				Image image = registerAuctionImage.toEntity(fileName, imagePath, auction);
+				Image image = addImageCommand.toEntity(fileName, imagePath, auction);
 				imageStore.store(image);
 
 				return image;

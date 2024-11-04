@@ -6,15 +6,15 @@ import org.springframework.data.domain.Slice;
 public interface ChatReader {
 	boolean existsByAuctionId(Long chatRoomId);
 
-	Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
-		ChatCommand.RetrieveMyChatRoom retrieveMyChatRoom,
+	Slice<ChatInfo.RetrieveMyChatRoom> getMyChatRooms(
+		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	);
 
-	Slice<ChatInfo.ChatMessage> findChatMessages(
-		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
+	Slice<ChatInfo.RetrieveChatRoomMessage> getChatRoomMessages(
+		ChatCommand.RetrieveChatRoomMessage chatMessageCommand,
 		Pageable pageable
 	);
 
-	ChatRoom findChatRoom(Long roomId);
+	ChatRoom getChatRoom(Long roomId);
 }

@@ -24,11 +24,11 @@ public class AuctionReaderImpl implements AuctionReader {
 	private final AuctionRepository auctionRepository;
 
 	@Override
-	public Page<AuctionInfo.AuctionListResponse> searchAuctionList(
+	public Page<AuctionInfo.SearchAuction> getAuctionList(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
-		return auctionRepository.searchAuctionList(searchAuction, pageable);
+		return auctionRepository.getAuctionList(searchAuction, pageable);
 	}
 
 	@Override
@@ -41,6 +41,11 @@ public class AuctionReaderImpl implements AuctionReader {
 	public List<Auction> findExpiredBiddingAuctions() {
 		return auctionRepository.findAllByAuctionStatusAndEndDateBefore(
 			Auction.AuctionStatus.BIDDING, LocalDateTime.now());
+	}
+
+	@Override
+	public void removeAuction(Auction auction) {
+		auctionRepository.delete(auction);
 	}
 
 	// @Override

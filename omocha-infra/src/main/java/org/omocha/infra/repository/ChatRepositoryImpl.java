@@ -5,7 +5,7 @@ import java.util.List;
 import org.omocha.domain.auction.chat.ChatCommand;
 import org.omocha.domain.auction.chat.ChatInfo;
 import org.omocha.domain.auction.chat.QChat;
-import org.omocha.domain.auction.chat.QChatInfo_ChatMessage;
+import org.omocha.domain.auction.chat.QChatInfo_RetrieveChatRoomMessage;
 import org.omocha.domain.member.QMember;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -29,15 +29,15 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 	}
 
 	@Override
-	public Slice<ChatInfo.ChatMessage> findChatMessagesByRoomId(
+	public Slice<ChatInfo.RetrieveChatRoomMessage> getChatRoomMessagesByRoomId(
 		ChatCommand.RetrieveChatRoomMessage retrieveMessage,
 		Pageable pageable
 	) {
 		QChat chat = QChat.chat;
 		QMember member = QMember.member;
 
-		JPAQuery<ChatInfo.ChatMessage> query = queryFactory
-			.select(new QChatInfo_ChatMessage(
+		JPAQuery<ChatInfo.RetrieveChatRoomMessage> query = queryFactory
+			.select(new QChatInfo_RetrieveChatRoomMessage(
 				chat.messageType,
 				chat.senderId,
 				chat.roomId,
@@ -55,7 +55,7 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 
 		query.orderBy(chat.createdAt.desc());
 
-		List<ChatInfo.ChatMessage> messages = query
+		List<ChatInfo.RetrieveChatRoomMessage> messages = query
 			.limit(pageable.getPageSize() + 1)
 			.fetch();
 

@@ -4,12 +4,14 @@ import static org.omocha.domain.auction.chat.Chat.*;
 
 import java.time.LocalDateTime;
 
+import org.omocha.domain.member.Member;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 
 public class ChatInfo {
 
-	public record MyChatRoomInfo(
+	public record RetrieveMyChatRoom(
 		Long auctionId,
 		Long roomId,
 		String roomName,
@@ -17,8 +19,7 @@ public class ChatInfo {
 		String sellerName,
 		String sellerProfileImage,
 		String thumbnailPath,
-		// TODO : 낙찰가 추가 예정
-		// Long concludePrice,
+		Long concludePrice,
 		Long buyerId,
 		String buyerName,
 		String buyerProfileImage,
@@ -29,7 +30,7 @@ public class ChatInfo {
 		String lastMessage
 	) {
 		@QueryProjection
-		public MyChatRoomInfo(
+		public RetrieveMyChatRoom(
 			Long auctionId,
 			Long roomId,
 			String roomName,
@@ -37,7 +38,7 @@ public class ChatInfo {
 			String sellerName,
 			String sellerProfileImage,
 			String thumbnailPath,
-			// Long concludePrice,
+			Long concludePrice,
 			Long buyerId,
 			String buyerName,
 			String buyerProfileImage,
@@ -52,7 +53,7 @@ public class ChatInfo {
 			this.sellerName = sellerName;
 			this.sellerProfileImage = sellerProfileImage;
 			this.thumbnailPath = thumbnailPath;
-			// this.concludePrice = concludePrice;
+			this.concludePrice = concludePrice;
 			this.buyerId = buyerId;
 			this.buyerName = buyerName;
 			this.buyerProfileImage = buyerProfileImage;
@@ -63,18 +64,17 @@ public class ChatInfo {
 
 	}
 
-	public record ChatMessage(
+	public record RetrieveChatRoomMessage(
 		MessageType messageType,
 		Long senderId,
 		Long roomId,
 		String nickname,
 		String senderProfileImage,
 		String message,
-		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {
 		@QueryProjection
-		public ChatMessage(
+		public RetrieveChatRoomMessage(
 			MessageType messageType,
 			Long senderId,
 			Long roomId,
@@ -91,6 +91,22 @@ public class ChatInfo {
 			this.message = message;
 			this.createdAt = createdAt;
 		}
+
+		public static RetrieveChatRoomMessage toInfo(
+			Member sender,
+			Chat savedChat
+		) {
+			return new RetrieveChatRoomMessage(
+				savedChat.getMessageType(),
+				sender.getMemberId(),
+				savedChat.getRoomId(),
+				sender.getNickname(),
+				sender.getProfileImageUrl(),
+				savedChat.getMessage(),
+				savedChat.getCreatedAt()
+			);
+		}
+
 	}
 
 }

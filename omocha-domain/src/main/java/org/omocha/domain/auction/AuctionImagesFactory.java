@@ -6,5 +6,5 @@ import org.omocha.domain.image.Image;
 
 public interface AuctionImagesFactory {
 
-	List<Image> store(Auction auction, AuctionCommand.RegisterAuction requestAuction);
+	List<Image> store(Auction auction, AuctionCommand.AddAuction addCommand);
 }
