@@ -18,27 +18,27 @@ public class ChatFacade {
 
 	private final ChatService chatService;
 
-	public void addChatRoom(ChatCommand.CreateChatRoom addChatRoom) {
-		chatService.addChatRoom(addChatRoom);
+	public void addChatRoom(ChatCommand.AddChatRoom addCommand) {
+		chatService.addChatRoom(addCommand);
 	}
 
-	public Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
-		ChatCommand.RetrieveMyChatRoom retrieveChatRoom,
+	public Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRoom(
+		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	) {
-		return chatService.findMyChatRooms(retrieveChatRoom, pageable);
+		return chatService.retrieveMyChatRooms(retrieveCommand, pageable);
 	}
 
-	public void processChatMessage(ChatCommand.SaveChatMessage chatMessage) {
+	public void processChatMessage(ChatCommand.AddChatMessage chatMessage) {
 		Chat savedChat = chatService.saveChatMessage(chatMessage);
 		chatService.sendChatMessage(savedChat);
 	}
 
-	public Slice<ChatInfo.ChatMessage> findChatRoomMessages(
+	public Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessage(
 		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
 		Pageable pageable
 	) {
-		return chatService.findChatRoomMessages(chatRoomMessage, pageable);
+		return chatService.retrieveChatRoomMessages(chatRoomMessage, pageable);
 	}
 
 }

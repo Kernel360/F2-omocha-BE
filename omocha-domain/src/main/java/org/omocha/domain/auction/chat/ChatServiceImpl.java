@@ -25,12 +25,13 @@ public class ChatServiceImpl implements ChatService {
 	private final ChatReader chatReader;
 	private final MemberReader memberReader;
 	private final SimpMessageSendingOperations messagingTemplate;
-	private final ChatInfoMapper chatInfoMapper;
 
 	@Override
 	@Transactional
-	public void addChatRoom(ChatCommand.CreateChatRoom addChatRoom) {
-		Auction auction = auctionReader.findAuction(addChatRoom.auctionId());
+	public void addChatRoom(ChatCommand.AddChatRoom addChatRoom) {
+		log.info("ChatRoom add request: {}", addChatRoom);
+
+		Auction auction = auctionReader.getAuction(addChatRoom.auctionId());
 
 		// TODO : exception 변경
 		if (chatReader.existsByAuctionId(auction.getAuctionId())) {
@@ -39,22 +40,25 @@ public class ChatServiceImpl implements ChatService {
 
 		ChatRoom chatRoom = addChatRoom.toEntity(auction);
 		chatStore.store(chatRoom);
+
+		log.info("chatRoom added: {}", chatRoom.getRoomId());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
-		ChatCommand.RetrieveMyChatRoom retrieveMyChatRoom,
+	public Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRooms(
+		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	) {
-		return chatReader.findMyChatRooms(retrieveMyChatRoom, pageable);
+
+		return chatReader.getMyChatRoomList(retrieveCommand, pageable);
 	}
 
 	@Override
 	@Transactional
-	public Chat saveChatMessage(ChatCommand.SaveChatMessage message) {
+	public Chat saveChatMessage(ChatCommand.AddChatMessage message) {
 
-		chatReader.findChatRoom(message.roomId());
+		chatReader.getChatRoom(message.roomId());
 
 		Chat chat = message.toEntity();
 		Chat savedChat = chatStore.store(chat);
@@ -68,7 +72,8 @@ public class ChatServiceImpl implements ChatService {
 
 		Member sender = memberReader.findById(savedChat.getSenderId());
 
-		ChatInfo.ChatMessage chatMessage = chatInfoMapper.toResponse(sender, savedChat);
+		ChatInfo.RetrieveChatRoomMessage chatMessage =
+			ChatInfo.RetrieveChatRoomMessage.toInfo(sender, savedChat);
 
 		messagingTemplate.convertAndSend("/sub/channel/" + savedChat.getRoomId(), chatMessage);
 
@@ -79,14 +84,15 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Slice<ChatInfo.ChatMessage> findChatRoomMessages(ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
+	public Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessages(
+		ChatCommand.RetrieveChatRoomMessage chatMessageCommand,
 		Pageable pageable) {
-		ChatRoom chatRoom = chatReader.findChatRoom(chatRoomMessage.roomId());
+		ChatRoom chatRoom = chatReader.getChatRoom(chatMessageCommand.roomId());
 
-		if (!chatRoom.validateParticipant(chatRoomMessage.memberId())) {
-			throw new ChatRoomAccessException(chatRoomMessage.memberId());
+		if (!chatRoom.validateParticipant(chatMessageCommand.memberId())) {
+			throw new ChatRoomAccessException(chatMessageCommand.memberId());
 		}
 
-		return chatReader.findChatMessages(chatRoomMessage, pageable);
+		return chatReader.getChatRoomMessageList(chatMessageCommand, pageable);
 	}
 }

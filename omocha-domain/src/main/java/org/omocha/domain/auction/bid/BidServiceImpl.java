@@ -28,23 +28,23 @@ public class BidServiceImpl implements BidService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<BidInfo.BidListResponse> getBidList(Long auctionId) {
+	public List<BidInfo.BidList> retrieveBids(Long auctionId) {
 		return bidReader.getBidList(auctionId)
 			.stream()
-			.map(BidInfo.BidListResponse::toResponse)
+			.map(BidInfo.BidList::toInfo)
 			.toList();
 	}
 
 	// TODO : 최고 입찰가 관련 논의 후 수정 필요
 	@Override
 	@Transactional
-	public BidInfo.AddBidResponse addBid(BidCommand.AddBid addBid) {
+	public BidInfo.AddBid addBid(BidCommand.AddBid addBid) {
 
 		Long buyerId = addBid.buyerId();
 		Long auctionId = addBid.auctionId();
 		Long bidPrice = addBid.bidPrice();
 
-		Auction auction = auctionReader.findAuction(auctionId);
+		Auction auction = auctionReader.getAuction(auctionId);
 		auction.validateAuctionStatus();
 
 		bidValidator.validate(auction, buyerId, bidPrice);
@@ -55,19 +55,14 @@ public class BidServiceImpl implements BidService {
 
 		HighestBidManager.setHighestBid(auctionId, bid);
 
-		return BidInfo.AddBidResponse.toDto(bid);
+		return BidInfo.AddBid.toInfo(bid);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public BidInfo.NowPriceResponse getNowPrice(Long auctionId) {
+	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
 		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
-			.map(BidInfo.NowPriceResponse::toResponse)
-			.orElseGet(() -> new BidInfo.NowPriceResponse(0L, null, LocalDateTime.now()));
+			.map(BidInfo.NowPrice::toInfo)
+			.orElseGet(() -> new BidInfo.NowPrice(0L, null, LocalDateTime.now()));
 	}
-
-	// @Transactional(readOnly = true)
-	// public Long findBidCount(Long auctionId) {
-	// 	return bidReader.getBidCount(auctionId);
-	// }
 }
