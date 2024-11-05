@@ -17,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 
 @OpenAPIDefinition(
 	servers = {
-		@Server(url = "https://api.omocha-auction.com", description = "omocha https 서버입니다."),
+		@Server(url = "https://api.omocha-auction.com", description = "omocha prod 서버입니다."),
+		@Server(url = "https://dev.omocha-auction.com", description = "omocha dev 서버입니다."),
 		@Server(url = "http://localhost:8080", description = "omocha local 서버입니다.")
 	}
 )
@@ -44,5 +45,4 @@ public class SwaggerConfig {
 			.pathsToMatch(paths)
 			.build();
 	}
-
 }
