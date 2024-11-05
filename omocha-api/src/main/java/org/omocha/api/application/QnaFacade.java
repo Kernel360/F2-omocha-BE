@@ -6,6 +6,8 @@ import org.omocha.domain.auction.qna.AnswerService;
 import org.omocha.domain.auction.qna.QuestionCommand;
 import org.omocha.domain.auction.qna.QuestionInfo;
 import org.omocha.domain.auction.qna.QuestionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -17,27 +19,32 @@ public class QnaFacade {
 	private final QuestionService questionService;
 	private final AnswerService answerService;
 
-	public QuestionInfo.CreateQuestionResponse addQuestion(QuestionCommand.CreateQuestion createQuestionCommand) {
-		return questionService.addQuestion(createQuestionCommand);
+	public QuestionInfo.AddQuestionResponse addQuestion(QuestionCommand.AddQuestion addQuestionCommand) {
+		return questionService.addQuestion(addQuestionCommand);
 	}
 
 	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
 		return questionService.modifyQuestion(modifyQuestionCommand);
 	}
 
-	public void removeQuestion(QuestionCommand.DeleteQuestion deleteQuestionCommand) {
-		questionService.questionRemove(deleteQuestionCommand);
+	public void removeQuestion(QuestionCommand.RemoveQuestion removeQuestionCommand) {
+		questionService.questionRemove(removeQuestionCommand);
 	}
 
-	public AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswer createAnswerCommand) {
-		return answerService.addAnswer(createAnswerCommand);
+	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
+		return answerService.addAnswer(addAnswerCommand);
 	}
 
-	public AnswerInfo.AnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
+	public AnswerInfo.ModifyAnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
 		return answerService.modifyAnswer(modifyAnswerCommand);
 	}
 
-	public void removeAnswer(AnswerCommand.DeleteAnswer deleteAnswerModify) {
-		answerService.removeAnswer(deleteAnswerModify);
+	public void removeAnswer(AnswerCommand.RemoveAnswer removeAnswerModify) {
+		answerService.removeAnswer(removeAnswerModify);
+	}
+
+	public Page<QuestionInfo.QnaServiceResponse> retriveQnaList(QuestionCommand.QnaList qnaListCommand,
+		Pageable sortPage) {
+		return questionService.retriveQnaList(qnaListCommand, sortPage);
 	}
 }

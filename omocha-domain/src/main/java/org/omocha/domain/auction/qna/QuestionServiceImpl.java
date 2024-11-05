@@ -4,6 +4,8 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,35 +25,52 @@ public class QuestionServiceImpl implements QuestionService {
 	private final QuestionValidator questionValidator;
 
 	@Override
+	@Transactional(readOnly = true)
+	public Page<QuestionInfo.QnaServiceResponse> retriveQnaList(QuestionCommand.QnaList qnaListCommand,
+		Pageable sortPage) {
+
+		log.info("find qnaList started for auctionId: {}, pageable: {}", qnaListCommand.auctionId(), sortPage);
+
+		Auction auction = auctionReader.getAuction(qnaListCommand.auctionId());
+
+		Page<Qna> qnaEntityList = questionReader.findQnaList(auction.getAuctionId(),
+			sortPage);
+
+		Page<QuestionInfo.QnaServiceResponse> qnaResponseList = qnaEntityList.map(qna ->
+			QuestionInfo.QnaServiceResponse.toInfo(qna.getQuestion(), qna.getAnswer()));
+		log.debug("find qnaList finished");
+
+		return qnaResponseList;
+
+	}
+
+	@Override
 	@Transactional
-	public QuestionInfo.CreateQuestionResponse addQuestion(QuestionCommand.CreateQuestion createQuestionCommand) {
+	public QuestionInfo.AddQuestionResponse addQuestion(QuestionCommand.AddQuestion addQuestionCommand) {
 
-		log.debug("add question started for createQuestionCommand: {}", createQuestionCommand);
+		log.info("add question started for createQuestionCommand: {}", addQuestionCommand);
 
-		Member member = memberReader.findById(createQuestionCommand.memberId());
+		Member member = memberReader.findById(addQuestionCommand.memberId());
 
-		Auction auction = auctionReader.findAuction(createQuestionCommand.auctionId());
+		Auction auction = auctionReader.getAuction(addQuestionCommand.auctionId());
 
 		// TODO : Entity 생성 방식 논의 해야함
 		// 		Bid , Auction , Question 다름
-		Question question = Question.builder()
-			.title(createQuestionCommand.title())
-			.content(createQuestionCommand.content())
-			.member(member)
-			.auction(auction)
-			.build();
+		Question question = addQuestionCommand.toEntity(member, auction);
 
 		questionStore.store(question);
 
-		log.debug("add question finished");
+		log.info("add question finished");
 
-		return QuestionInfo.CreateQuestionResponse.toDto(question);
+		return QuestionInfo.AddQuestionResponse.toInfo(question);
 
 	}
 
 	@Override
 	@Transactional
 	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
+
+		log.info("modify question started for modifyQuestionCommand: {}", modifyQuestionCommand);
 
 		Member member = memberReader.findById(modifyQuestionCommand.memberId());
 
@@ -63,19 +82,17 @@ public class QuestionServiceImpl implements QuestionService {
 
 		question.updateQuestion(modifyQuestionCommand.title(), modifyQuestionCommand.content());
 
-		// log.debug("modify question finished for memberId: {}, questionId: {}, ModifyQuestionRequest: {}", memberId,
-		// 	questionId, modifyQuestionRequest);
-
-		return QuestionInfo.ModifyQuestion.toDto(question);
+		return QuestionInfo.ModifyQuestion.toInfo(question);
 	}
 
 	@Override
-	public void questionRemove(QuestionCommand.DeleteQuestion deleteQuestionCommand) {
-		log.debug("remove question started for deleteQuestionCommand: {}", deleteQuestionCommand);
+	@Transactional
+	public void questionRemove(QuestionCommand.RemoveQuestion removeQuestionCommand) {
+		log.info("remove question started for deleteQuestionCommand: {}", removeQuestionCommand);
 
-		Member member = memberReader.findById(deleteQuestionCommand.memberId());
+		Member member = memberReader.findById(removeQuestionCommand.memberId());
 
-		Question question = questionReader.findQuestion(deleteQuestionCommand.questionId());
+		Question question = questionReader.findQuestion(removeQuestionCommand.questionId());
 
 		questionValidator.hasQuestionOwnership(question, member);
 
@@ -83,7 +100,8 @@ public class QuestionServiceImpl implements QuestionService {
 
 		question.deleteQuestion();
 
-		log.debug("remove question finished for deleteQuestionCommand: {}", deleteQuestionCommand);
+		log.info("remove question finished for deleteQuestionCommand: {}", removeQuestionCommand);
 
 	}
+
 }

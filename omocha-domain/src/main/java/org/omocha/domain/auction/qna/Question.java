@@ -2,7 +2,7 @@ package org.omocha.domain.auction.qna;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.omocha.domain.auction.Auction;
-import org.omocha.domain.common.TimeTrackableEntity;
+import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.member.Member;
 
 import jakarta.persistence.Column;
@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Question extends TimeTrackableEntity {
+public class Question extends BaseEntity {
 
 	// TODO : Time 관련 수정 필요
 	@Id

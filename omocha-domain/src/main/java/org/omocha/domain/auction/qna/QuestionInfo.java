@@ -2,19 +2,64 @@ package org.omocha.domain.auction.qna;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class QuestionInfo {
-	public record CreateQuestionResponse(
+
+	public record QnaServiceResponse(
+		QuestionInfo.QuestionDetails questionDetails,
+		AnswerInfo.AnswerDetails answerDetails
+
+	) {
+		public static QnaServiceResponse toInfo(
+			Question question,
+			Answer answer
+		) {
+
+			return new QnaServiceResponse(
+				QuestionInfo.QuestionDetails.toInfo(question),
+				answer != null ? AnswerInfo.AnswerDetails.toInfo(answer) : null
+			);
+		}
+
+	}
+
+	public record QuestionDetails(
 		Long questionId,
 		String title,
 		String content,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime createdAt,
+		Long memberId,
+		String email,
+		String nickName,
+		String profileImageUrl
+
+	) {
+
+		public static QuestionDetails toInfo(
+			Question question
+		) {
+			return new QuestionDetails(
+				question.getQuestionId(),
+				question.getTitle(),
+				question.getContent(),
+				question.getCreatedAt(),
+				question.getMember().getMemberId(),
+				question.getMember().getEmail(),
+				question.getMember().getNickname(),
+				question.getMember().getProfileImageUrl()
+			);
+
+		}
+	}
+
+	public record AddQuestionResponse(
+		Long questionId,
+		String title,
+		String content,
 		LocalDateTime createAt
 
 	) {
-		public static CreateQuestionResponse toDto(Question question) {
-			return new CreateQuestionResponse(
+		public static AddQuestionResponse toInfo(Question question) {
+			return new AddQuestionResponse(
 				question.getQuestionId(),
 				question.getTitle(),
 				question.getContent(),
@@ -24,27 +69,14 @@ public class QuestionInfo {
 	}
 
 	public record ModifyQuestion(
-		Long questionId,
-		String title,
-		String content,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime createdAt,
-		Long memberId,
-		String email
-
-		//TODO : 유저 정보 수정 필요 ex) profileImageUrl
+		Long questionId
 
 	) {
-		public static ModifyQuestion toDto(
+		public static ModifyQuestion toInfo(
 			Question question
 		) {
 			return new ModifyQuestion(
-				question.getQuestionId(),
-				question.getTitle(),
-				question.getContent(),
-				question.getCreatedAt(),
-				question.getMember().getMemberId(),
-				question.getMember().getEmail()
+				question.getQuestionId()
 
 			);
 

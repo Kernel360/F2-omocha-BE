@@ -24,37 +24,33 @@ public class AnswerServiceImpl implements AnswerService {
 	private final AnswerValidator answerValidator;
 
 	@Override
-	public AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswer createAnswerCommand) {
-		log.debug("add answer started for createAnswerCommand: {}", createAnswerCommand);
+	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
+		log.info("add answer started for createAnswerCommand: {}", addAnswerCommand);
 
 		// TODO : Entity 조회 추후 리팩토링
-		Member member = memberReader.findById(createAnswerCommand.memberId());
+		Member member = memberReader.findById(addAnswerCommand.memberId());
 
-		Question question = questionReader.findQuestion(createAnswerCommand.memberId());
+		Question question = questionReader.findQuestion(addAnswerCommand.memberId());
 
-		Auction auction = auctionReader.findAuction(question.getAuction().getAuctionId());
+		Auction auction = auctionReader.getAuction(question.getAuction().getAuctionId());
 
 		answerValidator.hasAuctionOwnership(auction, member);
 
 		answerValidator.validateAnswerNotExists(question);
 
-		Answer answer = Answer.builder()
-			.title(createAnswerCommand.title())
-			.content(createAnswerCommand.content())
-			.question(question)
-			.build();
+		Answer answer = addAnswerCommand.toEntity(question);
 
-		log.debug("add answer finished for createAnswerCommand: {}", createAnswerCommand);
+		log.info("add answer finished for createAnswerCommand: {}", addAnswerCommand);
 
 		answerStore.store(answer);
 
-		return AnswerInfo.CreateAnswer.toDto(answer);
+		return AnswerInfo.AddAnswer.toInfo(answer);
 	}
 
 	@Override
 	@Transactional
-	public AnswerInfo.AnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
-		log.debug("modify answer started for modifyAnswerCommand : {}", modifyAnswerCommand);
+	public AnswerInfo.ModifyAnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
+		log.info("modify answer started for modifyAnswerCommand : {}", modifyAnswerCommand);
 
 		Member member = memberReader.findById(modifyAnswerCommand.memberId());
 
@@ -64,27 +60,23 @@ public class AnswerServiceImpl implements AnswerService {
 
 		answer.updateAnswer(modifyAnswerCommand.title(), modifyAnswerCommand.content());
 
-		// log.debug("modify answer finished for memberId: {} , answerId: {}, ModifyAnswerRequest : {}", memberId,
-		// 	answerId,
-		// 	modifyAnswerRequest);
-
-		return AnswerInfo.AnswerResponse.toDto(answer);
+		return AnswerInfo.ModifyAnswerResponse.toInfo(answer);
 	}
 
 	@Override
-	public void removeAnswer(AnswerCommand.DeleteAnswer deleteAnswerModify) {
+	public void removeAnswer(AnswerCommand.RemoveAnswer removeAnswerModify) {
 
-		log.debug("remove answer started for deleteAnswerModify : {} ", deleteAnswerModify);
+		log.info("remove answer started for deleteAnswerModify : {} ", removeAnswerModify);
 
-		Member member = memberReader.findById(deleteAnswerModify.memberId());
+		Member member = memberReader.findById(removeAnswerModify.memberId());
 
-		Answer answer = answerReader.findAnswer(deleteAnswerModify.answerId());
+		Answer answer = answerReader.findAnswer(removeAnswerModify.answerId());
 
 		answerValidator.hasAuctionOwnership(answer.getQuestion().getAuction(), member);
 
 		answer.deleteAnswer();
 
-		log.debug("remove answer finished for deleteAnswerModify : {} ", deleteAnswerModify);
+		log.info("remove answer finished for deleteAnswerModify : {} ", removeAnswerModify);
 
 	}
 }

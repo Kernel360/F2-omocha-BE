@@ -1,9 +1,9 @@
 package org.omocha.domain.auction.qna;
 
 public interface AnswerService {
-	AnswerInfo.CreateAnswer addAnswer(AnswerCommand.CreateAnswer createAnswerCommand);
+	AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand);
 
-	AnswerInfo.AnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand);
+	AnswerInfo.ModifyAnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand);
 
-	void removeAnswer(AnswerCommand.DeleteAnswer deleteAnswerModify);
+	void removeAnswer(AnswerCommand.RemoveAnswer removeAnswerModify);
 }

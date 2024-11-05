@@ -5,14 +5,24 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AnswerDto {
-	public record CreateAnswerRequest(
+
+	public record AnswerDetails(
+		Long answerId,
+		String title,
+		String content,
+		LocalDateTime createdAt
+	) {
+
+	}
+
+	public record AddAnswerRequest(
 		Long questionId,
 		String title,
 		String content
 	) {
 	}
 
-	public record CreateAnswerResponse(
+	public record AddAnswerResponse(
 		Long questionId,
 		String title,
 		String content,
@@ -28,7 +38,7 @@ public class AnswerDto {
 	) {
 	}
 
-	public record AnswerResponse(
+	public record ModifyAnswerResponse(
 		Long answerId
 	) {
 

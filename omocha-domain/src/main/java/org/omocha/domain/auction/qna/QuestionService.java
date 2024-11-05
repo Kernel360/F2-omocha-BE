@@ -1,12 +1,16 @@
 package org.omocha.domain.auction.qna;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface QuestionService {
-	QuestionInfo.CreateQuestionResponse addQuestion(QuestionCommand.CreateQuestion createQuestionCommand);
+	QuestionInfo.AddQuestionResponse addQuestion(QuestionCommand.AddQuestion addQuestionCommand);
 
 	QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand);
 
-	void questionRemove(QuestionCommand.DeleteQuestion deleteQuestionCommand);
+	void questionRemove(QuestionCommand.RemoveQuestion removeQuestionCommand);
+
+	Page<QuestionInfo.QnaServiceResponse> retriveQnaList(QuestionCommand.QnaList qnaListCommand, Pageable sortPage);
 }

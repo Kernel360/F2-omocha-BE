@@ -2,21 +2,49 @@ package org.omocha.domain.auction.qna;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryProjection;
 
 public class AnswerInfo {
 
-	public record CreateAnswer(
+	public record AnswerDetails(
+		Long answerId,
+		String title,
+		String content,
+		LocalDateTime createdAt
+	) {
+
+		@QueryProjection
+		public AnswerDetails(Answer answer) {
+			this(answer.getAnswerId(),
+				answer.getTitle(),
+				answer.getContent(),
+				answer.getCreatedAt()
+			);
+		}
+
+		public static AnswerDetails toInfo(
+			Answer answer
+		) {
+			return new AnswerDetails(
+				answer.getAnswerId(),
+				answer.getTitle(),
+				answer.getContent(),
+				answer.getCreatedAt()
+			);
+
+		}
+	}
+
+	public record AddAnswer(
 		Long questionId,
 		String title,
 		String content,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createAt
 	) {
-		public static CreateAnswer toDto(
+		public static AddAnswer toInfo(
 			Answer answer
 		) {
-			return new CreateAnswer(
+			return new AddAnswer(
 				answer.getQuestion().getQuestionId(),
 				answer.getTitle(),
 				answer.getContent(),
@@ -26,21 +54,14 @@ public class AnswerInfo {
 		}
 	}
 
-	public record AnswerResponse(
-		Long answerId,
-		String title,
-		String content,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime createdAt
+	public record ModifyAnswerResponse(
+		Long answerId
 	) {
-		public static AnswerResponse toDto(
+		public static ModifyAnswerResponse toInfo(
 			Answer answer
 		) {
-			return new AnswerResponse(
-				answer.getAnswerId(),
-				answer.getTitle(),
-				answer.getContent(),
-				answer.getCreatedAt()
+			return new ModifyAnswerResponse(
+				answer.getAnswerId()
 			);
 
 		}

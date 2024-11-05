@@ -31,34 +31,32 @@ public class AnswerController {
 
 	private final QnaFacade qnaFacade;
 	private final AnswerDtoMapper answerDtoMapper;
-	private final QnaFacade qnaFacadeImpl;
 
 	@PostMapping()
-	public ResponseEntity<ResultDto<AnswerDto.CreateAnswerResponse>> answerAdd(
+	public ResponseEntity<ResultDto<AnswerDto.AddAnswerResponse>> answerAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody AnswerDto.CreateAnswerRequest createAnswerRequest
+		@RequestBody AnswerDto.AddAnswerRequest addAnswerRequest
 	) {
 
-		log.info("received CreateAnswerRequest : {}", createAnswerRequest);
-		log.debug("add answer started");
+		log.info("received CreateAnswerRequest : {}", addAnswerRequest);
 
 		Long memberId = userPrincipal.getId();
 
-		AnswerCommand.CreateAnswer createAnswerCommand = answerDtoMapper.toCommand(memberId,
-			createAnswerRequest);
+		AnswerCommand.AddAnswer addAnswerCommand = answerDtoMapper.toCommand(memberId,
+			addAnswerRequest);
 
-		AnswerInfo.CreateAnswer createAnswerInfo = qnaFacade.addAnswer(createAnswerCommand);
+		AnswerInfo.AddAnswer addAnswerInfo = qnaFacade.addAnswer(addAnswerCommand);
 
-		AnswerDto.CreateAnswerResponse createAnswerResponse = answerDtoMapper.toDto(createAnswerInfo);
+		AnswerDto.AddAnswerResponse addAnswerResponse = answerDtoMapper.toResponse(addAnswerInfo);
 
 		// TODO : resultDto 수정 필요
-		ResultDto<AnswerDto.CreateAnswerResponse> resultDto = ResultDto.res(
+		ResultDto<AnswerDto.AddAnswerResponse> resultDto = ResultDto.res(
 			QnACode.ANSWER_CREATE_SUCCESS.getStatusCode(),
 			QnACode.ANSWER_CREATE_SUCCESS.getResultMsg(),
-			createAnswerResponse
+			addAnswerResponse
 		);
 
-		log.debug("add answer finished");
+		log.info("add answer finished");
 
 		return ResponseEntity
 			.status(QnACode.ANSWER_CREATE_SUCCESS.getHttpStatus())
@@ -66,31 +64,30 @@ public class AnswerController {
 	}
 
 	@PatchMapping("/{answerId}")
-	public ResponseEntity<ResultDto<AnswerDto.AnswerResponse>> answerModify(
+	public ResponseEntity<ResultDto<AnswerDto.ModifyAnswerResponse>> answerModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("answerId") Long answerId,
 		@RequestBody AnswerDto.ModifyAnswerRequest modifyAnswerRequest
 	) {
 
 		log.info("received answerId : {} , ModifyAnswerRequest : {}", answerId, modifyAnswerRequest);
-		log.debug("modify answer started");
 
 		Long memberId = userPrincipal.getId();
 
 		AnswerCommand.ModifyAnswer modifyAnswerCommand = answerDtoMapper.toCommand(memberId, answerId,
 			modifyAnswerRequest);
 
-		AnswerInfo.AnswerResponse modifyAnswerInfo = qnaFacade.modifyAnswer(modifyAnswerCommand);
+		AnswerInfo.ModifyAnswerResponse modifyAnswerInfo = qnaFacade.modifyAnswer(modifyAnswerCommand);
 
-		AnswerDto.AnswerResponse modifyAnswerResponse = answerDtoMapper.toDto(modifyAnswerInfo);
+		AnswerDto.ModifyAnswerResponse modifyAnswerResponse = answerDtoMapper.toResponse(modifyAnswerInfo);
 
-		ResultDto<AnswerDto.AnswerResponse> resultDto = ResultDto.res(
+		ResultDto<AnswerDto.ModifyAnswerResponse> resultDto = ResultDto.res(
 			ANSWER_MODIFY_SUCCESS.getStatusCode(),
 			ANSWER_MODIFY_SUCCESS.getResultMsg(),
 			modifyAnswerResponse
 		);
 
-		log.debug("modify answer finished");
+		log.info("modify answer finished");
 
 		return ResponseEntity
 			.status(ANSWER_MODIFY_SUCCESS.getHttpStatus())
@@ -104,20 +101,19 @@ public class AnswerController {
 	) {
 
 		log.info("received answerId : {} ", answerId);
-		log.debug("remove answer started");
 
 		Long memberId = userPrincipal.getId();
 
-		AnswerCommand.DeleteAnswer deleteAnswerModify = answerDtoMapper.toCommand(memberId, answerId);
+		AnswerCommand.RemoveAnswer removeAnswerModify = answerDtoMapper.toCommand(memberId, answerId);
 
-		qnaFacade.removeAnswer(deleteAnswerModify);
+		qnaFacade.removeAnswer(removeAnswerModify);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			QnACode.ANSWER_DELETE_SUCCESS.getStatusCode(),
 			QnACode.ANSWER_DELETE_SUCCESS.getResultMsg()
 		);
 
-		log.debug("remove answer finished");
+		log.info("remove answer finished");
 
 		return ResponseEntity
 			.status(QnACode.ANSWER_DELETE_SUCCESS.getHttpStatus())
