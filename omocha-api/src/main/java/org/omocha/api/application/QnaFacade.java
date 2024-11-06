@@ -28,7 +28,7 @@ public class QnaFacade {
 	}
 
 	public void removeQuestion(QuestionCommand.RemoveQuestion removeQuestionCommand) {
-		questionService.questionRemove(removeQuestionCommand);
+		questionService.removeQuestion(removeQuestionCommand);
 	}
 
 	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
@@ -43,8 +43,8 @@ public class QnaFacade {
 		answerService.removeAnswer(removeAnswerModify);
 	}
 
-	public Page<QuestionInfo.RetriveQnas> retriveQnas(QuestionCommand.QnaList qnaListCommand,
+	public Page<QuestionInfo.RetrieveQnas> retrieveQnas(QuestionCommand.RetrieveQnas retrieveQnasCommand,
 		Pageable sortPage) {
-		return questionService.retriveQnas(qnaListCommand, sortPage);
+		return questionService.retrieveQnas(retrieveQnasCommand, sortPage);
 	}
 }

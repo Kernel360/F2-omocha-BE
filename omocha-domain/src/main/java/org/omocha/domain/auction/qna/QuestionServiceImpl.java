@@ -26,19 +26,16 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<QuestionInfo.RetriveQnas> retriveQnas(QuestionCommand.QnaList qnaListCommand,
+	public Page<QuestionInfo.RetrieveQnas> retrieveQnas(QuestionCommand.RetrieveQnas retrieveQnasCommand,
 		Pageable sortPage) {
 
-		log.info("find qnaList started for auctionId: {}, pageable: {}", qnaListCommand.auctionId(), sortPage);
-
-		Auction auction = auctionReader.getAuction(qnaListCommand.auctionId());
+		Auction auction = auctionReader.getAuction(retrieveQnasCommand.auctionId());
 
 		Page<Qna> qnaEntityList = qnaReader.getQnaList(auction.getAuctionId(),
 			sortPage);
 
-		Page<QuestionInfo.RetriveQnas> qnaResponseList = qnaEntityList.map(qna ->
-			QuestionInfo.RetriveQnas.toInfo(qna.getQuestion(), qna.getAnswer()));
-		log.debug("find qnaList finished");
+		Page<QuestionInfo.RetrieveQnas> qnaResponseList = qnaEntityList.map(qna ->
+			QuestionInfo.RetrieveQnas.toInfo(qna.getQuestion(), qna.getAnswer()));
 
 		return qnaResponseList;
 
@@ -47,8 +44,6 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	@Transactional
 	public QuestionInfo.AddQuestion addQuestion(QuestionCommand.AddQuestion addQuestionCommand) {
-
-		log.info("add question started for createQuestionCommand: {}", addQuestionCommand);
 
 		Member member = memberReader.findById(addQuestionCommand.memberId());
 
@@ -60,8 +55,6 @@ public class QuestionServiceImpl implements QuestionService {
 
 		qnaStore.store(question);
 
-		log.info("add question finished");
-
 		return QuestionInfo.AddQuestion.toInfo(question);
 
 	}
@@ -70,15 +63,13 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
 
-		log.info("modify question started for modifyQuestionCommand: {}", modifyQuestionCommand);
-
 		Member member = memberReader.findById(modifyQuestionCommand.memberId());
 
 		Question question = qnaReader.getQuestion(modifyQuestionCommand.questionId());
 
 		questionValidator.hasQuestionOwnership(question, member);
 
-		questionValidator.validModifyAndRemove(question);
+		questionValidator.validAnswerExistAtAnswer(question);
 
 		question.updateQuestion(modifyQuestionCommand.title(), modifyQuestionCommand.content());
 
@@ -87,8 +78,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional
-	public void questionRemove(QuestionCommand.RemoveQuestion removeQuestionCommand) {
-		log.info("remove question started for deleteQuestionCommand: {}", removeQuestionCommand);
+	public void removeQuestion(QuestionCommand.RemoveQuestion removeQuestionCommand) {
 
 		Member member = memberReader.findById(removeQuestionCommand.memberId());
 
@@ -96,11 +86,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 		questionValidator.hasQuestionOwnership(question, member);
 
-		questionValidator.validModifyAndRemove(question);
+		questionValidator.validAnswerExistAtAnswer(question);
 
 		question.deleteQuestion();
-
-		log.info("remove question finished for deleteQuestionCommand: {}", removeQuestionCommand);
 
 	}
 

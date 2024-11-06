@@ -5,7 +5,7 @@ import org.omocha.domain.member.Member;
 
 public class QuestionCommand {
 
-	public record QnaList(
+	public record RetrieveQnas(
 		Long auctionId
 	) {
 	}

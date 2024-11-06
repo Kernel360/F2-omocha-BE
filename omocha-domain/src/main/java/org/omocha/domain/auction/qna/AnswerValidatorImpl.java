@@ -16,20 +16,15 @@ public class AnswerValidatorImpl implements AnswerValidator {
 	private final QnaReader qnaReader;
 
 	@Override
-	public void hasAuctionOwnership(
-		Auction auction,
-		Member member
-	) {
+	public void hasAuctionOwnership(Auction auction, Member member) {
 		// if (!auction.getMemberId().equals(member.getMemberId())) {
 		// 	throw new InvalidMemberException(INVALID_MEMBER);
 		// }
 	}
 
 	@Override
-	public void validateAnswerNotExists(
-		Question question
-	) {
-		if (qnaReader.existsByQuestionId(question.getQuestionId())) {
+	public void validateAnswerNotExists(Question question) {
+		if (qnaReader.checkAnswerExistAtAnswer(question.getQuestionId())) {
 			throw new AnswerAlreadyExistException(question.getQuestionId());
 		}
 

@@ -40,7 +40,7 @@ public class QuestionController {
 
 	// TODO : QueryDSL JOIN 관련 수정 필요
 	@GetMapping("/{auctionId}/qna-list")
-	public ResponseEntity<ResultDto<Page<QuestionDto.RetriveQnasResponse>>> qnaList(
+	public ResponseEntity<ResultDto<Page<QuestionDto.QnaListResponse>>> qnaList(
 		@PathVariable(value = "auctionId") Long auctionId,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "ASC") String direction,
@@ -48,21 +48,22 @@ public class QuestionController {
 		Pageable pageable
 	) {
 
-		// TODO : PR 전 TODO 수정해야됨
+		log.info("Received qnaList request: {}", auctionId);
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		QuestionCommand.QnaList qnaListCommand = questionDtoMapper.toCommand(auctionId);
+		QuestionCommand.RetrieveQnas retrieveQnasCommand = questionDtoMapper.toCommand(auctionId);
 
-		Page<QuestionInfo.RetriveQnas> qnaResponseList = qnaFacade.retriveQnas(qnaListCommand, sortPage);
+		Page<QuestionInfo.RetrieveQnas> qnaResponseList = qnaFacade.retrieveQnas(retrieveQnasCommand, sortPage);
 
-		Page<QuestionDto.RetriveQnasResponse> qnaServiceResponse = questionDtoMapper.toResponse(
-			qnaResponseList);
+		Page<QuestionDto.QnaListResponse> qnaListResponse = questionDtoMapper.toResponse(qnaResponseList);
 
-		ResultDto<Page<QuestionDto.RetriveQnasResponse>> resultDto = ResultDto.res(
+		log.info("qnaList finished ");
+
+		ResultDto<Page<QuestionDto.QnaListResponse>> resultDto = ResultDto.res(
 			QNA_LIST_ACCESS_SUCCESS.getStatusCode(),
 			QNA_LIST_ACCESS_SUCCESS.getResultMsg(),
-			qnaServiceResponse
+			qnaListResponse
 		);
 
 		return ResponseEntity
@@ -71,29 +72,27 @@ public class QuestionController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<ResultDto<QuestionDto.AddQuestionResponse>> questionAdd(
+	public ResponseEntity<ResultDto<QuestionDto.QuestionAddResponse>> questionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody QuestionDto.AddQuestionRequest addQuestionRequest
+		@RequestBody QuestionDto.QuestionAddRequest questionAddRequest
 	) {
-		log.info("received CreateQuestionRequest: {}", addQuestionRequest);
-		log.debug("add question started");
+		log.info("Received questionAdd request: {}", questionAddRequest);
 
 		Long memberId = userPrincipal.getId();
 
-		QuestionCommand.AddQuestion addQuestionCommand = questionDtoMapper.toCommand(memberId,
-			addQuestionRequest);
+		QuestionCommand.AddQuestion addQuestionCommand = questionDtoMapper.toCommand(memberId, questionAddRequest);
 
 		QuestionInfo.AddQuestion addQuestionInfo = qnaFacade.addQuestion(addQuestionCommand);
 
-		QuestionDto.AddQuestionResponse addQuestionResponse = questionDtoMapper.toResponse(addQuestionInfo);
+		QuestionDto.QuestionAddResponse questionAddResponse = questionDtoMapper.toResponse(addQuestionInfo);
 
-		ResultDto<QuestionDto.AddQuestionResponse> resultDto = ResultDto.res(
+		ResultDto<QuestionDto.QuestionAddResponse> resultDto = ResultDto.res(
 			QUESTION_CREATE_SUCCESS.getStatusCode(),
 			QUESTION_CREATE_SUCCESS.getResultMsg(),
-			addQuestionResponse
+			questionAddResponse
 		);
 
-		log.debug("add question finished");
+		log.info("questionAdd finished questionAddResponse : {}", questionAddResponse);
 
 		return ResponseEntity
 			.status(QUESTION_CREATE_SUCCESS.getHttpStatus())
@@ -102,31 +101,33 @@ public class QuestionController {
 	}
 
 	@PatchMapping("/{questionId}")
-	public ResponseEntity<ResultDto<QuestionDto.ModifyQuestionResponse>> questionModify(
+	public ResponseEntity<ResultDto<QuestionDto.QuestionModifyResponse>> questionModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable(value = "questionId") Long questionId,
-		@RequestBody QuestionDto.ModifyQuestionRequest modifyQuestionRequest
+		@RequestBody QuestionDto.QuestionModifyRequest questionModifyRequest
 	) {
 
-		log.info("received questionId : {} ModifyQuestionRequest: {}", questionId, modifyQuestionRequest);
-		log.debug("modify question started");
+		log.info("Received questionModify request: {}", questionModifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
-		QuestionCommand.ModifyQuestion modifyQuestionCommand = questionDtoMapper.toCommand(memberId, questionId,
-			modifyQuestionRequest);
+		QuestionCommand.ModifyQuestion modifyQuestionCommand = questionDtoMapper.toCommand(
+			memberId,
+			questionId,
+			questionModifyRequest
+		);
 
 		QuestionInfo.ModifyQuestion modifyQuestionInfo = qnaFacade.modifyQuestion(modifyQuestionCommand);
 
-		QuestionDto.ModifyQuestionResponse modifyQuestionResponse = questionDtoMapper.toResponse(modifyQuestionInfo);
+		QuestionDto.QuestionModifyResponse questionModifyResponse = questionDtoMapper.toResponse(modifyQuestionInfo);
 
-		ResultDto<QuestionDto.ModifyQuestionResponse> resultDto = ResultDto.res(
+		ResultDto<QuestionDto.QuestionModifyResponse> resultDto = ResultDto.res(
 			QUESTION_MODIFY_SUCCESS.getStatusCode(),
 			QUESTION_MODIFY_SUCCESS.getResultMsg(),
-			modifyQuestionResponse
+			questionModifyResponse
 		);
 
-		log.debug("modify question finished");
+		log.info("questionModify finished questionModifyResponse : {}", questionModifyResponse);
 
 		return ResponseEntity
 			.status(QUESTION_MODIFY_SUCCESS.getHttpStatus())
@@ -140,8 +141,7 @@ public class QuestionController {
 		@PathVariable(value = "questionId") Long questionId
 	) {
 
-		log.info("received questionId: {}", questionId);
-		log.debug("remove question started");
+		log.info("Received questionRemove request: {}", questionId);
 
 		Long memberId = userPrincipal.getId();
 
@@ -154,7 +154,7 @@ public class QuestionController {
 			QUESTION_DELETE_SUCCESS.getResultMsg()
 		);
 
-		log.debug("remove question finished");
+		log.info("questionRemove finished ");
 
 		return ResponseEntity
 			.status(QUESTION_DELETE_SUCCESS.getStatusCode())

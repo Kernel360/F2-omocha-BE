@@ -45,7 +45,7 @@ public class QnaReaderImpl implements QnaReader {
 	}
 
 	@Override
-	public boolean existsByQuestionId(Long questionId) {
+	public boolean checkAnswerExistAtAnswer(Long questionId) {
 		return answerRepository.existsByQuestionQuestionIdAndDeletedIsFalse(questionId);
 	}
 

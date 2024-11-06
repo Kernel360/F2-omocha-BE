@@ -10,5 +10,5 @@ public interface QnaReader {
 
 	Answer getAnswer(Long answerId);
 
-	boolean existsByQuestionId(Long questionId);
+	boolean checkAnswerExistAtAnswer(Long questionId);
 }

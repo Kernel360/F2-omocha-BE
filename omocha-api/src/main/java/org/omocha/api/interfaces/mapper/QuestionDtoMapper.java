@@ -19,28 +19,31 @@ import org.springframework.data.domain.PageImpl;
 )
 public interface QuestionDtoMapper {
 
-	QuestionCommand.ModifyQuestion toCommand(Long memberId, Long questionId,
-		QuestionDto.ModifyQuestionRequest modifyQuestionRequest);
+	QuestionCommand.ModifyQuestion toCommand(
+		Long memberId,
+		Long questionId,
+		QuestionDto.QuestionModifyRequest questionModifyRequest
+	);
 
-	QuestionCommand.AddQuestion toCommand(Long memberId, QuestionDto.AddQuestionRequest request);
+	QuestionCommand.AddQuestion toCommand(Long memberId, QuestionDto.QuestionAddRequest request);
 
-	QuestionDto.AddQuestionResponse toResponse(QuestionInfo.AddQuestion createQuestionInfo);
+	QuestionDto.QuestionAddResponse toResponse(QuestionInfo.AddQuestion createQuestionInfo);
 
-	QuestionDto.ModifyQuestionResponse toResponse(QuestionInfo.ModifyQuestion modifyQuestionInfo);
+	QuestionDto.QuestionModifyResponse toResponse(QuestionInfo.ModifyQuestion modifyQuestionInfo);
 
 	QuestionCommand.RemoveQuestion toCommand(Long memberId, Long questionId);
 
-	QuestionCommand.QnaList toCommand(Long auctionId);
+	QuestionCommand.RetrieveQnas toCommand(Long auctionId);
 
-	default Page<QuestionDto.RetriveQnasResponse> toResponse(Page<QuestionInfo.RetriveQnas> retriveQna) {
-		List<QuestionDto.RetriveQnasResponse> content = retriveQna.getContent().stream()
+	default Page<QuestionDto.QnaListResponse> toResponse(Page<QuestionInfo.RetrieveQnas> retriveQna) {
+		List<QuestionDto.QnaListResponse> content = retriveQna.getContent().stream()
 			.map(this::toResponse)
 			.collect(Collectors.toList());
 
 		return new PageImpl<>(content, retriveQna.getPageable(), retriveQna.getTotalElements());
 	}
 
-	QuestionDto.RetriveQnasResponse toResponse(QuestionInfo.RetriveQnas retriveQnas);
+	QuestionDto.QnaListResponse toResponse(QuestionInfo.RetrieveQnas retrieveQnas);
 
 	QuestionDto.QuestionDetails toResponse(QuestionInfo.QuestionDetails questionDetailsInfo);
 

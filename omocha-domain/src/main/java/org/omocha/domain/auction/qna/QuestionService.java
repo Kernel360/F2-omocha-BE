@@ -10,7 +10,7 @@ public interface QuestionService {
 
 	QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand);
 
-	void questionRemove(QuestionCommand.RemoveQuestion removeQuestionCommand);
+	void removeQuestion(QuestionCommand.RemoveQuestion removeQuestionCommand);
 
-	Page<QuestionInfo.RetriveQnas> retriveQnas(QuestionCommand.QnaList qnaListCommand, Pageable sortPage);
+	Page<QuestionInfo.RetrieveQnas> retrieveQnas(QuestionCommand.RetrieveQnas retrieveQnasCommand, Pageable sortPage);
 }

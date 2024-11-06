@@ -33,27 +33,26 @@ public class AnswerController {
 	private final AnswerDtoMapper answerDtoMapper;
 
 	@PostMapping()
-	public ResponseEntity<ResultDto<AnswerDto.AddAnswerResponse>> answerAdd(
+	public ResponseEntity<ResultDto<AnswerDto.AnswerAddResponse>> answerAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody AnswerDto.AddAnswerRequest addAnswerRequest
+		@RequestBody AnswerDto.AnswerAddRequest answerAddRequest
 	) {
 
-		log.info("received CreateAnswerRequest : {}", addAnswerRequest);
+		log.info("received CreateAnswerRequest : {}", answerAddRequest);
 
 		Long memberId = userPrincipal.getId();
 
-		AnswerCommand.AddAnswer addAnswerCommand = answerDtoMapper.toCommand(memberId,
-			addAnswerRequest);
+		AnswerCommand.AddAnswer addAnswerCommand = answerDtoMapper.toCommand(memberId, answerAddRequest);
 
 		AnswerInfo.AddAnswer addAnswerInfo = qnaFacade.addAnswer(addAnswerCommand);
 
-		AnswerDto.AddAnswerResponse addAnswerResponse = answerDtoMapper.toResponse(addAnswerInfo);
+		AnswerDto.AnswerAddResponse answerAddResponse = answerDtoMapper.toResponse(addAnswerInfo);
 
 		// TODO : resultDto 수정 필요
-		ResultDto<AnswerDto.AddAnswerResponse> resultDto = ResultDto.res(
+		ResultDto<AnswerDto.AnswerAddResponse> resultDto = ResultDto.res(
 			QnACode.ANSWER_CREATE_SUCCESS.getStatusCode(),
 			QnACode.ANSWER_CREATE_SUCCESS.getResultMsg(),
-			addAnswerResponse
+			answerAddResponse
 		);
 
 		log.info("add answer finished");
@@ -64,27 +63,27 @@ public class AnswerController {
 	}
 
 	@PatchMapping("/{answerId}")
-	public ResponseEntity<ResultDto<AnswerDto.ModifyAnswerResponse>> answerModify(
+	public ResponseEntity<ResultDto<AnswerDto.AnswerModifyResponse>> answerModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("answerId") Long answerId,
-		@RequestBody AnswerDto.ModifyAnswerRequest modifyAnswerRequest
+		@RequestBody AnswerDto.AnswerModifyRequest answerModifyRequest
 	) {
 
-		log.info("received answerId : {} , ModifyAnswerRequest : {}", answerId, modifyAnswerRequest);
+		log.info("received answerId : {} , ModifyAnswerRequest : {}", answerId, answerModifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
 		AnswerCommand.ModifyAnswer modifyAnswerCommand = answerDtoMapper.toCommand(memberId, answerId,
-			modifyAnswerRequest);
+			answerModifyRequest);
 
 		AnswerInfo.ModifyAnswer modifyAnswerInfo = qnaFacade.modifyAnswer(modifyAnswerCommand);
 
-		AnswerDto.ModifyAnswerResponse modifyAnswerResponse = answerDtoMapper.toResponse(modifyAnswerInfo);
+		AnswerDto.AnswerModifyResponse answerModifyResponse = answerDtoMapper.toResponse(modifyAnswerInfo);
 
-		ResultDto<AnswerDto.ModifyAnswerResponse> resultDto = ResultDto.res(
+		ResultDto<AnswerDto.AnswerModifyResponse> resultDto = ResultDto.res(
 			ANSWER_MODIFY_SUCCESS.getStatusCode(),
 			ANSWER_MODIFY_SUCCESS.getResultMsg(),
-			modifyAnswerResponse
+			answerModifyResponse
 		);
 
 		log.info("modify answer finished");

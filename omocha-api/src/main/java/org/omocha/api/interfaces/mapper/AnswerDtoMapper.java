@@ -13,14 +13,17 @@ import org.omocha.domain.auction.qna.AnswerInfo;
 	unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface AnswerDtoMapper {
-	AnswerCommand.AddAnswer toCommand(Long memberId, AnswerDto.AddAnswerRequest addAnswerRequest);
+	AnswerCommand.AddAnswer toCommand(Long memberId, AnswerDto.AnswerAddRequest answerAddRequest);
 
-	AnswerDto.AddAnswerResponse toResponse(AnswerInfo.AddAnswer createAnswerInfo);
+	AnswerDto.AnswerAddResponse toResponse(AnswerInfo.AddAnswer createAnswerInfo);
 
-	AnswerCommand.ModifyAnswer toCommand(Long memberId, Long answerId,
-		AnswerDto.ModifyAnswerRequest modifyAnswerRequest);
+	AnswerCommand.ModifyAnswer toCommand(
+		Long memberId,
+		Long answerId,
+		AnswerDto.AnswerModifyRequest answerModifyRequest
+	);
 
-	AnswerDto.ModifyAnswerResponse toResponse(AnswerInfo.ModifyAnswer modifyAnswerInfo);
+	AnswerDto.AnswerModifyResponse toResponse(AnswerInfo.ModifyAnswer modifyAnswerInfo);
 
 	AnswerCommand.RemoveAnswer toCommand(Long memberId, Long answerId);
 

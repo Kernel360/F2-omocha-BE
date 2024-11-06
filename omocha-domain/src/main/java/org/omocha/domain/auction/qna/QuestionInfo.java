@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 
 public class QuestionInfo {
 
-	public record RetriveQnas(
+	public record RetrieveQnas(
 		QuestionInfo.QuestionDetails questionDetails,
 		AnswerInfo.AnswerDetails answerDetails
 
 	) {
-		public static RetriveQnas toInfo(
+		public static RetrieveQnas toInfo(
 			Question question,
 			Answer answer
 		) {
 
-			return new RetriveQnas(
+			return new RetrieveQnas(
 				QuestionInfo.QuestionDetails.toInfo(question),
 				answer != null ? AnswerInfo.AnswerDetails.toInfo(answer) : null
 			);

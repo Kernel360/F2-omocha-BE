@@ -16,19 +16,16 @@ public class QuestionValidatorImpl implements QuestionValidator {
 	public final QnaReader qnaReader;
 
 	@Override
-	public void validModifyAndRemove(Question question) {
+	public void validAnswerExistAtAnswer(Question question) {
 
-		if (qnaReader.existsByQuestionId(question.getQuestionId())) {
+		if (qnaReader.checkAnswerExistAtAnswer(question.getQuestionId())) {
 			throw new AnswerAlreadyExistException(question.getQuestionId());
 		}
 
 	}
 
 	@Override
-	public void hasQuestionOwnership(
-		Question question,
-		Member member
-	) {
+	public void hasQuestionOwnership(Question question, Member member) {
 
 		// TODO : MemberException 처리 후 해야함
 		if (!question.getMember().getMemberId().equals(member.getMemberId())) {

@@ -24,9 +24,7 @@ public class AnswerServiceImpl implements AnswerService {
 
 	@Override
 	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
-		log.info("add answer started for createAnswerCommand: {}", addAnswerCommand);
 
-		// TODO : Entity 조회 추후 리팩토링
 		Member member = memberReader.findById(addAnswerCommand.memberId());
 
 		Question question = qnaReader.getQuestion(addAnswerCommand.memberId());
@@ -39,8 +37,6 @@ public class AnswerServiceImpl implements AnswerService {
 
 		Answer answer = addAnswerCommand.toEntity(question);
 
-		log.info("add answer finished for createAnswerCommand: {}", addAnswerCommand);
-
 		qnaStore.store(answer);
 
 		return AnswerInfo.AddAnswer.toInfo(answer);
@@ -49,7 +45,6 @@ public class AnswerServiceImpl implements AnswerService {
 	@Override
 	@Transactional
 	public AnswerInfo.ModifyAnswer modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
-		log.info("modify answer started for modifyAnswerCommand : {}", modifyAnswerCommand);
 
 		Member member = memberReader.findById(modifyAnswerCommand.memberId());
 
@@ -65,8 +60,6 @@ public class AnswerServiceImpl implements AnswerService {
 	@Override
 	public void removeAnswer(AnswerCommand.RemoveAnswer removeAnswerModify) {
 
-		log.info("remove answer started for deleteAnswerModify : {} ", removeAnswerModify);
-
 		Member member = memberReader.findById(removeAnswerModify.memberId());
 
 		Answer answer = qnaReader.getAnswer(removeAnswerModify.answerId());
@@ -74,8 +67,6 @@ public class AnswerServiceImpl implements AnswerService {
 		answerValidator.hasAuctionOwnership(answer.getQuestion().getAuction(), member);
 
 		answer.deleteAnswer();
-
-		log.info("remove answer finished for deleteAnswerModify : {} ", removeAnswerModify);
 
 	}
 }

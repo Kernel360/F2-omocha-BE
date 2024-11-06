@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class QuestionDto {
 
-	public record RetriveQnasResponse(
+	public record QnaListResponse(
 		QuestionDto.QuestionDetails questionDetails,
 		AnswerDto.AnswerDetails answerDetails
 	) {
@@ -27,14 +27,14 @@ public class QuestionDto {
 
 	}
 
-	public record AddQuestionRequest(
+	public record QuestionAddRequest(
 		Long auctionId,
 		String title,
 		String content
 	) {
 	}
 
-	public record AddQuestionResponse(
+	public record QuestionAddResponse(
 		Long questionId,
 		String title,
 		String content,
@@ -45,13 +45,13 @@ public class QuestionDto {
 
 	}
 
-	public record ModifyQuestionRequest(
+	public record QuestionModifyRequest(
 		String title,
 		String content
 	) {
 	}
 
-	public record ModifyQuestionResponse(
+	public record QuestionModifyResponse(
 		Long questionId
 	) {
 	}

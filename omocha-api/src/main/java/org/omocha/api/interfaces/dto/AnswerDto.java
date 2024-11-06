@@ -13,36 +13,33 @@ public class AnswerDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {
-
 	}
 
-	public record AddAnswerRequest(
+	public record AnswerAddRequest(
 		Long questionId,
 		String title,
 		String content
 	) {
 	}
 
-	public record AddAnswerResponse(
+	public record AnswerAddResponse(
 		Long questionId,
 		String title,
 		String content,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createAt
 	) {
-
 	}
 
-	public record ModifyAnswerRequest(
+	public record AnswerModifyRequest(
 		String title,
 		String content
 	) {
 	}
 
-	public record ModifyAnswerResponse(
+	public record AnswerModifyResponse(
 		Long answerId
 	) {
-
 	}
 
 }
