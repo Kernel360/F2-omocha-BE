@@ -33,7 +33,7 @@ public class QnaReaderImpl implements QnaReader {
 
 	@Override
 	public Page<Qna> getQnaList(Long auctionId, Pageable sortPage) {
-		return questionRepository.retribeQnaList(auctionId, sortPage);
+		return questionRepository.retrieveQnaList(auctionId, sortPage);
 
 	}
 

@@ -31,7 +31,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 	}
 
 	@Override
-	public Page<Qna> retribeQnaList(Long auctionId, Pageable pageable) {
+	public Page<Qna> retrieveQnaList(Long auctionId, Pageable pageable) {
 		JPAQuery<Qna> query = queryFactory
 			.select(Projections.constructor(Qna.class, question, answer))
 			.from(question)

@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface QuestionRepositoryCustom {
-	Page<Qna> retribeQnaList(
+	Page<Qna> retrieveQnaList(
 		Long auctionId,
 		Pageable pageable
 	);
