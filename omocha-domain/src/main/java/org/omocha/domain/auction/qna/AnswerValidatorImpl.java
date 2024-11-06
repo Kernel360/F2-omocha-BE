@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AnswerValidatorImpl implements AnswerValidator {
 
-	private final AnswerReader answerReader;
+	private final QnaReader qnaReader;
 
 	@Override
 	public void hasAuctionOwnership(
@@ -29,7 +29,7 @@ public class AnswerValidatorImpl implements AnswerValidator {
 	public void validateAnswerNotExists(
 		Question question
 	) {
-		if (answerReader.existsByQuestionId(question.getQuestionId())) {
+		if (qnaReader.existsByQuestionId(question.getQuestionId())) {
 			throw new AnswerAlreadyExistException(question.getQuestionId());
 		}
 
