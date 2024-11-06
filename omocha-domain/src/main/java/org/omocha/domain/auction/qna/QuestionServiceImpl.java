@@ -19,25 +19,25 @@ public class QuestionServiceImpl implements QuestionService {
 
 	private final MemberReader memberReader;
 	private final AuctionReader auctionReader;
-	private final QuestionStore questionStore;
-	private final QuestionReader questionReader;
+	private final QnaStore qnaStore;
+	private final QnaReader qnaReader;
 
 	private final QuestionValidator questionValidator;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<QuestionInfo.QnaServiceResponse> retriveQnaList(QuestionCommand.QnaList qnaListCommand,
+	public Page<QuestionInfo.RetriveQnas> retriveQnas(QuestionCommand.QnaList qnaListCommand,
 		Pageable sortPage) {
 
 		log.info("find qnaList started for auctionId: {}, pageable: {}", qnaListCommand.auctionId(), sortPage);
 
 		Auction auction = auctionReader.getAuction(qnaListCommand.auctionId());
 
-		Page<Qna> qnaEntityList = questionReader.findQnaList(auction.getAuctionId(),
+		Page<Qna> qnaEntityList = qnaReader.getQnaList(auction.getAuctionId(),
 			sortPage);
 
-		Page<QuestionInfo.QnaServiceResponse> qnaResponseList = qnaEntityList.map(qna ->
-			QuestionInfo.QnaServiceResponse.toInfo(qna.getQuestion(), qna.getAnswer()));
+		Page<QuestionInfo.RetriveQnas> qnaResponseList = qnaEntityList.map(qna ->
+			QuestionInfo.RetriveQnas.toInfo(qna.getQuestion(), qna.getAnswer()));
 		log.debug("find qnaList finished");
 
 		return qnaResponseList;
@@ -46,7 +46,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional
-	public QuestionInfo.AddQuestionResponse addQuestion(QuestionCommand.AddQuestion addQuestionCommand) {
+	public QuestionInfo.AddQuestion addQuestion(QuestionCommand.AddQuestion addQuestionCommand) {
 
 		log.info("add question started for createQuestionCommand: {}", addQuestionCommand);
 
@@ -58,11 +58,11 @@ public class QuestionServiceImpl implements QuestionService {
 		// 		Bid , Auction , Question 다름
 		Question question = addQuestionCommand.toEntity(member, auction);
 
-		questionStore.store(question);
+		qnaStore.store(question);
 
 		log.info("add question finished");
 
-		return QuestionInfo.AddQuestionResponse.toInfo(question);
+		return QuestionInfo.AddQuestion.toInfo(question);
 
 	}
 
@@ -74,7 +74,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		Member member = memberReader.findById(modifyQuestionCommand.memberId());
 
-		Question question = questionReader.findQuestion(modifyQuestionCommand.questionId());
+		Question question = qnaReader.getQuestion(modifyQuestionCommand.questionId());
 
 		questionValidator.hasQuestionOwnership(question, member);
 
@@ -92,7 +92,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		Member member = memberReader.findById(removeQuestionCommand.memberId());
 
-		Question question = questionReader.findQuestion(removeQuestionCommand.questionId());
+		Question question = qnaReader.getQuestion(removeQuestionCommand.questionId());
 
 		questionValidator.hasQuestionOwnership(question, member);
 

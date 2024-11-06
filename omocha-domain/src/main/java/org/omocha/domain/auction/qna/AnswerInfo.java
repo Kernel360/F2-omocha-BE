@@ -54,13 +54,13 @@ public class AnswerInfo {
 		}
 	}
 
-	public record ModifyAnswerResponse(
+	public record ModifyAnswer(
 		Long answerId
 	) {
-		public static ModifyAnswerResponse toInfo(
+		public static ModifyAnswer toInfo(
 			Answer answer
 		) {
-			return new ModifyAnswerResponse(
+			return new ModifyAnswer(
 				answer.getAnswerId()
 			);
 

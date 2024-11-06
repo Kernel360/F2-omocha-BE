@@ -10,6 +10,7 @@ public class AnswerDto {
 		Long answerId,
 		String title,
 		String content,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {
 

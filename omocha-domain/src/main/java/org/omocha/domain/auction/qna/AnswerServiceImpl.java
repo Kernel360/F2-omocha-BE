@@ -16,10 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 public class AnswerServiceImpl implements AnswerService {
 
 	private final MemberReader memberReader;
-	private final QuestionReader questionReader;
 	private final AuctionReader auctionReader;
-	private final AnswerStore answerStore;
-	private final AnswerReader answerReader;
+	private final QnaReader qnaReader;
+	private final QnaStore qnaStore;
 
 	private final AnswerValidator answerValidator;
 
@@ -30,7 +29,7 @@ public class AnswerServiceImpl implements AnswerService {
 		// TODO : Entity 조회 추후 리팩토링
 		Member member = memberReader.findById(addAnswerCommand.memberId());
 
-		Question question = questionReader.findQuestion(addAnswerCommand.memberId());
+		Question question = qnaReader.getQuestion(addAnswerCommand.memberId());
 
 		Auction auction = auctionReader.getAuction(question.getAuction().getAuctionId());
 
@@ -42,25 +41,25 @@ public class AnswerServiceImpl implements AnswerService {
 
 		log.info("add answer finished for createAnswerCommand: {}", addAnswerCommand);
 
-		answerStore.store(answer);
+		qnaStore.store(answer);
 
 		return AnswerInfo.AddAnswer.toInfo(answer);
 	}
 
 	@Override
 	@Transactional
-	public AnswerInfo.ModifyAnswerResponse modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
+	public AnswerInfo.ModifyAnswer modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
 		log.info("modify answer started for modifyAnswerCommand : {}", modifyAnswerCommand);
 
 		Member member = memberReader.findById(modifyAnswerCommand.memberId());
 
-		Answer answer = answerReader.findAnswer(modifyAnswerCommand.answerId());
+		Answer answer = qnaReader.getAnswer(modifyAnswerCommand.answerId());
 
 		answerValidator.hasAuctionOwnership(answer.getQuestion().getAuction(), member);
 
 		answer.updateAnswer(modifyAnswerCommand.title(), modifyAnswerCommand.content());
 
-		return AnswerInfo.ModifyAnswerResponse.toInfo(answer);
+		return AnswerInfo.ModifyAnswer.toInfo(answer);
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class AnswerServiceImpl implements AnswerService {
 
 		Member member = memberReader.findById(removeAnswerModify.memberId());
 
-		Answer answer = answerReader.findAnswer(removeAnswerModify.answerId());
+		Answer answer = qnaReader.getAnswer(removeAnswerModify.answerId());
 
 		answerValidator.hasAuctionOwnership(answer.getQuestion().getAuction(), member);
 

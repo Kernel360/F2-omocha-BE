@@ -1,6 +1,7 @@
 package org.omocha.domain.auction.qna;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.exception.AnswerAlreadyExistException;
 import org.omocha.domain.member.Member;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AnswerValidatorImpl implements AnswerValidator {
 
+	private final AnswerReader answerReader;
+
 	@Override
 	public void hasAuctionOwnership(
 		Auction auction,
 		Member member
 	) {
-		// if (!auction.getMember().getMemberId().equals(member.getMemberId())) {
+		// if (!auction.getMemberId().equals(member.getMemberId())) {
 		// 	throw new InvalidMemberException(INVALID_MEMBER);
 		// }
 	}
@@ -26,9 +29,9 @@ public class AnswerValidatorImpl implements AnswerValidator {
 	public void validateAnswerNotExists(
 		Question question
 	) {
-		// if (answerRepository.existsByQuestionEntityAndDeletedIsFalse(question)) {
-		// 	throw new QnaResponseStatusException(QnACode.EXISTING_ANSWER_CONFLICT);
-		// }
+		if (answerReader.existsByQuestionId(question.getQuestionId())) {
+			throw new AnswerAlreadyExistException(question.getQuestionId());
+		}
 
 	}
 }

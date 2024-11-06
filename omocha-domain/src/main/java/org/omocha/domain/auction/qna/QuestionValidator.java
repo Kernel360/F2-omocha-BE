@@ -9,4 +9,5 @@ public interface QuestionValidator {
 		Question question,
 		Member member
 	);
+
 }

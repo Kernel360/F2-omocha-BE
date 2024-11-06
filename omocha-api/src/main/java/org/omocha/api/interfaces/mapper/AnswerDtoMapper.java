@@ -20,7 +20,7 @@ public interface AnswerDtoMapper {
 	AnswerCommand.ModifyAnswer toCommand(Long memberId, Long answerId,
 		AnswerDto.ModifyAnswerRequest modifyAnswerRequest);
 
-	AnswerDto.ModifyAnswerResponse toResponse(AnswerInfo.ModifyAnswerResponse modifyAnswerInfo);
+	AnswerDto.ModifyAnswerResponse toResponse(AnswerInfo.ModifyAnswer modifyAnswerInfo);
 
 	AnswerCommand.RemoveAnswer toCommand(Long memberId, Long answerId);
 

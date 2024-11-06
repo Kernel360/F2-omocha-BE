@@ -24,7 +24,7 @@ public interface QuestionDtoMapper {
 
 	QuestionCommand.AddQuestion toCommand(Long memberId, QuestionDto.AddQuestionRequest request);
 
-	QuestionDto.AddQuestionResponse toResponse(QuestionInfo.AddQuestionResponse createQuestionInfo);
+	QuestionDto.AddQuestionResponse toResponse(QuestionInfo.AddQuestion createQuestionInfo);
 
 	QuestionDto.ModifyQuestionResponse toResponse(QuestionInfo.ModifyQuestion modifyQuestionInfo);
 
@@ -32,15 +32,15 @@ public interface QuestionDtoMapper {
 
 	QuestionCommand.QnaList toCommand(Long auctionId);
 
-	default Page<QuestionDto.QnaServiceResponse> toResponse(Page<QuestionInfo.QnaServiceResponse> qnaServiceResponses) {
-		List<QuestionDto.QnaServiceResponse> content = qnaServiceResponses.getContent().stream()
+	default Page<QuestionDto.RetriveQnasResponse> toResponse(Page<QuestionInfo.RetriveQnas> retriveQna) {
+		List<QuestionDto.RetriveQnasResponse> content = retriveQna.getContent().stream()
 			.map(this::toResponse)
 			.collect(Collectors.toList());
 
-		return new PageImpl<>(content, qnaServiceResponses.getPageable(), qnaServiceResponses.getTotalElements());
+		return new PageImpl<>(content, retriveQna.getPageable(), retriveQna.getTotalElements());
 	}
 
-	QuestionDto.QnaServiceResponse toResponse(QuestionInfo.QnaServiceResponse qnaServiceResponses);
+	QuestionDto.RetriveQnasResponse toResponse(QuestionInfo.RetriveQnas retriveQnas);
 
 	QuestionDto.QuestionDetails toResponse(QuestionInfo.QuestionDetails questionDetailsInfo);
 

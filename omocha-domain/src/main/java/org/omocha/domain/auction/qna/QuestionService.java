@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface QuestionService {
-	QuestionInfo.AddQuestionResponse addQuestion(QuestionCommand.AddQuestion addQuestionCommand);
+	QuestionInfo.AddQuestion addQuestion(QuestionCommand.AddQuestion addQuestionCommand);
 
 	QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand);
 
 	void questionRemove(QuestionCommand.RemoveQuestion removeQuestionCommand);
 
-	Page<QuestionInfo.QnaServiceResponse> retriveQnaList(QuestionCommand.QnaList qnaListCommand, Pageable sortPage);
+	Page<QuestionInfo.RetriveQnas> retriveQnas(QuestionCommand.QnaList qnaListCommand, Pageable sortPage);
 }

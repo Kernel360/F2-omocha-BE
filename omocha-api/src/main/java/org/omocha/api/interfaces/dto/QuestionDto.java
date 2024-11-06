@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class QuestionDto {
 
-	public record QnaServiceResponse(
+	public record RetriveQnasResponse(
 		QuestionDto.QuestionDetails questionDetails,
 		AnswerDto.AnswerDetails answerDetails
 	) {
@@ -16,6 +16,7 @@ public class QuestionDto {
 		Long questionId,
 		String title,
 		String content,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
 		Long memberId,
 		String email,

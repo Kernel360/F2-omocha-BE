@@ -10,12 +10,6 @@ public class QuestionCommand {
 	) {
 	}
 
-	// @PathVariable(value = "auctionId") Long auctionId,
-	// @RequestParam(value = "sort", defaultValue = "createdAt") String sort,
-	// @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-	// @PageableDefault(page = 0, size = 10)
-	// Pageable pageable
-
 	public record AddQuestion(
 		Long memberId,
 		Long auctionId,

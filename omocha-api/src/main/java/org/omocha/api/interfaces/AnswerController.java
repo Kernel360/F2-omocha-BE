@@ -77,7 +77,7 @@ public class AnswerController {
 		AnswerCommand.ModifyAnswer modifyAnswerCommand = answerDtoMapper.toCommand(memberId, answerId,
 			modifyAnswerRequest);
 
-		AnswerInfo.ModifyAnswerResponse modifyAnswerInfo = qnaFacade.modifyAnswer(modifyAnswerCommand);
+		AnswerInfo.ModifyAnswer modifyAnswerInfo = qnaFacade.modifyAnswer(modifyAnswerCommand);
 
 		AnswerDto.ModifyAnswerResponse modifyAnswerResponse = answerDtoMapper.toResponse(modifyAnswerInfo);
 

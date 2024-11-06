@@ -40,7 +40,7 @@ public class QuestionController {
 
 	// TODO : QueryDSL JOIN 관련 수정 필요
 	@GetMapping("/{auctionId}/qna-list")
-	public ResponseEntity<ResultDto<Page<QuestionDto.QnaServiceResponse>>> qnaList(
+	public ResponseEntity<ResultDto<Page<QuestionDto.RetriveQnasResponse>>> qnaList(
 		@PathVariable(value = "auctionId") Long auctionId,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "ASC") String direction,
@@ -54,12 +54,12 @@ public class QuestionController {
 
 		QuestionCommand.QnaList qnaListCommand = questionDtoMapper.toCommand(auctionId);
 
-		Page<QuestionInfo.QnaServiceResponse> qnaResponseList = qnaFacade.retriveQnaList(qnaListCommand, sortPage);
+		Page<QuestionInfo.RetriveQnas> qnaResponseList = qnaFacade.retriveQnas(qnaListCommand, sortPage);
 
-		Page<QuestionDto.QnaServiceResponse> qnaServiceResponse = questionDtoMapper.toResponse(
+		Page<QuestionDto.RetriveQnasResponse> qnaServiceResponse = questionDtoMapper.toResponse(
 			qnaResponseList);
 
-		ResultDto<Page<QuestionDto.QnaServiceResponse>> resultDto = ResultDto.res(
+		ResultDto<Page<QuestionDto.RetriveQnasResponse>> resultDto = ResultDto.res(
 			QNA_LIST_ACCESS_SUCCESS.getStatusCode(),
 			QNA_LIST_ACCESS_SUCCESS.getResultMsg(),
 			qnaServiceResponse
@@ -83,7 +83,7 @@ public class QuestionController {
 		QuestionCommand.AddQuestion addQuestionCommand = questionDtoMapper.toCommand(memberId,
 			addQuestionRequest);
 
-		QuestionInfo.AddQuestionResponse addQuestionInfo = qnaFacade.addQuestion(addQuestionCommand);
+		QuestionInfo.AddQuestion addQuestionInfo = qnaFacade.addQuestion(addQuestionCommand);
 
 		QuestionDto.AddQuestionResponse addQuestionResponse = questionDtoMapper.toResponse(addQuestionInfo);
 

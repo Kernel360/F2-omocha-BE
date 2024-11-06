@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 
 public class QuestionInfo {
 
-	public record QnaServiceResponse(
+	public record RetriveQnas(
 		QuestionInfo.QuestionDetails questionDetails,
 		AnswerInfo.AnswerDetails answerDetails
 
 	) {
-		public static QnaServiceResponse toInfo(
+		public static RetriveQnas toInfo(
 			Question question,
 			Answer answer
 		) {
 
-			return new QnaServiceResponse(
+			return new RetriveQnas(
 				QuestionInfo.QuestionDetails.toInfo(question),
 				answer != null ? AnswerInfo.AnswerDetails.toInfo(answer) : null
 			);
@@ -51,15 +51,15 @@ public class QuestionInfo {
 		}
 	}
 
-	public record AddQuestionResponse(
+	public record AddQuestion(
 		Long questionId,
 		String title,
 		String content,
 		LocalDateTime createAt
 
 	) {
-		public static AddQuestionResponse toInfo(Question question) {
-			return new AddQuestionResponse(
+		public static AddQuestion toInfo(Question question) {
+			return new AddQuestion(
 				question.getQuestionId(),
 				question.getTitle(),
 				question.getContent(),
