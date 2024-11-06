@@ -28,24 +28,26 @@ public class ChatReaderImpl implements ChatReader {
 	}
 
 	@Override
-	public Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
-		ChatCommand.RetrieveMyChatRoom retrieveMyChatRoom,
+	public Slice<ChatInfo.RetrieveMyChatRoom> getMyChatRoomList(
+		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	) {
-		return chatRoomRepository.findMyChatRooms(retrieveMyChatRoom, pageable);
+		return chatRoomRepository.getMyChatRooms(retrieveCommand, pageable);
 	}
 
 	@Override
-	public Slice<ChatInfo.ChatMessage> findChatMessages(ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
-		Pageable pageable) {
-		return chatRepository.findChatMessagesByRoomId(
-			chatRoomMessage,
+	public Slice<ChatInfo.RetrieveChatRoomMessage> getChatRoomMessageList(
+		ChatCommand.RetrieveChatRoomMessage chatMessageCommand,
+		Pageable pageable
+	) {
+		return chatRepository.getChatRoomMessagesByRoomId(
+			chatMessageCommand,
 			pageable
 		);
 	}
 
 	@Override
-	public ChatRoom findChatRoom(Long roomId) {
+	public ChatRoom getChatRoom(Long roomId) {
 		return chatRoomRepository.findById(roomId)
 			.orElseThrow(() -> new ChatRoomNotFoundException(roomId));
 	}

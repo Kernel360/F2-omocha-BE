@@ -35,7 +35,7 @@ public class BidValidatorImpl implements BidValidator {
 			throw new BidBelowStartPriceException(bidPrice, startPrice);
 		}
 
-		Long currentHighestBidPrice = bidReader.getHighestBid(auction.getAuctionId())
+		Long currentHighestBidPrice = bidReader.findHighestBid(auction.getAuctionId())
 			.map(Bid::getBidPrice)
 			.orElse(0L);
 

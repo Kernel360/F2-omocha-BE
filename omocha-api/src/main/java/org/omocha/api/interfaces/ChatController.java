@@ -26,7 +26,7 @@ public class ChatController {
 		@Valid ChatDto.ChatMessageRequest chatMessageRequest
 	) {
 
-		ChatCommand.SaveChatMessage chatCommand =
+		ChatCommand.AddChatMessage chatCommand =
 			chatDtoMapper.toCommand(chatMessageRequest, roomId);
 
 		// 메시지 처리

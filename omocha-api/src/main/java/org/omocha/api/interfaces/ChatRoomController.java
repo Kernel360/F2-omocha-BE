@@ -1,6 +1,5 @@
 package org.omocha.api.interfaces;
 
-import static org.omocha.domain.auction.chat.ChatCommand.*;
 import static org.omocha.domain.exception.code.SuccessCode.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +9,7 @@ import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.response.SliceResponseDto.SliceResponse;
 import org.omocha.api.interfaces.mapper.ChatDtoMapper;
+import org.omocha.domain.auction.chat.ChatCommand;
 import org.omocha.domain.auction.chat.ChatInfo;
 import org.omocha.domain.common.util.PageSort;
 import org.springframework.data.domain.PageRequest;
@@ -39,14 +39,13 @@ public class ChatRoomController implements ChatRoomApi {
 
 	// TODO : Front 테스트 용입니다
 	@PostMapping("/{auctionId}")
-	public ResponseEntity<ResultDto> chatRoomSave(
+	public ResponseEntity<ResultDto> chatRoomAdd(
 		@PathVariable Long auctionId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-
 		Long buyerId = userPrincipal.getId();
 
-		CreateChatRoom chatRoomCommand = chatDtoMapper.toCommand(
+		ChatCommand.AddChatRoom chatRoomCommand = chatDtoMapper.toCommand(
 			auctionId, buyerId);
 		chatFacade.addChatRoom(chatRoomCommand);
 
@@ -58,26 +57,28 @@ public class ChatRoomController implements ChatRoomApi {
 		return ResponseEntity
 			.status(CHATROOM_CREATE_SUCCESS.getHttpStatus())
 			.body(result);
-
 	}
 
 	// EXPLAIN : 현재 참여중인 채팅방 List
 	@GetMapping("")
-	public ResponseEntity<ResultDto<SliceResponse<ChatInfo.MyChatRoomInfo>>> myChatRoomList(
+	public ResponseEntity<ResultDto<SliceResponse<ChatInfo.RetrieveMyChatRoom>>> myChatRoomList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(required = false) String sort
 	) {
+		log.info("Fetching chat rooms for memberId: {}", userPrincipal.getId());
+
 		Pageable pageable = PageRequest.of(page, size);
 
 		Long memberId = userPrincipal.getId();
-		RetrieveMyChatRoom chatRoomCommand = chatDtoMapper.toCommand(memberId);
-		Slice<ChatInfo.MyChatRoomInfo> myChatRoomResult = chatFacade.findMyChatRooms(chatRoomCommand, pageable);
-		SliceResponse<ChatInfo.MyChatRoomInfo> response =
-			new SliceResponse<>(myChatRoomResult);
+		ChatCommand.RetrieveMyChatRoom chatRoomCommand = chatDtoMapper.toCommand(memberId);
+		Slice<ChatInfo.RetrieveMyChatRoom> myChatRoomInfo = chatFacade.retrieveMyChatRoom(chatRoomCommand,
+			pageable);
+		SliceResponse<ChatInfo.RetrieveMyChatRoom> response =
+			new SliceResponse<>(myChatRoomInfo);
 
-		ResultDto<SliceResponse<ChatInfo.MyChatRoomInfo>> result = ResultDto.res(
+		ResultDto<SliceResponse<ChatInfo.RetrieveMyChatRoom>> result = ResultDto.res(
 			CHATROOM_LIST_SUCCESS.getStatusCode(),
 			CHATROOM_LIST_SUCCESS.getDescription(),
 			response
@@ -92,7 +93,7 @@ public class ChatRoomController implements ChatRoomApi {
 	// EXPLAIN : 채팅 대화 List
 	// TODO : chatting message sorting 기준 추가해야함, chatting방 찾을 수 없는 예오
 	@GetMapping("/{roomId}")
-	public ResponseEntity<ResultDto<SliceResponse<ChatInfo.ChatMessage>>> chatMessageList(
+	public ResponseEntity<ResultDto<SliceResponse<ChatInfo.RetrieveChatRoomMessage>>> chatMessageList(
 		@PathVariable Long roomId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(required = false) LocalDateTime cursor,
@@ -106,14 +107,16 @@ public class ChatRoomController implements ChatRoomApi {
 
 		Long memberId = userPrincipal.getId();
 
-		RetrieveChatRoomMessage chatCommand = chatDtoMapper.toCommand(roomId, memberId, cursor);
+		ChatCommand.RetrieveChatRoomMessage messageCommand =
+			chatDtoMapper.toCommand(roomId, memberId, cursor);
 
-		Slice<ChatInfo.ChatMessage> messageResponse = chatFacade.findChatRoomMessages(chatCommand, sortPage);
+		Slice<ChatInfo.RetrieveChatRoomMessage> messageInfo =
+			chatFacade.retrieveChatRoomMessage(messageCommand, sortPage);
 
-		SliceResponse<ChatInfo.ChatMessage> response = new SliceResponse<>(
-			messageResponse);
+		SliceResponse<ChatInfo.RetrieveChatRoomMessage> response = new SliceResponse<>(
+			messageInfo);
 
-		ResultDto<SliceResponse<ChatInfo.ChatMessage>> result = ResultDto.res(
+		ResultDto<SliceResponse<ChatInfo.RetrieveChatRoomMessage>> result = ResultDto.res(
 			CHATROOM_MESSAGES_SUCCESS.getStatusCode(),
 			CHATROOM_MESSAGES_SUCCESS.getDescription(),
 			response

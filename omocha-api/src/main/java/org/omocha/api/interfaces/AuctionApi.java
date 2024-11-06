@@ -34,11 +34,11 @@ public interface AuctionApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<AuctionDto.CreateAuctionResponse>> auctionSave(
+	ResponseEntity<ResultDto<AuctionDto.AuctionAddResponse>> auctionAdd(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		UserPrincipal userPrincipal,
 		@Parameter(description = "경매 요청 데이터", required = true)
-		AuctionDto.CreateAuctionRequest auctionRequest,
+		AuctionDto.AuctionAddRequest auctionRequest,
 		@Parameter(description = "이미지 파일 리스트", required = true)
 		List<MultipartFile> images,
 		@Parameter(description = "thumbnail 이미지 파일", required = true)
@@ -56,9 +56,9 @@ public interface AuctionApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Page<AuctionDto.AuctionListResponse>>> auctionList(
+	ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
 		@Parameter(description = "검색 조건", required = false)
-		AuctionDto.AuctionSearchCondition condition,
+		AuctionDto.AuctionSearchRequest condition,
 		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = Auction.AuctionStatus.class))
 		Auction.AuctionStatus auctionStatus,
 		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
@@ -80,9 +80,26 @@ public interface AuctionApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<AuctionDto.AuctionDetailResponse>> auctionDetail(
-		@Parameter(description = "경매 ID", required = true)
-		Long auctionId
+	ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
+		@Parameter(description = "경매 ID", required = true) Long auctionId
+	);
+
+	@Operation(summary = "경매 삭제", description = "경매 ID를 사용하여 경매를 삭제합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "경매가 성공적으로 삭제되었습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "경매를 삭제할 수 없습니다 (이미 입찰이 있을 경우, 경매를 생성한 회원이 아님..",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "404", description = "해당 ID의 경매가 존재하지 않습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Void>> auctionRemove(
+		@Parameter(description = "사용자 객체 정보", required = true) UserPrincipal userPrincipal,
+		@Parameter(description = "경매 ID", required = true) Long auctionId
 	);
 
 }

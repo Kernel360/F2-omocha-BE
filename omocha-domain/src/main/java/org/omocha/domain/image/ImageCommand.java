@@ -4,7 +4,7 @@ import org.omocha.domain.auction.Auction;
 
 public class ImageCommand {
 
-	public record RegisterAuctionImage(
+	public record AddAuctionImage(
 		String fileName,
 		String imagePath,
 		Auction auction

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AuctionDto {
 
-	public record CreateAuctionRequest(
+	public record AuctionAddRequest(
 		String title,
 		String content,
 		Long startPrice,
@@ -21,28 +21,28 @@ public class AuctionDto {
 	) {
 	}
 
-	public record CreateAuctionResponse(
+	public record AuctionAddResponse(
 		Long auctionId
 	) {
 	}
 
-	public record AuctionSearchCondition(
+	public record AuctionSearchRequest(
 		String title
 	) {
 	}
 
-	public record AuctionListResponse(
+	public record AuctionSearchResponse(
 		Long auctionId,
-		// Long memberId
+		Long memberId,
 		String title,
 		String content,
 		Long startPrice,
 		Long bidUnit,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
-		// Long nowPrice,
-		// Long concludePrice,
-		// Long bidCount,
+		Long nowPrice,
+		Long concludePrice,
+		Long bidCount,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -52,19 +52,17 @@ public class AuctionDto {
 	) {
 	}
 
-	public record AuctionDetailResponse(
+	public record AuctionDetailsResponse(
 		Long auctionId,
-		// TODO : 추가
-		// Long memberId,
+		Long memberId,
 		String title,
 		String content,
 		Long startPrice,
 		Long bidUnit,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
-		// Long nowPrice,
-		// Long concludePrice,
-		// Long bidCount,
+		Long nowPrice,
+		Long bidCount,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

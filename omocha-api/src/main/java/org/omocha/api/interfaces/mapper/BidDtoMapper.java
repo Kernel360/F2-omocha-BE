@@ -15,11 +15,11 @@ import org.omocha.domain.auction.bid.BidInfo;
 	unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface BidDtoMapper {
-	List<BidDto.BidListResponse> toResponse(List<BidInfo.BidListResponse> bidListResponse);
+	List<BidDto.BidListResponse> toResponse(List<BidInfo.BidList> bidList);
 
 	BidCommand.AddBid toCommand(Long buyerId, Long auctionId, BidDto.BidAddRequest createRequest);
 
-	BidDto.BidAddResponse toResponse(BidInfo.AddBidResponse createResponse);
+	BidDto.BidAddResponse toResponse(BidInfo.AddBid createResponse);
 
-	BidDto.NowPriceResponse toResponse(BidInfo.NowPriceResponse nowPriceResponse);
+	BidDto.NowPriceResponse toResponse(BidInfo.NowPrice nowPrice);
 }

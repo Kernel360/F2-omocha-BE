@@ -7,8 +7,9 @@ import org.omocha.domain.auction.QAuction;
 import org.omocha.domain.auction.chat.ChatCommand;
 import org.omocha.domain.auction.chat.ChatInfo;
 import org.omocha.domain.auction.chat.QChat;
-import org.omocha.domain.auction.chat.QChatInfo_MyChatRoomInfo;
+import org.omocha.domain.auction.chat.QChatInfo_RetrieveMyChatRoom;
 import org.omocha.domain.auction.chat.QChatRoom;
+import org.omocha.domain.auction.conclude.QConclude;
 import org.omocha.domain.member.QMember;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -30,7 +31,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 	}
 
 	@Override
-	public Slice<ChatInfo.MyChatRoomInfo> findMyChatRooms(
+	public Slice<ChatInfo.RetrieveMyChatRoom> getMyChatRooms(
 		ChatCommand.RetrieveMyChatRoom retrieveMyChatRoom,
 		Pageable pageable
 	) {
@@ -40,6 +41,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		QMember seller = new QMember("seller");
 		QMember buyer = new QMember("buyer");
 		QAuction auction = QAuction.auction;
+		QConclude conclude = QConclude.conclude;
 
 		Expression<LocalDateTime> lastMessageTime = JPAExpressions
 			.select(chat.createdAt.max())
@@ -64,8 +66,8 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 			)
 			.limit(1);
 
-		List<ChatInfo.MyChatRoomInfo> chatRooms = queryFactory
-			.select(new QChatInfo_MyChatRoomInfo(
+		List<ChatInfo.RetrieveMyChatRoom> chatRooms = queryFactory
+			.select(new QChatInfo_RetrieveMyChatRoom(
 				chatRoom.auctionId,
 				chatRoom.roomId,
 				chatRoom.roomName,
@@ -73,7 +75,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 				seller.nickname,
 				seller.profileImageUrl,
 				auction.thumbnailPath,
-				// TODO : concludePrice 추가해야함
+				conclude.concludePrice,
 				buyer.memberId,
 				buyer.nickname,
 				buyer.profileImageUrl,
@@ -85,6 +87,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 			.leftJoin(seller).on(seller.memberId.eq(chatRoom.sellerId))
 			.leftJoin(buyer).on(buyer.memberId.eq(chatRoom.buyerId))
 			.leftJoin(auction).on(auction.auctionId.eq(chatRoom.auctionId))
+			.leftJoin(conclude).on(conclude.auction.eq(auction))
 			.where(chatRoom.buyerId.eq(retrieveMyChatRoom.memberId())
 				.or(chatRoom.sellerId.eq(retrieveMyChatRoom.memberId())))
 			.orderBy(

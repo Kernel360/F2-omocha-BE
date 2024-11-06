@@ -17,19 +17,23 @@ public class AuctionFacade {
 
 	private final AuctionService auctionService;
 
-	public Long addAuction(AuctionCommand.RegisterAuction registerAuction) {
-		return auctionService.registerAuction(registerAuction);
+	public Long addAuction(AuctionCommand.AddAuction addCommand) {
+		return auctionService.addAuction(addCommand);
 	}
 
-	public Page<AuctionInfo.AuctionListResponse> searchAuction(
+	public Page<AuctionInfo.SearchAuction> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
 		return auctionService.searchAuction(searchAuction, pageable);
 	}
 
-	public AuctionInfo.AuctionDetailResponse findAuctionDetail(AuctionCommand.RetrieveAuction retrieveAuctionId) {
-		return auctionService.retrieveAuctionDetail(retrieveAuctionId);
+	public AuctionInfo.RetrieveAuction retrieveAuction(AuctionCommand.RetrieveAuction retrieveCommand) {
+		return auctionService.retrieveAuction(retrieveCommand);
+	}
+
+	public void removeAuction(AuctionCommand.RemoveAuction removeCommand) {
+		auctionService.removeAuction(removeCommand);
 	}
 
 }

@@ -33,6 +33,6 @@ public class HighestBidManager {
 	// static 메서드이기 때문에 BidReader를 매개변수로 주입함
 	public static Optional<Bid> getCurrentHighestBid(Long auctionId, BidReader bidReader) {
 		return Optional.ofNullable(getHighestBid(auctionId))
-			.or(() -> bidReader.getHighestBid(auctionId));
+			.or(() -> bidReader.findHighestBid(auctionId));
 	}
 }

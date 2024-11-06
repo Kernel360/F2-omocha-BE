@@ -15,11 +15,11 @@ import org.omocha.domain.auction.chat.ChatCommand;
 )
 public interface ChatDtoMapper {
 
-	ChatCommand.CreateChatRoom toCommand(Long auctionId, Long buyerId);
+	ChatCommand.AddChatRoom toCommand(Long auctionId, Long buyerId);
 
 	ChatCommand.RetrieveMyChatRoom toCommand(Long memberId);
 
-	ChatCommand.SaveChatMessage toCommand(ChatDto.ChatMessageRequest chatMessageRequest, Long roomId);
+	ChatCommand.AddChatMessage toCommand(ChatDto.ChatMessageRequest chatMessageRequest, Long roomId);
 
 	ChatCommand.RetrieveChatRoomMessage toCommand(Long roomId, Long memberId, LocalDateTime cursor);
 

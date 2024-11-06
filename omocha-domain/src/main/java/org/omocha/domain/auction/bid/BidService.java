@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface BidService {
 
-	public List<BidInfo.BidListResponse> getBidList(Long auctionId);
+	public List<BidInfo.BidList> retrieveBids(Long auctionId);
 
-	public BidInfo.AddBidResponse addBid(BidCommand.AddBid addBid);
+	public BidInfo.AddBid addBid(BidCommand.AddBid addBid);
 
-	public BidInfo.NowPriceResponse getNowPrice(Long auctionId);
+	public BidInfo.NowPrice retrieveNowPrice(Long auctionId);
 }

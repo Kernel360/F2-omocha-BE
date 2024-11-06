@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface ChatRepositoryCustom {
-	Slice<ChatInfo.ChatMessage> findChatMessagesByRoomId(
+	Slice<ChatInfo.RetrieveChatRoomMessage> getChatRoomMessagesByRoomId(
 		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
 		Pageable pageable
 	);
