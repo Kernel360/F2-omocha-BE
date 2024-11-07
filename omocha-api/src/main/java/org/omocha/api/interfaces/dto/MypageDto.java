@@ -4,16 +4,54 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.member.Role;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MypageDto {
 
-	public record MemberInfoResponse(
+	public record CurrentMemberInfoResponse(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
-		String email
+		String email,
+		String userName,
+		String nickName,
+		String phoneNumber,
+		String birth,
+		Role role,
+		String profileImageUrl
 	) {
+	}
+
+	public record MemberModifyRequest(
+		String nickName,
+		String phoneNumber
+	) {
+	}
+
+	public record MemberModifyResponse(
+		// TODO : 회원 가입 정보 추가 후 변경
+		Long memberId,
+		String email,
+		String userName,
+		String nickName,
+		String phoneNumber,
+		String birth,
+		Role role,
+		String profileImageUrl
+	) {
+	}
+
+	public record PasswordModifyRequest(
+		String currentPassword,
+		String newPassword
+	) {
+	}
+
+	public record ProfileImageModifyResponse(
+		String imageUrl
+	) {
+
 	}
 
 	public record MypageAuctionListResponse(

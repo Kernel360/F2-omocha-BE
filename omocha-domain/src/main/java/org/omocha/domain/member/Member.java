@@ -80,6 +80,24 @@ public class Member extends BaseEntity {
 		this.userStatus = userStatus;
 	}
 
+	public void updateMember(
+		String nickname,
+		String phoneNumber
+	) {
+		this.nickname = nickname;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void updatePassword(
+		String password
+	) {
+		this.password = password;
+	}
+
+	public void updateProfileImage(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

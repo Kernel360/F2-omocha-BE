@@ -7,18 +7,12 @@ import jakarta.validation.constraints.NotBlank;
 public class MemberDto {
 
 	// TODO: 회원가입 로직을 확정하고 수정해야함
-	public record MemberCreateRequest(
+	public record MemberAddRequest(
 		@NotBlank
 		String email,
 
 		@NotBlank
 		String password
-	) {
-	}
-
-	public record MemberDuplicateRequest(
-		@NotBlank
-		String email
 	) {
 	}
 
