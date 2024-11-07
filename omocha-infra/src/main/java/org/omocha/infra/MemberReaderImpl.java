@@ -28,19 +28,19 @@ public class MemberReaderImpl implements MemberReader {
 	}
 
 	@Override
-	public Member findById(Long memberId) {
+	public Member getMember(Long memberId) {
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
 	}
 
 	@Override
-	public Member findByEmail(String email) {
+	public Member getMember(String email) {
 		return memberRepository.findByEmail(email)
 			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
 	}
 
 	@Override
-	public Optional<Member> getOptionalMember(MemberCommand.OAuthProvider oAuthProvider) {
+	public Optional<Member> findMember(MemberCommand.OAuthProvider oAuthProvider) {
 		return memberRepository.findByProviderAndProviderId(oAuthProvider.provider(), oAuthProvider.providerId());
 	}
 

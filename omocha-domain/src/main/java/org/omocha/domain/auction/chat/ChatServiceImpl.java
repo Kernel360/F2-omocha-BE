@@ -70,7 +70,7 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public void sendChatMessage(Chat savedChat) {
 
-		Member sender = memberReader.findById(savedChat.getSenderId());
+		Member sender = memberReader.getMember(savedChat.getSenderId());
 
 		ChatInfo.RetrieveChatRoomMessage chatMessage =
 			ChatInfo.RetrieveChatRoomMessage.toInfo(sender, savedChat);

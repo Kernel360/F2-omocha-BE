@@ -2,8 +2,11 @@ package org.omocha.domain.member;
 
 import java.util.Objects;
 
+import org.omocha.domain.auction.review.Rating;
+import org.omocha.domain.auction.review.RatingDbConverter;
 import org.omocha.domain.common.BaseEntity;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -42,6 +45,9 @@ public class Member extends BaseEntity {
 
 	private String profileImageUrl;
 
+	@Convert(converter = RatingDbConverter.class)
+	private Rating averageRating;
+
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
@@ -57,8 +63,8 @@ public class Member extends BaseEntity {
 	public Member(
 		String email, String password, String nickname,
 		String username, String birth, String phoneNumber,
-		String profileImageUrl, Role role, String provider,
-		String providerId, UserStatus userStatus
+		String profileImageUrl, Rating averageRating, Role role,
+		String provider, String providerId, UserStatus userStatus
 	) {
 		this.password = password;
 		this.nickname = nickname;
@@ -67,6 +73,7 @@ public class Member extends BaseEntity {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.profileImageUrl = profileImageUrl;
+		this.averageRating = averageRating;
 		this.role = role;
 		this.provider = provider;
 		this.providerId = providerId;
@@ -87,4 +94,9 @@ public class Member extends BaseEntity {
 	public int hashCode() {
 		return Objects.hashCode(memberId);
 	}
+
+	public void updateAverageRating(Rating averageRating) {
+		this.averageRating = averageRating;
+	}
+
 }

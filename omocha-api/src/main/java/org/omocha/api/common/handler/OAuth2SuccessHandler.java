@@ -38,8 +38,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
 
-		jwtProvider.generateAccessToken(userPrincipal.getMember().getMemberId(), response);
-		jwtProvider.generateRefreshToken(userPrincipal.getMember().getMemberId(), response);
+		jwtProvider.generateAccessToken(userPrincipal.getId(), response);
+		jwtProvider.generateRefreshToken(userPrincipal.getId(), response);
 
 		clearAuthenticationAttributes(request);
 

@@ -34,12 +34,12 @@ public class MemberServiceImpl implements MemberService {
 	//  Exception의 명확한 네이밍 => MemberNotFoundByIdException, MemberNotFoundByEmailException
 	@Override
 	public MemberInfo.MemberDetail findMember(Long memberId) {
-		return MemberInfo.MemberDetail.toDto(memberReader.findById(memberId));
+		return MemberInfo.MemberDetail.toDto(memberReader.getMember(memberId));
 	}
 
 	@Override
 	public MemberInfo.Login findMember(String email) {
-		Member member = memberReader.findByEmail(email);
+		Member member = memberReader.getMember(email);
 
 		return MemberInfo.Login.toDto(member);
 	}

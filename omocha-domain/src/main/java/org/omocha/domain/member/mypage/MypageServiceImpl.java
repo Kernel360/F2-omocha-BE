@@ -26,7 +26,7 @@ public class MypageServiceImpl implements MypageService {
 	public MypageInfo.MemberInfoResponse findCurrentMemberInfo(Long memberId) {
 		log.debug("find me start for member {}", memberId);
 
-		Member member = memberReader.findById(memberId);
+		Member member = memberReader.getMember(memberId);
 
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);

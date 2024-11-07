@@ -37,7 +37,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			.providerId(oAuth2UserInfo.getProviderId())
 			.build();
 
-		Member member = memberReader.getOptionalMember(oAuthProvider)
+		Member member = memberReader.findMember(oAuthProvider)
 			.orElseGet(() -> memberStore.addMember(oAuth2UserInfo.toEntity()));
 
 		return new UserPrincipal(member, oAuth2User.getAttributes());
