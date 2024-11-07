@@ -2,6 +2,7 @@ package org.omocha.api.common.auth.oauth;
 
 import java.util.Map;
 
+import org.omocha.domain.auction.review.Rating;
 import org.omocha.domain.exception.UnsupportedOAuthProviderException;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.Role;
@@ -52,6 +53,7 @@ public class OAuth2UserInfo {
 		return Member.builder()
 			.username(name)
 			.email(email)
+			.averageRating(new Rating(0d))
 			.role(Role.ROLE_USER)
 			.provider(provider)
 			.providerId(providerId)

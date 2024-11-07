@@ -22,6 +22,7 @@ public class AnswerServiceImpl implements AnswerService {
 
 	private final AnswerValidator answerValidator;
 
+
 	@Override
 	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
 

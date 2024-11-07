@@ -54,6 +54,6 @@ public class ConcludeServiceImpl implements ConcludeService {
 	@Override
 	@Transactional(readOnly = true)
 	public Long findConcludePrice(Long auctionId) {
-		return concludeReader.findConclude(auctionId).getConcludePrice();
+		return concludeReader.getConclude(auctionId).getConcludePrice();
 	}
 }

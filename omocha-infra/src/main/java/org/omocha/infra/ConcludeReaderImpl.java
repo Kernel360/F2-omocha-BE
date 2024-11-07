@@ -15,7 +15,7 @@ public class ConcludeReaderImpl implements ConcludeReader {
 	private final ConcludeRepository concludeRepository;
 
 	@Override
-	public Conclude findConclude(Long auctionId) {
+	public Conclude getConclude(Long auctionId) {
 		return concludeRepository.findByAuctionAuctionId(auctionId)
 			.orElseThrow(() -> new ConcludeNotFoundException(auctionId));
 	}

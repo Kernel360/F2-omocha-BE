@@ -2,6 +2,8 @@ package org.omocha.domain.member;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import org.omocha.domain.auction.review.Rating;
+
 import lombok.Builder;
 
 public class MemberCommand {
@@ -14,6 +16,7 @@ public class MemberCommand {
 			return Member.builder()
 				.email(email)
 				.password(password)
+				.averageRating(new Rating(0d))
 				.role(Role.ROLE_USER)
 				.userStatus(UserStatus.ACTIVATE)
 				.build();
