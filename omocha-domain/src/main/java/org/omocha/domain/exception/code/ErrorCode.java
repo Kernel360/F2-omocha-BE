@@ -19,6 +19,14 @@ public enum ErrorCode {
 	// OAuth Code
 	UNSUPPORTED_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth Provider입니다."),
 
+	// Member Code
+
+	MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 회원입니다."),
+	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "회원이 일치하지 않습니다."),
+
+	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
+
 	// Auction Code
 	AUCTION_ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 경매입니다."),
 	AUCTION_HAS_BIDS(HttpStatus.BAD_REQUEST, "입찰이 걸려있는 경매입니다. 경매를 종료할 수 없습니다."),
@@ -36,6 +44,15 @@ public enum ErrorCode {
 	INVALID_BID_UNIT(HttpStatus.BAD_REQUEST, "입찰 금액이 입찰 단위에 유효하지 않습니다."),
 	BID_BELOW_START_PRICE(HttpStatus.BAD_REQUEST, "입찰 가격이 시작 가격보다 낮습니다."),
 	BID_NOT_EXCEEDING_CURRENT_HIGHEST(HttpStatus.BAD_REQUEST, "입찰 가격이 최고가보다 높지 않습니다."),
+
+	// Qna Code
+	QUESTION_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),
+	ANSWER_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),
+
+	QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),
+	ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "답변을 찾을 수 없습니다."),
+
+	ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 답변이 존재합니다."),
 
 	// Conclude Code
 	CONCLUDE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 경매에는 낙찰 내역이 존재하지 않습니다."),
