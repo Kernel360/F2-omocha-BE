@@ -1,7 +1,10 @@
 package org.omocha.api.application;
 
-import org.omocha.domain.member.mypage.MypageInfo;
-import org.omocha.domain.member.mypage.MypageService;
+import org.omocha.api.common.util.PasswordManager;
+import org.omocha.domain.auction.AuctionService;
+import org.omocha.domain.member.MemberCommand;
+import org.omocha.domain.member.MemberInfo;
+import org.omocha.domain.member.MemberService;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -12,14 +15,37 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MypageFacade {
 
-	private final MypageService mypageService;
+	private final MemberService memberService;
+	private final AuctionService auctionService;
+	private final PasswordManager passwordManager;
 
-	public MypageInfo.MemberInfoResponse findCurrentMemberInfo(Long memberId) {
+	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
 
-		MypageInfo.MemberInfoResponse memberInfoResponse = mypageService.findCurrentMemberInfo(memberId);
+		return memberService.retrieveCurrentMemberInfo(memberId);
 
-		return memberInfoResponse;
+	}
 
+	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
+
+		return memberService.modifyBasicInfo(modifyBasicInfoCommand);
+
+	}
+
+	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
+
+		MemberInfo.RetrievePassword retrievePasswordInfo = memberService.retrievePassword(
+			modifyPasswordCommand.memberId());
+
+		passwordManager.match(modifyPasswordCommand.currentPassword(), retrievePasswordInfo.password());
+
+		memberService.modifyPassword(modifyPasswordCommand);
+
+	}
+
+	public MemberInfo.modifyProfileImage modifyProfileImage(
+		MemberCommand.ModifyProfileImage modifyProfileImageCommand) {
+
+		return memberService.modifyProfileImage(modifyProfileImageCommand);
 	}
 
 	// public Page<MypageInfo.MypageAuctionListResponse> findMyAuctionList(Long memberId, AuctionStatus auctionStatus,

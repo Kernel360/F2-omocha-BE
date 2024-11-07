@@ -1,6 +1,7 @@
 package org.omocha.api.application;
 
 import org.omocha.api.common.auth.jwt.JwtProvider;
+import org.omocha.api.common.util.PasswordManager;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.omocha.domain.member.MemberService;
@@ -19,9 +20,12 @@ public class MemberFacade {
 	private final MemberService memberService;
 	private final MemberValidator memberValidator;
 	private final JwtProvider jwtProvider;
+	private final PasswordManager passwordManager;
 
-	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
-		return memberService.addMember(memberCreateCommand);
+	public void addMember(MemberCommand.AddMember addMemberCommand) {
+
+		memberService.addMember(addMemberCommand);
+
 	}
 
 	public boolean isEmailDuplicate(String email) {
@@ -29,8 +33,10 @@ public class MemberFacade {
 	}
 
 	public void memberLogin(MemberCommand.MemberLogin memberLoginCommand, HttpServletResponse response) {
-		MemberInfo.Login loginInfo = memberService.findMember(memberLoginCommand.email());
-		memberValidator.validatePassword(memberLoginCommand.password(), loginInfo.password());
+
+		MemberInfo.Login loginInfo = memberService.retrieveMember(memberLoginCommand.email());
+
+		passwordManager.match(memberLoginCommand.password(), loginInfo.password());
 
 		jwtProvider.generateAccessToken(loginInfo.memberId(), response);
 		jwtProvider.generateRefreshToken(loginInfo.memberId(), response);

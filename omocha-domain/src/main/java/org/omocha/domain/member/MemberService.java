@@ -2,9 +2,20 @@ package org.omocha.domain.member;
 
 public interface MemberService {
 
-	MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand);
+	MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId);
 
-	MemberInfo.MemberDetail findMember(Long memberId);
+	void addMember(MemberCommand.AddMember addMemberCommand);
 
-	MemberInfo.Login findMember(String email);
+	MemberInfo.MemberDetail retrieveMember(Long memberId);
+
+	MemberInfo.Login retrieveMember(String email);
+
+	MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand);
+
+	void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand);
+
+	MemberInfo.modifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage modifyProfileImageCommand);
+
+	MemberInfo.RetrievePassword retrievePassword(Long memberId);
+
 }

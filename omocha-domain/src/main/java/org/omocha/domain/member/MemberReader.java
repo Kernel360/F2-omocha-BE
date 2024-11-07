@@ -6,11 +6,11 @@ public interface MemberReader {
 
 	boolean existsByEmail(String email);
 
-	Member findById(Long memberId);
+	Member getMember(Long memberId);
 
-	Member findByEmail(String email);
+	Member getMember(String email);
 
-	Optional<Member> getOptionalMember(MemberCommand.OAuthProvider oAuthProvider);
+	Optional<Member> findMember(MemberCommand.OAuthProvider oAuthProvider);
 
 	boolean existsByEmailAndProviderIsNull(String email);
 }

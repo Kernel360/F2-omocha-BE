@@ -6,10 +6,10 @@ import org.omocha.api.application.MemberFacade;
 import org.omocha.api.common.auth.jwt.JwtProvider;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
+import org.omocha.api.common.util.PasswordManager;
 import org.omocha.api.interfaces.dto.MemberDto;
 import org.omocha.api.interfaces.mapper.MemberDtoMapper;
 import org.omocha.domain.member.MemberCommand;
-import org.omocha.domain.member.MemberInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,24 +33,23 @@ public class AuthController {
 	private final MemberFacade memberFacade;
 	private final MemberDtoMapper memberDtoMapper;
 	private final JwtProvider jwtProvider;
+	private final PasswordManager passwordManager;
 
 	@PostMapping("/register")
-	public ResponseEntity<ResultDto<MemberDto.MemberDetailResponse>> memberAdd(
-		@RequestBody @Valid MemberDto.MemberCreateRequest memberCreateRequest
+	public ResponseEntity<ResultDto<Void>> memberAdd(
+		@RequestBody @Valid MemberDto.MemberAddRequest memberAddRequest
 	) {
 		// log.debug("Member register started");
 		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
-		MemberCommand.MemberCreate memberCreateCommand = memberDtoMapper.of(memberCreateRequest);
+		MemberCommand.AddMember addMemberCommand = memberDtoMapper.toCommand(memberAddRequest.email(),
+			passwordManager.encrypt(memberAddRequest.password()));
 
-		MemberInfo.MemberDetail memberDetailInfo = memberFacade.addMember(memberCreateCommand);
+		memberFacade.addMember(addMemberCommand);
 
-		MemberDto.MemberDetailResponse memberDetailResponse = memberDtoMapper.of(memberDetailInfo);
-
-		ResultDto<MemberDto.MemberDetailResponse> resultDto = ResultDto.res(
+		ResultDto<Void> resultDto = ResultDto.res(
 			MEMBER_CREATE_SUCCESS.getStatusCode(),
-			MEMBER_CREATE_SUCCESS.getResultMsg(),
-			memberDetailResponse
+			MEMBER_CREATE_SUCCESS.getResultMsg()
 
 		);
 
@@ -61,11 +60,9 @@ public class AuthController {
 
 	// TODO : security 추가 이후에 작업 필요
 	@GetMapping("/validate-email")
-	public ResponseEntity<ResultDto<Boolean>> checkEmailValidate(
+	public ResponseEntity<ResultDto<Boolean>> emailValidateCheck(
 		@RequestParam String email
 	) {
-		// log.debug("Email Duplication Check started");
-		// log.info("Received memberDuplicateRequest: {}", email);
 
 		boolean duplicate = memberFacade.isEmailDuplicate(email);
 
@@ -88,7 +85,7 @@ public class AuthController {
 		log.debug("Member login started");
 		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
-		MemberCommand.MemberLogin memberLogin = memberDtoMapper.of(memberLoginRequest);
+		MemberCommand.MemberLogin memberLogin = memberDtoMapper.toCommand(memberLoginRequest);
 
 		memberFacade.memberLogin(memberLogin, response);
 
