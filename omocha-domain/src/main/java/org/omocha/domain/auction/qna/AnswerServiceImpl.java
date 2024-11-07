@@ -25,7 +25,7 @@ public class AnswerServiceImpl implements AnswerService {
 	@Override
 	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
 
-		Member member = memberReader.findById(addAnswerCommand.memberId());
+		Member member = memberReader.getMember(addAnswerCommand.memberId());
 
 		Question question = qnaReader.getQuestion(addAnswerCommand.memberId());
 
@@ -46,7 +46,7 @@ public class AnswerServiceImpl implements AnswerService {
 	@Transactional
 	public AnswerInfo.ModifyAnswer modifyAnswer(AnswerCommand.ModifyAnswer modifyAnswerCommand) {
 
-		Member member = memberReader.findById(modifyAnswerCommand.memberId());
+		Member member = memberReader.getMember(modifyAnswerCommand.memberId());
 
 		Answer answer = qnaReader.getAnswer(modifyAnswerCommand.answerId());
 
@@ -60,7 +60,7 @@ public class AnswerServiceImpl implements AnswerService {
 	@Override
 	public void removeAnswer(AnswerCommand.RemoveAnswer removeAnswerModify) {
 
-		Member member = memberReader.findById(removeAnswerModify.memberId());
+		Member member = memberReader.getMember(removeAnswerModify.memberId());
 
 		Answer answer = qnaReader.getAnswer(removeAnswerModify.answerId());
 

@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
 		log.debug("find me start for member {}", memberId);
 
-		Member member = memberReader.findById(memberId);
+		Member member = memberReader.getMember(memberId);
 
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);
@@ -54,13 +54,13 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	@Transactional(readOnly = true)
 	public MemberInfo.MemberDetail retrieveMember(Long memberId) {
-		return MemberInfo.MemberDetail.toInfo(memberReader.findById(memberId));
+		return MemberInfo.MemberDetail.toInfo(memberReader.getMember(memberId));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public MemberInfo.Login retrieveMember(String email) {
-		Member member = memberReader.findByEmail(email);
+		Member member = memberReader.getMember(email);
 
 		return MemberInfo.Login.toInfo(member);
 	}
@@ -71,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
 		log.debug("modify member start for member {}", modifyBasicInfoCommand.memberId());
 
-		Member member = memberReader.findById(modifyBasicInfoCommand.memberId());
+		Member member = memberReader.getMember(modifyBasicInfoCommand.memberId());
 
 		member.updateMember(
 			modifyBasicInfoCommand.nickName(),
@@ -90,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
 
 		log.debug("modify password start for member {}", modifyPasswordCommand.memberId());
 
-		Member member = memberReader.findById(modifyPasswordCommand.memberId());
+		Member member = memberReader.getMember(modifyPasswordCommand.memberId());
 
 		member.updatePassword(modifyPasswordCommand.newPassword());
 
@@ -105,7 +105,7 @@ public class MemberServiceImpl implements MemberService {
 
 		String imagePath = "";
 
-		Member member = memberReader.findById(profileImageCommand.memberId());
+		Member member = memberReader.getMember(profileImageCommand.memberId());
 
 		if (member.getProfileImageUrl() != null) {
 			imageProvider.deleteFile(member.getProfileImageUrl());
@@ -123,7 +123,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberInfo.RetrievePassword retrievePassword(Long memberId) {
 
-		return MemberInfo.RetrievePassword.toInfo(memberReader.findById(memberId));
+		return MemberInfo.RetrievePassword.toInfo(memberReader.getMember(memberId));
 
 	}
 

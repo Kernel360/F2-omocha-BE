@@ -49,7 +49,7 @@ public class BidServiceImpl implements BidService {
 
 		bidValidator.validate(auction, buyerId, bidPrice);
 
-		Member member = memberReader.findById(buyerId);
+		Member member = memberReader.getMember(buyerId);
 
 		Bid bid = bidStore.store(auction, member, bidPrice);
 

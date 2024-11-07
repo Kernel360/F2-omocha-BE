@@ -27,7 +27,6 @@ public class MemberInfo {
 
 	public record Login(
 		Long memberId,
-		String email,
 		String password
 	) {
 		public static Login toInfo(
@@ -35,7 +34,6 @@ public class MemberInfo {
 		) {
 			return new Login(
 				member.getMemberId(),
-				member.getEmail(),
 				member.getPassword()
 			);
 		}

@@ -45,7 +45,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionInfo.AddQuestion addQuestion(QuestionCommand.AddQuestion addQuestionCommand) {
 
-		Member member = memberReader.findById(addQuestionCommand.memberId());
+		Member member = memberReader.getMember(addQuestionCommand.memberId());
 
 		Auction auction = auctionReader.getAuction(addQuestionCommand.auctionId());
 
@@ -63,7 +63,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionInfo.ModifyQuestion modifyQuestion(QuestionCommand.ModifyQuestion modifyQuestionCommand) {
 
-		Member member = memberReader.findById(modifyQuestionCommand.memberId());
+		Member member = memberReader.getMember(modifyQuestionCommand.memberId());
 
 		Question question = qnaReader.getQuestion(modifyQuestionCommand.questionId());
 
@@ -80,7 +80,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public void removeQuestion(QuestionCommand.RemoveQuestion removeQuestionCommand) {
 
-		Member member = memberReader.findById(removeQuestionCommand.memberId());
+		Member member = memberReader.getMember(removeQuestionCommand.memberId());
 
 		Question question = qnaReader.getQuestion(removeQuestionCommand.questionId());
 
