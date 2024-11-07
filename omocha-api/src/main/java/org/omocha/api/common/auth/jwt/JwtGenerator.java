@@ -58,7 +58,7 @@ public class JwtGenerator {
 	}
 
 	private Map<String, Object> createClaims(Long memberId) {
-		MemberInfo.MemberDetail memberDetail = memberService.findMember(memberId);
+		MemberInfo.MemberDetail memberDetail = memberService.retrieveMember(memberId);
 
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("MemberId", memberId);

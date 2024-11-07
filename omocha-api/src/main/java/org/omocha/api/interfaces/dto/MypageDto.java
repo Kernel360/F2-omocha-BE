@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MypageDto {
 
-	public record MemberInfoResponse(
+	public record CurrentMemberInfoResponse(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		String email,
@@ -42,7 +42,7 @@ public class MypageDto {
 	) {
 	}
 
-	public record PasswordModifyReuqest(
+	public record PasswordModifyRequest(
 		String currentPassword,
 		String newPassword
 	) {

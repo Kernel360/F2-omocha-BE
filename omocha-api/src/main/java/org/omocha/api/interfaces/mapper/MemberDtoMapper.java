@@ -14,11 +14,9 @@ import org.omocha.domain.member.MemberInfo;
 )
 public interface MemberDtoMapper {
 
-	MemberCommand.MemberCreate toCommand(MemberDto.MemberCreateRequest memberCreateRequest);
+	MemberCommand.AddMember toCommand(String email, String password);
 
 	MemberCommand.MemberLogin toCommand(MemberDto.MemberLoginRequest memberLoginRequest);
-
-	MemberCommand.MemberDuplicate toCommand(MemberDto.MemberDuplicateRequest memberDuplicateRequest);
 
 	MemberDto.MemberDetailResponse toResponse(MemberInfo.MemberDetail memberDetailInfo);
 

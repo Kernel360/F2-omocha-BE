@@ -1,10 +1,10 @@
 package org.omocha.api.application;
 
+import org.omocha.api.common.util.PasswordManager;
 import org.omocha.domain.auction.AuctionService;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.omocha.domain.member.MemberService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -17,45 +17,33 @@ public class MypageFacade {
 
 	private final MemberService memberService;
 	private final AuctionService auctionService;
-	private final PasswordEncoder passwordEncoder;
+	private final PasswordManager passwordManager;
 
-	public MemberInfo.CurrentMemberInfo findCurrentMemberInfo(Long memberId) {
+	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
 
-		return memberService.findCurrentMemberInfo(memberId);
-
-	}
-
-	public MemberInfo.MemberModifyInfo modifyBasicInfoMember(MemberCommand.MemberModify memberModifyCommand) {
-
-		return memberService.modifyBasicInfo(memberModifyCommand);
+		return memberService.retrieveCurrentMemberInfo(memberId);
 
 	}
 
-	public void modifyPassword(MemberCommand.PasswordModify passwordModifyCommand) {
+	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
 
-		// // TODO : 멘토링 이후 수정 필요
-
-		MemberInfo.MemberDetail memberDetail = memberService.findMember(passwordModifyCommand.memberId());
-
-		MemberInfo.Login loginInfo = memberService.findMember(memberDetail.email());
-
-		if (!passwordEncoder.matches(passwordModifyCommand.currentPassword(), loginInfo.password())) {
-			throw new RuntimeException("Current password is incorrect");
-		}
-
-		passwordModifyCommand = new MemberCommand.PasswordModify(
-			passwordModifyCommand.memberId(),
-			passwordEncoder.encode(passwordModifyCommand.currentPassword()),
-			passwordEncoder.encode(passwordModifyCommand.newPassword())
-
-		);
-
-		memberService.modifyPassword(passwordModifyCommand);
+		return memberService.modifyBasicInfo(modifyBasicInfoCommand);
 
 	}
 
-	public MemberInfo.ProfileImageInfo modifyProfileImage(
-		MemberCommand.ProfileImageModify modifyProfileImageCommand) {
+	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
+
+		MemberInfo.RetrievePassword retrievePasswordInfo = memberService.retrievePassword(
+			modifyPasswordCommand.memberId());
+
+		passwordManager.match(modifyPasswordCommand.currentPassword(), retrievePasswordInfo.password());
+
+		memberService.modifyPassword(modifyPasswordCommand);
+
+	}
+
+	public MemberInfo.modifyProfileImage modifyProfileImage(
+		MemberCommand.ModifyProfileImage modifyProfileImageCommand) {
 
 		return memberService.modifyProfileImage(modifyProfileImageCommand);
 	}

@@ -5,6 +5,4 @@ public interface MemberValidator {
 
 	void validateEmail(String email);
 
-	void validatePassword(String commandPassword, String memberPassword);
-
 }

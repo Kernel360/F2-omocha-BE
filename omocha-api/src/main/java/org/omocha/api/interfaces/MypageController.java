@@ -5,6 +5,7 @@ import static org.omocha.domain.exception.code.MypageCode.*;
 import org.omocha.api.application.MypageFacade;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
+import org.omocha.api.common.util.PasswordManager;
 import org.omocha.api.interfaces.dto.MypageDto;
 import org.omocha.api.interfaces.mapper.MypageDtoMapper;
 import org.omocha.domain.exception.code.MypageCode;
@@ -32,11 +33,12 @@ public class MypageController {
 
 	private final MypageFacade mypageFacade;
 	private final MypageDtoMapper mypageDtoMapper;
+	private final PasswordManager passwordManager;
 
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
 	@GetMapping("/me")
-	public ResponseEntity<ResultDto<MypageDto.MemberInfoResponse>> currentMemberInfo(
+	public ResponseEntity<ResultDto<MypageDto.CurrentMemberInfoResponse>> currentMemberInfo(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 
@@ -46,14 +48,14 @@ public class MypageController {
 
 		log.debug("get me getId {}", userPrincipal.getId());
 
-		MemberInfo.CurrentMemberInfo memberInfoResponse = mypageFacade.findCurrentMemberInfo(memberId);
+		MemberInfo.RetrieveCurrentMemberInfo memberInfoResponse = mypageFacade.retrieveCurrentMemberInfo(memberId);
 
-		MypageDto.MemberInfoResponse mypageDtoResponse = mypageDtoMapper.toResponse(memberInfoResponse);
+		MypageDto.CurrentMemberInfoResponse currentMemberInfoResponse = mypageDtoMapper.toResponse(memberInfoResponse);
 
-		ResultDto<MypageDto.MemberInfoResponse> resultDto = ResultDto.res(
+		ResultDto<MypageDto.CurrentMemberInfoResponse> resultDto = ResultDto.res(
 			MEMBER_INFO_RETRIEVE_SUCCESS.getStatusCode(),
 			MEMBER_INFO_RETRIEVE_SUCCESS.getResultMsg(),
-			mypageDtoResponse
+			currentMemberInfoResponse
 		);
 
 		log.info("getMe finished");
@@ -65,7 +67,10 @@ public class MypageController {
 
 	}
 
-	@PatchMapping(value = "/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/profile-image",
+		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+		produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public ResponseEntity<ResultDto<MypageDto.ProfileImageModifyResponse>> profileImageModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart(value = "profileImage", required = true) MultipartFile profileImage
@@ -76,12 +81,12 @@ public class MypageController {
 
 		Long memberId = userPrincipal.getId();
 
-		MemberCommand.ProfileImageModify modifyProfileImageCommand = new MemberCommand.ProfileImageModify(
-			memberId, profileImage);
+		MemberCommand.ModifyProfileImage modifyProfileImageCommand = mypageDtoMapper.toCommand(memberId, profileImage);
 
-		MemberInfo.ProfileImageInfo profileImageInfo = mypageFacade.modifyProfileImage(modifyProfileImageCommand);
+		MemberInfo.modifyProfileImage modifyProfileImageInfo = mypageFacade.modifyProfileImage(
+			modifyProfileImageCommand);
 
-		MypageDto.ProfileImageModifyResponse profileImageResponse = mypageDtoMapper.toResponse(profileImageInfo);
+		MypageDto.ProfileImageModifyResponse profileImageResponse = mypageDtoMapper.toResponse(modifyProfileImageInfo);
 
 		ResultDto<MypageDto.ProfileImageModifyResponse> resultDto = ResultDto.res(
 			PROFILE_IMAGE_UPDATED.getStatusCode(),
@@ -100,18 +105,21 @@ public class MypageController {
 	@PatchMapping("/password")
 	public ResponseEntity<ResultDto<Void>> passwordModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody MypageDto.PasswordModifyReuqest passwordModifyReuqest
+		@RequestBody MypageDto.PasswordModifyRequest passwordModifyRequest
 	) {
 
 		log.info("passwordModify started");
-		log.debug("passwordModify passwordModifyReuqest {}", passwordModifyReuqest);
+		log.debug("passwordModify passwordModifyRequest {}", passwordModifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
-		MemberCommand.PasswordModify passwordModifyCommand = mypageDtoMapper.toCommand(memberId,
-			passwordModifyReuqest);
+		MemberCommand.ModifyPassword modifyPasswordCommand = mypageDtoMapper.toCommand(
+			memberId,
+			passwordModifyRequest.currentPassword(),
+			passwordManager.encrypt(passwordModifyRequest.newPassword())
+		);
 
-		mypageFacade.modifyPassword(passwordModifyCommand);
+		mypageFacade.modifyPassword(modifyPasswordCommand);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			MypageCode.PASSWORD_UPDATED.getStatusCode(),
@@ -139,12 +147,12 @@ public class MypageController {
 
 		Long memberId = userPrincipal.getId();
 
-		MemberCommand.MemberModify memberModifyCommand = mypageDtoMapper.toCommand(memberId,
+		MemberCommand.ModifyBasicInfo modifyBasicInfoCommand = mypageDtoMapper.toCommand(memberId,
 			memberModifyRequest);
 
-		MemberInfo.MemberModifyInfo memberModifyInfo = mypageFacade.modifyBasicInfoMember(memberModifyCommand);
+		MemberInfo.ModifyBasicInfo modifyBasicInfo = mypageFacade.modifyBasicInfo(modifyBasicInfoCommand);
 
-		MypageDto.MemberModifyResponse memberModifyResponse = mypageDtoMapper.toResponse(memberModifyInfo);
+		MypageDto.MemberModifyResponse memberModifyResponse = mypageDtoMapper.toResponse(modifyBasicInfo);
 
 		ResultDto<MypageDto.MemberModifyResponse> resultDto = ResultDto.res(
 			MEMBER_INFO_UPDATED.getStatusCode(),

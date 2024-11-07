@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MemberInfo.CurrentMemberInfo findCurrentMemberInfo(Long memberId) {
+	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
 		log.debug("find me start for member {}", memberId);
 
 		Member member = memberReader.findById(memberId);
@@ -29,34 +29,37 @@ public class MemberServiceImpl implements MemberService {
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);
 
-		return MemberInfo.CurrentMemberInfo.toInfo(member);
+		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member);
 	}
 
 	@Override
 	@Transactional
-	public MemberInfo.MemberDetail addMember(MemberCommand.MemberCreate memberCreateCommand) {
+	public void addMember(MemberCommand.AddMember addMemberCommand) {
 
 		// TODO : Validator과 함께 수정 필요
-		if (memberReader.existsByEmail(memberCreateCommand.email())) {
+		if (memberReader.existsByEmail(addMemberCommand.email())) {
 			throw new RuntimeException(MEMBER_ALREADY_EXISTS.getResultMsg());
 		}
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
-		Member member = memberCreateCommand.toEntity();
-		return MemberInfo.MemberDetail.toInfo(memberStore.addMember(member));
+		Member member = addMemberCommand.toEntity();
+
+		memberStore.addMember(member);
+
 	}
 
 	// TODO : 아래 두개의 메서드에서 에러가 발생했을 경우 각각 식별이 필요함
 	//  Exception의 명확한 네이밍 => MemberNotFoundByIdException, MemberNotFoundByEmailException
+	// TODO : 컨벤션에 따라 메소드를 수정했습니다. Info 객체와의 매치?가 애매합니다.
 	@Override
 	@Transactional(readOnly = true)
-	public MemberInfo.MemberDetail findMember(Long memberId) {
+	public MemberInfo.MemberDetail retrieveMember(Long memberId) {
 		return MemberInfo.MemberDetail.toInfo(memberReader.findById(memberId));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public MemberInfo.Login findMember(String email) {
+	public MemberInfo.Login retrieveMember(String email) {
 		Member member = memberReader.findByEmail(email);
 
 		return MemberInfo.Login.toInfo(member);
@@ -64,41 +67,39 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public MemberInfo.MemberModifyInfo modifyBasicInfo(MemberCommand.MemberModify memberModifyCommand) {
+	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
 
-		log.debug("modify member start for member {}", memberModifyCommand.memberId());
+		log.debug("modify member start for member {}", modifyBasicInfoCommand.memberId());
 
-		Member member = memberReader.findById(memberModifyCommand.memberId());
+		Member member = memberReader.findById(modifyBasicInfoCommand.memberId());
 
 		member.updateMember(
-			memberModifyCommand.nickName(),
-			memberModifyCommand.phoneNumber()
+			modifyBasicInfoCommand.nickName(),
+			modifyBasicInfoCommand.phoneNumber()
 		);
 
-		log.debug("modify member finished for member {}", memberModifyCommand.memberId());
+		log.debug("modify member finished for member {}", modifyBasicInfoCommand.memberId());
 
-		return MemberInfo.MemberModifyInfo.toInfo(member);
+		return MemberInfo.ModifyBasicInfo.toInfo(member);
 
 	}
 
 	@Override
 	@Transactional
-	public void modifyPassword(MemberCommand.PasswordModify passwordModifyCommand) {
+	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
 
-		log.debug("modify password start for member {}", passwordModifyCommand.memberId());
+		log.debug("modify password start for member {}", modifyPasswordCommand.memberId());
 
-		Member member = memberReader.findById(passwordModifyCommand.memberId());
+		Member member = memberReader.findById(modifyPasswordCommand.memberId());
 
-		// 비밀번호 확인 코드 있어야됨 현재 윗단에 올라가 있음
+		member.updatePassword(modifyPasswordCommand.newPassword());
 
-		member.updatePassword(passwordModifyCommand.newPassword());
-
-		log.debug("modify password finished for member {}", passwordModifyCommand.memberId());
+		log.debug("modify password finished for member {}", modifyPasswordCommand.memberId());
 	}
 
 	@Override
 	@Transactional
-	public MemberInfo.ProfileImageInfo modifyProfileImage(MemberCommand.ProfileImageModify profileImageCommand) {
+	public MemberInfo.modifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage profileImageCommand) {
 
 		log.debug("modify profile image start for member {}", profileImageCommand.memberId());
 
@@ -115,7 +116,14 @@ public class MemberServiceImpl implements MemberService {
 
 		log.debug("modify profile image finished for member {}", profileImageCommand.memberId());
 
-		return MemberInfo.ProfileImageInfo.toInfo(imagePath);
+		return MemberInfo.modifyProfileImage.toInfo(imagePath);
+
+	}
+
+	@Override
+	public MemberInfo.RetrievePassword retrievePassword(Long memberId) {
+
+		return MemberInfo.RetrievePassword.toInfo(memberReader.findById(memberId));
 
 	}
 

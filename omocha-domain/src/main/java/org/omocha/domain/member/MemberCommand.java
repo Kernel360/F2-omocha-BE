@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Builder;
 
 public class MemberCommand {
-	public record MemberCreate(
+	public record AddMember(
 		String email,
 		String password
 	) {
@@ -18,12 +18,6 @@ public class MemberCommand {
 				.userStatus(UserStatus.ACTIVATE)
 				.build();
 		}
-
-	}
-
-	public record MemberDuplicate(
-		String email
-	) {
 
 	}
 
@@ -42,21 +36,21 @@ public class MemberCommand {
 
 	}
 
-	public record MemberModify(
+	public record ModifyBasicInfo(
 		Long memberId,
 		String nickName,
 		String phoneNumber
 	) {
 	}
 
-	public record PasswordModify(
+	public record ModifyPassword(
 		Long memberId,
 		String currentPassword,
 		String newPassword
 	) {
 	}
 
-	public record ProfileImageModify(
+	public record ModifyProfileImage(
 		Long memberId,
 		MultipartFile profileImage
 	) {

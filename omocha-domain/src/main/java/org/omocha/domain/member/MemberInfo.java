@@ -41,7 +41,7 @@ public class MemberInfo {
 		}
 	}
 
-	public record MemberModifyInfo(
+	public record ModifyBasicInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		String email,
@@ -52,10 +52,10 @@ public class MemberInfo {
 		Role role,
 		String profileImageUrl
 	) {
-		public static MemberModifyInfo toInfo(
+		public static ModifyBasicInfo toInfo(
 			Member member
 		) {
-			return new MemberModifyInfo(
+			return new ModifyBasicInfo(
 				member.getMemberId(),
 				member.getEmail(),
 				member.getUsername(),
@@ -71,20 +71,20 @@ public class MemberInfo {
 	}
 
 	// TODO : 수정 필요
-	public record ProfileImageInfo(
+	public record modifyProfileImage(
 		String imageUrl
 	) {
-		public static ProfileImageInfo toInfo(
+		public static modifyProfileImage toInfo(
 			String imageUrl
 		) {
-			return new ProfileImageInfo(
+			return new modifyProfileImage(
 				imageUrl
 			);
 		}
 
 	}
 
-	public record CurrentMemberInfo(
+	public record RetrieveCurrentMemberInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		String email,
@@ -95,10 +95,10 @@ public class MemberInfo {
 		Role role,
 		String profileImageUrl
 	) {
-		public static CurrentMemberInfo toInfo(
+		public static RetrieveCurrentMemberInfo toInfo(
 			Member member
 		) {
-			return new CurrentMemberInfo(
+			return new RetrieveCurrentMemberInfo(
 				member.getMemberId(),
 				member.getEmail(),
 				member.getUsername(),
@@ -109,6 +109,20 @@ public class MemberInfo {
 				member.getProfileImageUrl()
 			);
 
+		}
+	}
+
+	public record RetrievePassword(
+		Long memberId,
+		String password
+	) {
+		public static RetrievePassword toInfo(
+			Member member
+		) {
+			return new RetrievePassword(
+				member.getMemberId(),
+				member.getPassword()
+			);
 		}
 	}
 }
