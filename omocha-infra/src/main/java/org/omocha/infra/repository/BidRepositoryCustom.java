@@ -1,9 +1,10 @@
 package org.omocha.infra.repository;
 
-import org.omocha.domain.auction.bid.Bid;
+import org.omocha.domain.auction.bid.BidInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BidRepositoryCustom {
-	Page<Bid> searchMyBidList(Long memberId, Pageable pageable);
+
+	Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Pageable sortPage);
 }

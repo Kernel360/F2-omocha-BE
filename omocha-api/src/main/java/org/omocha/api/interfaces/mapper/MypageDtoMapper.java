@@ -10,6 +10,8 @@ import org.omocha.api.interfaces.dto.MypageDto;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
+import org.omocha.domain.auction.bid.BidCommand;
+import org.omocha.domain.auction.bid.BidInfo;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.springframework.data.domain.Page;
@@ -33,7 +35,7 @@ public interface MypageDtoMapper {
 
 	AuctionCommand.RetrieveMyAuctions toCommand(Long memberId, Auction.AuctionStatus auctionStatus);
 
-	default Page<MypageDto.MyAuctionListResponse> toResponse(
+	default Page<MypageDto.MyAuctionListResponse> toMyAuctionListResponse(
 		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo) {
 		List<MypageDto.MyAuctionListResponse> content = retrieveMyAuctionsInfo.getContent().stream()
 			.map(this::toResponse)
@@ -43,17 +45,17 @@ public interface MypageDtoMapper {
 	}
 
 	MypageDto.MyAuctionListResponse toResponse(AuctionInfo.RetrieveMyAuctions retrieveMyAuctions);
-	//
-	// default Page<AuctionDto.AuctionSearchResponse> toResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
-	// 	List<AuctionDto.AuctionSearchResponse> content = auctionListResult.getContent().stream()
-	// 		.map(this::toResponse)
-	// 		.collect(Collectors.toList());
-	//
-	// 	return new PageImpl<>(content, auctionListResult.getPageable(), auctionListResult.getTotalElements());
-	// }
 
-	// MypageDto.MypageAuctionListResponse toResponse(AuctionInfo.MypageAuctionListInfo mypageAuctionListInfo);
+	BidCommand.RetrieveMyBids toCommand(Long memberId);
 
-	// MypageDto.MypageBidListResponse toResponse(AuctionInfo.MypageBidListInfo mypageBidListInfo);
+	default Page<MypageDto.MyBidListResponse> toMyBidListResponse(Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo) {
+		List<MypageDto.MyBidListResponse> content = retrieveMyBidsInfo.getContent().stream()
+			.map(this::toResponse)
+			.collect(Collectors.toList());
+
+		return new PageImpl<>(content, retrieveMyBidsInfo.getPageable(), retrieveMyBidsInfo.getTotalElements());
+	}
+
+	MypageDto.MyBidListResponse toResponse(BidInfo.RetrieveMyBids retrieveMyBidsInfo);
 
 }

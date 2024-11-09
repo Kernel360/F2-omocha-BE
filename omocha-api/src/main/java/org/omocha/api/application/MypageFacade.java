@@ -4,6 +4,9 @@ import org.omocha.api.common.util.PasswordManager;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.AuctionService;
+import org.omocha.domain.auction.bid.BidCommand;
+import org.omocha.domain.auction.bid.BidInfo;
+import org.omocha.domain.auction.bid.BidService;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.omocha.domain.member.MemberService;
@@ -21,6 +24,7 @@ public class MypageFacade {
 
 	private final MemberService memberService;
 	private final AuctionService auctionService;
+	private final BidService bidService;
 	private final PasswordManager passwordManager;
 
 	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
@@ -59,5 +63,12 @@ public class MypageFacade {
 			.retrieveMyAuctions(retrieveMyAuctionsCommand, pageable);
 
 		return retrieveMyAuctionsInfo;
+	}
+
+	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand,
+		Pageable sortPage) {
+		Page<BidInfo.RetrieveMyBids> retrieveMyBids = bidService.retrieveMyBids(retrieveMyBidsCommand, sortPage);
+
+		return retrieveMyBids;
 	}
 }

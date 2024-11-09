@@ -2,11 +2,11 @@ package org.omocha.infra.repository;
 
 import static org.omocha.domain.auction.QAuction.*;
 import static org.omocha.domain.auction.bid.QBid.*;
-import static org.omocha.domain.image.QImage.*;
 
 import java.util.List;
 
-import org.omocha.domain.auction.bid.Bid;
+import org.omocha.domain.auction.bid.BidInfo;
+import org.omocha.domain.auction.bid.QBidInfo_RetrieveMyBids;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,25 +31,32 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 	// TODO: Mypage 진행하며 확인 필요
 
 	@Override
-	public Page<Bid> searchMyBidList(Long memberId, Pageable pageable) {
-
-		JPAQuery<Bid> query = queryFactory
-			.selectFrom(bid)
+	public Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Pageable sortPage) {
+		JPAQuery<BidInfo.RetrieveMyBids> query = queryFactory
+			.select(new QBidInfo_RetrieveMyBids(
+				auction.auctionId,
+				auction.title,
+				bid.bidPrice,
+				bid.createdAt,
+				auction.thumbnailPath
+			))
+			.from(bid)
 			.leftJoin(bid.auction, auction)
-			.leftJoin(auction.images, image)
 			.where(bid.buyer.memberId.eq(memberId));
 
-		for (Sort.Order o : pageable.getSort()) {
+		for (Sort.Order o : sortPage.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(bid.getType(), bid.getMetadata());
 			query.orderBy(
 				new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
 		}
 
 		// 페이징 적용
-		List<Bid> questions = query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+		List<BidInfo.RetrieveMyBids> questions = query.offset(sortPage.getOffset())
+			.limit(sortPage.getPageSize())
+			.fetch();
 
 		JPAQuery<Long> countQuery = queryFactory.select(bid.count()).from(bid);
 
-		return PageableExecutionUtils.getPage(questions, pageable, countQuery::fetchOne);
+		return PageableExecutionUtils.getPage(questions, sortPage, countQuery::fetchOne);
 	}
 }

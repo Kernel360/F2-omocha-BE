@@ -11,6 +11,8 @@ import org.omocha.api.interfaces.mapper.MypageDtoMapper;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
+import org.omocha.domain.auction.bid.BidCommand;
+import org.omocha.domain.auction.bid.BidInfo;
 import org.omocha.domain.common.util.PageSort;
 import org.omocha.domain.exception.code.MypageCode;
 import org.omocha.domain.member.MemberCommand;
@@ -201,7 +203,7 @@ public class MypageController {
 		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = mypageFacade
 			.retrieveMyAuctions(retrieveMyAuctionsCommand, sortPage);
 
-		Page<MypageDto.MyAuctionListResponse> myAuctionListResponse = mypageDtoMapper.toResponse(
+		Page<MypageDto.MyAuctionListResponse> myAuctionListResponse = mypageDtoMapper.toMyAuctionListResponse(
 			retrieveMyAuctionsInfo);
 
 		ResultDto<Page<MypageDto.MyAuctionListResponse>> resultDto = ResultDto.res(
@@ -216,37 +218,40 @@ public class MypageController {
 
 	}
 
-	// @GetMapping("/history/bid")
-	// public ResponseEntity<ResultDto<Page<MypageBidListResponse>>> myBidList(
-	// 	@AuthenticationPrincipal UserPrincipal userPrincipal,
-	// 	@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
-	// 	@RequestParam(value = "direction", defaultValue = "DESC") String direction,
-	// 	@PageableDefault(page = 0, size = 10)
-	// 	Pageable pageable
-	// ) {
-	//
-	// 	log.info("myBidList started");
-	// 	log.debug("myBidList sort : {} , direction : {} , pageable : {} ", sort, direction, pageable);
-	//
-	// 	Long memberId = userPrincipal.getId();
-	//
-	// 	Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-	// 	pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
-	//
-	// 	Page<MypageBidListResponse> auctionListResponses = mypageService.findMyBidList(memberId, pageable);
-	//
-	// 	ResultDto<Page<MypageBidListResponse>> resultDto = ResultDto.res(
-	// 		MypageCode.MY_BIDDING_LIST_SUCCESS.getStatusCode(),
-	// 		MypageCode.MY_BIDDING_LIST_SUCCESS.getResultMsg(),
-	// 		auctionListResponses
-	// 	);
-	//
-	// 	log.info("myBidList finished");
-	// 	log.debug("myBidList resultDto : {} ", resultDto);
-	//
-	// 	return ResponseEntity
-	// 		.status(MypageCode.MY_BIDDING_LIST_SUCCESS.getHttpStatus())
-	// 		.body(resultDto);
-	//
-	// }
+	@GetMapping("/history/bid")
+	public ResponseEntity<ResultDto<Page<MypageDto.MyBidListResponse>>> myBidList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+
+		log.info("myBidList started memberId : {} ", userPrincipal.getId());
+
+		Long memberId = userPrincipal.getId();
+
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
+		BidCommand.RetrieveMyBids retrieveMyBidsCommand = mypageDtoMapper.toCommand(memberId);
+
+		Page<BidInfo.RetrieveMyBids> retrieveMyBidsResponses = mypageFacade.retrieveMyBids(retrieveMyBidsCommand,
+			sortPage);
+
+		Page<MypageDto.MyBidListResponse> myBidListResponses = mypageDtoMapper.toMyBidListResponse(
+			retrieveMyBidsResponses);
+
+		ResultDto<Page<MypageDto.MyBidListResponse>> resultDto = ResultDto.res(
+			MypageCode.MY_BIDDING_LIST_SUCCESS.getStatusCode(),
+			MypageCode.MY_BIDDING_LIST_SUCCESS.getResultMsg(),
+			myBidListResponses
+		);
+
+		log.info("myBidList finished");
+
+		return ResponseEntity
+			.status(MypageCode.MY_BIDDING_LIST_SUCCESS.getHttpStatus())
+			.body(resultDto);
+
+	}
 }

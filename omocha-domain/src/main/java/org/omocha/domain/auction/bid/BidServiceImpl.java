@@ -7,6 +7,8 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,5 +66,13 @@ public class BidServiceImpl implements BidService {
 		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
 			.map(BidInfo.NowPrice::toInfo)
 			.orElseGet(() -> new BidInfo.NowPrice(0L, null, LocalDateTime.now()));
+	}
+
+	@Override
+	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand,
+		Pageable sortPage) {
+
+		return bidReader.getMyBidList(retrieveMyBidsCommand.memberId(), sortPage);
+
 	}
 }
