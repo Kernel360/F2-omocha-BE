@@ -3,6 +3,7 @@ package org.omocha.domain.auction;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.omocha.domain.auction.bid.BidService;
 import org.omocha.domain.exception.AuctionHasBidException;
 import org.omocha.domain.exception.AuctionImageNotFoundException;
 import org.omocha.domain.exception.MemberInvalidException;
@@ -23,6 +24,7 @@ public class AuctionServiceImpl implements AuctionService {
 	private final AuctionStore auctionStore;
 	private final AuctionImagesFactory auctionImagesFactory;
 	private final AuctionReader auctionReader;
+	private final BidService bidService;
 
 	@Override
 	@Transactional
@@ -75,6 +77,19 @@ public class AuctionServiceImpl implements AuctionService {
 		}
 
 		auctionReader.removeAuction(auction);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctions(
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand, Pageable pageable) {
+
+		// TODO : AuctionStatus 에 따라 필요한 값이 다름
+		// 	biidng - nowPrice , conclude - concludePrice
+		return auctionReader
+			.getMyAuctionList(retrieveMyAuctionsCommand.memberId(), retrieveMyAuctionsCommand.auctionStatus(),
+				pageable);
+
 	}
 
 }

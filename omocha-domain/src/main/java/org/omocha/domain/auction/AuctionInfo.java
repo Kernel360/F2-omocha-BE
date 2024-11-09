@@ -92,4 +92,32 @@ public class AuctionInfo {
 			this.createdAt = createdAt;
 		}
 	}
+
+	// TODO: 추후 Conclude Price도 넣기
+	public record RetrieveMyAuctions(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		Long nowPrice,
+		LocalDateTime endDate,
+		String thumbnailPath
+	) {
+
+		@QueryProjection
+		public RetrieveMyAuctions(
+			Long auctionId,
+			String title,
+			Auction.AuctionStatus auctionStatus,
+			Long nowPrice,
+			LocalDateTime endDate,
+			String thumbnailPath
+		) {
+			this.auctionId = auctionId;
+			this.title = title;
+			this.auctionStatus = auctionStatus;
+			this.nowPrice = nowPrice;
+			this.endDate = endDate;
+			this.thumbnailPath = thumbnailPath;
+		}
+	}
 }

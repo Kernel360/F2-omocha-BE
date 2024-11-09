@@ -8,9 +8,16 @@ import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
 import org.omocha.api.interfaces.dto.MypageDto;
 import org.omocha.api.interfaces.mapper.MypageDtoMapper;
+import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.AuctionInfo;
+import org.omocha.domain.common.util.PageSort;
 import org.omocha.domain.exception.code.MypageCode;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +42,7 @@ public class MypageController {
 	private final MypageFacade mypageFacade;
 	private final MypageDtoMapper mypageDtoMapper;
 	private final PasswordManager passwordManager;
+	private final PageSort pageSort;
 
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
@@ -169,43 +178,43 @@ public class MypageController {
 
 	}
 
-	// TODO : bid 추가 후 추가 수정
 	// TODO : 키워드 관련 추가 예정
-	// @GetMapping("/history/auction")
-	// public ResponseEntity<ResultDto<Page<MypageAuctionListResponse>>> myAuctionList(
-	// 	@AuthenticationPrincipal UserPrincipal userPrincipal,
-	// 	@RequestParam(value = "auctionStatus", required = false) AuctionStatus auctionStatus,
-	// 	@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
-	// 	@RequestParam(value = "direction", defaultValue = "DESC") String direction,
-	// 	@PageableDefault(page = 0, size = 10)
-	// 	Pageable pageable
-	// ) {
-	//
-	// 	log.info("myAuctionList started");
-	// 	log.debug("myAuctionList auctionStatus : {} , sort : {} , direction : {}", auctionStatus, sort, direction);
-	//
-	// 	Long memberId = userPrincipal.getId();
-	//
-	// 	Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-	// 	pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortDirection, sort));
-	//
-	// 	Page<MypageAuctionListResponse> auctionListResponses = mypageFacade
-	// 		.findMyAuctionList(memberId, auctionStatus, pageable);
-	//
-	// 	ResultDto<Page<MypageAuctionListResponse>> resultDto = ResultDto.res(
-	// 		MypageCode.MY_AUCTION_LIST_SUCCESS.getStatusCode(),
-	// 		MypageCode.MY_AUCTION_LIST_SUCCESS.getResultMsg(),
-	// 		auctionListResponses
-	// 	);
-	//
-	// 	log.info("myAuctionList finished");
-	// 	log.debug("myAuctionList resultDto : {}", resultDto);
-	//
-	// 	return ResponseEntity
-	// 		.status(MypageCode.MY_AUCTION_LIST_SUCCESS.getHttpStatus())
-	// 		.body(resultDto);
-	//
-	// }
+	@GetMapping("/history/auction")
+	public ResponseEntity<ResultDto<Page<MypageDto.MyAuctionListResponse>>> myAuctionList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+
+		log.info("myAuctionList started memberId : {} , auctionStatus : {}", userPrincipal.getId(), auctionStatus);
+
+		Long memberId = userPrincipal.getId();
+
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand = mypageDtoMapper.toCommand(memberId,
+			auctionStatus);
+
+		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = mypageFacade
+			.retrieveMyAuctions(retrieveMyAuctionsCommand, sortPage);
+
+		Page<MypageDto.MyAuctionListResponse> myAuctionListResponse = mypageDtoMapper.toResponse(
+			retrieveMyAuctionsInfo);
+
+		ResultDto<Page<MypageDto.MyAuctionListResponse>> resultDto = ResultDto.res(
+			MypageCode.MY_AUCTION_LIST_SUCCESS.getStatusCode(),
+			MypageCode.MY_AUCTION_LIST_SUCCESS.getResultMsg(),
+			myAuctionListResponse
+		);
+
+		return ResponseEntity
+			.status(MypageCode.MY_AUCTION_LIST_SUCCESS.getHttpStatus())
+			.body(resultDto);
+
+	}
 
 	// @GetMapping("/history/bid")
 	// public ResponseEntity<ResultDto<Page<MypageBidListResponse>>> myBidList(

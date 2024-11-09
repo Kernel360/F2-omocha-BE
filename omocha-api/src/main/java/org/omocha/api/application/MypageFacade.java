@@ -1,10 +1,14 @@
 package org.omocha.api.application;
 
 import org.omocha.api.common.util.PasswordManager;
+import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.AuctionService;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.omocha.domain.member.MemberService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -48,13 +52,12 @@ public class MypageFacade {
 		return memberService.modifyProfileImage(modifyProfileImageCommand);
 	}
 
-	// public Page<MypageInfo.MypageAuctionListResponse> findMyAuctionList(Long memberId, AuctionStatus auctionStatus,
-	// 	Pageable pageable) {
-	//
-	// 	Page<MypageInfo.MypageAuctionListResponse> auctionListResponses = mypageService
-	// 		.findMyAuctionList(memberId, auctionStatus, pageable);
-	//
-	// 	return auctionListResponses;
-	// }
+	public Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctions(
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand, Pageable pageable) {
 
+		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = auctionService
+			.retrieveMyAuctions(retrieveMyAuctionsCommand, pageable);
+
+		return retrieveMyAuctionsInfo;
+	}
 }

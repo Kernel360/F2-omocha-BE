@@ -9,6 +9,7 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.QAuction;
+import org.omocha.domain.auction.QAuctionInfo_RetrieveMyAuctions;
 import org.omocha.domain.auction.QAuctionInfo_SearchAuction;
 import org.omocha.domain.auction.conclude.QConclude;
 import org.springframework.data.domain.Page;
@@ -77,6 +78,48 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
 	}
 
+	@Override
+	public Page<AuctionInfo.RetrieveMyAuctions> searchMyAuctionList(Long memberId, Auction.AuctionStatus auctionStatus,
+		Pageable pageable) {
+		JPAQuery<AuctionInfo.RetrieveMyAuctions> query = queryFactory
+			.select(new QAuctionInfo_RetrieveMyAuctions(
+				auction.auctionId,
+				auction.title,
+				auction.auctionStatus,
+				auction.nowPrice,
+				auction.endDate,
+				auction.thumbnailPath
+			))
+			.from(auction) // from 절 추가
+			.where(auction.memberId.eq(memberId)
+				.and(statusEquals(auctionStatus))); // statusEquals 메서드 확인
+
+		for (Sort.Order o : pageable.getSort()) {
+			PathBuilder<?> pathBuilder = new PathBuilder<>(
+				auction.getType(),
+				auction.getMetadata()
+			);
+			query.orderBy(new OrderSpecifier(
+				o.isAscending() ? Order.ASC : Order.DESC,
+				pathBuilder.get(o.getProperty())
+			));
+		}
+
+		// 페이징 적용
+		List<AuctionInfo.RetrieveMyAuctions> auctions = query
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+
+		JPAQuery<Long> countQuery = queryFactory
+			.select(auction.count())
+			.from(auction) // from 절 추가
+			.where(auction.memberId.eq(memberId) // countQuery에도 where 절 추가
+				.and(statusEquals(auctionStatus))); // statusEquals 메서드 확인
+
+		return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
+	}
+
 	private JPAQuery<Long> getCountQuery(AuctionCommand.SearchAuction searchAuction, QAuction auction) {
 		return queryFactory
 			.select(auction.count())
@@ -111,37 +154,5 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 	private BooleanExpression statusEquals(Auction.AuctionStatus auctionStatus) {
 		return auctionStatus == null ? null : auction.auctionStatus.eq(auctionStatus);
 	}
-
-	// public Page<Auction> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable) {
-	//
-	// 	JPAQuery<Auction> query = queryFactory
-	// 		.selectFrom(auction)
-	// 		.leftJoin(auction.images, image)
-	// 		.where(auction.member.memberId.eq(memberId)
-	// 			.and(statusEquals(auctionStatus)));
-	//
-	// 	for (Sort.Order o : pageable.getSort()) {
-	// 		PathBuilder<?> pathBuilder = new PathBuilder<>(
-	// 			auction.getType(),
-	// 			auction.getMetadata()
-	// 		);
-	// 		query.orderBy(new OrderSpecifier(
-	// 			o.isAscending() ? Order.ASC : Order.DESC,
-	// 			pathBuilder.get(o.getProperty())
-	// 		));
-	// 	}
-	//
-	// 	// 페이징 적용
-	// 	List<Auction> auctions = query
-	// 		.offset(pageable.getOffset())
-	// 		.limit(pageable.getPageSize())
-	// 		.fetch();
-	//
-	// 	JPAQuery<Long> countQuery = queryFactory
-	// 		.select(auction.count())
-	// 		.from(auction);
-	//
-	// 	return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
-	// }
 
 }
