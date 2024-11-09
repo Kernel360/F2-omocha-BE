@@ -16,7 +16,7 @@ public class MemberCommand {
 			return Member.builder()
 				.email(email)
 				.password(password)
-				.averageRating(new Rating(0d))
+				.averageRating(new Rating(0.0))
 				.role(Role.ROLE_USER)
 				.userStatus(UserStatus.ACTIVATE)
 				.build();

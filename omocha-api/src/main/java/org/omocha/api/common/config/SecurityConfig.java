@@ -57,6 +57,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/api/v2/auction/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/bid/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/question/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/review/**").permitAll()
 				.anyRequest().authenticated())
 
 			.oauth2Login(
