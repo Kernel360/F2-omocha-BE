@@ -11,6 +11,7 @@ public class ReviewInfo {
 		String memberNickname,
 		Long auctionId,
 		String auctionTitle,
+		String auctionThumbnailPath,
 		Review.ReviewType reviewType,
 		Rating rating,
 		String content,
@@ -22,6 +23,7 @@ public class ReviewInfo {
 			String memberNickname,
 			Long auctionId,
 			String auctionTitle,
+			String auctionThumbnailPath,
 			Review.ReviewType reviewType,
 			Rating rating,
 			String content,
@@ -31,6 +33,7 @@ public class ReviewInfo {
 			this.memberNickname = memberNickname;
 			this.auctionId = auctionId;
 			this.auctionTitle = auctionTitle;
+			this.auctionThumbnailPath = auctionThumbnailPath;
 			this.reviewType = reviewType;
 			this.rating = rating;
 			this.content = content;

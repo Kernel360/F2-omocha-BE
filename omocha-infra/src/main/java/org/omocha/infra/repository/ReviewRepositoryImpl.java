@@ -59,6 +59,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 				member.nickname,
 				auction.auctionId,
 				auction.title,
+				auction.thumbnailPath,
 				review.reviewType,
 				review.rating,
 				review.content,

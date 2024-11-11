@@ -34,6 +34,7 @@ public class ReviewDto {
 		String memberNickname,
 		Long auctionId,
 		String auctionTitle,
+		String thumbnailPath,
 		Review.ReviewType reviewType,
 		Rating rating,
 		String content,
