@@ -57,5 +57,6 @@ public interface ReviewDtoMapper {
 		return new PageImpl<>(content, userReviews.getPageable(), userReviews.getTotalElements());
 	}
 
+	@Mapping(target = "thumbnailPath", source = "reviewInfo.auctionThumbnailPath")
 	ReviewDto.ReviewListResponse toResponse(ReviewInfo.RetrieveReviews reviewInfo);
 }
