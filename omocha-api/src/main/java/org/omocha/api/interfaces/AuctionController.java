@@ -77,8 +77,9 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@GetMapping("/basic-list")
-	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
+	public ResponseEntity<ResultDto<Page<AuctionInfo.SearchAuction>>> auctionSearchList(
 		AuctionDto.AuctionSearchRequest searchRequest,
+		@RequestParam(value = "categoryId", required = false) Long categoryId,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
@@ -88,16 +89,17 @@ public class AuctionController implements AuctionApi {
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		AuctionCommand.SearchAuction searchCommand = auctionDtoMapper.toCommand(searchRequest, auctionStatus);
+		AuctionCommand.SearchAuction searchCommand =
+			auctionDtoMapper.toCommand(searchRequest, auctionStatus, categoryId);
 
 		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuction(searchCommand, sortPage);
 
-		Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toResponse(searchInfo);
+		// Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toResponse(searchInfo);
 
-		ResultDto<Page<AuctionDto.AuctionSearchResponse>> result = ResultDto.res(
+		ResultDto<Page<AuctionInfo.SearchAuction>> result = ResultDto.res(
 			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
 			AUCTION_LIST_ACCESS_SUCCESS.getDescription(),
-			response
+			searchInfo
 		);
 
 		return ResponseEntity

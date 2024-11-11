@@ -9,6 +9,7 @@ import org.omocha.domain.exception.MemberInvalidException;
 import org.omocha.domain.image.Image;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class AuctionServiceImpl implements AuctionService {
 	private final AuctionStore auctionStore;
 	private final AuctionImagesFactory auctionImagesFactory;
 	private final AuctionReader auctionReader;
+	private final CategoryReader categoryReader;
+	private final CategoryStore categoryStore;
 
 	@Override
 	@Transactional
@@ -31,8 +34,15 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new AuctionImageNotFoundException(addCommand.memberId());
 		}
 
+		if (addCommand.categoryIds() == null && addCommand.images().isEmpty()) {
+			// throw new CategoryNotFoundException(addCommand.categoryIds());
+			throw new IllegalArgumentException("Auction image must have at least one category");
+		}
+
 		Auction auction = auctionStore.store(addCommand.toEntity());
 		auctionImagesFactory.store(auction, addCommand);
+		categoryStore.store(auction, addCommand);
+
 		return auction.getAuctionId();
 	}
 
@@ -43,8 +53,25 @@ public class AuctionServiceImpl implements AuctionService {
 		Pageable pageable
 	) {
 
-		// TODO : nowPrice, concludePrice, bidCount 추가해야함
-		return auctionReader.getAuctionList(searchAuction, pageable);
+		List<Long> subCategoryIds = categoryReader.getSubCategoryIds(searchAuction.categoryId());
+
+		Page<AuctionInfo.SearchAuction> auctionList = auctionReader.getAuctionList(searchAuction, subCategoryIds,
+			pageable);
+
+		List<AuctionInfo.SearchAuction> categoryAuctions = auctionList.getContent().stream()
+			.map(auctionInfo -> {
+				List<CategoryInfo.CategoryResponse> categoryHierarchy = categoryReader.getCategoryHierarchyUpwards(
+					searchAuction.categoryId());
+				return categoryHierarchy != null ? auctionInfo.withCategoryHierarchy(categoryHierarchy) : auctionInfo;
+			})
+			.collect(Collectors.toList());
+
+		return PageableExecutionUtils.getPage(
+			categoryAuctions,
+			pageable,
+			auctionList::getTotalElements
+		);
+
 	}
 
 	@Override
@@ -56,7 +83,18 @@ public class AuctionServiceImpl implements AuctionService {
 			.map(Image::getImagePath)
 			.collect(Collectors.toList());
 
-		return new AuctionInfo.RetrieveAuction(auction, imagePaths);
+		AuctionCategory auctionCategory = auction.getAuctionCategories()
+			.stream()
+			.findFirst()
+			.orElseThrow(
+				() -> new IllegalArgumentException("No category found for auction ID: " + auction.getAuctionId()));
+
+		Long selectedCategoryId = auctionCategory.getCategory().getCategoryId();
+
+		List<CategoryInfo.CategoryResponse> categoryHierarchy = categoryReader.getCategoryHierarchyUpwards(
+			selectedCategoryId);
+
+		return new AuctionInfo.RetrieveAuction(auction, imagePaths, categoryHierarchy);
 	}
 
 	@Override

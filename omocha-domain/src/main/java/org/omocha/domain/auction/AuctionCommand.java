@@ -17,7 +17,8 @@ public class AuctionCommand {
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		List<MultipartFile> images,
-		MultipartFile thumbnailPath
+		MultipartFile thumbnailPath,
+		List<Long> categoryIds
 
 	) {
 		public Auction toEntity() {
@@ -36,7 +37,8 @@ public class AuctionCommand {
 
 	public record SearchAuction(
 		String title,
-		Auction.AuctionStatus auctionStatus
+		Auction.AuctionStatus auctionStatus,
+		Long categoryId
 	) {
 	}
 

@@ -66,6 +66,9 @@ public class Auction extends BaseEntity {
 		cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images = new ArrayList<>();
 
+	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AuctionCategory> auctionCategories = new ArrayList<>();
+
 	@Builder
 	public Auction(
 		Long memberId,
@@ -131,6 +134,15 @@ public class Auction extends BaseEntity {
 
 	public void statusNoBids() {
 		this.auctionStatus = AuctionStatus.NO_BIDS;
+	}
+
+	public void addCategory(Category category) {
+		AuctionCategory auctionCategory = AuctionCategory.builder()
+			.auction(this)
+			.category(category)
+			.build();
+
+		this.auctionCategories.add(auctionCategory);
 	}
 }
 

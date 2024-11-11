@@ -26,9 +26,10 @@ public class AuctionReaderImpl implements AuctionReader {
 	@Override
 	public Page<AuctionInfo.SearchAuction> getAuctionList(
 		AuctionCommand.SearchAuction searchAuction,
+		List<Long> subCategoryIds,
 		Pageable pageable
 	) {
-		return auctionRepository.getAuctionList(searchAuction, pageable);
+		return auctionRepository.getAuctionList(searchAuction, subCategoryIds, pageable);
 	}
 
 	@Override

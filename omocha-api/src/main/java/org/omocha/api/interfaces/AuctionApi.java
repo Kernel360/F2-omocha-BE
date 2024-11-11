@@ -6,6 +6,7 @@ import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.AuctionDto;
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.AuctionInfo;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,9 +57,11 @@ public interface AuctionApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
+	ResponseEntity<ResultDto<Page<AuctionInfo.SearchAuction>>> auctionSearchList(
 		@Parameter(description = "검색 조건", required = false)
-		AuctionDto.AuctionSearchRequest condition,
+		AuctionDto.AuctionSearchRequest searchRequest,
+		@Parameter(description = "카테고리 ID", required = false)
+		Long categoryId,
 		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = Auction.AuctionStatus.class))
 		Auction.AuctionStatus auctionStatus,
 		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")

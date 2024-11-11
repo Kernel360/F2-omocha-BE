@@ -1,0 +1,38 @@
+package org.omocha.infra;
+
+import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.AuctionCommand;
+import org.omocha.domain.auction.Category;
+import org.omocha.domain.auction.CategoryReader;
+import org.omocha.domain.auction.CategoryStore;
+import org.omocha.infra.repository.CategoryRepository;
+import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class CategoryStoreImpl implements CategoryStore {
+
+	private final CategoryRepository categoryRepository;
+	private final CategoryReader categoryReader;
+
+	@Override
+	public Category store(Category category) {
+		return categoryRepository.save(category);
+	}
+
+	@Override
+	public void store(Auction auction, AuctionCommand.AddAuction addCommand) {
+		if (addCommand.categoryIds() != null && !addCommand.categoryIds().isEmpty()) {
+			for (Long categoryId : addCommand.categoryIds()) {
+				Category category = categoryReader.getCategory(categoryId);
+				auction.addCategory(category);
+			}
+		}
+
+	}
+
+}

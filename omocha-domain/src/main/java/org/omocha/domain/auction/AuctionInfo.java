@@ -21,9 +21,11 @@ public class AuctionInfo {
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		LocalDateTime createdAt,
-		List<String> imagePaths
+		List<String> imagePaths,
+		List<CategoryInfo.CategoryResponse> categories
 	) {
-		public RetrieveAuction(Auction auction, List<String> imagePaths) {
+		public RetrieveAuction(Auction auction, List<String> imagePaths,
+			List<CategoryInfo.CategoryResponse> categories) {
 			this(
 				auction.getAuctionId(),
 				auction.getMemberId(),
@@ -38,7 +40,8 @@ public class AuctionInfo {
 				auction.getStartDate(),
 				auction.getEndDate(),
 				auction.getCreatedAt(),
-				imagePaths
+				imagePaths,
+				categories
 			);
 		}
 	}
@@ -57,7 +60,8 @@ public class AuctionInfo {
 		Long bidCount,
 		LocalDateTime startDate,
 		LocalDateTime endDate,
-		LocalDateTime createdAt
+		LocalDateTime createdAt,
+		List<CategoryInfo.CategoryResponse> categoryResponse
 	) {
 		@QueryProjection
 		public SearchAuction(
@@ -76,20 +80,44 @@ public class AuctionInfo {
 			LocalDateTime endDate,
 			LocalDateTime createdAt
 		) {
-			this.auctionId = auctionId;
-			this.memberId = memberId;
-			this.title = title;
-			this.content = content;
-			this.startPrice = startPrice;
-			this.bidUnit = bidUnit;
-			this.auctionStatus = auctionStatus;
-			this.thumbnailPath = thumbnailPath;
-			this.nowPrice = nowPrice;
-			this.concludePrice = concludePrice;
-			this.bidCount = bidCount;
-			this.startDate = startDate;
-			this.endDate = endDate;
-			this.createdAt = createdAt;
+			this(
+				auctionId,
+				memberId,
+				title,
+				content,
+				startPrice,
+				bidUnit,
+				auctionStatus,
+				thumbnailPath,
+				nowPrice,
+				concludePrice,
+				bidCount,
+				startDate,
+				endDate,
+				createdAt,
+				null
+			);
+		}
+
+		public SearchAuction withCategoryHierarchy(List<CategoryInfo.CategoryResponse> categoryHierarchy) {
+			return new SearchAuction(
+				this.auctionId,
+				this.memberId,
+				this.title,
+				this.content,
+				this.startPrice,
+				this.bidUnit,
+				this.auctionStatus,
+				this.thumbnailPath,
+				this.nowPrice,
+				this.concludePrice,
+				this.bidCount,
+				this.startDate,
+				this.endDate,
+				this.createdAt,
+				categoryHierarchy
+			);
 		}
 	}
+
 }
