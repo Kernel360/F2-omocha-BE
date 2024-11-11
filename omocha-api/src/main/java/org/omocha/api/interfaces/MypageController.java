@@ -197,14 +197,19 @@ public class MypageController {
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand = mypageDtoMapper.toCommand(memberId,
-			auctionStatus);
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand = mypageDtoMapper.toCommand(
+			memberId,
+			auctionStatus
+		);
 
-		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = mypageFacade
-			.retrieveMyAuctions(retrieveMyAuctionsCommand, sortPage);
+		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = mypageFacade.retrieveMyAuctions(
+			retrieveMyAuctionsCommand,
+			sortPage
+		);
 
 		Page<MypageDto.MyAuctionListResponse> myAuctionListResponse = mypageDtoMapper.toMyAuctionListResponse(
-			retrieveMyAuctionsInfo);
+			retrieveMyAuctionsInfo
+		);
 
 		ResultDto<Page<MypageDto.MyAuctionListResponse>> resultDto = ResultDto.res(
 			MypageCode.MY_AUCTION_LIST_SUCCESS.getStatusCode(),
@@ -235,16 +240,16 @@ public class MypageController {
 
 		BidCommand.RetrieveMyBids retrieveMyBidsCommand = mypageDtoMapper.toCommand(memberId);
 
-		Page<BidInfo.RetrieveMyBids> retrieveMyBidsResponses = mypageFacade.retrieveMyBids(retrieveMyBidsCommand,
+		Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo = mypageFacade.retrieveMyBids(retrieveMyBidsCommand,
 			sortPage);
 
-		Page<MypageDto.MyBidListResponse> myBidListResponses = mypageDtoMapper.toMyBidListResponse(
-			retrieveMyBidsResponses);
+		Page<MypageDto.MyBidListResponse> myBidListResponse = mypageDtoMapper.toMyBidListResponse(
+			retrieveMyBidsInfo);
 
 		ResultDto<Page<MypageDto.MyBidListResponse>> resultDto = ResultDto.res(
 			MypageCode.MY_BIDDING_LIST_SUCCESS.getStatusCode(),
 			MypageCode.MY_BIDDING_LIST_SUCCESS.getResultMsg(),
-			myBidListResponses
+			myBidListResponse
 		);
 
 		log.info("myBidList finished");

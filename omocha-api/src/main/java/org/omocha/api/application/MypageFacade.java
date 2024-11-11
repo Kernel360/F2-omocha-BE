@@ -57,7 +57,9 @@ public class MypageFacade {
 	}
 
 	public Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctions(
-		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand, Pageable pageable) {
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand,
+		Pageable pageable
+	) {
 
 		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = auctionService
 			.retrieveMyAuctions(retrieveMyAuctionsCommand, pageable);
@@ -65,8 +67,10 @@ public class MypageFacade {
 		return retrieveMyAuctionsInfo;
 	}
 
-	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand,
-		Pageable sortPage) {
+	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(
+		BidCommand.RetrieveMyBids retrieveMyBidsCommand,
+		Pageable sortPage
+	) {
 		Page<BidInfo.RetrieveMyBids> retrieveMyBids = bidService.retrieveMyBids(retrieveMyBidsCommand, sortPage);
 
 		return retrieveMyBids;

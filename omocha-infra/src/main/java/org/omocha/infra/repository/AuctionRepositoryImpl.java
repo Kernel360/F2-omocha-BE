@@ -94,16 +94,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 			.where(auction.memberId.eq(memberId)
 				.and(statusEquals(auctionStatus))); // statusEquals 메서드 확인
 
-		for (Sort.Order o : pageable.getSort()) {
-			PathBuilder<?> pathBuilder = new PathBuilder<>(
-				auction.getType(),
-				auction.getMetadata()
-			);
-			query.orderBy(new OrderSpecifier(
-				o.isAscending() ? Order.ASC : Order.DESC,
-				pathBuilder.get(o.getProperty())
-			));
-		}
+		applySorting(pageable, auction, query);
 
 		// 페이징 적용
 		List<AuctionInfo.RetrieveMyAuctions> auctions = query
