@@ -69,6 +69,7 @@ public class BidServiceImpl implements BidService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand,
 		Pageable sortPage) {
 
