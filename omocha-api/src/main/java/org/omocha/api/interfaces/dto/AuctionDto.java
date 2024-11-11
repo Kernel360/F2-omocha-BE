@@ -51,7 +51,7 @@ public class AuctionDto {
 		LocalDateTime endDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
-		CategoryInfo.CategoryResponse categoryResponse
+		List<CategoryInfo.CategoryResponse> categoryResponse
 	) {
 	}
 

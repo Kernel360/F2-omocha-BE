@@ -77,7 +77,7 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@GetMapping("/basic-list")
-	public ResponseEntity<ResultDto<Page<AuctionInfo.SearchAuction>>> auctionSearchList(
+	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
 		AuctionDto.AuctionSearchRequest searchRequest,
 		@RequestParam(value = "categoryId", required = false) Long categoryId,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
@@ -94,12 +94,12 @@ public class AuctionController implements AuctionApi {
 
 		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuction(searchCommand, sortPage);
 
-		// Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toResponse(searchInfo);
+		Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toResponse(searchInfo);
 
-		ResultDto<Page<AuctionInfo.SearchAuction>> result = ResultDto.res(
+		ResultDto<Page<AuctionDto.AuctionSearchResponse>> result = ResultDto.res(
 			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
 			AUCTION_LIST_ACCESS_SUCCESS.getDescription(),
-			searchInfo
+			response
 		);
 
 		return ResponseEntity

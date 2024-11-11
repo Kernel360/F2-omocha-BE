@@ -1,6 +1,7 @@
 package org.omocha.api.interfaces.mapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -9,6 +10,8 @@ import org.omocha.api.interfaces.dto.AuctionDto;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.web.multipart.MultipartFile;
 
 @Mapper(
@@ -31,7 +34,6 @@ public interface AuctionDtoMapper {
 
 	AuctionDto.AuctionAddResponse toResponse(Long auctionId);
 
-/*
 	default Page<AuctionDto.AuctionSearchResponse> toResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
 		List<AuctionDto.AuctionSearchResponse> content = auctionListResult.getContent().stream()
 			.map(this::toResponse)
@@ -41,7 +43,6 @@ public interface AuctionDtoMapper {
 	}
 
 	AuctionDto.AuctionSearchResponse toResponse(AuctionInfo.SearchAuction auctionInfo);
-*/
 
 	AuctionDto.AuctionDetailsResponse toResponse(AuctionInfo.RetrieveAuction auctionDetailResponse);
 
