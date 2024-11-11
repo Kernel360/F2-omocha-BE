@@ -1,6 +1,7 @@
 package org.omocha.api.interfaces.mapper;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.mapstruct.InjectionStrategy;
@@ -18,42 +19,50 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.multipart.MultipartFile;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring",
+	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+	unmappedTargetPolicy = ReportingPolicy.ERROR
+)
 public interface MypageDtoMapper {
 
-	MemberCommand.ModifyBasicInfo toCommand(Long memberId, MypageDto.MemberModifyRequest memberModifyRequest);
+	// 통합된 메소드
+	default <T, R> Page<R> toResponsePage(Page<T> pageInfo, Function<T, R> mapper) {
+		List<R> content = pageInfo.getContent().stream()
+			.map(mapper)
+			.collect(Collectors.toList());
 
-	MemberCommand.ModifyPassword toCommand(Long memberId, String currentPassword, String newPassword);
+		return new PageImpl<>(content, pageInfo.getPageable(), pageInfo.getTotalElements());
+	}
 
 	MypageDto.CurrentMemberInfoResponse toResponse(MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo);
 
+	MemberCommand.ModifyBasicInfo toCommand(Long memberId, MypageDto.MemberModifyRequest memberModifyRequest);
+
 	MypageDto.MemberModifyResponse toResponse(MemberInfo.ModifyBasicInfo modifyBasicInfoInfo);
 
-	MypageDto.ProfileImageModifyResponse toResponse(MemberInfo.modifyProfileImage modifyProfileImage);
+	MemberCommand.ModifyPassword toCommand(Long memberId, String currentPassword, String newPassword);
 
 	MemberCommand.ModifyProfileImage toCommand(Long memberId, MultipartFile profileImage);
 
+	MypageDto.ProfileImageModifyResponse toResponse(MemberInfo.modifyProfileImage modifyProfileImage);
+
+	// retrieveMyAuctions
 	AuctionCommand.RetrieveMyAuctions toCommand(Long memberId, Auction.AuctionStatus auctionStatus);
 
+	// AuctionInfo.RetrieveMyAuctions에 대한 변환
 	default Page<MypageDto.MyAuctionListResponse> toMyAuctionListResponse(
 		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo) {
-		List<MypageDto.MyAuctionListResponse> content = retrieveMyAuctionsInfo.getContent().stream()
-			.map(this::toResponse)
-			.collect(Collectors.toList());
-
-		return new PageImpl<>(content, retrieveMyAuctionsInfo.getPageable(), retrieveMyAuctionsInfo.getTotalElements());
+		return toResponsePage(retrieveMyAuctionsInfo, this::toResponse);
 	}
 
 	MypageDto.MyAuctionListResponse toResponse(AuctionInfo.RetrieveMyAuctions retrieveMyAuctions);
 
+	// retrieveMyBids
 	BidCommand.RetrieveMyBids toCommand(Long memberId);
 
+	// BidInfo.RetrieveMyBids에 대한 변환
 	default Page<MypageDto.MyBidListResponse> toMyBidListResponse(Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo) {
-		List<MypageDto.MyBidListResponse> content = retrieveMyBidsInfo.getContent().stream()
-			.map(this::toResponse)
-			.collect(Collectors.toList());
-
-		return new PageImpl<>(content, retrieveMyBidsInfo.getPageable(), retrieveMyBidsInfo.getTotalElements());
+		return toResponsePage(retrieveMyBidsInfo, this::toResponse);
 	}
 
 	MypageDto.MyBidListResponse toResponse(BidInfo.RetrieveMyBids retrieveMyBidsInfo);

@@ -86,9 +86,11 @@ public class AuctionServiceImpl implements AuctionService {
 
 		// TODO : AuctionStatus 에 따라 필요한 값이 다름
 		// 	biidng - nowPrice , conclude - concludePrice
-		return auctionReader
-			.getMyAuctionList(retrieveMyAuctionsCommand.memberId(), retrieveMyAuctionsCommand.auctionStatus(),
-				pageable);
+		return auctionReader.getMyAuctionList(
+			retrieveMyAuctionsCommand.memberId(),
+			retrieveMyAuctionsCommand.auctionStatus(),
+			pageable
+		);
 
 	}
 
