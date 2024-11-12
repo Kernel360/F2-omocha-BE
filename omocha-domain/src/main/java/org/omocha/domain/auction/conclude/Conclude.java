@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,8 +28,8 @@ public class Conclude {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long concludeId;
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+	@OneToOne
 	@JoinColumn(name = "auction_id")
 	private Auction auction;
 

@@ -53,7 +53,7 @@ public class OAuth2UserInfo {
 		return Member.builder()
 			.username(name)
 			.email(email)
-			.averageRating(new Rating(0d))
+			.averageRating(new Rating(0.0))
 			.role(Role.ROLE_USER)
 			.provider(provider)
 			.providerId(providerId)
