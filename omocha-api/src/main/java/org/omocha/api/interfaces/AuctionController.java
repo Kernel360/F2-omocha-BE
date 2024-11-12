@@ -114,7 +114,7 @@ public class AuctionController implements AuctionApi {
 	) {
 		log.info("Received auction details request: {}", auctionId);
 
-		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(userPrincipal.getId(), auctionId);
+		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId, userPrincipal.getId());
 		AuctionInfo.RetrieveAuction detailInfo = auctionFacade.retrieveAuction(auctionCommand);
 		AuctionDto.AuctionDetailsResponse response = auctionDtoMapper.toResponse(detailInfo);
 
