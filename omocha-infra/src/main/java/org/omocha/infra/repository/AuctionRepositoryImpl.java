@@ -9,7 +9,6 @@ import java.util.List;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
-import org.omocha.domain.auction.CategoryReader;
 import org.omocha.domain.auction.QAuction;
 import org.omocha.domain.auction.QAuctionCategory;
 import org.omocha.domain.auction.QAuctionInfo_SearchAuction;
@@ -25,6 +24,8 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -36,7 +37,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 
 	private final JPAQueryFactory queryFactory;
 
-	public AuctionRepositoryImpl(EntityManager em, CategoryReader categoryReader) {
+	public AuctionRepositoryImpl(EntityManager em) {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
@@ -76,7 +77,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				titleContains(searchAuction.title()),
 				statusEquals(searchAuction.auctionStatus()),
 				categoryContains(subCategoryIds)
-			).distinct();
+			);
 
 		applySorting(pageable, auction, query);
 
@@ -110,7 +111,24 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		QAuction auction,
 		JPAQuery<T> query
 	) {
+
+		// 우선적으로 auctionStatus 정렬 (BIDDING > NO_BIDS > CONCLUDED > COMPLETED)
+		NumberExpression<Integer> statusOrder = new CaseBuilder()
+			.when(auction.auctionStatus.eq(Auction.AuctionStatus.BIDDING)).then(1)
+			.when(auction.auctionStatus.eq(Auction.AuctionStatus.NO_BIDS)).then(2)
+			.when(auction.auctionStatus.eq(Auction.AuctionStatus.CONCLUDED)).then(3)
+			.when(auction.auctionStatus.eq(Auction.AuctionStatus.COMPLETED)).then(4)
+			.otherwise(5);
+
+		query.orderBy(new OrderSpecifier<>(
+			Order.ASC,
+			statusOrder
+		));
+
 		for (Sort.Order o : pageable.getSort()) {
+			if (o.getProperty().equalsIgnoreCase("auctionStatus")) {
+				continue;
+			}
 			PathBuilder<?> pathBuilder = new PathBuilder<>(
 				auction.getType(),
 				auction.getMetadata()
