@@ -32,18 +32,15 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 	// TODO: Mypage 진행하며 확인 필요
 
 	@Override
-	public Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Pageable sortPage) {
+	public Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Long auctionId, Pageable sortPage) {
 		JPAQuery<BidInfo.RetrieveMyBids> query = queryFactory
 			.select(new QBidInfo_RetrieveMyBids(
-				auction.auctionId,
-				auction.title,
 				bid.bidPrice,
-				bid.createdAt,
-				auction.thumbnailPath
+				bid.createdAt
 			))
 			.from(bid)
 			.leftJoin(bid.auction, auction)
-			.where(bid.buyer.memberId.eq(memberId));
+			.where(bid.buyer.memberId.eq(memberId).and(auction.auctionId.eq(auctionId)));
 
 		for (Sort.Order o : sortPage.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(bid.getType(), bid.getMetadata());

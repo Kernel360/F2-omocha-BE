@@ -11,7 +11,8 @@ public class BidCommand {
 	}
 
 	public record RetrieveMyBids(
-		Long memberId
+		Long memberId,
+		Long auctionId
 	) {
 
 	}

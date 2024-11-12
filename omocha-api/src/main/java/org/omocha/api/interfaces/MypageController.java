@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -262,9 +263,10 @@ public class MypageController {
 
 	}
 
-	@GetMapping("/history/bid")
+	@GetMapping("/history/bid/{auction_id}")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable(name = "auction_id") Long auctionId,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
 		@PageableDefault(page = 0, size = 10)
@@ -277,7 +279,7 @@ public class MypageController {
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		BidCommand.RetrieveMyBids retrieveMyBidsCommand = mypageDtoMapper.toCommand(memberId);
+		BidCommand.RetrieveMyBids retrieveMyBidsCommand = mypageDtoMapper.toCommand(memberId, auctionId);
 
 		Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo = mypageFacade.retrieveMyBids(retrieveMyBidsCommand,
 			sortPage);

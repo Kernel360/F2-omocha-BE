@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BidRepositoryCustom {
 
-	Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Pageable sortPage);
+	Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Long auctionId, Pageable sortPage);
 
 	Page<BidInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage);
 }

@@ -65,7 +65,7 @@ public interface MypageDtoMapper {
 	MypageDto.MyBidListResponse toResponse(BidInfo.RetrieveMyBids retrieveMyBidsInfo);
 
 	// retrieveMyBids
-	BidCommand.RetrieveMyBids toCommand(Long memberId);
+	BidCommand.RetrieveMyBids toCommand(Long memberId, Long auctionId);
 
 	BidCommand.RetrieveMyBidAuctions toBidAuctionCommand(Long memberId);
 
