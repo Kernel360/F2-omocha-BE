@@ -1,5 +1,6 @@
 package org.omocha.domain.member;
 
+import org.omocha.domain.exception.MemberAlreadyExistException;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ class MemberValidatorImpl implements MemberValidator {
 
 		// TODO : Exception 설정 후 수정 필요
 		if (memberReader.existsByEmailAndProviderIsNull(email)) {
-			// throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
+			throw new MemberAlreadyExistException(email);
 		}
 		return true;
 	}
@@ -28,7 +29,7 @@ class MemberValidatorImpl implements MemberValidator {
 	@Override
 	public void validateEmail(String email) {
 		if (memberReader.existsByEmail(email)) {
-			// throw new MemberEmailAlreadyExistsException(MEMBER_ALREADY_EXISTS);
+			throw new MemberAlreadyExistException(email);
 		}
 	}
 

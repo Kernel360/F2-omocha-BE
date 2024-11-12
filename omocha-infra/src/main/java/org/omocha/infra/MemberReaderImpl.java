@@ -1,9 +1,9 @@
 package org.omocha.infra;
 
-import static org.omocha.domain.exception.code.MemberCode.*;
-
 import java.util.Optional;
 
+import org.omocha.domain.exception.MemberNotFoundExceptionForEmail;
+import org.omocha.domain.exception.MemberNotFoundExceptionForId;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberReader;
@@ -30,13 +30,13 @@ public class MemberReaderImpl implements MemberReader {
 	@Override
 	public Member getMember(Long memberId) {
 		return memberRepository.findById(memberId)
-			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
+			.orElseThrow(() -> new MemberNotFoundExceptionForId(memberId));
 	}
 
 	@Override
 	public Member getMember(String email) {
 		return memberRepository.findByEmail(email)
-			.orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND.getResultMsg()));
+			.orElseThrow(() -> new MemberNotFoundExceptionForEmail(email));
 	}
 
 	@Override

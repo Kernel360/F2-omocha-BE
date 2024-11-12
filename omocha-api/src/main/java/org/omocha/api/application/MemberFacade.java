@@ -36,7 +36,7 @@ public class MemberFacade {
 
 		MemberInfo.Login loginInfo = memberService.retrieveMember(memberLoginCommand.email());
 
-		passwordManager.match(memberLoginCommand.password(), loginInfo.password());
+		passwordManager.match(memberLoginCommand.password(), loginInfo.password(), loginInfo.memberId());
 
 		jwtProvider.generateAccessToken(loginInfo.memberId(), response);
 		jwtProvider.generateRefreshToken(loginInfo.memberId(), response);
