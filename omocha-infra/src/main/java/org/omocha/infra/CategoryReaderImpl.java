@@ -9,6 +9,7 @@ import java.util.Map;
 import org.omocha.domain.auction.Category;
 import org.omocha.domain.auction.CategoryInfo;
 import org.omocha.domain.auction.CategoryReader;
+import org.omocha.domain.exception.CategoryNotFoundException;
 import org.omocha.infra.repository.CategoryRepository;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class CategoryReaderImpl implements CategoryReader {
 	@Override
 	public Category getCategory(Long categoryId) {
 		return categoryRepository.findById(categoryId)
-			.orElseThrow(() -> new IllegalArgumentException("No Category found with id: " + categoryId));
+			.orElseThrow(() -> new CategoryNotFoundException(categoryId));
 	}
 
 	@Override

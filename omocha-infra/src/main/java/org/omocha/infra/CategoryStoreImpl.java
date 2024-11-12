@@ -19,13 +19,12 @@ public class CategoryStoreImpl implements CategoryStore {
 	private final CategoryRepository categoryRepository;
 	private final CategoryReader categoryReader;
 
-	@Override
-	public Category store(Category category) {
+	public Category categoryStore(Category category) {
 		return categoryRepository.save(category);
 	}
 
 	@Override
-	public void store(Auction auction, AuctionCommand.AddAuction addCommand) {
+	public void auctionCategoryStore(Auction auction, AuctionCommand.AddAuction addCommand) {
 		if (addCommand.categoryIds() != null && !addCommand.categoryIds().isEmpty()) {
 			for (Long categoryId : addCommand.categoryIds()) {
 				Category category = categoryReader.getCategory(categoryId);

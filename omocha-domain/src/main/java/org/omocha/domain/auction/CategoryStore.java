@@ -1,7 +1,7 @@
 package org.omocha.domain.auction;
 
 public interface CategoryStore {
-	Category store(Category category);
+	Category categoryStore(Category category);
 
-	void store(Auction auction, AuctionCommand.AddAuction addCommand);
+	void auctionCategoryStore(Auction auction, AuctionCommand.AddAuction addCommand);
 }

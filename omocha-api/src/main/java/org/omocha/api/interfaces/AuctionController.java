@@ -109,11 +109,12 @@ public class AuctionController implements AuctionApi {
 
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
 		log.info("Received auction details request: {}", auctionId);
 
-		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId);
+		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(userPrincipal.getId(), auctionId);
 		AuctionInfo.RetrieveAuction detailInfo = auctionFacade.retrieveAuction(auctionCommand);
 		AuctionDto.AuctionDetailsResponse response = auctionDtoMapper.toResponse(detailInfo);
 
@@ -140,7 +141,7 @@ public class AuctionController implements AuctionApi {
 		log.info("Received auction remove request: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		AuctionCommand.RemoveAuction removeCommand =
-			auctionDtoMapper.toCommand(userPrincipal.getId(), auctionId);
+			auctionDtoMapper.toRemoveCommand(userPrincipal.getId(), auctionId);
 
 		auctionFacade.removeAuction(removeCommand);
 

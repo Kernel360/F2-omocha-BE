@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.omocha.domain.exception.AuctionHasBidException;
 import org.omocha.domain.exception.AuctionImageNotFoundException;
+import org.omocha.domain.exception.CategoryNotFoundException;
 import org.omocha.domain.exception.MemberInvalidException;
 import org.omocha.domain.image.Image;
 import org.springframework.data.domain.Page;
@@ -34,14 +35,9 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new AuctionImageNotFoundException(addCommand.memberId());
 		}
 
-		if (addCommand.categoryIds() == null && addCommand.images().isEmpty()) {
-			// throw new CategoryNotFoundException(addCommand.categoryIds());
-			throw new IllegalArgumentException("Auction image must have at least one category");
-		}
-
 		Auction auction = auctionStore.store(addCommand.toEntity());
 		auctionImagesFactory.store(auction, addCommand);
-		categoryStore.store(auction, addCommand);
+		categoryStore.auctionCategoryStore(auction, addCommand);
 
 		return auction.getAuctionId();
 	}
@@ -87,12 +83,12 @@ public class AuctionServiceImpl implements AuctionService {
 			.stream()
 			.findFirst()
 			.orElseThrow(
-				() -> new IllegalArgumentException("No category found for auction ID: " + auction.getAuctionId()));
+				() -> new CategoryNotFoundException(auction.getAuctionId(), retrieveCommand.memberId()));
 
 		Long selectedCategoryId = auctionCategory.getCategory().getCategoryId();
 
-		List<CategoryInfo.CategoryResponse> categoryHierarchy = categoryReader.getCategoryHierarchyUpwards(
-			selectedCategoryId);
+		List<CategoryInfo.CategoryResponse> categoryHierarchy =
+			categoryReader.getCategoryHierarchyUpwards(selectedCategoryId);
 
 		return new AuctionInfo.RetrieveAuction(auction, imagePaths, categoryHierarchy);
 	}

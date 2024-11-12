@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
 		if (addCommand.parentId() != null) {
 			parentCategory = categoryReader.getCategory(addCommand.parentId());
 		}
-		Category store = categoryStore.store(addCommand.toEntity(parentCategory));
+		Category store = categoryStore.categoryStore(addCommand.toEntity(parentCategory));
 		return store.getCategoryId();
 	}
 

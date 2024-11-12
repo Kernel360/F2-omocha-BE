@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.omocha.api.application.CategoryFacade;
 import org.omocha.api.interfaces.dto.CategoryDto;
-import org.omocha.api.interfaces.mapper.CategoryMapper;
+import org.omocha.api.interfaces.mapper.CategoryDtoMapper;
 import org.omocha.domain.auction.CategoryCommand;
 import org.omocha.domain.auction.CategoryInfo;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 
 	private final CategoryFacade categoryFacade;
-	private final CategoryMapper categoryMapper;
+	private final CategoryDtoMapper categoryMapper;
 
 	@PostMapping
 	public ResponseEntity<CategoryDto.CategoryAddResponse> categoryAdd(

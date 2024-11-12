@@ -56,10 +56,6 @@ public class Category {
 		}
 	}
 
-	public void addAuctionCategory(AuctionCategory auctionCategory) {
-		this.auctionCategories.add(auctionCategory);
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

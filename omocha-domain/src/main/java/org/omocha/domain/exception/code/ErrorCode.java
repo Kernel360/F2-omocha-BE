@@ -39,6 +39,9 @@ public enum ErrorCode {
 	AUCTION_IMAGE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "경매에서 생성된 이미지를 삭제할 수 없습니다."),
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
 
+	// Category Code
+	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없습니다."),
+
 	// Bid Code
 	NO_BIDS_FOUND(HttpStatus.BAD_REQUEST, "입찰이 존재하지 않습니다."),
 	SELF_BID_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "자신의 경매에 입찰을 걸 수 없습니다."),
