@@ -1,7 +1,5 @@
 package org.omocha.api.common.config;
 
-// import org.omocha.api.common.auth.oauth.CustomOAuth2UserService;
-
 import org.omocha.api.common.auth.oauth.CustomOAuth2UserService;
 import org.omocha.api.common.filter.JwtAuthFilter;
 import org.omocha.api.common.handler.CustomAccessDeniedHandler;
@@ -58,6 +56,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/api/v2/bid/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/question/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/review/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/categories/**").permitAll()
 				.anyRequest().authenticated())
 
 			.oauth2Login(
