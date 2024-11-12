@@ -79,6 +79,7 @@ public class AuctionServiceImpl implements AuctionService {
 			.map(Image::getImagePath)
 			.collect(Collectors.toList());
 
+		// TODO : auction.getAuctionCategories를 list로 받고 처리하도록 수정해야함
 		AuctionCategory auctionCategory = auction.getAuctionCategories()
 			.stream()
 			.findFirst()
