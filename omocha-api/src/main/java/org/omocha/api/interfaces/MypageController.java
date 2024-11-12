@@ -224,7 +224,7 @@ public class MypageController {
 
 	}
 
-	@GetMapping("/history/test")
+	@GetMapping("/history/bid")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidAuctionResponse>>> myBidAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,

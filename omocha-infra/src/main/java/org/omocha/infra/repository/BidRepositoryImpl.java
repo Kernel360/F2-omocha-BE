@@ -49,13 +49,13 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 		}
 
 		// 페이징 적용
-		List<BidInfo.RetrieveMyBids> questions = query.offset(sortPage.getOffset())
+		List<BidInfo.RetrieveMyBids> myBids = query.offset(sortPage.getOffset())
 			.limit(sortPage.getPageSize())
 			.fetch();
 
 		JPAQuery<Long> countQuery = queryFactory.select(bid.count()).from(bid);
 
-		return PageableExecutionUtils.getPage(questions, sortPage, countQuery::fetchOne);
+		return PageableExecutionUtils.getPage(myBids, sortPage, countQuery::fetchOne);
 	}
 
 	@Override
