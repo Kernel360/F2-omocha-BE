@@ -66,7 +66,6 @@ public enum ErrorCode {
 	CHATROOM_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 채팅방입니다."),
 	CHATROOM_ACCESS_FAIL(HttpStatus.FORBIDDEN, "채팅방에 접근 거부되었습니다"),
 	CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방을 찾을 수 없습니다"),
-	INVALID_RATING(HttpStatus.BAD_REQUEST, "리뷰 평점은 " + Rating.MIN + "점부터 " + Rating.MAX + "점까지만 가능합니다."),
 
 	// Review Code
 	INVALID_RATING(HttpStatus.BAD_REQUEST, "리뷰 평점은 " + Rating.MIN + "점부터 " + Rating.MAX + "점까지만 가능합니다."),
