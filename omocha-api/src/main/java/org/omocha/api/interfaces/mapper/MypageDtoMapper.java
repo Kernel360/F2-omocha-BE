@@ -57,14 +57,23 @@ public interface MypageDtoMapper {
 
 	MypageDto.MyAuctionListResponse toResponse(AuctionInfo.RetrieveMyAuctions retrieveMyAuctions);
 
-	// retrieveMyBids
-	BidCommand.RetrieveMyBids toCommand(Long memberId);
-
 	// BidInfo.RetrieveMyBids에 대한 변환
 	default Page<MypageDto.MyBidListResponse> toMyBidListResponse(Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo) {
 		return toResponsePage(retrieveMyBidsInfo, this::toResponse);
 	}
 
 	MypageDto.MyBidListResponse toResponse(BidInfo.RetrieveMyBids retrieveMyBidsInfo);
+
+	// retrieveMyBids
+	BidCommand.RetrieveMyBids toCommand(Long memberId);
+
+	BidCommand.RetrieveMyBidAuctions toBidAuctionCommand(Long memberId);
+
+	default Page<MypageDto.MyBidAuctionResponse> toMyBiductionListResponse(
+		Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctionsInfo) {
+		return toResponsePage(retrieveMyBidAuctionsInfo, this::toResponse);
+	}
+
+	MypageDto.MyBidAuctionResponse toResponse(BidInfo.RetrieveMyBidAuctions retrieveMyBidAuctionsInfo);
 
 }

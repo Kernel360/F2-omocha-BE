@@ -75,4 +75,11 @@ public class MypageDto {
 	) {
 	}
 
+	public record MyBidAuctionResponse(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		String thumbnailPath
+	) {
+	}
 }

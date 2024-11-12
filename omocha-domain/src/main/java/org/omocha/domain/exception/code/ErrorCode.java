@@ -1,5 +1,6 @@
 package org.omocha.domain.exception.code;
 
+import org.omocha.domain.auction.review.Rating;
 import org.springframework.http.HttpStatus;
 
 import lombok.AllArgsConstructor;
@@ -48,6 +49,7 @@ public enum ErrorCode {
 	// Qna Code
 	QUESTION_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),
 	ANSWER_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),
+	INVALID_RATING(HttpStatus.BAD_REQUEST, "리뷰 평점은 " + Rating.MIN + "점부터 " + Rating.MAX + "점까지만 가능합니다."),
 
 	QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),
 	ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "답변을 찾을 수 없습니다."),

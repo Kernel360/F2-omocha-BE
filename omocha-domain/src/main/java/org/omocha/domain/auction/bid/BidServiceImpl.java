@@ -76,4 +76,12 @@ public class BidServiceImpl implements BidService {
 		return bidReader.getMyBidList(retrieveMyBidsCommand.memberId(), sortPage);
 
 	}
+
+	@Override
+	public Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
+		BidCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand,
+		Pageable sortPage
+	) {
+		return bidReader.getMyBidAuctionList(retrieveMyBidAuctionsCommand.memberId(), sortPage);
+	}
 }

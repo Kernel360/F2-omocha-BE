@@ -223,6 +223,45 @@ public class MypageController {
 
 	}
 
+	@GetMapping("/history/test")
+	public ResponseEntity<ResultDto<Page<MypageDto.MyBidAuctionResponse>>> myBidAuctionList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+
+		log.info("myBidAuctionList started memberId : {} ", userPrincipal.getId());
+
+		Long memberId = userPrincipal.getId();
+
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
+		BidCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand = mypageDtoMapper.toBidAuctionCommand(memberId);
+
+		Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctionsInfo = mypageFacade.retrieveMyBidAuctions(
+			retrieveMyBidAuctionsCommand,
+			sortPage
+		);
+
+		Page<MypageDto.MyBidAuctionResponse> myBidAuctionListResponse = mypageDtoMapper.toMyBiductionListResponse(
+			retrieveMyBidAuctionsInfo);
+
+		ResultDto<Page<MypageDto.MyBidAuctionResponse>> resultDto = ResultDto.res(
+			MypageCode.MY_BIDDING_LIST_SUCCESS.getStatusCode(),
+			MypageCode.MY_BIDDING_LIST_SUCCESS.getResultMsg(),
+			myBidAuctionListResponse
+		);
+
+		log.info("myBidAuctionList finished");
+
+		return ResponseEntity
+			.status(MypageCode.MY_BIDDING_LIST_SUCCESS.getHttpStatus())
+			.body(resultDto);
+
+	}
+
 	@GetMapping("/history/bid")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,

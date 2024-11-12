@@ -67,6 +67,19 @@ public class MypageFacade {
 		return retrieveMyAuctionsInfo;
 	}
 
+	public Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
+		BidCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand,
+		Pageable sortPage
+	) {
+
+		Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctionsInfo = bidService.retrieveMyBidAuctions(
+			retrieveMyBidAuctionsCommand,
+			sortPage
+		);
+
+		return retrieveMyBidAuctionsInfo;
+	}
+
 	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(
 		BidCommand.RetrieveMyBids retrieveMyBidsCommand,
 		Pageable sortPage
@@ -75,4 +88,5 @@ public class MypageFacade {
 
 		return retrieveMyBids;
 	}
+
 }

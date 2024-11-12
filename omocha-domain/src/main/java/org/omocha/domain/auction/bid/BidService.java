@@ -14,4 +14,7 @@ public interface BidService {
 	public BidInfo.NowPrice retrieveNowPrice(Long auctionId);
 
 	Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand, Pageable sortPage);
+
+	Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
+		BidCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand, Pageable sortPage);
 }

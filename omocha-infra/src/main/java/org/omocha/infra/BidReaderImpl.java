@@ -35,4 +35,9 @@ public class BidReaderImpl implements BidReader {
 	public Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Pageable sortPage) {
 		return bidRepository.getMyBidList(memberId, sortPage);
 	}
+
+	@Override
+	public Page<BidInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage) {
+		return bidRepository.getMyBidAuctionList(memberId, sortPage);
+	}
 }

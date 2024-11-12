@@ -15,4 +15,9 @@ public class BidCommand {
 	) {
 
 	}
+
+	public record RetrieveMyBidAuctions(
+		Long memberId
+	) {
+	}
 }
