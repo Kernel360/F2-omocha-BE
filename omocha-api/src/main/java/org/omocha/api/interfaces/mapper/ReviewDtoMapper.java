@@ -38,11 +38,7 @@ public interface ReviewDtoMapper {
 
 	@Named("toRating")
 	default Rating toRating(Double rating) {
-		try {
-			return new Rating(rating);
-		} catch (NumberFormatException e) {
-			throw new RuntimeException();
-		}
+		return new Rating(rating);
 	}
 
 	ReviewDto.ReviewAddResponse toResponse(Long reviewId);
