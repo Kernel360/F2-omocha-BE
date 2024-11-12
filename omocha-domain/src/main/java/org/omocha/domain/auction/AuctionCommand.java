@@ -13,6 +13,7 @@ public class AuctionCommand {
 		String content,
 		Long startPrice,
 		Long bidUnit,
+		Long instantBuyPrice,
 		// TODO : VO 날짜 format 추가
 		LocalDateTime startDate,
 		LocalDateTime endDate,
@@ -28,6 +29,7 @@ public class AuctionCommand {
 				.startPrice(startPrice)
 				.bidCount(0L)
 				.bidUnit(bidUnit)
+				.instantBuyPrice(instantBuyPrice)
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();

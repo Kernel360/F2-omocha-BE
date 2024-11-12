@@ -52,6 +52,8 @@ public class Auction extends BaseEntity {
 
 	private Long bidUnit;
 
+	private Long instantBuyPrice;
+
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
 
@@ -75,6 +77,7 @@ public class Auction extends BaseEntity {
 		Long nowPrice,
 		Long bidCount,
 		Long bidUnit,
+		Long instantBuyPrice,
 		String thumbnailPath,
 		LocalDateTime startDate,
 		LocalDateTime endDate
@@ -86,6 +89,7 @@ public class Auction extends BaseEntity {
 		this.nowPrice = nowPrice;
 		this.bidCount = bidCount;
 		this.bidUnit = bidUnit;
+		this.instantBuyPrice = instantBuyPrice;
 		this.thumbnailPath = thumbnailPath;
 		this.auctionStatus = AuctionStatus.BIDDING;
 		this.startDate = startDate;
@@ -114,14 +118,13 @@ public class Auction extends BaseEntity {
 	}
 
 	public void validateAuctionStatus() {
-		LocalDateTime now = LocalDateTime.now();
-
-		if (getEndDate().isBefore(now)) {
-			throw new AuctionAlreadyEndedException(auctionId);
-		}
-
 		if (getAuctionStatus() != AuctionStatus.BIDDING) {
 			throw new AuctionNotInBiddingStateException(auctionId, auctionStatus);
+		}
+
+		LocalDateTime now = LocalDateTime.now();
+		if (getEndDate().isBefore(now)) {
+			throw new AuctionAlreadyEndedException(auctionId);
 		}
 	}
 
