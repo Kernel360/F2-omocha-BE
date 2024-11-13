@@ -34,4 +34,9 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryReader.getAllCategories();
 	}
 
+	@Override
+	public List<CategoryInfo.CategoryResponse> retrieveCategoryHierarchy(Long categoryId) {
+		return categoryReader.getCategoryHierarchyUpwards(categoryId);
+	}
+
 }
