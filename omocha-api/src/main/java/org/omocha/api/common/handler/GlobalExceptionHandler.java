@@ -6,6 +6,7 @@ import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.exception.AuctionException;
 import org.omocha.domain.exception.BidException;
 import org.omocha.domain.exception.ChatException;
+import org.omocha.domain.exception.MypageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -54,6 +55,24 @@ public class GlobalExceptionHandler {
 		);
 		return ResponseEntity
 			.status(e.getBidCode().getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(MypageException.class)
+	public ResponseEntity<ResultDto<Object>> handleBidException(
+		MypageException e,
+		HttpServletRequest request
+	) {
+
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getMypageCode(), request.getRequestURI(), e.getMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getMypageCode().getStatusCode(),
+			e.getMessage()
+		);
+		return ResponseEntity
+			.status(e.getMypageCode().getHttpStatus())
 			.body(resultDto);
 	}
 
