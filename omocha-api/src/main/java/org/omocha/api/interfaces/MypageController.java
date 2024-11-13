@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/myinfo")
+@RequestMapping("/api/v2/my-info")
 public class MypageController {
 
 	private final MypageFacade mypageFacade;
@@ -182,7 +182,7 @@ public class MypageController {
 	}
 
 	// TODO : 키워드 관련 추가 예정
-	@GetMapping("/history/auction")
+	@GetMapping("/histories/auctions")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyAuctionListResponse>>> myAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
@@ -224,7 +224,7 @@ public class MypageController {
 
 	}
 
-	@GetMapping("/history/bid")
+	@GetMapping("/histories/bids")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidAuctionResponse>>> myBidAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
@@ -263,7 +263,7 @@ public class MypageController {
 
 	}
 
-	@GetMapping("/history/bid/{auction_id}")
+	@GetMapping("/histories/bids/{auction_id}")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable(name = "auction_id") Long auctionId,
