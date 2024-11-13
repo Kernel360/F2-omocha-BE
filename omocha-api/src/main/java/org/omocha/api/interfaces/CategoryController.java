@@ -28,6 +28,7 @@ public class CategoryController implements CategoryApi {
 	private final CategoryFacade categoryFacade;
 	private final CategoryDtoMapper categoryMapper;
 
+	@Override
 	@PostMapping
 	public ResponseEntity<ResultDto<CategoryDto.CategoryAddResponse>> categoryAdd(
 		@RequestBody CategoryDto.CategoryAddRequest request
@@ -49,6 +50,7 @@ public class CategoryController implements CategoryApi {
 			.body(result);
 	}
 
+	@Override
 	@GetMapping("/{category_id}")
 	public ResponseEntity<ResultDto<List<CategoryInfo.CategoryResponse>>> categoryHierarchy(
 		@PathVariable("category_id") Long categoryId
@@ -66,6 +68,7 @@ public class CategoryController implements CategoryApi {
 			.body(result);
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<ResultDto<List<CategoryInfo.CategoryResponse>>> categoryDetails() {
 
