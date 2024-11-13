@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/my-info")
-public class MypageController {
+public class MypageController implements MypageApi {
 
 	private final MypageFacade mypageFacade;
 	private final MypageDtoMapper mypageDtoMapper;
@@ -48,6 +48,7 @@ public class MypageController {
 
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
+	@Override
 	@GetMapping("/me")
 	public ResponseEntity<ResultDto<MypageDto.CurrentMemberInfoResponse>> currentMemberInfo(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
@@ -78,6 +79,7 @@ public class MypageController {
 
 	}
 
+	@Override
 	@PatchMapping(value = "/profile-image",
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 		produces = MediaType.APPLICATION_JSON_VALUE
@@ -113,6 +115,7 @@ public class MypageController {
 			.body(resultDto);
 	}
 
+	@Override
 	@PatchMapping("/password")
 	public ResponseEntity<ResultDto<Void>> passwordModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -147,6 +150,7 @@ public class MypageController {
 	}
 
 	// TODO : 사용자 정보 수정
+	@Override
 	@PatchMapping("/basic-info")
 	public ResponseEntity<ResultDto<MypageDto.MemberModifyResponse>> memberInfoModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -181,6 +185,7 @@ public class MypageController {
 	}
 
 	// TODO : 키워드 관련 추가 예정
+	@Override
 	@GetMapping("/histories/auctions")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyAuctionListResponse>>> myAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -223,6 +228,7 @@ public class MypageController {
 
 	}
 
+	@Override
 	@GetMapping("/histories/bids")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidAuctionResponse>>> myBidAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -262,6 +268,7 @@ public class MypageController {
 
 	}
 
+	@Override
 	@GetMapping("/histories/bids/{auction_id}")
 	public ResponseEntity<ResultDto<Page<MypageDto.MyBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,

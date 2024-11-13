@@ -20,7 +20,7 @@ public enum SuccessCode {
 	MEMBER_INFO_RETRIEVE_SUCCESS(HttpStatus.OK, "유저 정보를 성공적으로 반환하였습니다."),
 	MY_AUCTION_LIST_SUCCESS(HttpStatus.OK, "경매 내역을 성공적으로 조회하였습니다."),
 	MY_BIDDING_LIST_SUCCESS(HttpStatus.OK, "입찰 내역을 성공적으로 조회하였습니다."),
-	MY_BIDDING_AUCTION_LIST_SUCCESS(HttpStatus.OK, "입찰 내역을 성공적으로 조회하였습니다."),
+	MY_BIDDING_AUCTION_LIST_SUCCESS(HttpStatus.OK, "입찰한 경매 내역을 성공적으로 조회하였습니다."),
 
 	MEMBER_INFO_UPDATED(HttpStatus.OK, "멤버 정보 수정이 완료되었습니다."),
 	PROFILE_IMAGE_UPDATED(HttpStatus.OK, "프로필 이미지 수정이 완료되었습니다."),
