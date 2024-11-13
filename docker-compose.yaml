@@ -1,4 +1,4 @@
-name: omocha-dev
+name: omocha-api
 
 networks:
   backend:
@@ -6,8 +6,8 @@ networks:
 
 services:
   omocha:
-    image: kwlim1120ss/omocha
-    container_name: omocha
+    image: kwlim1120ss/${DOCKERHUB_REPOSITORY}
+    container_name: ${API_SERVER_NAME}
     restart: always
     ports:
       - "8080:8080"
@@ -15,7 +15,6 @@ services:
       SPRING_DATASOURCE_URL: ${AWS_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${AWS_DATABASE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${AWS_DATABASE_PASSWORD}
-      SPRING_PROFILES_ACTIVE: prod
       TZ: "Asia/Seoul"
     env_file:
       - .env
