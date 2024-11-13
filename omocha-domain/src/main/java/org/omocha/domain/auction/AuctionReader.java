@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface AuctionReader {
 	Page<AuctionInfo.SearchAuction> getAuctionList(
 		AuctionCommand.SearchAuction searchAuction,
+		List<Long> subCategoryIds,
 		Pageable pageable
 	);
 

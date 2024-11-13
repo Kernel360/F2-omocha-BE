@@ -44,7 +44,11 @@ public class MypageFacade {
 		MemberInfo.RetrievePassword retrievePasswordInfo = memberService.retrievePassword(
 			modifyPasswordCommand.memberId());
 
-		passwordManager.match(modifyPasswordCommand.currentPassword(), retrievePasswordInfo.password());
+		passwordManager.match(
+			modifyPasswordCommand.currentPassword(),
+			retrievePasswordInfo.password(),
+			modifyPasswordCommand.memberId()
+		);
 
 		memberService.modifyPassword(modifyPasswordCommand);
 

@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 public class RatingDbConverter implements AttributeConverter<Rating, Double> {
 	@Override
 	public Double convertToDatabaseColumn(Rating rating) {
-		return 0.0;
+		return rating.getValue();
 	}
 
 	@Override

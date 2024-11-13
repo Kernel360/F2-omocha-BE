@@ -79,6 +79,7 @@ public class AuctionController implements AuctionApi {
 	@GetMapping("/basic-list")
 	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
 		AuctionDto.AuctionSearchRequest searchRequest,
+		@RequestParam(value = "categoryId", required = false) Long categoryId,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
@@ -88,7 +89,8 @@ public class AuctionController implements AuctionApi {
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		AuctionCommand.SearchAuction searchCommand = auctionDtoMapper.toCommand(searchRequest, auctionStatus);
+		AuctionCommand.SearchAuction searchCommand =
+			auctionDtoMapper.toCommand(searchRequest, auctionStatus, categoryId);
 
 		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuction(searchCommand, sortPage);
 
@@ -107,11 +109,12 @@ public class AuctionController implements AuctionApi {
 
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
 		log.info("Received auction details request: {}", auctionId);
 
-		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId);
+		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId, userPrincipal.getId());
 		AuctionInfo.RetrieveAuction detailInfo = auctionFacade.retrieveAuction(auctionCommand);
 		AuctionDto.AuctionDetailsResponse response = auctionDtoMapper.toResponse(detailInfo);
 
@@ -138,7 +141,7 @@ public class AuctionController implements AuctionApi {
 		log.info("Received auction remove request: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		AuctionCommand.RemoveAuction removeCommand =
-			auctionDtoMapper.toCommand(userPrincipal.getId(), auctionId);
+			auctionDtoMapper.toRemoveCommand(userPrincipal.getId(), auctionId);
 
 		auctionFacade.removeAuction(removeCommand);
 

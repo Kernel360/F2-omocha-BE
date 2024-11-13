@@ -22,13 +22,12 @@ public class AnswerServiceImpl implements AnswerService {
 
 	private final AnswerValidator answerValidator;
 
-
 	@Override
 	public AnswerInfo.AddAnswer addAnswer(AnswerCommand.AddAnswer addAnswerCommand) {
 
 		Member member = memberReader.getMember(addAnswerCommand.memberId());
 
-		Question question = qnaReader.getQuestion(addAnswerCommand.memberId());
+		Question question = qnaReader.getQuestion(addAnswerCommand.questionId());
 
 		Auction auction = auctionReader.getAuction(question.getAuction().getAuctionId());
 

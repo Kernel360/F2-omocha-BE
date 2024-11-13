@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.CategoryInfo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -17,7 +18,8 @@ public class AuctionDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime endDate
+		LocalDateTime endDate,
+		List<Long> categoryIds
 	) {
 	}
 
@@ -48,7 +50,8 @@ public class AuctionDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime createdAt
+		LocalDateTime createdAt,
+		List<CategoryInfo.CategoryResponse> categoryResponse
 	) {
 	}
 
@@ -69,7 +72,8 @@ public class AuctionDto {
 		LocalDateTime endDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
-		List<String> imagePaths
+		List<String> imagePaths,
+		List<CategoryInfo.CategoryResponse> categories
 	) {
 	}
 

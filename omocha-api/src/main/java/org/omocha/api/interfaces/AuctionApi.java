@@ -58,7 +58,9 @@ public interface AuctionApi {
 	})
 	ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
 		@Parameter(description = "검색 조건", required = false)
-		AuctionDto.AuctionSearchRequest condition,
+		AuctionDto.AuctionSearchRequest searchRequest,
+		@Parameter(description = "카테고리 ID", required = false)
+		Long categoryId,
 		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = Auction.AuctionStatus.class))
 		Auction.AuctionStatus auctionStatus,
 		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
@@ -81,6 +83,8 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		UserPrincipal userPrincipal,
 		@Parameter(description = "경매 ID", required = true) Long auctionId
 	);
 
