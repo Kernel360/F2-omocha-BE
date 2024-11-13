@@ -72,6 +72,8 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = memberReader.getMember(modifyBasicInfoCommand.memberId());
 
+		memberValidator.validateDuplicateNickName(modifyBasicInfoCommand.nickName());
+
 		member.updateMember(
 			modifyBasicInfoCommand.nickName(),
 			modifyBasicInfoCommand.phoneNumber()

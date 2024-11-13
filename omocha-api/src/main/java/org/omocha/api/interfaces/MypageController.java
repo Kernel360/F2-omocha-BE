@@ -1,6 +1,6 @@
 package org.omocha.api.interfaces;
 
-import static org.omocha.domain.exception.code.MypageCode.*;
+import static org.omocha.domain.exception.code.SuccessCode.*;
 
 import org.omocha.api.application.MypageFacade;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
@@ -14,7 +14,6 @@ import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.bid.BidCommand;
 import org.omocha.domain.auction.bid.BidInfo;
 import org.omocha.domain.common.util.PageSort;
-import org.omocha.domain.exception.code.MypageCode;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.springframework.data.domain.Page;
@@ -66,7 +65,7 @@ public class MypageController {
 
 		ResultDto<MypageDto.CurrentMemberInfoResponse> resultDto = ResultDto.res(
 			MEMBER_INFO_RETRIEVE_SUCCESS.getStatusCode(),
-			MEMBER_INFO_RETRIEVE_SUCCESS.getResultMsg(),
+			MEMBER_INFO_RETRIEVE_SUCCESS.getDescription(),
 			currentMemberInfoResponse
 		);
 
@@ -102,7 +101,7 @@ public class MypageController {
 
 		ResultDto<MypageDto.ProfileImageModifyResponse> resultDto = ResultDto.res(
 			PROFILE_IMAGE_UPDATED.getStatusCode(),
-			PROFILE_IMAGE_UPDATED.getResultMsg(),
+			PROFILE_IMAGE_UPDATED.getDescription(),
 			profileImageResponse
 		);
 
@@ -110,7 +109,7 @@ public class MypageController {
 		log.debug("memberProfileImageModify resultDto {}", resultDto);
 
 		return ResponseEntity
-			.status(MypageCode.PROFILE_IMAGE_UPDATED.getHttpStatus())
+			.status(PROFILE_IMAGE_UPDATED.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -134,15 +133,15 @@ public class MypageController {
 		mypageFacade.modifyPassword(modifyPasswordCommand);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			MypageCode.PASSWORD_UPDATED.getStatusCode(),
-			MypageCode.PASSWORD_UPDATED.getResultMsg()
+			PASSWORD_UPDATED.getStatusCode(),
+			PASSWORD_UPDATED.getDescription()
 		);
 
 		log.info("passwordModify finished");
 		log.debug("passwordModify resultDto {}", resultDto);
 
 		return ResponseEntity
-			.status(MypageCode.PASSWORD_UPDATED.getHttpStatus())
+			.status(PASSWORD_UPDATED.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -168,7 +167,7 @@ public class MypageController {
 
 		ResultDto<MypageDto.MemberModifyResponse> resultDto = ResultDto.res(
 			MEMBER_INFO_UPDATED.getStatusCode(),
-			MEMBER_INFO_UPDATED.getResultMsg(),
+			MEMBER_INFO_UPDATED.getDescription(),
 			memberModifyResponse
 		);
 
@@ -176,7 +175,7 @@ public class MypageController {
 		log.debug("memberInfoModify resultDto {}", resultDto);
 
 		return ResponseEntity
-			.status(MypageCode.MEMBER_INFO_UPDATED.getHttpStatus())
+			.status(MEMBER_INFO_UPDATED.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -213,13 +212,13 @@ public class MypageController {
 		);
 
 		ResultDto<Page<MypageDto.MyAuctionListResponse>> resultDto = ResultDto.res(
-			MypageCode.MY_AUCTION_LIST_SUCCESS.getStatusCode(),
-			MypageCode.MY_AUCTION_LIST_SUCCESS.getResultMsg(),
+			MY_AUCTION_LIST_SUCCESS.getStatusCode(),
+			MY_AUCTION_LIST_SUCCESS.getDescription(),
 			myAuctionListResponse
 		);
 
 		return ResponseEntity
-			.status(MypageCode.MY_AUCTION_LIST_SUCCESS.getHttpStatus())
+			.status(MY_AUCTION_LIST_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -250,15 +249,15 @@ public class MypageController {
 			retrieveMyBidAuctionsInfo);
 
 		ResultDto<Page<MypageDto.MyBidAuctionResponse>> resultDto = ResultDto.res(
-			MypageCode.MY_BIDDING_LIST_SUCCESS.getStatusCode(),
-			MypageCode.MY_BIDDING_LIST_SUCCESS.getResultMsg(),
+			MY_BIDDING_AUCTION_LIST_SUCCESS.getStatusCode(),
+			MY_BIDDING_AUCTION_LIST_SUCCESS.getDescription(),
 			myBidAuctionListResponse
 		);
 
 		log.info("myBidAuctionList finished");
 
 		return ResponseEntity
-			.status(MypageCode.MY_BIDDING_LIST_SUCCESS.getHttpStatus())
+			.status(MY_BIDDING_AUCTION_LIST_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -288,15 +287,15 @@ public class MypageController {
 			retrieveMyBidsInfo);
 
 		ResultDto<Page<MypageDto.MyBidListResponse>> resultDto = ResultDto.res(
-			MypageCode.MY_BIDDING_LIST_SUCCESS.getStatusCode(),
-			MypageCode.MY_BIDDING_LIST_SUCCESS.getResultMsg(),
+			MY_BIDDING_LIST_SUCCESS.getStatusCode(),
+			MY_BIDDING_LIST_SUCCESS.getDescription(),
 			myBidListResponse
 		);
 
 		log.info("myBidList finished");
 
 		return ResponseEntity
-			.status(MypageCode.MY_BIDDING_LIST_SUCCESS.getHttpStatus())
+			.status(MY_BIDDING_LIST_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}

@@ -1,6 +1,7 @@
 package org.omocha.domain.member;
 
 import org.omocha.domain.exception.MemberAlreadyExistException;
+import org.omocha.domain.exception.MypageNickNameDuplicateException;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,13 @@ class MemberValidatorImpl implements MemberValidator {
 	public void validateEmail(String email) {
 		if (memberReader.existsByEmail(email)) {
 			throw new MemberAlreadyExistException(email);
+		}
+	}
+
+	@Override
+	public void validateDuplicateNickName(String nickName) {
+		if (memberReader.existsByNickName(nickName)) {
+			throw new MypageNickNameDuplicateException(nickName);
 		}
 	}
 

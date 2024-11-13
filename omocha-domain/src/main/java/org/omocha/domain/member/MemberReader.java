@@ -13,4 +13,6 @@ public interface MemberReader {
 	Optional<Member> findMember(MemberCommand.OAuthProvider oAuthProvider);
 
 	boolean existsByEmailAndProviderIsNull(String email);
+
+	boolean existsByNickName(String nickName);
 }

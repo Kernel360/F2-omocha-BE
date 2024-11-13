@@ -5,4 +5,5 @@ public interface MemberValidator {
 
 	void validateEmail(String email);
 
+	void validateDuplicateNickName(String nickName);
 }
