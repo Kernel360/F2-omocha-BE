@@ -121,4 +121,24 @@ public interface AuctionApi {
 		@Parameter(description = "경매 ID", required = true) Long auctionId
 	);
 
+	@Operation(summary = "내가 찜한 경매 게시글 조회", description = "내가 찜한 경매 게시글을 전체 조회합니다")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "경매가 성공적으로 삭제되었습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Page<AuctionDto.AuctionLikeListResponse>>> myAuctionLikeList(
+		@Parameter(description = "사용자 객체 정보", required = true) UserPrincipal userPrincipal,
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt(default)")
+		String sort,
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC", required = false)
+		String direction,
+		int page,
+		@Parameter(description = "페이지 크기 (기본값 : 10)", example = "10", required = false)
+		int size
+	);
+
 }
