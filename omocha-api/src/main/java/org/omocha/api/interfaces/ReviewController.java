@@ -64,8 +64,8 @@ public class ReviewController implements ReviewApi {
 	}
 
 	@Override
-	@GetMapping("/member/{member_id}")
-	public ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> memberReviewList(
+	@GetMapping("/received/{member_id}")
+	public ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> memberReceivedReviewList(
 		@PathVariable("member_id") Long memberId,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
@@ -97,7 +97,7 @@ public class ReviewController implements ReviewApi {
 	}
 
 	@Override
-	@GetMapping("/my-received")
+	@GetMapping("/received")
 	public ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> myReceivedReviewList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
@@ -130,7 +130,7 @@ public class ReviewController implements ReviewApi {
 	}
 
 	@Override
-	@GetMapping("/my-given")
+	@GetMapping("/given")
 	public ResponseEntity<ResultDto<Page<ReviewDto.GivenReviewListResponse>>> myGivenReviewList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,

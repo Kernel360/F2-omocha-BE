@@ -43,7 +43,7 @@ public interface ReviewApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> memberReviewList(
+	ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> memberReceivedReviewList(
 		@Parameter(description = "조회 멤버 id값", required = true)
 		Long memberId,
 		@Parameter(description = "정렬 기준 필드 (createdAt)", example = "createdAt")

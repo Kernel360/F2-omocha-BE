@@ -57,18 +57,23 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 		QMember member = QMember.member;
 		QAuction auction = QAuction.auction;
 
-		JPAQuery<ReviewInfo.RetrieveReviews> query = createReviewQuery(retrieveReviews, member, auction, review,
-			isReceived);
-		applySorting(pageable, review, query);
+		JPAQuery<ReviewInfo.RetrieveReviews> query = createReviewQuery(
+			retrieveReviews,
+			member,
+			auction,
+			review,
+			isReceived
+		);
+		reviewQuerySorting(pageable, review, query);
 
-		List<ReviewInfo.RetrieveReviews> results = query
+		List<ReviewInfo.RetrieveReviews> reviewListResult = query
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
 
 		JPAQuery<Long> countQuery = createCountQuery(retrieveReviews, review, isReceived);
 
-		return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
+		return PageableExecutionUtils.getPage(reviewListResult, pageable, countQuery::fetchOne);
 	}
 
 	private JPAQuery<ReviewInfo.RetrieveReviews> createReviewQuery(
@@ -107,7 +112,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 			.where(getWhereCondition(retrieveReviews, review, isReceived));
 	}
 
-	private static <T> void applySorting(
+	private static <T> void reviewQuerySorting(
 		Pageable pageable,
 		QReview review,
 		JPAQuery<T> query
