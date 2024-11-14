@@ -178,6 +178,8 @@ public class AuctionController implements AuctionApi {
 
 		AuctionDto.AuctionLikeResponse response = auctionDtoMapper.toLikeResponse(likeInfo);
 
+		log.info("Auction like request finished: auctionId: {}, memberId: {}", auctionId, userPrincipal.getId());
+
 		if ("LIKE".equals(response.likeType())) {
 			ResultDto<AuctionDto.AuctionLikeResponse> result = ResultDto.res(
 				AUCTION_LIKE_SUCCESS.getStatusCode(),
@@ -226,6 +228,8 @@ public class AuctionController implements AuctionApi {
 			AUCTION_LIKE_LIST_SUCCESS.getDescription(),
 			response
 		);
+
+		log.info("Auction like list retrieved memberId : {}", memberId);
 
 		return ResponseEntity
 			.status(AUCTION_LIKE_LIST_SUCCESS.getHttpStatus())
