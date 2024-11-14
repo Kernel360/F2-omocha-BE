@@ -58,6 +58,7 @@ public class AuctionInfo {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
+		Boolean isLiked, // 로그인 하지 않은 경우 false
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		LocalDateTime createdAt,
@@ -76,6 +77,7 @@ public class AuctionInfo {
 			Long nowPrice,
 			Long concludePrice,
 			Long bidCount,
+			Boolean isLiked,
 			LocalDateTime startDate,
 			LocalDateTime endDate,
 			LocalDateTime createdAt
@@ -92,6 +94,7 @@ public class AuctionInfo {
 				nowPrice,
 				concludePrice,
 				bidCount,
+				isLiked,
 				startDate,
 				endDate,
 				createdAt,
@@ -112,11 +115,27 @@ public class AuctionInfo {
 				this.nowPrice,
 				this.concludePrice,
 				this.bidCount,
+				this.isLiked,
 				this.startDate,
 				this.endDate,
 				this.createdAt,
 				categoryHierarchy
 			);
+		}
+
+	}
+
+	public record LikeAuction(
+		Long auctionId,
+		Long memberId,
+		String likeType
+	) {
+		public static LikeAuction toResponse(
+			Long auctionId,
+			Long memberId,
+			String likeType
+		) {
+			return new LikeAuction(auctionId, memberId, likeType);
 		}
 	}
 

@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/auction")
+@RequestMapping("/api/v2/auctions")
 public class AuctionController implements AuctionApi {
 
 	private final AuctionFacade auctionFacade;
@@ -76,8 +76,9 @@ public class AuctionController implements AuctionApi {
 			.body(result);
 	}
 
-	@GetMapping("/basic-list")
+	@GetMapping("")
 	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		AuctionDto.AuctionSearchRequest searchRequest,
 		@RequestParam(value = "categoryId", required = false) Long categoryId,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
@@ -86,11 +87,15 @@ public class AuctionController implements AuctionApi {
 		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	) {
+		Long memberId = null;
+		if (userPrincipal != null) {
+			memberId = userPrincipal.getId();
+		}
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
 		AuctionCommand.SearchAuction searchCommand =
-			auctionDtoMapper.toCommand(searchRequest, auctionStatus, categoryId);
+			auctionDtoMapper.toCommand(searchRequest, auctionStatus, categoryId, memberId);
 
 		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuction(searchCommand, sortPage);
 
@@ -141,7 +146,7 @@ public class AuctionController implements AuctionApi {
 		log.info("Received auction remove request: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		AuctionCommand.RemoveAuction removeCommand =
-			auctionDtoMapper.toRemoveCommand(userPrincipal.getId(), auctionId);
+			auctionDtoMapper.toRemoveCommand(auctionId, userPrincipal.getId());
 
 		auctionFacade.removeAuction(removeCommand);
 
@@ -155,5 +160,42 @@ public class AuctionController implements AuctionApi {
 		return ResponseEntity
 			.status(AUCTION_DELETE_SUCCESS.getHttpStatus())
 			.body(result);
+	}
+
+	@PostMapping("/like/{auction_id}")
+	public ResponseEntity<ResultDto<AuctionDto.AuctionLikeResponse>> auctionLike(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable("auction_id") Long auctionId
+	) {
+		log.info("Received auction like request: {}, memberId: {}", auctionId, userPrincipal.getId());
+
+		AuctionCommand.LikeAuction likeCommand =
+			auctionDtoMapper.toLikeCommand(auctionId, userPrincipal.getId());
+
+		AuctionInfo.LikeAuction likeInfo = auctionFacade.likeAuction(likeCommand);
+
+		AuctionDto.AuctionLikeResponse response = auctionDtoMapper.toLikeResponse(likeInfo);
+
+		if ("LIKE".equals(response.likeType())) {
+			ResultDto<AuctionDto.AuctionLikeResponse> result = ResultDto.res(
+				AUCTION_LIKE_SUCCESS.getStatusCode(),
+				AUCTION_LIKE_SUCCESS.getDescription(),
+				response
+			);
+			return ResponseEntity
+				.status(AUCTION_LIKE_SUCCESS.getHttpStatus())
+				.body(result);
+		} else {
+			ResultDto<AuctionDto.AuctionLikeResponse> result = ResultDto.res(
+				AUCTION_UNLIKE_SUCCESS.getStatusCode(),
+				AUCTION_UNLIKE_SUCCESS.getDescription(),
+				response
+			);
+			return ResponseEntity
+				.status(AUCTION_UNLIKE_SUCCESS.getHttpStatus())
+				.body(result);
+
+		}
+
 	}
 }

@@ -39,7 +39,11 @@ public enum SuccessCode {
 
 	// Review Code
 	REVIEW_ADD_SUCCESS(HttpStatus.OK, "리뷰가 성공적으로 생성되었습니다."),
-	REVIEW_LIST_ACCESS_SUCCESS(HttpStatus.OK, "리뷰 리스트를 성공적으로 조회하였습니다.");
+	REVIEW_LIST_ACCESS_SUCCESS(HttpStatus.OK, "리뷰 리스트를 성공적으로 조회하였습니다."),
+
+	// Like Code
+	AUCTION_LIKE_SUCCESS(HttpStatus.OK, "경매 좋아요를 성공적으로 했습니다."),
+	AUCTION_UNLIKE_SUCCESS(HttpStatus.OK, "경매 좋아요 취소를 성공적으로 했습니다");
 
 	private final HttpStatus httpStatus;
 	private final String description;

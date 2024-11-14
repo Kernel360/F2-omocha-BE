@@ -1,7 +1,10 @@
 package org.omocha.infra.repository;
 
 import static org.omocha.domain.auction.QAuction.*;
+import static org.omocha.domain.auction.QAuctionCategory.*;
 import static org.omocha.domain.auction.QCategory.*;
+import static org.omocha.domain.auction.QLikes.*;
+import static org.omocha.domain.auction.conclude.QConclude.*;
 import static org.springframework.util.ObjectUtils.*;
 
 import java.util.List;
@@ -10,21 +13,20 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.QAuction;
-import org.omocha.domain.auction.QAuctionCategory;
 import org.omocha.domain.auction.QAuctionInfo_SearchAuction;
-import org.omocha.domain.auction.QCategory;
-import org.omocha.domain.auction.conclude.QConclude;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -46,11 +48,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		List<Long> subCategoryIds,
 		Pageable pageable
 	) {
-
-		QAuction auction = QAuction.auction;
-		QConclude conclude = QConclude.conclude;
-		QAuctionCategory auctionCategory = QAuctionCategory.auctionCategory;
-		QCategory category = QCategory.category;
+		Long memberId = searchAuction.memberId();
 
 		JPAQuery<AuctionInfo.SearchAuction> query = queryFactory
 			.select(new QAuctionInfo_SearchAuction(
@@ -65,6 +63,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.nowPrice,
 				conclude.concludePrice,
 				auction.bidCount,
+				isLiked(memberId),
 				auction.startDate,
 				auction.endDate,
 				auction.createdAt
@@ -72,12 +71,18 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 			.from(auction)
 			.leftJoin(conclude).on(conclude.auction.eq(auction))
 			.leftJoin(auctionCategory).on(auctionCategory.auction.eq(auction))
-			.leftJoin(category).on(auctionCategory.category.eq(category))
-			.where(
-				titleContains(searchAuction.title()),
-				statusEquals(searchAuction.auctionStatus()),
-				categoryContains(subCategoryIds)
-			);
+			.leftJoin(category).on(auctionCategory.category.eq(category));
+
+		if (memberId != null) {
+			query.leftJoin(likes).on(likes.auction.eq(auction)
+				.and(likes.member.memberId.eq(memberId)));
+		}
+
+		query.where(
+			titleContains(searchAuction.title()),
+			statusEquals(searchAuction.auctionStatus()),
+			categoryContains(subCategoryIds)
+		);
 
 		applySorting(pageable, auction, query);
 
@@ -89,6 +94,14 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		JPAQuery<Long> countQuery = getCountQuery(searchAuction, auction, subCategoryIds);
 
 		return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
+	}
+
+	private static Expression<Boolean> isLiked(Long memberId) {
+		return memberId != null ?
+			new CaseBuilder()
+				.when(likes.likesId.isNotNull()).then(true)
+				.otherwise(false)
+			: Expressions.constant(false);
 	}
 
 	private JPAQuery<Long> getCountQuery(

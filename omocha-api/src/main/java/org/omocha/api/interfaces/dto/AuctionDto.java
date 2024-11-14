@@ -45,6 +45,7 @@ public class AuctionDto {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
+		Boolean isLiked,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -74,6 +75,13 @@ public class AuctionDto {
 		LocalDateTime createdAt,
 		List<String> imagePaths,
 		List<CategoryInfo.CategoryResponse> categories
+	) {
+	}
+
+	public record AuctionLikeResponse(
+		Long auctionId,
+		Long memberId,
+		String likeType
 	) {
 	}
 

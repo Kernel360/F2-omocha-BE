@@ -39,7 +39,7 @@ public enum ErrorCode {
 	AUCTION_IMAGE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "경매에서 생성된 이미지를 삭제할 수 없습니다."),
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
 	AUCTION_NOT_CONCLUDED(HttpStatus.BAD_REQUEST, "경매가 낙찰되지 않은 상태입니다."),
-
+	LIKE_NOT_NEGATIVE(HttpStatus.BAD_REQUEST, "좋아요 수가 음수가 되면 안됩니다"),
 	// Category Code
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없습니다."),
 

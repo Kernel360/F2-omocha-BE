@@ -36,4 +36,8 @@ public class AuctionFacade {
 		auctionService.removeAuction(removeCommand);
 	}
 
+	public AuctionInfo.LikeAuction likeAuction(AuctionCommand.LikeAuction likeCommand) {
+		return auctionService.likeAuction(likeCommand);
+	}
+
 }

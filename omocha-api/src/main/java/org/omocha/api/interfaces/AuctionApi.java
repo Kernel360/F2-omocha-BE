@@ -57,6 +57,7 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
+		@Parameter(description = "사용자 객체 정보", required = true) UserPrincipal userPrincipal,
 		@Parameter(description = "검색 조건", required = false)
 		AuctionDto.AuctionSearchRequest searchRequest,
 		@Parameter(description = "카테고리 ID", required = false)

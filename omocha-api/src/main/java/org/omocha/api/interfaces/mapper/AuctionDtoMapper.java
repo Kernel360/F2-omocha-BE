@@ -27,7 +27,8 @@ public interface AuctionDtoMapper {
 	AuctionCommand.SearchAuction toCommand(
 		AuctionDto.AuctionSearchRequest condition,
 		Auction.AuctionStatus auctionStatus,
-		Long categoryId
+		Long categoryId,
+		Long memberId
 	);
 
 	AuctionCommand.RetrieveAuction toCommand(Long auctionId, Long memberId);
@@ -46,5 +47,9 @@ public interface AuctionDtoMapper {
 
 	AuctionDto.AuctionDetailsResponse toResponse(AuctionInfo.RetrieveAuction auctionDetailResponse);
 
-	AuctionCommand.RemoveAuction toRemoveCommand(Long memberId, Long auctionId);
+	AuctionCommand.RemoveAuction toRemoveCommand(Long auctionId, Long memberId);
+
+	AuctionCommand.LikeAuction toLikeCommand(Long auctionId, Long memberId);
+
+	AuctionDto.AuctionLikeResponse toLikeResponse(AuctionInfo.LikeAuction likeResponse);
 }

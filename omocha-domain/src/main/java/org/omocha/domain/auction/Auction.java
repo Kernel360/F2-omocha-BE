@@ -10,6 +10,7 @@ import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.exception.AuctionAlreadyEndedException;
 import org.omocha.domain.exception.AuctionNotConcludedException;
 import org.omocha.domain.exception.AuctionNotInBiddingStateException;
+import org.omocha.domain.exception.LikeCountNegativeException;
 import org.omocha.domain.image.Image;
 
 import jakarta.persistence.CascadeType;
@@ -55,6 +56,8 @@ public class Auction extends BaseEntity {
 
 	private Long bidUnit;
 
+	private long likeCount;
+
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
 
@@ -75,7 +78,6 @@ public class Auction extends BaseEntity {
 	@OneToOne(mappedBy = "auction")
 	private Conclude conclude;
 
-
 	@Builder
 	public Auction(
 		Long memberId,
@@ -85,6 +87,7 @@ public class Auction extends BaseEntity {
 		Long nowPrice,
 		Long bidCount,
 		Long bidUnit,
+		long likeCount,
 		String thumbnailPath,
 		LocalDateTime startDate,
 		LocalDateTime endDate
@@ -96,6 +99,7 @@ public class Auction extends BaseEntity {
 		this.nowPrice = nowPrice;
 		this.bidCount = bidCount;
 		this.bidUnit = bidUnit;
+		this.likeCount = likeCount;
 		this.thumbnailPath = thumbnailPath;
 		this.auctionStatus = AuctionStatus.BIDDING;
 		this.startDate = startDate;
@@ -157,5 +161,17 @@ public class Auction extends BaseEntity {
 
 		this.auctionCategories.add(auctionCategory);
 	}
+
+	public void increaseLikeCount() {
+		likeCount++;
+	}
+
+	public void decreaseLikeCount() {
+		if (likeCount < 0) {
+			throw new LikeCountNegativeException();
+		}
+		likeCount--;
+	}
+
 }
 

@@ -112,4 +112,26 @@ public class AuctionServiceImpl implements AuctionService {
 		auctionReader.removeAuction(auction);
 	}
 
+	@Override
+	@Transactional
+	public AuctionInfo.LikeAuction likeAuction(AuctionCommand.LikeAuction likeCommand) {
+
+		Long auctionId = likeCommand.auctionId();
+		Long memberId = likeCommand.memberId();
+
+		Auction auction = auctionReader.getAuction(auctionId);
+
+		boolean likeStatus = auctionReader.getAuctionLikeStatus(likeCommand);
+
+		if (!likeStatus) {
+			auctionStore.clickLike(likeCommand);
+			auction.increaseLikeCount();
+			return AuctionInfo.LikeAuction.toResponse(auctionId, memberId, "LIKE");
+		} else {
+			auctionStore.unClickLike(likeCommand);
+			auction.decreaseLikeCount();
+			return AuctionInfo.LikeAuction.toResponse(auctionId, memberId, "UNLIKE");
+		}
+	}
+
 }
