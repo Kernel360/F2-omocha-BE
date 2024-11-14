@@ -20,9 +20,7 @@ public class AuctionStoreImpl implements AuctionStore {
 
 	@Override
 	public Auction store(Auction auction) {
-
 		return auctionRepository.save(auction);
-
 	}
 
 	@Override

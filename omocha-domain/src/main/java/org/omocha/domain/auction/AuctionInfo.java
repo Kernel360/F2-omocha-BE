@@ -58,7 +58,7 @@ public class AuctionInfo {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
-		Boolean isLiked, // 로그인 하지 않은 경우 false
+		boolean isLiked, // 로그인 하지 않은 경우 false
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		LocalDateTime createdAt,

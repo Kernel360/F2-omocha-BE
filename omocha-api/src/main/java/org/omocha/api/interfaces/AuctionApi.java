@@ -107,4 +107,18 @@ public interface AuctionApi {
 		@Parameter(description = "경매 ID", required = true) Long auctionId
 	);
 
+	@Operation(summary = "경매 찜/찜 취소", description = "경매 ID를 사용하여 경매를 찜하거나 찜취소를 합니다")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "경매가 성공적으로 삭제되었습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<AuctionDto.AuctionLikeResponse>> auctionLike(
+		@Parameter(description = "사용자 객체 정보", required = true) UserPrincipal userPrincipal,
+		@Parameter(description = "경매 ID", required = true) Long auctionId
+	);
+
 }

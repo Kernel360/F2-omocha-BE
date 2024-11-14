@@ -45,7 +45,7 @@ public class AuctionDto {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
-		Boolean isLiked,
+		boolean isLiked,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

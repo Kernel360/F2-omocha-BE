@@ -3,6 +3,7 @@ package org.omocha.api.interfaces;
 import static org.omocha.domain.exception.code.SuccessCode.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.omocha.api.application.AuctionFacade;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
@@ -87,10 +88,9 @@ public class AuctionController implements AuctionApi {
 		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	) {
-		Long memberId = null;
-		if (userPrincipal != null) {
-			memberId = userPrincipal.getId();
-		}
+		Long memberId = Optional.ofNullable(userPrincipal)
+			.map(UserPrincipal::getId)
+			.orElse(null);
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
@@ -162,6 +162,7 @@ public class AuctionController implements AuctionApi {
 			.body(result);
 	}
 
+	@Override
 	@PostMapping("/like/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDto.AuctionLikeResponse>> auctionLike(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -196,6 +197,5 @@ public class AuctionController implements AuctionApi {
 				.body(result);
 
 		}
-
 	}
 }
