@@ -200,6 +200,7 @@ public class AuctionController implements AuctionApi {
 		}
 	}
 
+	@Override
 	@GetMapping("/likes")
 	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionLikeListResponse>>> myAuctionLikeList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
