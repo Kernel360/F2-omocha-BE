@@ -26,12 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/bid")
+@RequestMapping("/api/v2/bids")
 public class BidController implements BidApi {
 
 	private final BidFacade bidFacade;
 	private final BidDtoMapper bidDtoMapper;
 
+	@Override
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<List<BidDto.BidListResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
@@ -51,6 +52,7 @@ public class BidController implements BidApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@PostMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<BidDto.BidAddResponse>> bidAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -74,6 +76,7 @@ public class BidController implements BidApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@GetMapping("/{auction_id}/now-price")
 	public ResponseEntity<ResultDto<BidDto.NowPriceResponse>> nowPrice(
 		@PathVariable("auction_id") Long auctionId
@@ -90,5 +93,27 @@ public class BidController implements BidApi {
 		return ResponseEntity
 			.status(NOW_PRICE_GET_SUCCESS.getHttpStatus())
 			.body(resultDto);
+	}
+
+	@Override
+	@PostMapping("/{auction_id}/instant-buy")
+	public ResponseEntity<ResultDto<Void>> instantBuy(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable("auction_id") Long auctionId
+	) {
+		Long memberId = userPrincipal.getId();
+
+		BidCommand.BuyNow buyNowCommand = bidDtoMapper.toCommand(memberId, auctionId);
+
+		bidFacade.buyNow(buyNowCommand);
+
+		ResultDto<Void> result = ResultDto.res(
+			AUCTION_INSTANT_BUY_SUCCESS.getStatusCode(),
+			AUCTION_INSTANT_BUY_SUCCESS.getDescription()
+		);
+
+		return ResponseEntity
+			.status(AUCTION_INSTANT_BUY_SUCCESS.getHttpStatus())
+			.body(result);
 	}
 }

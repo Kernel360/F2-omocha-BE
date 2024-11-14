@@ -30,4 +30,8 @@ public class BidFacade {
 	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
 		return bidService.retrieveNowPrice(auctionId);
 	}
+
+	public void buyNow(BidCommand.BuyNow buyNowCommand) {
+		bidService.buyNow(buyNowCommand);
+	}
 }

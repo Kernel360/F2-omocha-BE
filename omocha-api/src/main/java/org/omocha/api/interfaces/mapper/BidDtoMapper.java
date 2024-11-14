@@ -22,4 +22,6 @@ public interface BidDtoMapper {
 	BidDto.BidAddResponse toResponse(BidInfo.AddBid createResponse);
 
 	BidDto.NowPriceResponse toResponse(BidInfo.NowPrice nowPrice);
+
+	BidCommand.BuyNow toCommand(Long memberId, Long auctionId);
 }

@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
+import org.omocha.domain.auction.chat.ChatCommand;
+import org.omocha.domain.auction.chat.ChatService;
+import org.omocha.domain.auction.conclude.ConcludeStore;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ public class BidServiceImpl implements BidService {
 	private final BidStore bidStore;
 	private final BidValidator bidValidator;
 	private final MemberReader memberReader;
+	private final ConcludeStore concludeStore;
+	private final ChatService chatService;
 
 	// TODO : 동시성 해결 해결 해야 함
 
@@ -47,7 +52,7 @@ public class BidServiceImpl implements BidService {
 		Auction auction = auctionReader.getAuction(auctionId);
 		auction.validateAuctionStatus();
 
-		bidValidator.validate(auction, buyerId, bidPrice);
+		bidValidator.bidValidate(auction, buyerId, bidPrice);
 
 		Member member = memberReader.getMember(buyerId);
 
@@ -64,5 +69,24 @@ public class BidServiceImpl implements BidService {
 		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
 			.map(BidInfo.NowPrice::toInfo)
 			.orElseGet(() -> new BidInfo.NowPrice(0L, null, LocalDateTime.now()));
+	}
+
+	@Override
+	@Transactional
+	public void buyNow(BidCommand.BuyNow buyNowCommand) {
+		Long buyerId = buyNowCommand.memberId();
+
+		Auction auction = auctionReader.getAuction(buyNowCommand.auctionId());
+		auction.validateAuctionStatus();
+		bidValidator.instantBuyValidate(auction, buyerId);
+
+		Member buyer = memberReader.getMember(buyerId);
+		Bid bid = bidStore.store(auction, buyer, auction.getInstantBuyPrice());
+		concludeStore.store(auction, bid);
+
+		var chatRoomCommand = new ChatCommand.AddChatRoom(auction.getAuctionId(), buyerId);
+		chatService.addChatRoom(chatRoomCommand);
+
+		auction.statusConcluded();
 	}
 }
