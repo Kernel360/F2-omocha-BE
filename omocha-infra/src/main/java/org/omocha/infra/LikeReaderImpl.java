@@ -18,7 +18,7 @@ public class LikeReaderImpl implements LikeReader {
 
 	@Override
 	public boolean getAuctionLikeStatus(AuctionCommand.LikeAuction likeCommand) {
-		return likeRepository.existsByAuction_AuctionIdAndMember_MemberId(likeCommand.auctionId(),
+		return likeRepository.existsByAuctionAuctionIdAndMemberMemberId(likeCommand.auctionId(),
 			likeCommand.memberId());
 	}
 

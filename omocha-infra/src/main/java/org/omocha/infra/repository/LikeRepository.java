@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface LikeRepository extends JpaRepository<Likes, Long>, LikeRepositoryCustom {
 
-	boolean existsByAuction_AuctionIdAndMember_MemberId(Long auctionId, Long memberId);
+	boolean existsByAuctionAuctionIdAndMemberMemberId(Long auctionId, Long memberId);
 
 	@Modifying
 	@Query(value = "INSERT INTO LIKES(auction_id, member_id, created_at) VALUES(:auctionId, :memberId, :createdAt)", nativeQuery = true)
