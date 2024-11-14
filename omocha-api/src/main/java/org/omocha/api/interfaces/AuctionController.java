@@ -158,7 +158,7 @@ public class AuctionController implements AuctionApi {
 	}
 
 	@Override
-	@GetMapping("/my")
+	@GetMapping("/me")
 	public ResponseEntity<ResultDto<Page<AuctionDto.MyAuctionListResponse>>> myAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
@@ -200,7 +200,7 @@ public class AuctionController implements AuctionApi {
 
 	}
 
-	@GetMapping("/my-bid")
+	@GetMapping("/bid/me")
 	public ResponseEntity<ResultDto<Page<AuctionDto.MyBidAuctionResponse>>> myBidAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,

@@ -153,19 +153,22 @@ public class AuctionInfo {
 		Long auctionId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
-		String thumbnailPath
+		String thumbnailPath,
+		String bidStatus
 	) {
 		@QueryProjection
 		public RetrieveMyBidAuctions(
 			Long auctionId,
 			String title,
 			Auction.AuctionStatus auctionStatus,
-			String thumbnailPath
+			String thumbnailPath,
+			String bidStatus
 		) {
 			this.auctionId = auctionId;
 			this.title = title;
 			this.auctionStatus = auctionStatus;
 			this.thumbnailPath = thumbnailPath;
+			this.bidStatus = bidStatus;
 		}
 
 	}

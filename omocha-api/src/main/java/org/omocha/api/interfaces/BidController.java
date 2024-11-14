@@ -98,7 +98,7 @@ public class BidController implements BidApi {
 			.body(resultDto);
 	}
 
-	@GetMapping("/my/{auction_id}")
+	@GetMapping("/me/{auction_id}")
 	public ResponseEntity<ResultDto<Page<BidDto.MyBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable(name = "auction_id") Long auctionId,

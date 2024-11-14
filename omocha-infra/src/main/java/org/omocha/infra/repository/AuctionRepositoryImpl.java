@@ -28,6 +28,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -140,7 +141,19 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.auctionId,
 				auction.title,
 				auction.auctionStatus,
-				auction.thumbnailPath
+				auction.thumbnailPath,
+				Expressions.cases()
+					.when(auction.auctionStatus.eq(Auction.AuctionStatus.BIDDING))
+					.then("입찰중")
+					.when(auction.conclude.isNotNull()
+						.and(auction.conclude.buyer.isNotNull())
+						.and(auction.conclude.buyer.memberId.eq(memberId))
+						.and(auction.auctionStatus.eq(Auction.AuctionStatus.CONCLUDED)
+							.or(auction.auctionStatus.eq(Auction.AuctionStatus.COMPLETED))))
+					.then("낙찰")
+					.otherwise("패찰")
+					.as("bidStatus")
+
 			))
 			.from(auction)
 			.leftJoin(bid).on(bid.auction.eq(auction))
@@ -163,6 +176,10 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 			.where(bid.buyer.memberId.eq(memberId));
 
 		return PageableExecutionUtils.getPage(bidAuctions, sortPage, countQuery::fetchOne);
+	}
+
+	private boolean test(Long buyerId, Long memberId) {
+		return buyerId.equals(memberId);
 	}
 
 	private JPAQuery<Long> getCountQuery(

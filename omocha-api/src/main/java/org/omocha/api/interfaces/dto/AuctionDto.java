@@ -92,7 +92,8 @@ public class AuctionDto {
 		Long auctionId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
-		String thumbnailPath
+		String thumbnailPath,
+		String bidStatus
 	) {
 	}
 
