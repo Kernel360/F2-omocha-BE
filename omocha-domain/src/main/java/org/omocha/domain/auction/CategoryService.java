@@ -7,6 +7,8 @@ public interface CategoryService {
 
 	List<CategoryInfo.CategoryResponse> retrieveCategories();
 
-	// Category updateCategory(CategoryDto.CategoryUpdateRequest request);
+	List<CategoryInfo.CategoryResponse> retrieveCategoryHierarchy(Long categoryId);
 	
+	// Category updateCategory(CategoryDto.CategoryUpdateRequest request);
+
 }

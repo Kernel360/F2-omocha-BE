@@ -25,4 +25,8 @@ public class CategoryFacade {
 		return categoryService.retrieveCategories();
 	}
 
+	public List<CategoryInfo.CategoryResponse> retrieveCategoryHierarchy(Long categoryId) {
+		return categoryService.retrieveCategoryHierarchy(categoryId);
+	}
+
 }
