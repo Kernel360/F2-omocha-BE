@@ -43,7 +43,8 @@ public enum SuccessCode {
 
 	// Like Code
 	AUCTION_LIKE_SUCCESS(HttpStatus.OK, "경매 좋아요를 성공적으로 했습니다."),
-	AUCTION_UNLIKE_SUCCESS(HttpStatus.OK, "경매 좋아요 취소를 성공적으로 했습니다");
+	AUCTION_UNLIKE_SUCCESS(HttpStatus.OK, "경매 좋아요 취소를 성공적으로 했습니다"),
+	AUCTION_LIKE_LIST_SUCCESS(HttpStatus.OK, "사용자의 찜 목록을 성공적으로 조회했습니다");
 
 	private final HttpStatus httpStatus;
 	private final String description;

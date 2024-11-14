@@ -18,7 +18,5 @@ public interface AuctionReader {
 
 	void removeAuction(Auction auction);
 
-	boolean getAuctionLikeStatus(AuctionCommand.LikeAuction likeCommand);
-
 	// Page<Auction> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable);
 }

@@ -35,7 +35,7 @@ public interface AuctionDtoMapper {
 
 	AuctionDto.AuctionAddResponse toResponse(Long auctionId);
 
-	default Page<AuctionDto.AuctionSearchResponse> toResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
+	default Page<AuctionDto.AuctionSearchResponse> toSearchResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
 		List<AuctionDto.AuctionSearchResponse> content = auctionListResult.getContent().stream()
 			.map(this::toResponse)
 			.collect(Collectors.toList());
@@ -52,4 +52,15 @@ public interface AuctionDtoMapper {
 	AuctionCommand.LikeAuction toLikeCommand(Long auctionId, Long memberId);
 
 	AuctionDto.AuctionLikeResponse toLikeResponse(AuctionInfo.LikeAuction likeResponse);
+
+	default Page<AuctionDto.AuctionLikeListResponse> toLikeListResponse(
+		Page<AuctionInfo.RetrieveMyAuctionLikes> myAuctionLikes) {
+		List<AuctionDto.AuctionLikeListResponse> content = myAuctionLikes.getContent().stream()
+			.map(this::toResponse)
+			.collect(Collectors.toList());
+
+		return new PageImpl<>(content, myAuctionLikes.getPageable(), myAuctionLikes.getTotalElements());
+	}
+
+	AuctionDto.AuctionLikeListResponse toResponse(AuctionInfo.RetrieveMyAuctionLikes myAuctionLikes);
 }

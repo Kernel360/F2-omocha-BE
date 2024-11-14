@@ -1,5 +1,6 @@
 package org.omocha.domain.auction;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,8 @@ public class AuctionServiceImpl implements AuctionService {
 	private final AuctionReader auctionReader;
 	private final CategoryReader categoryReader;
 	private final CategoryStore categoryStore;
+	private final LikeReader likeReader;
+	private final LikeStore likeStore;
 
 	@Override
 	@Transactional
@@ -121,17 +124,22 @@ public class AuctionServiceImpl implements AuctionService {
 
 		Auction auction = auctionReader.getAuction(auctionId);
 
-		boolean likeStatus = auctionReader.getAuctionLikeStatus(likeCommand);
+		boolean likeStatus = likeReader.getAuctionLikeStatus(likeCommand);
 
 		if (!likeStatus) {
-			auctionStore.clickLike(likeCommand);
+			likeStore.clickLike(likeCommand, LocalDateTime.now());
 			auction.increaseLikeCount();
 			return AuctionInfo.LikeAuction.toResponse(auctionId, memberId, "LIKE");
 		} else {
-			auctionStore.unClickLike(likeCommand);
+			likeStore.unClickLike(likeCommand);
 			auction.decreaseLikeCount();
 			return AuctionInfo.LikeAuction.toResponse(auctionId, memberId, "UNLIKE");
 		}
+	}
+
+	@Override
+	public Page<AuctionInfo.RetrieveMyAuctionLikes> retrieveMyAuctionLikes(Long memberId, Pageable pageable) {
+		return likeReader.getMyAuctionLikes(memberId, pageable);
 	}
 
 }

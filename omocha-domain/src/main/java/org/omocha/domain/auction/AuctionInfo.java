@@ -139,4 +139,42 @@ public class AuctionInfo {
 		}
 	}
 
+	public record RetrieveMyAuctionLikes(
+		Long auctionId,
+		String title,
+		String thumbnailPath,
+		Long startPrice,
+		Long nowPrice,
+		Auction.AuctionStatus auctionStatus,
+		LocalDateTime startDate,
+		LocalDateTime endDate,
+		LocalDateTime createdAt,
+		LocalDateTime likedDate
+	) {
+		@QueryProjection
+		public RetrieveMyAuctionLikes(
+			Long auctionId,
+			String title,
+			String thumbnailPath,
+			Long startPrice,
+			Long nowPrice,
+			Auction.AuctionStatus auctionStatus,
+			LocalDateTime startDate,
+			LocalDateTime endDate,
+			LocalDateTime createdAt,
+			LocalDateTime likedDate
+		) {
+			this.auctionId = auctionId;
+			this.title = title;
+			this.thumbnailPath = thumbnailPath;
+			this.startPrice = startPrice;
+			this.nowPrice = nowPrice;
+			this.auctionStatus = auctionStatus;
+			this.startDate = startDate;
+			this.endDate = endDate;
+			this.createdAt = createdAt;
+			this.likedDate = likedDate;
+		}
+	}
+
 }

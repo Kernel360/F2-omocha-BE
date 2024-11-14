@@ -51,12 +51,6 @@ public class AuctionReaderImpl implements AuctionReader {
 		auctionRepository.delete(auction);
 	}
 
-	@Override
-	public boolean getAuctionLikeStatus(AuctionCommand.LikeAuction likeCommand) {
-		return likeRepository.existsByAuction_AuctionIdAndMember_MemberId(likeCommand.auctionId(),
-			likeCommand.memberId());
-	}
-
 	// @Override
 	// public Page<Auction> searchMyAuctionList(Long memberId, AuctionStatus auctionStatus, Pageable pageable) {
 	// 	return auctionRepository.searchMyAuctionList(memberId, auctionStatus, pageable);

@@ -1,6 +1,7 @@
 package org.omocha.domain.auction;
 
-import org.omocha.domain.common.BaseEntity;
+import java.time.LocalDateTime;
+
 import org.omocha.domain.member.Member;
 
 import jakarta.persistence.Entity;
@@ -30,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 		)
 	}
 )
-public class Likes extends BaseEntity {
+public class Likes {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +44,6 @@ public class Likes extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	LocalDateTime createdAt;
 }
