@@ -41,11 +41,9 @@ public class MemberController implements MemberApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 
-		log.info("getMe started");
+		log.info("currentMemberInfo started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
-
-		log.debug("get me getId {}", userPrincipal.getId());
 
 		MemberInfo.RetrieveCurrentMemberInfo memberInfoResponse = memberFacade.retrieveCurrentMemberInfo(memberId);
 
@@ -57,8 +55,7 @@ public class MemberController implements MemberApi {
 			currentMemberInfoResponse
 		);
 
-		log.info("getMe finished");
-		log.debug("get me resultDto {}", resultDto);
+		log.info("currentMemberInfo finished ");
 
 		return ResponseEntity
 			.status(MEMBER_INFO_RETRIEVE_SUCCESS.getHttpStatus())
@@ -75,8 +72,7 @@ public class MemberController implements MemberApi {
 		@RequestPart(value = "profileImage", required = true) MultipartFile profileImage
 	) {
 
-		log.info("memberProfileImageModify started");
-		log.debug("memberProfileImageModify profileImage {}", profileImage);
+		log.info("profileImageModify started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
 
@@ -93,8 +89,7 @@ public class MemberController implements MemberApi {
 			profileImageResponse
 		);
 
-		log.info("memberProfileImageModify finished");
-		log.debug("memberProfileImageModify resultDto {}", resultDto);
+		log.info("profileImageModify finished");
 
 		return ResponseEntity
 			.status(PROFILE_IMAGE_UPDATED.getHttpStatus())
@@ -107,8 +102,7 @@ public class MemberController implements MemberApi {
 		@RequestBody MemberDto.PasswordModifyRequest passwordModifyRequest
 	) {
 
-		log.info("passwordModify started");
-		log.debug("passwordModify passwordModifyRequest {}", passwordModifyRequest);
+		log.info("passwordModify started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
 
@@ -126,7 +120,6 @@ public class MemberController implements MemberApi {
 		);
 
 		log.info("passwordModify finished");
-		log.debug("passwordModify resultDto {}", resultDto);
 
 		return ResponseEntity
 			.status(PASSWORD_UPDATED.getHttpStatus())
@@ -141,8 +134,8 @@ public class MemberController implements MemberApi {
 		@RequestBody MemberDto.MemberModifyRequest memberModifyRequest
 	) {
 
-		log.info("memberInfoModify started");
-		log.debug("memberInfoModify request {}", memberModifyRequest);
+		log.info("memberInfoModify started memberId={} , memberModifyRequest={}", userPrincipal.getId(),
+			memberModifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
@@ -160,7 +153,6 @@ public class MemberController implements MemberApi {
 		);
 
 		log.info("memberInfoModify finished");
-		log.debug("memberInfoModify resultDto {}", resultDto);
 
 		return ResponseEntity
 			.status(MEMBER_INFO_UPDATED.getHttpStatus())
