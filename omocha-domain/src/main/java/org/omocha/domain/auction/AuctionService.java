@@ -20,4 +20,7 @@ public interface AuctionService {
 		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand,
 		Pageable pageable
 	);
+
+	Page<AuctionInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
+		AuctionCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand, Pageable sortPage);
 }

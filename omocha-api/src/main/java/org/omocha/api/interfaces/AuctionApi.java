@@ -106,4 +106,50 @@ public interface AuctionApi {
 		@Parameter(description = "경매 ID", required = true) Long auctionId
 	);
 
+	@Operation(summary = "사용자의 경매 물품 내역 조회", description = "사용자의 경매 물품 내역을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "경매 내역을 성공적으로 조회하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Page<AuctionDto.MyAuctionListResponse>>> myAuctionList(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		UserPrincipal userPrincipal,
+		@Parameter(description = "경매 상태 필터", schema = @Schema(implementation = Auction.AuctionStatus.class))
+		Auction.AuctionStatus auctionStatus,
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
+		String sort,
+		@Parameter(description = "정렬 방향", example = "DESC")
+		String direction,
+		@ParameterObject
+		Pageable pageable
+	);
+
+	@Operation(summary = "사용자가 입찰한 경매 조회", description = "사용자가 입찰한 경매 내역을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "입찰한 경매 내역을 성공적으로 조회하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Page<AuctionDto.MyBidAuctionResponse>>> myBidAuctionList(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		UserPrincipal userPrincipal,
+		@Parameter(description = "정렬 기준 필드 (예: createdAt, startPrice 등)", example = "createdAt")
+		String sort,
+		@Parameter(description = "정렬 방향", example = "DESC")
+		String direction,
+		@ParameterObject
+		Pageable pageable
+	);
+
 }

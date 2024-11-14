@@ -55,4 +55,9 @@ public class AuctionReaderImpl implements AuctionReader {
 		return auctionRepository.searchMyAuctionList(memberId, auctionStatus, pageable);
 	}
 
+	@Override
+	public Page<AuctionInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage) {
+		return auctionRepository.getMyBidAuctionList(memberId, sortPage);
+	}
+
 }

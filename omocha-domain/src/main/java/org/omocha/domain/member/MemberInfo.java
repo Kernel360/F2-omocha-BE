@@ -69,13 +69,13 @@ public class MemberInfo {
 	}
 
 	// TODO : 수정 필요
-	public record modifyProfileImage(
+	public record ModifyProfileImage(
 		String imageUrl
 	) {
-		public static modifyProfileImage toInfo(
+		public static ModifyProfileImage toInfo(
 			String imageUrl
 		) {
-			return new modifyProfileImage(
+			return new ModifyProfileImage(
 				imageUrl
 			);
 		}

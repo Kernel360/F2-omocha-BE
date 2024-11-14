@@ -14,7 +14,7 @@ public interface MemberService {
 
 	void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand);
 
-	MemberInfo.modifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage modifyProfileImageCommand);
+	MemberInfo.ModifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage modifyProfileImageCommand);
 
 	MemberInfo.RetrievePassword retrievePassword(Long memberId);
 

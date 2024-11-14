@@ -1,14 +1,11 @@
 package org.omocha.api.application;
 
-import org.omocha.api.common.auth.jwt.JwtProvider;
 import org.omocha.api.common.util.PasswordManager;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.omocha.domain.member.MemberService;
-import org.omocha.domain.member.MemberValidator;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,27 +15,40 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberFacade {
 
 	private final MemberService memberService;
-	private final MemberValidator memberValidator;
-	private final JwtProvider jwtProvider;
 	private final PasswordManager passwordManager;
 
-	public void addMember(MemberCommand.AddMember addMemberCommand) {
+	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
 
-		memberService.addMember(addMemberCommand);
+		return memberService.retrieveCurrentMemberInfo(memberId);
 
 	}
 
-	public boolean isEmailDuplicate(String email) {
-		return memberValidator.isEmailDuplicateForOauth(email);
+	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
+
+		return memberService.modifyBasicInfo(modifyBasicInfoCommand);
+
 	}
 
-	public void memberLogin(MemberCommand.MemberLogin memberLoginCommand, HttpServletResponse response) {
+	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
 
-		MemberInfo.Login loginInfo = memberService.retrieveMember(memberLoginCommand.email());
+		MemberInfo.RetrievePassword retrievePasswordInfo = memberService.retrievePassword(
+			modifyPasswordCommand.memberId()
+		);
 
-		passwordManager.match(memberLoginCommand.password(), loginInfo.password(), loginInfo.memberId());
+		passwordManager.match(
+			modifyPasswordCommand.currentPassword(),
+			retrievePasswordInfo.password(),
+			modifyPasswordCommand.memberId()
+		);
 
-		jwtProvider.generateAccessToken(loginInfo.memberId(), response);
-		jwtProvider.generateRefreshToken(loginInfo.memberId(), response);
+		memberService.modifyPassword(modifyPasswordCommand);
+
 	}
+
+	public MemberInfo.ModifyProfileImage modifyProfileImage(
+		MemberCommand.ModifyProfileImage modifyProfileImageCommand) {
+
+		return memberService.modifyProfileImage(modifyProfileImageCommand);
+	}
+
 }

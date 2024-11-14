@@ -2,8 +2,6 @@ package org.omocha.domain.auction.bid;
 
 import java.time.LocalDateTime;
 
-import org.omocha.domain.auction.Auction;
-
 import com.querydsl.core.annotations.QueryProjection;
 
 public class BidInfo {
@@ -72,25 +70,4 @@ public class BidInfo {
 		}
 	}
 
-	// TODO : 리뷰 추가 이후 리뷰 유무 추가
-	public record RetrieveMyBidAuctions(
-		Long auctionId,
-		String title,
-		Auction.AuctionStatus auctionStatus,
-		String thumbnailPath
-	) {
-		@QueryProjection
-		public RetrieveMyBidAuctions(
-			Long auctionId,
-			String title,
-			Auction.AuctionStatus auctionStatus,
-			String thumbnailPath
-		) {
-			this.auctionId = auctionId;
-			this.title = title;
-			this.auctionStatus = auctionStatus;
-			this.thumbnailPath = thumbnailPath;
-		}
-
-	}
 }

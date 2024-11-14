@@ -20,4 +20,6 @@ public interface AuctionRepositoryCustom {
 		Auction.AuctionStatus auctionStatus,
 		Pageable pageable
 	);
+
+	Page<AuctionInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage);
 }

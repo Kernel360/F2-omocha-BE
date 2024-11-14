@@ -77,4 +77,23 @@ public class AuctionDto {
 	) {
 	}
 
+	public record MyAuctionListResponse(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		Long nowPrice, // TODO: 추후 Conclude Price도 넣기
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
+		String thumbnailPath
+	) {
+	}
+
+	public record MyBidAuctionResponse(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		String thumbnailPath
+	) {
+	}
+
 }

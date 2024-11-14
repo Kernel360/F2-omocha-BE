@@ -1,12 +1,12 @@
 package org.omocha.api.interfaces;
 
-import org.omocha.api.application.MemberFacade;
+import org.omocha.api.application.AuthFacade;
 import org.omocha.api.common.auth.jwt.JwtProvider;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
-import org.omocha.api.interfaces.dto.MemberDto;
-import org.omocha.api.interfaces.mapper.MemberDtoMapper;
+import org.omocha.api.interfaces.dto.AuthDto;
+import org.omocha.api.interfaces.mapper.AuthDtoMapper;
 import org.omocha.domain.exception.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
 import org.springframework.http.ResponseEntity;
@@ -29,22 +29,22 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v2/auth")
 public class AuthController {
 
-	private final MemberFacade memberFacade;
-	private final MemberDtoMapper memberDtoMapper;
+	private final AuthFacade authFacade;
+	private final AuthDtoMapper authDtoMapper;
 	private final JwtProvider jwtProvider;
 	private final PasswordManager passwordManager;
 
 	@PostMapping("/register")
 	public ResponseEntity<ResultDto<Void>> memberAdd(
-		@RequestBody @Valid MemberDto.MemberAddRequest memberAddRequest
+		@RequestBody @Valid AuthDto.MemberAddRequest memberAddRequest
 	) {
 		// log.debug("Member register started");
 		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
-		MemberCommand.AddMember addMemberCommand = memberDtoMapper.toCommand(memberAddRequest.email(),
+		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(memberAddRequest.email(),
 			passwordManager.encrypt(memberAddRequest.password()));
 
-		memberFacade.addMember(addMemberCommand);
+		authFacade.addMember(addMemberCommand);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			SuccessCode.MEMBER_CREATE_SUCCESS.getStatusCode(),
@@ -63,7 +63,7 @@ public class AuthController {
 		@RequestParam String email
 	) {
 
-		boolean duplicate = memberFacade.isEmailDuplicate(email);
+		boolean duplicate = authFacade.isEmailDuplicate(email);
 
 		ResultDto<Boolean> resultDto = ResultDto.res(
 			SuccessCode.VALIDATE_EMAIL_SUCCESS.getStatusCode(),
@@ -78,15 +78,15 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<ResultDto<Void>> memberLogin(
-		@RequestBody @Valid MemberDto.MemberLoginRequest memberLoginRequest,
+		@RequestBody @Valid AuthDto.MemberLoginRequest memberLoginRequest,
 		HttpServletResponse response
 	) {
 		log.debug("Member login started");
 		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
-		MemberCommand.MemberLogin memberLogin = memberDtoMapper.toCommand(memberLoginRequest);
+		MemberCommand.MemberLogin memberLogin = authDtoMapper.toCommand(memberLoginRequest);
 
-		memberFacade.memberLogin(memberLogin, response);
+		authFacade.memberLogin(memberLogin, response);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			SuccessCode.MEMBER_LOGIN_SUCCESS.getStatusCode(),

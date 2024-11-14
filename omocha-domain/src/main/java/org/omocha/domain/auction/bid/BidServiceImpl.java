@@ -77,11 +77,4 @@ public class BidServiceImpl implements BidService {
 
 	}
 
-	@Override
-	public Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
-		BidCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand,
-		Pageable sortPage
-	) {
-		return bidReader.getMyBidAuctionList(retrieveMyBidAuctionsCommand.memberId(), sortPage);
-	}
 }

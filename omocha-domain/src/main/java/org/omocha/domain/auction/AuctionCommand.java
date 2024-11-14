@@ -60,4 +60,9 @@ public class AuctionCommand {
 	) {
 	}
 
+	public record RetrieveMyBidAuctions(
+		Long memberId
+	) {
+	}
+
 }

@@ -148,4 +148,26 @@ public class AuctionInfo {
 		}
 	}
 
+	// TODO : 리뷰 추가 이후 리뷰 유무 추가
+	public record RetrieveMyBidAuctions(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		String thumbnailPath
+	) {
+		@QueryProjection
+		public RetrieveMyBidAuctions(
+			Long auctionId,
+			String title,
+			Auction.AuctionStatus auctionStatus,
+			String thumbnailPath
+		) {
+			this.auctionId = auctionId;
+			this.title = title;
+			this.auctionStatus = auctionStatus;
+			this.thumbnailPath = thumbnailPath;
+		}
+
+	}
+
 }

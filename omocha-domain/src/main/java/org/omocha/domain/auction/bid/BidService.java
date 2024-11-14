@@ -15,6 +15,4 @@ public interface BidService {
 
 	Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand, Pageable sortPage);
 
-	Page<BidInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
-		BidCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand, Pageable sortPage);
 }

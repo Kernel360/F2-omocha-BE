@@ -100,7 +100,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public MemberInfo.modifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage profileImageCommand) {
+	public MemberInfo.ModifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage profileImageCommand) {
 
 		log.debug("modify profile image start for member {}", profileImageCommand.memberId());
 
@@ -117,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
 
 		log.debug("modify profile image finished for member {}", profileImageCommand.memberId());
 
-		return MemberInfo.modifyProfileImage.toInfo(imagePath);
+		return MemberInfo.ModifyProfileImage.toInfo(imagePath);
 
 	}
 

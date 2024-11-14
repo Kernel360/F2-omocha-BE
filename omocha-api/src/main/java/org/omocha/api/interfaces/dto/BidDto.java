@@ -39,4 +39,11 @@ public class BidDto {
 	) {
 
 	}
+
+	public record MyBidListResponse(
+		Long bidPrice,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime createdAt
+	) {
+	}
 }

@@ -24,4 +24,5 @@ public interface AuctionReader {
 		Pageable pageable
 	);
 
+	Page<AuctionInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage);
 }

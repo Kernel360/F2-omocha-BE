@@ -6,7 +6,6 @@ import static org.omocha.domain.auction.bid.QBid.*;
 import java.util.List;
 
 import org.omocha.domain.auction.bid.BidInfo;
-import org.omocha.domain.auction.bid.QBidInfo_RetrieveMyBidAuctions;
 import org.omocha.domain.auction.bid.QBidInfo_RetrieveMyBids;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,44 +55,6 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
 		JPAQuery<Long> countQuery = queryFactory.select(bid.count()).from(bid);
 
 		return PageableExecutionUtils.getPage(myBids, sortPage, countQuery::fetchOne);
-	}
-
-	@Override
-	public Page<BidInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage) {
-
-		JPAQuery<Long> maxBidIds = queryFactory.select(bid.bidId.max())
-			.from(bid)
-			.where(bid.buyer.memberId.eq(memberId))
-			.groupBy(bid.auction.auctionId);
-
-		JPAQuery<BidInfo.RetrieveMyBidAuctions> query = queryFactory
-			.select(new QBidInfo_RetrieveMyBidAuctions(
-				auction.auctionId,
-				auction.title,
-				auction.auctionStatus,
-				auction.thumbnailPath
-			))
-			.from(bid)
-			.leftJoin(bid.auction, auction)
-			.where(bid.bidId.in(maxBidIds));
-
-		for (Sort.Order o : sortPage.getSort()) {
-			PathBuilder<?> pathBuilder = new PathBuilder<>(bid.getType(), bid.getMetadata());
-			query.orderBy(
-				new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
-		}
-
-		// 페이징 적용
-		List<BidInfo.RetrieveMyBidAuctions> bidAuctions = query.offset(sortPage.getOffset())
-			.limit(sortPage.getPageSize())
-			.fetch();
-
-		JPAQuery<Long> countQuery = queryFactory
-			.select(bid.auction.auctionId.countDistinct())
-			.from(bid)
-			.where(bid.buyer.memberId.eq(memberId));
-
-		return PageableExecutionUtils.getPage(bidAuctions, sortPage, countQuery::fetchOne);
 	}
 
 }

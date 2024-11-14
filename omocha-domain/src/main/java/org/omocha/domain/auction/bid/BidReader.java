@@ -12,7 +12,10 @@ public interface BidReader {
 
 	public Optional<Bid> findHighestBid(Long auctionId);
 
-	Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Long auctionId, Pageable sortPage);
+	Page<BidInfo.RetrieveMyBids> getMyBidList(
+		Long memberId,
+		Long auctionId,
+		Pageable sortPage
+	);
 
-	Page<BidInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage);
 }

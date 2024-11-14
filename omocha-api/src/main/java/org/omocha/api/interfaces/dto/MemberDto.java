@@ -2,37 +2,48 @@ package org.omocha.api.interfaces.dto;
 
 import org.omocha.domain.member.Role;
 
-import jakarta.validation.constraints.NotBlank;
-
 public class MemberDto {
 
-	// TODO: 회원가입 로직을 확정하고 수정해야함
-	public record MemberAddRequest(
-		@NotBlank
+	public record CurrentMemberInfoResponse(
+		// TODO : 회원 가입 정보 추가 후 변경
+		Long memberId,
 		String email,
-
-		@NotBlank
-		String password
-	) {
-	}
-
-	public record MemberLoginRequest(
-		@NotBlank
-		String email,
-
-		@NotBlank
-		String password
-	) {
-	}
-
-	// TODO: 넘겨줄 정보들에 대해 추후 정해야함, 일단은 Password 제외하고 다 넘겨줌
-	public record MemberDetailResponse(
-		String email,
-		String nickname,
-		String birth,
+		String userName,
+		String nickName,
 		String phoneNumber,
-		String imageUrl,
-		Role role
+		String birth,
+		Role role,
+		String profileImageUrl
+	) {
+	}
+
+	public record MemberModifyRequest(
+		String nickName,
+		String phoneNumber
+	) {
+	}
+
+	public record MemberModifyResponse(
+		// TODO : 회원 가입 정보 추가 후 변경
+		Long memberId,
+		String email,
+		String userName,
+		String nickName,
+		String phoneNumber,
+		String birth,
+		Role role,
+		String profileImageUrl
+	) {
+	}
+
+	public record PasswordModifyRequest(
+		String currentPassword,
+		String newPassword
+	) {
+	}
+
+	public record ProfileImageModifyResponse(
+		String imageUrl
 	) {
 
 	}

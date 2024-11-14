@@ -2,6 +2,7 @@ package org.omocha.infra.repository;
 
 import static org.omocha.domain.auction.QAuction.*;
 import static org.omocha.domain.auction.QCategory.*;
+import static org.omocha.domain.auction.bid.QBid.*;
 import static org.springframework.util.ObjectUtils.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.QAuction;
 import org.omocha.domain.auction.QAuctionCategory;
 import org.omocha.domain.auction.QAuctionInfo_RetrieveMyAuctions;
+import org.omocha.domain.auction.QAuctionInfo_RetrieveMyBidAuctions;
 import org.omocha.domain.auction.QAuctionInfo_SearchAuction;
 import org.omocha.domain.auction.QCategory;
 import org.omocha.domain.auction.conclude.QConclude;
@@ -125,6 +127,44 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return PageableExecutionUtils.getPage(auctions, pageable, countQuery::fetchOne);
 	}
 
+	@Override
+	public Page<AuctionInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage) {
+
+		JPAQuery<Long> maxBidIds = queryFactory.select(bid.bidId.max())
+			.from(bid)
+			.where(bid.buyer.memberId.eq(memberId))
+			.groupBy(bid.auction.auctionId);
+
+		JPAQuery<AuctionInfo.RetrieveMyBidAuctions> query = queryFactory
+			.select(new QAuctionInfo_RetrieveMyBidAuctions(
+				auction.auctionId,
+				auction.title,
+				auction.auctionStatus,
+				auction.thumbnailPath
+			))
+			.from(auction)
+			.leftJoin(bid).on(bid.auction.eq(auction))
+			.where(bid.bidId.in(maxBidIds));
+
+		for (Sort.Order o : sortPage.getSort()) {
+			PathBuilder<?> pathBuilder = new PathBuilder<>(bid.getType(), bid.getMetadata());
+			query.orderBy(
+				new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+		}
+
+		// 페이징 적용
+		List<AuctionInfo.RetrieveMyBidAuctions> bidAuctions = query.offset(sortPage.getOffset())
+			.limit(sortPage.getPageSize())
+			.fetch();
+
+		JPAQuery<Long> countQuery = queryFactory
+			.select(bid.auction.auctionId.countDistinct())
+			.from(bid)
+			.where(bid.buyer.memberId.eq(memberId));
+
+		return PageableExecutionUtils.getPage(bidAuctions, sortPage, countQuery::fetchOne);
+	}
+
 	private JPAQuery<Long> getCountQuery(
 		AuctionCommand.SearchAuction searchAuction,
 		QAuction auction,
@@ -185,7 +225,5 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 	private Predicate categoryContains(List<Long> categoryIds) {
 		return categoryIds.isEmpty() ? null : category.categoryId.in(categoryIds);
 	}
-
-
 
 }
