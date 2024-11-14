@@ -29,9 +29,24 @@ public class ReviewDto {
 
 	}
 
-	public record ReviewListResponse(
-		Long memberId,
-		String memberNickname,
+	public record ReceivedReviewListResponse(
+		Long reviewerMemberId,
+		String reviewerMemberNickname,
+		Long auctionId,
+		String auctionTitle,
+		String thumbnailPath,
+		Review.ReviewType reviewType,
+		Rating rating,
+		String content,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime createAt
+	) {
+
+	}
+
+	public record GivenReviewListResponse(
+		Long recipientMemberId,
+		String recipientMemberNickname,
 		Long auctionId,
 		String auctionTitle,
 		String thumbnailPath,

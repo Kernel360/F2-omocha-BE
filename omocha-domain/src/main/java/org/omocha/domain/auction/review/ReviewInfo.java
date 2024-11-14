@@ -8,7 +8,7 @@ public class ReviewInfo {
 
 	public record RetrieveReviews(
 		Long memberId,
-		String memberNickname,
+		String nickname,
 		Long auctionId,
 		String auctionTitle,
 		String auctionThumbnailPath,
@@ -20,7 +20,7 @@ public class ReviewInfo {
 		@QueryProjection
 		public RetrieveReviews(
 			Long memberId,
-			String memberNickname,
+			String nickname,
 			Long auctionId,
 			String auctionTitle,
 			String auctionThumbnailPath,
@@ -30,7 +30,7 @@ public class ReviewInfo {
 			LocalDateTime createAt
 		) {
 			this.memberId = memberId;
-			this.memberNickname = memberNickname;
+			this.nickname = nickname;
 			this.auctionId = auctionId;
 			this.auctionTitle = auctionTitle;
 			this.auctionThumbnailPath = auctionThumbnailPath;

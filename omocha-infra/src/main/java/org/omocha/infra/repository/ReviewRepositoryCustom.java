@@ -11,4 +11,9 @@ public interface ReviewRepositoryCustom {
 		ReviewCommand.RetrieveReviews retrieveReviews,
 		Pageable pageable
 	);
+
+	Page<ReviewInfo.RetrieveReviews> getGivenReviews(
+		ReviewCommand.RetrieveReviews retrieveReviews,
+		Pageable pageable
+	);
 }
