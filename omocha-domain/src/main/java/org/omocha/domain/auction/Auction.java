@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.BatchSize;
+import org.omocha.domain.auction.conclude.Conclude;
 import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.exception.AuctionAlreadyEndedException;
+import org.omocha.domain.exception.AuctionNotConcludedException;
 import org.omocha.domain.exception.AuctionNotInBiddingStateException;
+import org.omocha.domain.exception.LikeCountNegativeException;
 import org.omocha.domain.image.Image;
 
 import jakarta.persistence.CascadeType;
@@ -19,6 +22,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -52,6 +56,8 @@ public class Auction extends BaseEntity {
 
 	private Long bidUnit;
 
+	private long likeCount;
+
 	private Long instantBuyPrice;
 
 	@Enumerated(EnumType.STRING)
@@ -68,6 +74,12 @@ public class Auction extends BaseEntity {
 		cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images = new ArrayList<>();
 
+	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AuctionCategory> auctionCategories = new ArrayList<>();
+
+	@OneToOne(mappedBy = "auction")
+	private Conclude conclude;
+
 	@Builder
 	public Auction(
 		Long memberId,
@@ -78,6 +90,7 @@ public class Auction extends BaseEntity {
 		Long bidCount,
 		Long bidUnit,
 		Long instantBuyPrice,
+		long likeCount,
 		String thumbnailPath,
 		LocalDateTime startDate,
 		LocalDateTime endDate
@@ -89,6 +102,7 @@ public class Auction extends BaseEntity {
 		this.nowPrice = nowPrice;
 		this.bidCount = bidCount;
 		this.bidUnit = bidUnit;
+		this.likeCount = likeCount;
 		this.instantBuyPrice = instantBuyPrice;
 		this.thumbnailPath = thumbnailPath;
 		this.auctionStatus = AuctionStatus.BIDDING;
@@ -135,5 +149,32 @@ public class Auction extends BaseEntity {
 	public void statusNoBids() {
 		this.auctionStatus = AuctionStatus.NO_BIDS;
 	}
+
+	public void validateAuctionStatusConcludedOrCompleted() {
+		if (!(auctionStatus.equals(AuctionStatus.CONCLUDED) || auctionStatus.equals(AuctionStatus.COMPLETED))) {
+			throw new AuctionNotConcludedException(auctionId, auctionStatus);
+		}
+	}
+
+	public void addCategory(Category category) {
+		AuctionCategory auctionCategory = AuctionCategory.builder()
+			.auction(this)
+			.category(category)
+			.build();
+
+		this.auctionCategories.add(auctionCategory);
+	}
+
+	public void increaseLikeCount() {
+		likeCount++;
+	}
+
+	public void decreaseLikeCount() {
+		if (likeCount < 0) {
+			throw new LikeCountNegativeException();
+		}
+		likeCount--;
+	}
+
 }
 

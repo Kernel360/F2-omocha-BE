@@ -1,7 +1,6 @@
 package org.omocha.domain.member;
 
-import static org.omocha.domain.exception.code.MemberCode.*;
-
+import org.omocha.domain.exception.MemberAlreadyExistException;
 import org.omocha.domain.image.ImageProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 
 		// TODO : Validator과 함께 수정 필요
 		if (memberReader.existsByEmail(addMemberCommand.email())) {
-			throw new RuntimeException(MEMBER_ALREADY_EXISTS.getResultMsg());
+			throw new MemberAlreadyExistException(addMemberCommand.email());
 		}
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨

@@ -21,7 +21,7 @@ public class AuctionFacade {
 		return auctionService.addAuction(addCommand);
 	}
 
-	public Page<AuctionInfo.SearchAuction> searchAuction(
+	public Page<AuctionInfo.SearchAuction> searchAuctions(
 		AuctionCommand.SearchAuction searchAuction,
 		Pageable pageable
 	) {
@@ -34,6 +34,14 @@ public class AuctionFacade {
 
 	public void removeAuction(AuctionCommand.RemoveAuction removeCommand) {
 		auctionService.removeAuction(removeCommand);
+	}
+
+	public AuctionInfo.LikeAuction likeAuction(AuctionCommand.LikeAuction likeCommand) {
+		return auctionService.likeAuction(likeCommand);
+	}
+
+	public Page<AuctionInfo.RetrieveMyAuctionLikes> retrieveMyAuctionLikes(Long memberId, Pageable pageable) {
+		return auctionService.retrieveMyAuctionLikes(memberId, pageable);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.CategoryInfo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -18,7 +19,8 @@ public class AuctionDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime endDate
+		LocalDateTime endDate,
+		List<Long> categoryIds
 	) {
 	}
 
@@ -45,12 +47,14 @@ public class AuctionDto {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
+		boolean isLiked,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime createdAt
+		LocalDateTime createdAt,
+		List<CategoryInfo.CategoryResponse> categoryResponse
 	) {
 	}
 
@@ -72,7 +76,33 @@ public class AuctionDto {
 		LocalDateTime endDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
-		List<String> imagePaths
+		List<String> imagePaths,
+		List<CategoryInfo.CategoryResponse> categories
+	) {
+	}
+
+	public record AuctionLikeResponse(
+		Long auctionId,
+		Long memberId,
+		String likeType
+	) {
+	}
+
+	public record AuctionLikeListResponse(
+		Long auctionId,
+		String title,
+		String thumbnailPath,
+		Long startPrice,
+		Long nowPrice,
+		Auction.AuctionStatus auctionStatus,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime startDate,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime createdAt,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime likedDate
 	) {
 	}
 

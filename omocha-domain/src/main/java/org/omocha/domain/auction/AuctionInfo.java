@@ -22,9 +22,11 @@ public class AuctionInfo {
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		LocalDateTime createdAt,
-		List<String> imagePaths
+		List<String> imagePaths,
+		List<CategoryInfo.CategoryResponse> categories
 	) {
-		public RetrieveAuction(Auction auction, List<String> imagePaths) {
+		public RetrieveAuction(Auction auction, List<String> imagePaths,
+			List<CategoryInfo.CategoryResponse> categories) {
 			this(
 				auction.getAuctionId(),
 				auction.getMemberId(),
@@ -40,7 +42,8 @@ public class AuctionInfo {
 				auction.getStartDate(),
 				auction.getEndDate(),
 				auction.getCreatedAt(),
-				imagePaths
+				imagePaths,
+				categories
 			);
 		}
 	}
@@ -58,9 +61,11 @@ public class AuctionInfo {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
+		boolean isLiked, // 로그인 하지 않은 경우 false
 		LocalDateTime startDate,
 		LocalDateTime endDate,
-		LocalDateTime createdAt
+		LocalDateTime createdAt,
+		List<CategoryInfo.CategoryResponse> categoryResponse
 	) {
 		@QueryProjection
 		public SearchAuction(
@@ -76,25 +81,105 @@ public class AuctionInfo {
 			Long nowPrice,
 			Long concludePrice,
 			Long bidCount,
+			Boolean isLiked,
 			LocalDateTime startDate,
 			LocalDateTime endDate,
 			LocalDateTime createdAt
 		) {
+			this(
+				auctionId,
+				memberId,
+				title,
+				content,
+				startPrice,
+				bidUnit,
+				instantBuyPrice,
+				auctionStatus,
+				thumbnailPath,
+				nowPrice,
+				concludePrice,
+				bidCount,
+				isLiked,
+				startDate,
+				endDate,
+				createdAt,
+				null
+			);
+		}
+
+		public SearchAuction withCategoryHierarchy(List<CategoryInfo.CategoryResponse> categoryHierarchy) {
+			return new SearchAuction(
+				this.auctionId,
+				this.memberId,
+				this.title,
+				this.content,
+				this.startPrice,
+				this.bidUnit,
+				this.instantBuyPrice,
+				this.auctionStatus,
+				this.thumbnailPath,
+				this.nowPrice,
+				this.concludePrice,
+				this.bidCount,
+				this.isLiked,
+				this.startDate,
+				this.endDate,
+				this.createdAt,
+				categoryHierarchy
+			);
+		}
+
+	}
+
+	public record LikeAuction(
+		Long auctionId,
+		Long memberId,
+		String likeType
+	) {
+		public static LikeAuction toResponse(
+			Long auctionId,
+			Long memberId,
+			String likeType
+		) {
+			return new LikeAuction(auctionId, memberId, likeType);
+		}
+	}
+
+	public record RetrieveMyAuctionLikes(
+		Long auctionId,
+		String title,
+		String thumbnailPath,
+		Long startPrice,
+		Long nowPrice,
+		Auction.AuctionStatus auctionStatus,
+		LocalDateTime startDate,
+		LocalDateTime endDate,
+		LocalDateTime createdAt,
+		LocalDateTime likedDate
+	) {
+		@QueryProjection
+		public RetrieveMyAuctionLikes(
+			Long auctionId,
+			String title,
+			String thumbnailPath,
+			Long startPrice,
+			Long nowPrice,
+			Auction.AuctionStatus auctionStatus,
+			LocalDateTime startDate,
+			LocalDateTime endDate,
+			LocalDateTime createdAt,
+			LocalDateTime likedDate
+		) {
 			this.auctionId = auctionId;
-			this.memberId = memberId;
 			this.title = title;
-			this.content = content;
-			this.startPrice = startPrice;
-			this.bidUnit = bidUnit;
-			this.instantBuyPrice = instantBuyPrice;
-			this.auctionStatus = auctionStatus;
 			this.thumbnailPath = thumbnailPath;
+			this.startPrice = startPrice;
 			this.nowPrice = nowPrice;
-			this.concludePrice = concludePrice;
-			this.bidCount = bidCount;
+			this.auctionStatus = auctionStatus;
 			this.startDate = startDate;
 			this.endDate = endDate;
 			this.createdAt = createdAt;
+			this.likedDate = likedDate;
 		}
 	}
 }

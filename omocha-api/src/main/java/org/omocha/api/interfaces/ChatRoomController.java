@@ -73,7 +73,7 @@ public class ChatRoomController implements ChatRoomApi {
 
 		Long memberId = userPrincipal.getId();
 		ChatCommand.RetrieveMyChatRoom chatRoomCommand = chatDtoMapper.toCommand(memberId);
-		Slice<ChatInfo.RetrieveMyChatRoom> myChatRoomInfo = chatFacade.retrieveMyChatRoom(chatRoomCommand,
+		Slice<ChatInfo.RetrieveMyChatRoom> myChatRoomInfo = chatFacade.retrieveMyChatRooms(chatRoomCommand,
 			pageable);
 		SliceResponse<ChatInfo.RetrieveMyChatRoom> response =
 			new SliceResponse<>(myChatRoomInfo);
@@ -111,7 +111,7 @@ public class ChatRoomController implements ChatRoomApi {
 			chatDtoMapper.toCommand(roomId, memberId, cursor);
 
 		Slice<ChatInfo.RetrieveChatRoomMessage> messageInfo =
-			chatFacade.retrieveChatRoomMessage(messageCommand, sortPage);
+			chatFacade.retrieveChatRoomMessages(messageCommand, sortPage);
 
 		SliceResponse<ChatInfo.RetrieveChatRoomMessage> response = new SliceResponse<>(
 			messageInfo);

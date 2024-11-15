@@ -12,9 +12,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class CustomCorsConfig implements CorsConfigurationSource {
 	private final List<String> ALLOWED_ORIGIN = List.of(
+		"https://www.omocha-auction.com",
+		"https://api.omocha-auction.com",
+		"https://dev.omocha-auction.com",
 		"https://local.omocha-auction.com",
 		"http://localhost:3000",
 		"http://localhost:3001"
+
 	);
 	private final List<String> ALLOWED_METHODS = List.of("POST", "GET", "PATCH", "OPTIONS", "DELETE");
 

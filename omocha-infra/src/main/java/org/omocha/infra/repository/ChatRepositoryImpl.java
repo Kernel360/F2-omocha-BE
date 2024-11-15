@@ -1,12 +1,14 @@
 package org.omocha.infra.repository;
 
+import static org.omocha.domain.auction.chat.QChat.*;
+import static org.omocha.domain.member.QMember.*;
+
 import java.util.List;
 
 import org.omocha.domain.auction.chat.ChatCommand;
 import org.omocha.domain.auction.chat.ChatInfo;
 import org.omocha.domain.auction.chat.QChat;
 import org.omocha.domain.auction.chat.QChatInfo_RetrieveChatRoomMessage;
-import org.omocha.domain.member.QMember;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -33,9 +35,6 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 		ChatCommand.RetrieveChatRoomMessage retrieveMessage,
 		Pageable pageable
 	) {
-		QChat chat = QChat.chat;
-		QMember member = QMember.member;
-
 		JPAQuery<ChatInfo.RetrieveChatRoomMessage> query = queryFactory
 			.select(new QChatInfo_RetrieveChatRoomMessage(
 				chat.messageType,

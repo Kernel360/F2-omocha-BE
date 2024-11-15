@@ -1,7 +1,5 @@
 package org.omocha.api.interfaces;
 
-import static org.omocha.domain.exception.code.MemberCode.*;
-
 import org.omocha.api.application.MemberFacade;
 import org.omocha.api.common.auth.jwt.JwtProvider;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
@@ -9,6 +7,7 @@ import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
 import org.omocha.api.interfaces.dto.MemberDto;
 import org.omocha.api.interfaces.mapper.MemberDtoMapper;
+import org.omocha.domain.exception.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -48,13 +47,13 @@ public class AuthController {
 		memberFacade.addMember(addMemberCommand);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			MEMBER_CREATE_SUCCESS.getStatusCode(),
-			MEMBER_CREATE_SUCCESS.getResultMsg()
+			SuccessCode.MEMBER_CREATE_SUCCESS.getStatusCode(),
+			SuccessCode.MEMBER_CREATE_SUCCESS.getDescription()
 
 		);
 
 		return ResponseEntity
-			.status(MEMBER_CREATE_SUCCESS.getHttpStatus())
+			.status(SuccessCode.MEMBER_CREATE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -67,13 +66,13 @@ public class AuthController {
 		boolean duplicate = memberFacade.isEmailDuplicate(email);
 
 		ResultDto<Boolean> resultDto = ResultDto.res(
-			VALIDATE_EMAIL_SUCCESS.getStatusCode(),
-			VALIDATE_EMAIL_SUCCESS.getResultMsg(),
+			SuccessCode.VALIDATE_EMAIL_SUCCESS.getStatusCode(),
+			SuccessCode.VALIDATE_EMAIL_SUCCESS.getDescription(),
 			duplicate
 		);
 
 		return ResponseEntity
-			.status(VALIDATE_EMAIL_SUCCESS.getHttpStatus())
+			.status(SuccessCode.VALIDATE_EMAIL_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -90,12 +89,12 @@ public class AuthController {
 		memberFacade.memberLogin(memberLogin, response);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			MEMBER_LOGIN_SUCCESS.getStatusCode(),
-			MEMBER_LOGIN_SUCCESS.getResultMsg()
+			SuccessCode.MEMBER_LOGIN_SUCCESS.getStatusCode(),
+			SuccessCode.MEMBER_LOGIN_SUCCESS.getDescription()
 		);
 
 		return ResponseEntity
-			.status(MEMBER_LOGIN_SUCCESS.getHttpStatus())
+			.status(SuccessCode.MEMBER_LOGIN_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -109,12 +108,12 @@ public class AuthController {
 		jwtProvider.logout(userPrincipal.getMember().getMemberId(), response);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			MEMBER_LOGOUT_SUCCESS.getStatusCode(),
-			MEMBER_LOGOUT_SUCCESS.getResultMsg()
+			SuccessCode.MEMBER_LOGOUT_SUCCESS.getStatusCode(),
+			SuccessCode.MEMBER_LOGOUT_SUCCESS.getDescription()
 		);
 
 		return ResponseEntity
-			.status(MEMBER_LOGOUT_SUCCESS.getHttpStatus())
+			.status(SuccessCode.MEMBER_LOGOUT_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 }

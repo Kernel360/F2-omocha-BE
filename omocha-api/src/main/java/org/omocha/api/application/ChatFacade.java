@@ -22,7 +22,7 @@ public class ChatFacade {
 		chatService.addChatRoom(addCommand);
 	}
 
-	public Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRoom(
+	public Slice<ChatInfo.RetrieveMyChatRoom> retrieveMyChatRooms(
 		ChatCommand.RetrieveMyChatRoom retrieveCommand,
 		Pageable pageable
 	) {
@@ -34,7 +34,7 @@ public class ChatFacade {
 		chatService.sendChatMessage(savedChat);
 	}
 
-	public Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessage(
+	public Slice<ChatInfo.RetrieveChatRoomMessage> retrieveChatRoomMessages(
 		ChatCommand.RetrieveChatRoomMessage chatRoomMessage,
 		Pageable pageable
 	) {

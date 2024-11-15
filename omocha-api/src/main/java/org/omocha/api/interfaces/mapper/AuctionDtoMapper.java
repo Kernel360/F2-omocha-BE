@@ -26,14 +26,16 @@ public interface AuctionDtoMapper {
 
 	AuctionCommand.SearchAuction toCommand(
 		AuctionDto.AuctionSearchRequest condition,
-		Auction.AuctionStatus auctionStatus
+		Auction.AuctionStatus auctionStatus,
+		Long categoryId,
+		Long memberId
 	);
 
-	AuctionCommand.RetrieveAuction toCommand(Long auctionId);
+	AuctionCommand.RetrieveAuction toCommand(Long auctionId, Long memberId);
 
 	AuctionDto.AuctionAddResponse toResponse(Long auctionId);
 
-	default Page<AuctionDto.AuctionSearchResponse> toResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
+	default Page<AuctionDto.AuctionSearchResponse> toSearchResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
 		List<AuctionDto.AuctionSearchResponse> content = auctionListResult.getContent().stream()
 			.map(this::toResponse)
 			.collect(Collectors.toList());
@@ -45,5 +47,20 @@ public interface AuctionDtoMapper {
 
 	AuctionDto.AuctionDetailsResponse toResponse(AuctionInfo.RetrieveAuction auctionDetailResponse);
 
-	AuctionCommand.RemoveAuction toCommand(Long memberId, Long auctionId);
+	AuctionCommand.RemoveAuction toRemoveCommand(Long auctionId, Long memberId);
+
+	AuctionCommand.LikeAuction toLikeCommand(Long auctionId, Long memberId);
+
+	AuctionDto.AuctionLikeResponse toLikeResponse(AuctionInfo.LikeAuction likeResponse);
+
+	default Page<AuctionDto.AuctionLikeListResponse> toLikeListResponse(
+		Page<AuctionInfo.RetrieveMyAuctionLikes> myAuctionLikes) {
+		List<AuctionDto.AuctionLikeListResponse> content = myAuctionLikes.getContent().stream()
+			.map(this::toResponse)
+			.collect(Collectors.toList());
+
+		return new PageImpl<>(content, myAuctionLikes.getPageable(), myAuctionLikes.getTotalElements());
+	}
+
+	AuctionDto.AuctionLikeListResponse toResponse(AuctionInfo.RetrieveMyAuctionLikes myAuctionLikes);
 }

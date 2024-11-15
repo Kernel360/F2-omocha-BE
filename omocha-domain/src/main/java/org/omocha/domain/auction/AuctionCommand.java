@@ -18,7 +18,8 @@ public class AuctionCommand {
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		List<MultipartFile> images,
-		MultipartFile thumbnailPath
+		MultipartFile thumbnailPath,
+		List<Long> categoryIds
 
 	) {
 		public Auction toEntity() {
@@ -30,6 +31,7 @@ public class AuctionCommand {
 				.bidCount(0L)
 				.bidUnit(bidUnit)
 				.instantBuyPrice(instantBuyPrice)
+				.likeCount(0L)
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();
@@ -38,19 +40,29 @@ public class AuctionCommand {
 
 	public record SearchAuction(
 		String title,
-		Auction.AuctionStatus auctionStatus
+		Auction.AuctionStatus auctionStatus,
+		Long categoryId,
+		Long memberId
 	) {
 	}
 
 	public record RetrieveAuction(
-		Long auctionId
+		Long auctionId,
+		Long memberId
 	) {
 	}
 
 	public record RemoveAuction(
-		Long memberId,
-		Long auctionId
+		Long auctionId,
+		Long memberId
 	) {
+	}
+
+	public record LikeAuction(
+		Long auctionId,
+		Long memberId
+	) {
+
 	}
 
 }
