@@ -1,5 +1,7 @@
 package org.omocha.domain.member;
 
+import org.omocha.domain.common.Role;
+
 public class MemberInfo {
 
 	public record MemberDetail(

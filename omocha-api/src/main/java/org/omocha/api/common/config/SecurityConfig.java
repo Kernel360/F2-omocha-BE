@@ -1,6 +1,6 @@
 package org.omocha.api.common.config;
 
-import org.omocha.api.common.auth.oauth.CustomOAuth2UserService;
+import org.omocha.api.auth.oauth.CustomOAuth2UserService;
 import org.omocha.api.common.filter.JwtAuthFilter;
 import org.omocha.api.common.handler.CustomAccessDeniedHandler;
 import org.omocha.api.common.handler.CustomAuthenticationEntryPointHandler;

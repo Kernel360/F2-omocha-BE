@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.BatchSize;
-import org.omocha.domain.auction.conclude.Conclude;
+import org.omocha.domain.auction.exception.AuctionAlreadyEndedException;
+import org.omocha.domain.auction.exception.AuctionNotConcludedException;
+import org.omocha.domain.auction.exception.AuctionNotInBiddingStateException;
+import org.omocha.domain.category.AuctionCategory;
+import org.omocha.domain.category.Category;
 import org.omocha.domain.common.BaseEntity;
-import org.omocha.domain.exception.AuctionAlreadyEndedException;
-import org.omocha.domain.exception.AuctionNotConcludedException;
-import org.omocha.domain.exception.AuctionNotInBiddingStateException;
-import org.omocha.domain.exception.LikeCountNegativeException;
+import org.omocha.domain.conclude.Conclude;
 import org.omocha.domain.image.Image;
+import org.omocha.domain.likes.exception.LikeCountNegativeException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

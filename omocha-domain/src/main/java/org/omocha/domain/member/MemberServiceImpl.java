@@ -1,7 +1,8 @@
 package org.omocha.domain.member;
 
-import org.omocha.domain.exception.MemberAlreadyExistException;
 import org.omocha.domain.image.ImageProvider;
+import org.omocha.domain.member.exception.MemberAlreadyExistException;
+import org.omocha.domain.member.validate.MemberValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

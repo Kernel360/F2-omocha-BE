@@ -2,9 +2,10 @@ package org.omocha.domain.member;
 
 import java.util.Objects;
 
-import org.omocha.domain.auction.review.Rating;
-import org.omocha.domain.auction.review.RatingDbConverter;
 import org.omocha.domain.common.BaseEntity;
+import org.omocha.domain.common.Role;
+import org.omocha.domain.review.rating.Rating;
+import org.omocha.domain.review.rating.RatingDbConverter;
 
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -57,14 +58,14 @@ public class Member extends BaseEntity {
 	private String providerId;
 
 	@Enumerated(EnumType.STRING)
-	private UserStatus userStatus;
+	private MemberStatus memberStatus;
 
 	@Builder
 	public Member(
 		String email, String password, String nickname,
 		String username, String birth, String phoneNumber,
 		String profileImageUrl, Rating averageRating, Role role,
-		String provider, String providerId, UserStatus userStatus
+		String provider, String providerId, MemberStatus memberStatus
 	) {
 		this.password = password;
 		this.nickname = nickname;
@@ -77,7 +78,11 @@ public class Member extends BaseEntity {
 		this.role = role;
 		this.provider = provider;
 		this.providerId = providerId;
-		this.userStatus = userStatus;
+		this.memberStatus = memberStatus;
+	}
+
+	public enum MemberStatus {
+		ACTIVATE, DEACTIVATE
 	}
 
 	public void updateMember(

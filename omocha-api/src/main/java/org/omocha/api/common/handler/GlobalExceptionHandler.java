@@ -1,12 +1,13 @@
 package org.omocha.api.common.handler;
 
-import static org.omocha.domain.exception.code.ErrorCode.*;
+import static org.omocha.domain.common.code.ErrorCode.*;
 
 import org.omocha.api.common.response.ResultDto;
-import org.omocha.domain.exception.AuctionException;
-import org.omocha.domain.exception.BidException;
-import org.omocha.domain.exception.ChatException;
-import org.omocha.domain.exception.MemberException;
+import org.omocha.domain.auction.exception.AuctionException;
+import org.omocha.domain.bid.exception.BidException;
+import org.omocha.domain.chat.exception.ChatException;
+import org.omocha.domain.member.exception.jwt.JwtTokenException;
+import org.omocha.domain.member.exception.MemberException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,7 +22,6 @@ public class GlobalExceptionHandler {
 	// TODO: 추후 controller 내부로 리팩토링 필요
 	// TODO: ErrorCode로 통합하면서 handleGeneralException과 같이 resultMsg => description으로 변경 필요
 
-	// TODO: 추후 controller 내부로 리팩토링 필요
 	@ExceptionHandler(AuctionException.class)
 	public ResponseEntity<ResultDto<Object>> handleAuctionException(
 		AuctionException e,
@@ -45,16 +45,15 @@ public class GlobalExceptionHandler {
 		BidException e,
 		HttpServletRequest request
 	) {
-
 		log.error("errorCode: {}, url: {}, message: {}",
-			e.getBidCode(), request.getRequestURI(), e.getMessage(), e);
+			e.getErrorCode(), request.getRequestURI(), e.getMessage(), e);
 
 		ResultDto<Object> resultDto = ResultDto.res(
-			e.getBidCode().getStatusCode(),
+			e.getErrorCode().getStatusCode(),
 			e.getMessage()
 		);
 		return ResponseEntity
-			.status(e.getBidCode().getHttpStatus())
+			.status(e.getErrorCode().getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -92,22 +91,22 @@ public class GlobalExceptionHandler {
 	// 		.body(resultDto);
 	// }
 
-	// @ExceptionHandler(JwtTokenException.class)
-	// public ResponseEntity<ResultDto<Object>> handleJWTException(
-	// 	JwtTokenException e,
-	// 	HttpServletRequest request
-	// ) {
-	// 	log.error("errorCode: {}, url: {}, message: {}",
-	// 		e.getJwtCode(), request.getRequestURI(), e.getDetailMessage(), e);
-	//
-	// 	ResultDto<Object> resultDto = ResultDto.res(
-	// 		e.getJwtCode().getStatusCode(),
-	// 		e.getJwtCode().getResultMsg()
-	// 	);
-	// 	return ResponseEntity
-	// 		.status(e.getJwtCode().getHttpStatus())
-	// 		.body(resultDto);
-	// }
+	@ExceptionHandler(JwtTokenException.class)
+	public ResponseEntity<ResultDto<Object>> handleJWTException(
+		JwtTokenException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getErrorCode(), request.getRequestURI(), e.getMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getErrorCode().getStatusCode(),
+			e.getMessage()
+		);
+		return ResponseEntity
+			.status(e.getErrorCode().getHttpStatus())
+			.body(resultDto);
+	}
 
 	@ExceptionHandler(MemberException.class)
 	public ResponseEntity<ResultDto<Object>> handleMemberException(
@@ -152,7 +151,7 @@ public class GlobalExceptionHandler {
 	//
 	// 	ResultDto<Object> resultDto = ResultDto.res(
 	// 		UNSUPPORTED_MEDIA_TYPE.getStatusCode(),
-	// 		UNSUPPORTED_MEDIA_TYPE.getResultMsg()
+	// 		UNSUPPORTED_MEDIA_TYPE.getDescription()
 	// 	);
 	// 	return ResponseEntity
 	// 		.status(UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
@@ -160,7 +159,10 @@ public class GlobalExceptionHandler {
 	// }
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ResultDto<Object>> handleGeneralException(Exception e, HttpServletRequest request) {
+	public ResponseEntity<ResultDto<Object>> handleGeneralException(
+		Exception e,
+		HttpServletRequest request
+	) {
 		log.error("url: {}, message: {}", request.getRequestURL(), e.getMessage(), e);
 		ResultDto<Object> resultDto = ResultDto.res(
 			INTERNAL_SERVER_ERROR.getStatusCode(),

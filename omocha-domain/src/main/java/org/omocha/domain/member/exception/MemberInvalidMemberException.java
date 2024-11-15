@@ -1,0 +1,12 @@
+package org.omocha.domain.member.exception;
+
+import org.omocha.domain.common.code.ErrorCode;
+
+public class MemberInvalidMemberException extends MemberException {
+	public MemberInvalidMemberException(Long memberId) {
+		super(
+			ErrorCode.INVALID_MEMBER,
+			"회원이 일치하지 않습니다. memberId : " + memberId
+		);
+	}
+}

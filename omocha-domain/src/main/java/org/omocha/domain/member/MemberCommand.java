@@ -1,8 +1,8 @@
 package org.omocha.domain.member;
 
+import org.omocha.domain.common.Role;
+import org.omocha.domain.review.rating.Rating;
 import org.springframework.web.multipart.MultipartFile;
-
-import org.omocha.domain.auction.review.Rating;
 
 import lombok.Builder;
 
@@ -18,7 +18,7 @@ public class MemberCommand {
 				.password(password)
 				.averageRating(new Rating(0.0))
 				.role(Role.ROLE_USER)
-				.userStatus(UserStatus.ACTIVATE)
+				.memberStatus(Member.MemberStatus.ACTIVATE)
 				.build();
 		}
 

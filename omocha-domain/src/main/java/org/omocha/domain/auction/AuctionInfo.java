@@ -3,6 +3,8 @@ package org.omocha.domain.auction;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.omocha.domain.category.CategoryInfo;
+
 import com.querydsl.core.annotations.QueryProjection;
 
 public class AuctionInfo {

@@ -3,9 +3,9 @@ package org.omocha.api.common.filter;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.omocha.api.common.auth.jwt.JwtCategory;
-import org.omocha.api.common.auth.jwt.JwtProvider;
-import org.omocha.api.common.auth.jwt.UserPrincipal;
+import org.omocha.api.auth.jwt.JwtCategory;
+import org.omocha.api.auth.jwt.JwtProvider;
+import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

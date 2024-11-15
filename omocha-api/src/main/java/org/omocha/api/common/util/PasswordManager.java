@@ -1,6 +1,6 @@
 package org.omocha.api.common.util;
 
-import org.omocha.domain.exception.MemberInvalidPasswordException;
+import org.omocha.domain.member.exception.MemberInvalidPasswordException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

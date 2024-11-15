@@ -2,8 +2,8 @@ package org.omocha.api.common.handler;
 
 import java.io.IOException;
 
-import org.omocha.api.common.auth.jwt.JwtProvider;
-import org.omocha.api.common.auth.jwt.UserPrincipal;
+import org.omocha.api.auth.jwt.JwtProvider;
+import org.omocha.api.auth.jwt.UserPrincipal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
