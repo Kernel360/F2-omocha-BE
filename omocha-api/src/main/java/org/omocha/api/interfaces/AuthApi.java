@@ -1,6 +1,6 @@
 package org.omocha.api.interfaces;
 
-import org.omocha.api.auth.AuthDto;
+import org.omocha.api.auth.dto.AuthDto;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.springframework.http.ResponseEntity;

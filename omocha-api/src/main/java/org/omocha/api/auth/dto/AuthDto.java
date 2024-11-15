@@ -1,4 +1,4 @@
-package org.omocha.api.auth;
+package org.omocha.api.auth.dto;
 
 import org.omocha.domain.common.Role;
 
