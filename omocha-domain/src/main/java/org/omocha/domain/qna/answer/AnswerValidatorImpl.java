@@ -1,8 +1,8 @@
 package org.omocha.domain.qna.answer;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.exception.AuctionOwnerMismatchException;
 import org.omocha.domain.member.Member;
-import org.omocha.domain.member.exception.MemberInvalidMemberException;
 import org.omocha.domain.qna.QnaReader;
 import org.omocha.domain.qna.exception.AnswerAlreadyExistException;
 import org.omocha.domain.qna.question.Question;
@@ -21,7 +21,7 @@ public class AnswerValidatorImpl implements AnswerValidator {
 	@Override
 	public void hasAuctionOwnership(Auction auction, Member member) {
 		if (!auction.getMemberId().equals(member.getMemberId())) {
-			throw new MemberInvalidMemberException(member.getMemberId());
+			throw new AuctionOwnerMismatchException(member.getMemberId());
 		}
 	}
 

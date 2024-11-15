@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.omocha.domain.auction.exception.AuctionHasBidException;
 import org.omocha.domain.auction.exception.AuctionImageNotFoundException;
+import org.omocha.domain.auction.exception.AuctionOwnerMismatchException;
 import org.omocha.domain.category.AuctionCategory;
 import org.omocha.domain.category.CategoryInfo;
 import org.omocha.domain.category.CategoryReader;
@@ -14,7 +15,6 @@ import org.omocha.domain.category.exception.CategoryNotFoundException;
 import org.omocha.domain.image.Image;
 import org.omocha.domain.likes.LikeReader;
 import org.omocha.domain.likes.LikeStore;
-import org.omocha.domain.member.exception.MemberInvalidException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -111,7 +111,7 @@ public class AuctionServiceImpl implements AuctionService {
 		Long memberId = removeCommand.memberId();
 
 		if (!auction.getMemberId().equals(memberId)) {
-			throw new MemberInvalidException(memberId);
+			throw new AuctionOwnerMismatchException(memberId);
 		}
 
 		if (auction.getBidCount() != null && auction.getBidCount() != 0) {
