@@ -31,17 +31,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/question")
-public class QuestionController {
+@RequestMapping("/api/v2/questions")
+public class QuestionController implements QuestionApi {
 
 	private final QnaFacade qnaFacade;
 	private final QuestionDtoMapper questionDtoMapper;
 	private final PageSort pageSort;
 
 	// TODO : QueryDSL JOIN 관련 수정 필요
-	@GetMapping("/{auctionId}/qna-list")
+	@Override
+	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<Page<QuestionDto.QnaListResponse>>> qnaList(
-		@PathVariable(value = "auctionId") Long auctionId,
+		@PathVariable(value = "auction_id") Long auctionId,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "ASC") String direction,
 		@PageableDefault(page = 0, size = 10)
@@ -71,6 +72,7 @@ public class QuestionController {
 			.body(resultDto);
 	}
 
+	@Override
 	@PostMapping()
 	public ResponseEntity<ResultDto<QuestionDto.QuestionAddResponse>> questionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -100,10 +102,11 @@ public class QuestionController {
 
 	}
 
-	@PatchMapping("/{questionId}")
+	@Override
+	@PatchMapping("/{question_id}")
 	public ResponseEntity<ResultDto<QuestionDto.QuestionModifyResponse>> questionModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@PathVariable(value = "questionId") Long questionId,
+		@PathVariable(value = "question_id") Long questionId,
 		@RequestBody QuestionDto.QuestionModifyRequest questionModifyRequest
 	) {
 
@@ -135,10 +138,11 @@ public class QuestionController {
 
 	}
 
-	@DeleteMapping("/{questionId}")
+	@Override
+	@DeleteMapping("/{question_id}")
 	public ResponseEntity<ResultDto<Void>> questionRemove(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@PathVariable(value = "questionId") Long questionId
+		@PathVariable(value = "question_id") Long questionId
 	) {
 
 		log.info("Received questionRemove request: {}", questionId);
