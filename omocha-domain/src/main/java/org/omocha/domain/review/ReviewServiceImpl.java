@@ -67,13 +67,13 @@ public class ReviewServiceImpl implements ReviewService {
 
 	private Long determineRecipientId(Long reviewerId, Auction auction) {
 		Conclude conclude = concludeReader.getConclude(auction.getAuctionId());
-		Long sellerId = auction.getMemberId();
-		Long buyerId = conclude.getBuyer().getMemberId();
+		Long sellerMemberId = auction.getMemberId();
+		Long buyerMemberId = conclude.getBuyer().getMemberId();
 
-		if (reviewerId.equals(sellerId)) {
-			return buyerId;
-		} else if (reviewerId.equals(buyerId)) {
-			return sellerId;
+		if (reviewerId.equals(sellerMemberId)) {
+			return buyerMemberId;
+		} else if (reviewerId.equals(buyerMemberId)) {
+			return sellerMemberId;
 		} else {
 			throw new ReviewPermissionDeniedException(auction.getAuctionId(), reviewerId);
 		}

@@ -30,7 +30,7 @@ public class Chat extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private MessageType messageType;
 
-	private Long senderId;
+	private Long senderMemberId;
 
 	private String message;
 
@@ -49,12 +49,12 @@ public class Chat extends BaseEntity {
 	@Builder
 	public Chat(
 		MessageType messageType,
-		Long senderId,
+		Long senderMemberId,
 		String message,
 		Long roomId
 	) {
 		this.messageType = messageType;
-		this.senderId = senderId;
+		this.senderMemberId = senderMemberId;
 		this.message = message;
 		this.roomId = roomId;
 	}

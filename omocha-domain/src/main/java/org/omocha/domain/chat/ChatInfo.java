@@ -14,12 +14,12 @@ public class ChatInfo {
 		Long auctionId,
 		Long roomId,
 		String roomName,
-		Long sellerId,
+		Long sellerMemberId,
 		String sellerName,
 		String sellerProfileImage,
 		String thumbnailPath,
 		Long concludePrice,
-		Long buyerId,
+		Long buyerMemberId,
 		String buyerName,
 		String buyerProfileImage,
 		LocalDateTime createdDate,
@@ -31,12 +31,12 @@ public class ChatInfo {
 			Long auctionId,
 			Long roomId,
 			String roomName,
-			Long sellerId,
+			Long sellerMemberId,
 			String sellerName,
 			String sellerProfileImage,
 			String thumbnailPath,
 			Long concludePrice,
-			Long buyerId,
+			Long buyerMemberId,
 			String buyerName,
 			String buyerProfileImage,
 			LocalDateTime createdDate,
@@ -46,12 +46,12 @@ public class ChatInfo {
 			this.auctionId = auctionId;
 			this.roomId = roomId;
 			this.roomName = roomName;
-			this.sellerId = sellerId;
+			this.sellerMemberId = sellerMemberId;
 			this.sellerName = sellerName;
 			this.sellerProfileImage = sellerProfileImage;
 			this.thumbnailPath = thumbnailPath;
 			this.concludePrice = concludePrice;
-			this.buyerId = buyerId;
+			this.buyerMemberId = buyerMemberId;
 			this.buyerName = buyerName;
 			this.buyerProfileImage = buyerProfileImage;
 			this.createdDate = createdDate;
@@ -63,7 +63,7 @@ public class ChatInfo {
 
 	public record RetrieveChatRoomMessage(
 		MessageType messageType,
-		Long senderId,
+		Long senderMemberId,
 		Long roomId,
 		String nickname,
 		String senderProfileImage,
@@ -73,7 +73,7 @@ public class ChatInfo {
 		@QueryProjection
 		public RetrieveChatRoomMessage(
 			MessageType messageType,
-			Long senderId,
+			Long senderMemberId,
 			Long roomId,
 			String nickname,
 			String senderProfileImage,
@@ -81,7 +81,7 @@ public class ChatInfo {
 			LocalDateTime createdAt
 		) {
 			this.messageType = messageType;
-			this.senderId = senderId;
+			this.senderMemberId = senderMemberId;
 			this.roomId = roomId;
 			this.nickname = nickname;
 			this.senderProfileImage = senderProfileImage;

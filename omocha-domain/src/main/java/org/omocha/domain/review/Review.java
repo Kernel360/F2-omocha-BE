@@ -37,11 +37,11 @@ public class Review extends BaseEntity {
 	private Auction auction;
 
 	@ManyToOne
-	@JoinColumn(name = "reviewer_id")
+	@JoinColumn(name = "reviewer_member_id")
 	private Member reviewer;
 
 	@ManyToOne
-	@JoinColumn(name = "recipient_id")
+	@JoinColumn(name = "recipient_member_id")
 	private Member recipient;
 
 	@Enumerated(EnumType.STRING)

@@ -36,7 +36,7 @@ public class Bid extends BaseEntity {
 	private Auction auction;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "buyer_id")
+	@JoinColumn(name = "buyer_member_id")
 	private Member buyer;
 
 	@Builder

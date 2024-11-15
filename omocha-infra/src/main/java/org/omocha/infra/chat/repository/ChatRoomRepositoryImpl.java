@@ -80,12 +80,12 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 				lastMessageContent
 			))
 			.from(chatRoom)
-			.leftJoin(seller).on(seller.memberId.eq(chatRoom.sellerId))
-			.leftJoin(buyer).on(buyer.memberId.eq(chatRoom.buyerId))
+			.leftJoin(seller).on(seller.memberId.eq(chatRoom.sellerMemberId))
+			.leftJoin(buyer).on(buyer.memberId.eq(chatRoom.buyerMemberId))
 			.leftJoin(auction).on(auction.auctionId.eq(chatRoom.auctionId))
 			.leftJoin(conclude).on(conclude.auction.eq(auction))
-			.where(chatRoom.buyerId.eq(retrieveMyChatRoom.memberId())
-				.or(chatRoom.sellerId.eq(retrieveMyChatRoom.memberId())))
+			.where(chatRoom.buyerMemberId.eq(retrieveMyChatRoom.memberId())
+				.or(chatRoom.sellerMemberId.eq(retrieveMyChatRoom.memberId())))
 			.orderBy(
 				orderTime.desc()
 			)

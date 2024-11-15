@@ -26,28 +26,28 @@ public class ChatRoom extends BaseEntity {
 
 	private String roomName;
 
-	private Long buyerId;
+	private Long buyerMemberId;
 
-	private Long sellerId;
+	private Long sellerMemberId;
 
 	private Long auctionId;
 
 	@Builder
 	public ChatRoom(
 		String roomName,
-		Long buyerId,
-		Long sellerId,
+		Long buyerMemberId,
+		Long sellerMemberId,
 		Long auctionId
 	) {
 		this.roomName = roomName;
-		this.buyerId = buyerId;
-		this.sellerId = sellerId;
+		this.buyerMemberId = buyerMemberId;
+		this.sellerMemberId = sellerMemberId;
 		this.auctionId = auctionId;
 	}
 
 	public boolean validateParticipant(Long memberId) {
 		return memberId != null &&
-			(buyerId != null && buyerId.equals(memberId) ||
-				sellerId != null && sellerId.equals(memberId));
+			(buyerMemberId != null && buyerMemberId.equals(memberId) ||
+				sellerMemberId != null && sellerMemberId.equals(memberId));
 	}
 }

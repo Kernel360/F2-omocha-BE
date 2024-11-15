@@ -38,7 +38,7 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 		JPAQuery<ChatInfo.RetrieveChatRoomMessage> query = queryFactory
 			.select(new QChatInfo_RetrieveChatRoomMessage(
 				chat.messageType,
-				chat.senderId,
+				chat.senderMemberId,
 				chat.roomId,
 				member.nickname,
 				member.profileImageUrl,
@@ -46,7 +46,7 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 				chat.createdAt
 			))
 			.from(chat)
-			.leftJoin(member).on(member.memberId.eq(chat.senderId))
+			.leftJoin(member).on(member.memberId.eq(chat.senderMemberId))
 			.where(chat.roomId.eq(retrieveMessage.roomId())
 				.and(retrieveMessage.cursor() != null ? chat.createdAt.lt(retrieveMessage.cursor()) : null));
 

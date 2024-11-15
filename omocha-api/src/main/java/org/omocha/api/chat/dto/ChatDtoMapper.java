@@ -14,7 +14,7 @@ import org.omocha.domain.chat.ChatCommand;
 )
 public interface ChatDtoMapper {
 
-	ChatCommand.AddChatRoom toCommand(Long auctionId, Long buyerId);
+	ChatCommand.AddChatRoom toCommand(Long auctionId, Long buyerMemberId);
 
 	ChatCommand.RetrieveMyChatRoom toCommand(Long memberId);
 

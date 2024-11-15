@@ -48,16 +48,16 @@ public class BidServiceImpl implements BidService {
 	@Transactional
 	public BidInfo.AddBid addBid(BidCommand.AddBid addBid) {
 
-		Long buyerId = addBid.buyerId();
+		Long buyerMemberId = addBid.buyerMemberId();
 		Long auctionId = addBid.auctionId();
 		Long bidPrice = addBid.bidPrice();
 
 		Auction auction = auctionReader.getAuction(auctionId);
 		auction.validateAuctionStatus();
 
-		bidValidator.bidValidate(auction, buyerId, bidPrice);
+		bidValidator.bidValidate(auction, buyerMemberId, bidPrice);
 
-		Member member = memberReader.getMember(buyerId);
+		Member member = memberReader.getMember(buyerMemberId);
 
 		Bid bid = bidStore.store(auction, member, bidPrice);
 
@@ -77,17 +77,17 @@ public class BidServiceImpl implements BidService {
 	@Override
 	@Transactional
 	public void buyNow(BidCommand.BuyNow buyNowCommand) {
-		Long buyerId = buyNowCommand.memberId();
+		Long buyerMemberId = buyNowCommand.buyerMemberId();
 
 		Auction auction = auctionReader.getAuction(buyNowCommand.auctionId());
 		auction.validateAuctionStatus();
-		bidValidator.instantBuyValidate(auction, buyerId);
+		bidValidator.instantBuyValidate(auction, buyerMemberId);
 
-		Member buyer = memberReader.getMember(buyerId);
+		Member buyer = memberReader.getMember(buyerMemberId);
 		Bid bid = bidStore.store(auction, buyer, auction.getInstantBuyPrice());
 		concludeStore.store(auction, bid);
 
-		var chatRoomCommand = new ChatCommand.AddChatRoom(auction.getAuctionId(), buyerId);
+		var chatRoomCommand = new ChatCommand.AddChatRoom(auction.getAuctionId(), buyerMemberId);
 		chatService.addChatRoom(chatRoomCommand);
 
 		auction.statusConcluded();

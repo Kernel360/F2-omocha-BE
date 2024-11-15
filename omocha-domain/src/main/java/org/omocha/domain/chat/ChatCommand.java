@@ -10,13 +10,13 @@ public class ChatCommand {
 
 	public record AddChatRoom(
 		Long auctionId,
-		Long buyerId
+		Long buyerMemberId
 	) {
 		public ChatRoom toEntity(Auction auction) {
 			return ChatRoom.builder()
 				.roomName(auction.getTitle())
-				.buyerId(buyerId)
-				.sellerId(auction.getMemberId())
+				.buyerMemberId(buyerMemberId)
+				.sellerMemberId(auction.getMemberId())
 				.auctionId(auction.getAuctionId())
 				.build();
 		}
@@ -29,14 +29,14 @@ public class ChatCommand {
 
 	public record AddChatMessage(
 		Chat.MessageType messageType,
-		Long senderId,
+		Long senderMemberId,
 		String message,
 		Long roomId
 	) {
 		public Chat toEntity() {
 			return Chat.builder()
 				.messageType(messageType)
-				.senderId(senderId)
+				.senderMemberId(senderMemberId)
 				.message(message)
 				.roomId(roomId)
 				.build();

@@ -4,8 +4,8 @@ import static org.omocha.domain.common.code.SuccessCode.*;
 
 import java.time.LocalDateTime;
 
-import org.omocha.api.chat.dto.ChatDtoMapper;
 import org.omocha.api.auth.jwt.UserPrincipal;
+import org.omocha.api.chat.dto.ChatDtoMapper;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.response.SliceResponseDto.SliceResponse;
 import org.omocha.domain.chat.ChatCommand;
@@ -42,10 +42,10 @@ public class ChatRoomController implements ChatRoomApi {
 		@PathVariable Long auctionId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-		Long buyerId = userPrincipal.getId();
+		Long buyerMemberId = userPrincipal.getId();
 
 		ChatCommand.AddChatRoom chatRoomCommand = chatDtoMapper.toCommand(
-			auctionId, buyerId);
+			auctionId, buyerMemberId);
 		chatFacade.addChatRoom(chatRoomCommand);
 
 		ResultDto<Void> result = ResultDto.res(

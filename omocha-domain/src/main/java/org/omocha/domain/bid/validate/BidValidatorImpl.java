@@ -22,8 +22,8 @@ public class BidValidatorImpl implements BidValidator {
 	// 처음 입찰 : 시작가보다 낮은 입찰 가격이 발생할 때 예외
 	// 이후 입찰 : 입찰 가격 < 현재 최고가 보다 낮을 때 예외 발생
 	@Override
-	public void bidValidate(Auction auction, Long buyerId, Long bidPrice) {
-		validateSelfBid(auction, buyerId);
+	public void bidValidate(Auction auction, Long buyerMemberId, Long bidPrice) {
+		validateSelfBid(auction, buyerMemberId);
 
 		validateBidUnit(auction, bidPrice);
 
@@ -34,9 +34,9 @@ public class BidValidatorImpl implements BidValidator {
 		validateBidBelowInstantBuyPrice(auction, bidPrice);
 	}
 
-	private void validateSelfBid(Auction auction, Long buyerId) {
-		if (auction.getMemberId().equals(buyerId)) {
-			throw new SelfBidNotAllowedException(auction.getAuctionId(), buyerId);
+	private void validateSelfBid(Auction auction, Long buyerMemberId) {
+		if (auction.getMemberId().equals(buyerMemberId)) {
+			throw new SelfBidNotAllowedException(auction.getAuctionId(), buyerMemberId);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class BidValidatorImpl implements BidValidator {
 	}
 
 	@Override
-	public void instantBuyValidate(Auction auction, Long buyerId) {
-		validateSelfBid(auction, buyerId);
+	public void instantBuyValidate(Auction auction, Long buyerMemberId) {
+		validateSelfBid(auction, buyerMemberId);
 	}
 }

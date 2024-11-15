@@ -4,9 +4,9 @@ import static org.omocha.domain.common.code.SuccessCode.*;
 
 import java.util.List;
 
+import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.bid.dto.BidDto;
 import org.omocha.api.bid.dto.BidDtoMapper;
-import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.bid.BidCommand;
 import org.omocha.domain.bid.BidInfo;
@@ -64,8 +64,8 @@ public class BidController implements BidApi {
 		@PathVariable("auction_id") Long auctionId,
 		@RequestBody BidDto.BidAddRequest addRequest
 	) {
-		Long buyerId = userPrincipal.getId();
-		BidCommand.AddBid addBidCommand = bidDtoMapper.toCommand(buyerId, auctionId, addRequest);
+		Long buyerMemberId = userPrincipal.getId();
+		BidCommand.AddBid addBidCommand = bidDtoMapper.toCommand(buyerMemberId, auctionId, addRequest);
 
 		BidInfo.AddBid addBid = bidFacade.addBid(addBidCommand);
 		BidDto.BidAddResponse response = bidDtoMapper.toResponse(addBid);
@@ -145,9 +145,9 @@ public class BidController implements BidApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
-		Long memberId = userPrincipal.getId();
+		Long buyerMemberId = userPrincipal.getId();
 
-		BidCommand.BuyNow buyNowCommand = bidDtoMapper.toCommand(memberId, auctionId);
+		BidCommand.BuyNow buyNowCommand = bidDtoMapper.toCommand(buyerMemberId, auctionId);
 
 		bidFacade.buyNow(buyNowCommand);
 

@@ -4,14 +4,14 @@ public class BidCommand {
 
 	public record AddBid(
 		Long auctionId,
-		Long buyerId,
+		Long buyerMemberId,
 		Long bidPrice
 	) {
 
 	}
 
 	public record BuyNow(
-		Long memberId,
+		Long buyerMemberId,
 		Long auctionId
 	) {
 

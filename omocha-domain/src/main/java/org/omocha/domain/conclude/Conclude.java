@@ -28,13 +28,13 @@ public class Conclude {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long concludeId;
-	
+
 	@OneToOne
 	@JoinColumn(name = "auction_id")
 	private Auction auction;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "buyer_id")
+	@JoinColumn(name = "buyer_member_id")
 	private Member buyer;
 
 	private Long concludePrice;

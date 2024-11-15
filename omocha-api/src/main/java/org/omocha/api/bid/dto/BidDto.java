@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class BidDto {
 
 	public record BidListResponse(
-		Long buyerId,
+		Long buyerMemberId,
 		Long bidPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
@@ -22,7 +22,7 @@ public class BidDto {
 	}
 
 	public record BidAddResponse(
-		Long buyerId,
+		Long buyerMemberId,
 		Long bidPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt

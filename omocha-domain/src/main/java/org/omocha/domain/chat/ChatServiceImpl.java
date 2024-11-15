@@ -63,14 +63,14 @@ public class ChatServiceImpl implements ChatService {
 		Chat chat = message.toEntity();
 		Chat savedChat = chatStore.store(chat);
 
-		log.info("Message [{}] sent by member: {} saved", message.message(), message.senderId());
+		log.info("Message [{}] sent by member: {} saved", message.message(), message.senderMemberId());
 		return savedChat;
 	}
 
 	@Override
 	public void sendChatMessage(Chat savedChat) {
 
-		Member sender = memberReader.getMember(savedChat.getSenderId());
+		Member sender = memberReader.getMember(savedChat.getSenderMemberId());
 
 		ChatInfo.RetrieveChatRoomMessage chatMessage =
 			ChatInfo.RetrieveChatRoomMessage.toInfo(sender, savedChat);

@@ -7,7 +7,7 @@ import com.querydsl.core.annotations.QueryProjection;
 public class BidInfo {
 
 	public record BidList(
-		Long buyerId,
+		Long buyerMemberId,
 		Long bidPrice,
 		LocalDateTime createdAt
 	) {
@@ -24,7 +24,7 @@ public class BidInfo {
 
 	public record AddBid(
 		Long bidId,
-		Long buyerId,
+		Long buyerMemberId,
 		Long bidPrice,
 		LocalDateTime createdAt
 	) {

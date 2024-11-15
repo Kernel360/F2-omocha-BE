@@ -30,7 +30,7 @@ public interface BidDtoMapper {
 
 	List<BidDto.BidListResponse> toResponse(List<BidInfo.BidList> bidList);
 
-	BidCommand.AddBid toCommand(Long buyerId, Long auctionId, BidDto.BidAddRequest createRequest);
+	BidCommand.AddBid toCommand(Long buyerMemberId, Long auctionId, BidDto.BidAddRequest createRequest);
 
 	BidDto.BidAddResponse toResponse(BidInfo.AddBid createResponse);
 
@@ -45,5 +45,5 @@ public interface BidDtoMapper {
 
 	BidDto.MyBidListResponse toResponse(BidInfo.RetrieveMyBids retrieveMyBidsInfo);
 
-	BidCommand.BuyNow toCommand(Long memberId, Long auctionId);
+	BidCommand.BuyNow toCommand(Long buyerMemberId, Long auctionId);
 }
