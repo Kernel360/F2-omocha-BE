@@ -44,6 +44,7 @@ public class AuctionController implements AuctionApi {
 	private final AuctionDtoMapper auctionDtoMapper;
 	private final PageSort pageSort;
 
+	@Override
 	@PostMapping(
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 		produces = MediaType.APPLICATION_JSON_VALUE
@@ -78,6 +79,7 @@ public class AuctionController implements AuctionApi {
 			.body(result);
 	}
 
+	@Override
 	@GetMapping("")
 	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -113,6 +115,7 @@ public class AuctionController implements AuctionApi {
 			.body(result);
 	}
 
+	@Override
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -280,6 +283,7 @@ public class AuctionController implements AuctionApi {
 
 	}
 
+	@Override
 	@GetMapping("/bid/me")
 	public ResponseEntity<ResultDto<Page<AuctionDto.MyBidAuctionResponse>>> myBidAuctionList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,

@@ -101,6 +101,7 @@ public class BidController implements BidApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@GetMapping("/me/{auction_id}")
 	public ResponseEntity<ResultDto<Page<BidDto.MyBidListResponse>>> myBidList(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,

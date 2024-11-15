@@ -36,6 +36,7 @@ public class MemberController implements MemberApi {
 
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
+	@Override
 	@GetMapping()
 	public ResponseEntity<ResultDto<MemberDto.CurrentMemberInfoResponse>> currentMemberInfo(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
@@ -63,6 +64,7 @@ public class MemberController implements MemberApi {
 
 	}
 
+	@Override
 	@PatchMapping(value = "/profile-image",
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 		produces = MediaType.APPLICATION_JSON_VALUE
@@ -96,6 +98,7 @@ public class MemberController implements MemberApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@PatchMapping("/password")
 	public ResponseEntity<ResultDto<Void>> passwordModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -128,6 +131,7 @@ public class MemberController implements MemberApi {
 	}
 
 	// TODO : 사용자 정보 수정
+	@Override
 	@PatchMapping()
 	public ResponseEntity<ResultDto<MemberDto.MemberModifyResponse>> memberInfoModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -159,7 +163,5 @@ public class MemberController implements MemberApi {
 			.body(resultDto);
 
 	}
-
-	// TODO : 키워드 관련 추가 예정
 
 }
