@@ -29,8 +29,7 @@ public class ReviewCommand {
 	}
 
 	public record RetrieveReviews(
-		Long memberId,
-		Review.Category category
+		Long memberId
 	) {
 
 	}

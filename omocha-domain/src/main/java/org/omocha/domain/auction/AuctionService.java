@@ -16,6 +16,13 @@ public interface AuctionService {
 
 	void removeAuction(AuctionCommand.RemoveAuction removeCommand);
 
+	AuctionInfo.LikeAuction likeAuction(AuctionCommand.LikeAuction likeCommand);
+
+	Page<AuctionInfo.RetrieveMyAuctionLikes> retrieveMyAuctionLikes(
+		Long memberId,
+		Pageable pageable
+	);
+
 	Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctions(
 		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand,
 		Pageable pageable

@@ -36,18 +36,52 @@ public interface ReviewApi {
 		ReviewDto.ReviewAddRequest request
 	);
 
-	@Operation(summary = "리뷰 목록 조회", description = "리뷰 목록을 조회합니다.")
+	@Operation(summary = "멤버가 받은 리뷰 목록 조회", description = "해당 멤버가 받은 리뷰 목록을 조회합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "리뷰 리스트를 성공적으로 조회하였습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Page<ReviewDto.ReviewListResponse>>> receivedReviewList(
+	ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> memberReceivedReviewList(
 		@Parameter(description = "조회 멤버 id값", required = true)
 		Long memberId,
-		@Parameter(description = "조회 리뷰 종류 (WRITTEN, RECEIVED)", required = true)
-		String category,
+		@Parameter(description = "정렬 기준 필드 (createdAt)", example = "createdAt")
+		String sort,
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
+		String direction,
+		@ParameterObject
+		Pageable pageable
+	);
+
+	@Operation(summary = "내가 받은 리뷰 목록 조회", description = "내가 받은 리뷰 목록을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "리뷰 리스트를 성공적으로 조회하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> myReceivedReviewList(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		UserPrincipal userPrincipal,
+		@Parameter(description = "정렬 기준 필드 (createdAt)", example = "createdAt")
+		String sort,
+		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")
+		String direction,
+		@ParameterObject
+		Pageable pageable
+	);
+
+	@Operation(summary = "내가 작성한 리뷰 목록 조회", description = "내가 작성한 리뷰 목록을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "리뷰 리스트를 성공적으로 조회하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Page<ReviewDto.GivenReviewListResponse>>> myGivenReviewList(
+		@Parameter(description = "사용자 객체 정보", required = true)
+		UserPrincipal userPrincipal,
 		@Parameter(description = "정렬 기준 필드 (createdAt)", example = "createdAt")
 		String sort,
 		@Parameter(description = "정렬 방향 (ASC 또는 DESC)", example = "DESC")

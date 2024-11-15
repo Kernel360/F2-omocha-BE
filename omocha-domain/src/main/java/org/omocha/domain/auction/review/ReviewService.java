@@ -7,7 +7,12 @@ public interface ReviewService {
 
 	Long addReview(ReviewCommand.AddReview addReview);
 
-	Page<ReviewInfo.RetrieveReviews> retrieveReviews(
+	Page<ReviewInfo.RetrieveReviews> retrieveReceivedReviews(
+		ReviewCommand.RetrieveReviews retrieveReviews,
+		Pageable pageable
+	);
+
+	Page<ReviewInfo.RetrieveReviews> retrieveGivenReviews(
 		ReviewCommand.RetrieveReviews retrieveReviews,
 		Pageable pageable
 	);

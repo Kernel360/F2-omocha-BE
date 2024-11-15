@@ -33,6 +33,10 @@ public class BidFacade {
 		return bidService.retrieveNowPrice(auctionId);
 	}
 
+	public void buyNow(BidCommand.BuyNow buyNowCommand) {
+		bidService.buyNow(buyNowCommand);
+	}
+
 	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(
 		BidCommand.RetrieveMyBids retrieveMyBidsCommand,
 		Pageable sortPage

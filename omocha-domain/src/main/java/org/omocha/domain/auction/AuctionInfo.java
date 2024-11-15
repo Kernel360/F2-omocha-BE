@@ -14,6 +14,7 @@ public class AuctionInfo {
 		String content,
 		Long startPrice,
 		Long bidUnit,
+		Long instantBuyPrice,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
@@ -33,6 +34,7 @@ public class AuctionInfo {
 				auction.getContent(),
 				auction.getStartPrice(),
 				auction.getBidUnit(),
+				auction.getInstantBuyPrice(),
 				auction.getAuctionStatus(),
 				auction.getThumbnailPath(),
 				auction.getNowPrice(),
@@ -53,11 +55,13 @@ public class AuctionInfo {
 		String content,
 		Long startPrice,
 		Long bidUnit,
+		Long instantBuyPrice,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
+		boolean isLiked, // 로그인 하지 않은 경우 false
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		LocalDateTime createdAt,
@@ -71,11 +75,13 @@ public class AuctionInfo {
 			String content,
 			Long startPrice,
 			Long bidUnit,
+			Long instantBuyPrice,
 			Auction.AuctionStatus auctionStatus,
 			String thumbnailPath,
 			Long nowPrice,
 			Long concludePrice,
 			Long bidCount,
+			Boolean isLiked,
 			LocalDateTime startDate,
 			LocalDateTime endDate,
 			LocalDateTime createdAt
@@ -87,11 +93,13 @@ public class AuctionInfo {
 				content,
 				startPrice,
 				bidUnit,
+				instantBuyPrice,
 				auctionStatus,
 				thumbnailPath,
 				nowPrice,
 				concludePrice,
 				bidCount,
+				isLiked,
 				startDate,
 				endDate,
 				createdAt,
@@ -107,20 +115,74 @@ public class AuctionInfo {
 				this.content,
 				this.startPrice,
 				this.bidUnit,
+				this.instantBuyPrice,
 				this.auctionStatus,
 				this.thumbnailPath,
 				this.nowPrice,
 				this.concludePrice,
 				this.bidCount,
+				this.isLiked,
 				this.startDate,
 				this.endDate,
 				this.createdAt,
 				categoryHierarchy
 			);
 		}
+
 	}
 
-	// TODO: 추후 Conclude Price도 넣기
+	public record LikeAuction(
+		Long auctionId,
+		Long memberId,
+		String likeType
+	) {
+		public static LikeAuction toResponse(
+			Long auctionId,
+			Long memberId,
+			String likeType
+		) {
+			return new LikeAuction(auctionId, memberId, likeType);
+		}
+	}
+
+	public record RetrieveMyAuctionLikes(
+		Long auctionId,
+		String title,
+		String thumbnailPath,
+		Long startPrice,
+		Long nowPrice,
+		Auction.AuctionStatus auctionStatus,
+		LocalDateTime startDate,
+		LocalDateTime endDate,
+		LocalDateTime createdAt,
+		LocalDateTime likedDate
+	) {
+		@QueryProjection
+		public RetrieveMyAuctionLikes(
+			Long auctionId,
+			String title,
+			String thumbnailPath,
+			Long startPrice,
+			Long nowPrice,
+			Auction.AuctionStatus auctionStatus,
+			LocalDateTime startDate,
+			LocalDateTime endDate,
+			LocalDateTime createdAt,
+			LocalDateTime likedDate
+		) {
+			this.auctionId = auctionId;
+			this.title = title;
+			this.thumbnailPath = thumbnailPath;
+			this.startPrice = startPrice;
+			this.nowPrice = nowPrice;
+			this.auctionStatus = auctionStatus;
+			this.startDate = startDate;
+			this.endDate = endDate;
+			this.createdAt = createdAt;
+			this.likedDate = likedDate;
+		}
+	}
+
 	public record RetrieveMyAuctions(
 		Long auctionId,
 		String title,

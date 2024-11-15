@@ -7,7 +7,6 @@ import org.omocha.api.common.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.dto.ReviewDto;
 import org.omocha.api.interfaces.mapper.ReviewDtoMapper;
-import org.omocha.domain.auction.review.Review;
 import org.omocha.domain.auction.review.ReviewCommand;
 import org.omocha.domain.auction.review.ReviewInfo;
 import org.omocha.domain.common.util.PageSort;
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/review")
+@RequestMapping("/api/v2/reviews")
 public class ReviewController implements ReviewApi {
 
 	private final ReviewFacade reviewFacade;
@@ -65,10 +64,9 @@ public class ReviewController implements ReviewApi {
 	}
 
 	@Override
-	@GetMapping("/list/{member_id}")
-	public ResponseEntity<ResultDto<Page<ReviewDto.ReviewListResponse>>> receivedReviewList(
-		@PathVariable("member_id") Long memberId,    // TODO: PathVariable? RequestParam? 둘 중 고민됨...
-		@RequestParam(value = "category", defaultValue = "RECEIVED") String category,
+	@GetMapping("/received/{member_id}")
+	public ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> memberReceivedReviewList(
+		@PathVariable("member_id") Long memberId,
 		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
 		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
 		@PageableDefault(page = 0, size = 10)
@@ -76,16 +74,84 @@ public class ReviewController implements ReviewApi {
 	) {
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		ReviewCommand.RetrieveReviews reviewsCommand = reviewDtoMapper.toCommand(
-			memberId,
-			Review.Category.fromString(category)
+		ReviewCommand.RetrieveReviews reviewsCommand = reviewDtoMapper.toCommand(memberId);
+
+		Page<ReviewInfo.RetrieveReviews> retrieveReceivedReviews = reviewFacade.retrieveReceivedReviews(
+			reviewsCommand,
+			sortPage
 		);
 
-		Page<ReviewInfo.RetrieveReviews> userReviews = reviewFacade.retrieveReviews(reviewsCommand, sortPage);
+		Page<ReviewDto.ReceivedReviewListResponse> response = reviewDtoMapper.toReceivedReviewListResponse(
+			retrieveReceivedReviews
+		);
 
-		Page<ReviewDto.ReviewListResponse> response = reviewDtoMapper.toResponse(userReviews);
+		ResultDto<Page<ReviewDto.ReceivedReviewListResponse>> resultDto = ResultDto.res(
+			REVIEW_LIST_ACCESS_SUCCESS.getStatusCode(),
+			REVIEW_LIST_ACCESS_SUCCESS.getDescription(),
+			response
+		);
 
-		ResultDto<Page<ReviewDto.ReviewListResponse>> resultDto = ResultDto.res(
+		return ResponseEntity
+			.status(REVIEW_LIST_ACCESS_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@GetMapping("/received")
+	public ResponseEntity<ResultDto<Page<ReviewDto.ReceivedReviewListResponse>>> myReceivedReviewList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
+		ReviewCommand.RetrieveReviews reviewsCommand = reviewDtoMapper.toCommand(userPrincipal.getId());
+
+		Page<ReviewInfo.RetrieveReviews> retrieveReceivedReviews = reviewFacade.retrieveReceivedReviews(
+			reviewsCommand,
+			sortPage
+		);
+
+		Page<ReviewDto.ReceivedReviewListResponse> response = reviewDtoMapper.toReceivedReviewListResponse(
+			retrieveReceivedReviews
+		);
+
+		ResultDto<Page<ReviewDto.ReceivedReviewListResponse>> resultDto = ResultDto.res(
+			REVIEW_LIST_ACCESS_SUCCESS.getStatusCode(),
+			REVIEW_LIST_ACCESS_SUCCESS.getDescription(),
+			response
+		);
+
+		return ResponseEntity
+			.status(REVIEW_LIST_ACCESS_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@GetMapping("/given")
+	public ResponseEntity<ResultDto<Page<ReviewDto.GivenReviewListResponse>>> myGivenReviewList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@PageableDefault(page = 0, size = 10)
+		Pageable pageable
+	) {
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
+		ReviewCommand.RetrieveReviews reviewsCommand = reviewDtoMapper.toCommand(userPrincipal.getId());
+
+		Page<ReviewInfo.RetrieveReviews> retrieveGivenReviews = reviewFacade.retrieveGivenReviews(
+			reviewsCommand,
+			sortPage
+		);
+
+		Page<ReviewDto.GivenReviewListResponse> response = reviewDtoMapper.toGivenReviewListResponse(
+			retrieveGivenReviews
+		);
+
+		ResultDto<Page<ReviewDto.GivenReviewListResponse>> resultDto = ResultDto.res(
 			REVIEW_LIST_ACCESS_SUCCESS.getStatusCode(),
 			REVIEW_LIST_ACCESS_SUCCESS.getDescription(),
 			response

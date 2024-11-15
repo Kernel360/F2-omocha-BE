@@ -52,10 +52,11 @@ public class SecurityConfig {
 
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PERMITTED_ALL_URI).permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v2/auction/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/auctions/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/auctions/likes").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/v2/bid/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/question/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v2/review/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/reviews/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/categories/**").permitAll()
 				.anyRequest().authenticated())
 

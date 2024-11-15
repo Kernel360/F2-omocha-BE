@@ -3,6 +3,7 @@ package org.omocha.api.interfaces;
 import static org.omocha.domain.exception.code.SuccessCode.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.omocha.api.application.AuctionFacade;
 import org.omocha.api.common.auth.jwt.UserPrincipal;
@@ -14,6 +15,7 @@ import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.common.util.PageSort;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -35,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/auction")
+@RequestMapping("/api/v2/auctions")
 public class AuctionController implements AuctionApi {
 
 	private final AuctionFacade auctionFacade;
@@ -76,8 +78,9 @@ public class AuctionController implements AuctionApi {
 			.body(result);
 	}
 
-	@GetMapping("/basic-list")
+	@GetMapping("")
 	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionSearchResponse>>> auctionSearchList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		AuctionDto.AuctionSearchRequest searchRequest,
 		@RequestParam(value = "categoryId", required = false) Long categoryId,
 		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
@@ -86,15 +89,18 @@ public class AuctionController implements AuctionApi {
 		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	) {
+		Long memberId = Optional.ofNullable(userPrincipal)
+			.map(UserPrincipal::getId)
+			.orElse(null);
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
 		AuctionCommand.SearchAuction searchCommand =
-			auctionDtoMapper.toCommand(searchRequest, auctionStatus, categoryId);
+			auctionDtoMapper.toCommand(searchRequest, auctionStatus, categoryId, memberId);
 
-		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuction(searchCommand, sortPage);
+		Page<AuctionInfo.SearchAuction> searchInfo = auctionFacade.searchAuctions(searchCommand, sortPage);
 
-		Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toAuctionListResponse(searchInfo);
+		Page<AuctionDto.AuctionSearchResponse> response = auctionDtoMapper.toSearchResponse(searchInfo);
 
 		ResultDto<Page<AuctionDto.AuctionSearchResponse>> result = ResultDto.res(
 			AUCTION_LIST_ACCESS_SUCCESS.getStatusCode(),
@@ -141,7 +147,7 @@ public class AuctionController implements AuctionApi {
 		log.info("Received auction remove request: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		AuctionCommand.RemoveAuction removeCommand =
-			auctionDtoMapper.toRemoveCommand(userPrincipal.getId(), auctionId);
+			auctionDtoMapper.toRemoveCommand(auctionId, userPrincipal.getId());
 
 		auctionFacade.removeAuction(removeCommand);
 
@@ -155,6 +161,80 @@ public class AuctionController implements AuctionApi {
 		return ResponseEntity
 			.status(AUCTION_DELETE_SUCCESS.getHttpStatus())
 			.body(result);
+	}
+
+	@Override
+	@PostMapping("/likes/{auction_id}")
+	public ResponseEntity<ResultDto<AuctionDto.AuctionLikeResponse>> auctionLike(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable("auction_id") Long auctionId
+	) {
+		log.info("Received auction like request: {}, memberId: {}", auctionId, userPrincipal.getId());
+
+		AuctionCommand.LikeAuction likeCommand =
+			auctionDtoMapper.toLikeCommand(auctionId, userPrincipal.getId());
+
+		AuctionInfo.LikeAuction likeInfo = auctionFacade.likeAuction(likeCommand);
+
+		AuctionDto.AuctionLikeResponse response = auctionDtoMapper.toLikeResponse(likeInfo);
+
+		log.info("Auction like request finished: auctionId: {}, memberId: {}", auctionId, userPrincipal.getId());
+
+		if ("LIKE".equals(response.likeType())) {
+			ResultDto<AuctionDto.AuctionLikeResponse> result = ResultDto.res(
+				AUCTION_LIKE_SUCCESS.getStatusCode(),
+				AUCTION_LIKE_SUCCESS.getDescription(),
+				response
+			);
+			return ResponseEntity
+				.status(AUCTION_LIKE_SUCCESS.getHttpStatus())
+				.body(result);
+		} else {
+			ResultDto<AuctionDto.AuctionLikeResponse> result = ResultDto.res(
+				AUCTION_UNLIKE_SUCCESS.getStatusCode(),
+				AUCTION_UNLIKE_SUCCESS.getDescription(),
+				response
+			);
+			return ResponseEntity
+				.status(AUCTION_UNLIKE_SUCCESS.getHttpStatus())
+				.body(result);
+
+		}
+	}
+
+	@Override
+	@GetMapping("/likes")
+	public ResponseEntity<ResultDto<Page<AuctionDto.AuctionLikeListResponse>>> myAuctionLikeList(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
+		Long memberId = userPrincipal.getId();
+
+		log.info("Received auction like list request. memberId : {}", memberId);
+
+		Pageable pageable = PageRequest.of(page, size);
+
+		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+
+		Page<AuctionInfo.RetrieveMyAuctionLikes> likeInfo = auctionFacade.retrieveMyAuctionLikes(memberId, sortPage);
+
+		Page<AuctionDto.AuctionLikeListResponse> response = auctionDtoMapper.toLikeListResponse(likeInfo);
+
+		ResultDto<Page<AuctionDto.AuctionLikeListResponse>> result = ResultDto.res(
+			AUCTION_LIKE_LIST_SUCCESS.getStatusCode(),
+			AUCTION_LIKE_LIST_SUCCESS.getDescription(),
+			response
+		);
+
+		log.info("Auction like list retrieved memberId : {}", memberId);
+
+		return ResponseEntity
+			.status(AUCTION_LIKE_LIST_SUCCESS.getHttpStatus())
+			.body(result);
+
 	}
 
 	@Override

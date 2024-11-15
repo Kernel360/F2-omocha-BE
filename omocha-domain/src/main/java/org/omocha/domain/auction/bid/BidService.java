@@ -7,12 +7,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface BidService {
 
-	public List<BidInfo.BidList> retrieveBids(Long auctionId);
+	List<BidInfo.BidList> retrieveBids(Long auctionId);
 
-	public BidInfo.AddBid addBid(BidCommand.AddBid addBid);
+	BidInfo.AddBid addBid(BidCommand.AddBid addBid);
 
-	public BidInfo.NowPrice retrieveNowPrice(Long auctionId);
+	BidInfo.NowPrice retrieveNowPrice(Long auctionId);
+
+	void buyNow(BidCommand.BuyNow buyNowCommand);
 
 	Page<BidInfo.RetrieveMyBids> retrieveMyBids(BidCommand.RetrieveMyBids retrieveMyBidsCommand, Pageable sortPage);
-
 }

@@ -10,6 +10,7 @@ import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.exception.AuctionAlreadyEndedException;
 import org.omocha.domain.exception.AuctionNotConcludedException;
 import org.omocha.domain.exception.AuctionNotInBiddingStateException;
+import org.omocha.domain.exception.LikeCountNegativeException;
 import org.omocha.domain.image.Image;
 
 import jakarta.persistence.CascadeType;
@@ -55,6 +56,10 @@ public class Auction extends BaseEntity {
 
 	private Long bidUnit;
 
+	private long likeCount;
+
+	private Long instantBuyPrice;
+
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
 
@@ -75,7 +80,6 @@ public class Auction extends BaseEntity {
 	@OneToOne(mappedBy = "auction")
 	private Conclude conclude;
 
-
 	@Builder
 	public Auction(
 		Long memberId,
@@ -85,6 +89,8 @@ public class Auction extends BaseEntity {
 		Long nowPrice,
 		Long bidCount,
 		Long bidUnit,
+		Long instantBuyPrice,
+		long likeCount,
 		String thumbnailPath,
 		LocalDateTime startDate,
 		LocalDateTime endDate
@@ -96,6 +102,8 @@ public class Auction extends BaseEntity {
 		this.nowPrice = nowPrice;
 		this.bidCount = bidCount;
 		this.bidUnit = bidUnit;
+		this.likeCount = likeCount;
+		this.instantBuyPrice = instantBuyPrice;
 		this.thumbnailPath = thumbnailPath;
 		this.auctionStatus = AuctionStatus.BIDDING;
 		this.startDate = startDate;
@@ -123,24 +131,23 @@ public class Auction extends BaseEntity {
 		this.bidCount += 1;
 	}
 
+	public void validateAuctionStatus() {
+		if (getAuctionStatus() != AuctionStatus.BIDDING) {
+			throw new AuctionNotInBiddingStateException(auctionId, auctionStatus);
+		}
+
+		LocalDateTime now = LocalDateTime.now();
+		if (getEndDate().isBefore(now)) {
+			throw new AuctionAlreadyEndedException(auctionId);
+		}
+	}
+
 	public void statusConcluded() {
 		this.auctionStatus = AuctionStatus.CONCLUDED;
 	}
 
 	public void statusNoBids() {
 		this.auctionStatus = AuctionStatus.NO_BIDS;
-	}
-
-	public void validateAuctionStatus() {
-		LocalDateTime now = LocalDateTime.now();
-
-		if (endDate.isBefore(now)) {
-			throw new AuctionAlreadyEndedException(auctionId);
-		}
-
-		if (auctionStatus != AuctionStatus.BIDDING) {
-			throw new AuctionNotInBiddingStateException(auctionId, auctionStatus);
-		}
 	}
 
 	public void validateAuctionStatusConcludedOrCompleted() {
@@ -157,5 +164,17 @@ public class Auction extends BaseEntity {
 
 		this.auctionCategories.add(auctionCategory);
 	}
+
+	public void increaseLikeCount() {
+		likeCount++;
+	}
+
+	public void decreaseLikeCount() {
+		if (likeCount < 0) {
+			throw new LikeCountNegativeException();
+		}
+		likeCount--;
+	}
+
 }
 

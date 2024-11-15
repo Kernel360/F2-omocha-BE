@@ -31,6 +31,7 @@ public enum SuccessCode {
 	AUCTION_DELETE_SUCCESS(HttpStatus.OK, "경매가 성공적으로 삭제되었습니다."),
 	AUCTION_LIST_ACCESS_SUCCESS(HttpStatus.OK, "경매 리스트를 성공적으로 조회하였습니다."),
 	AUCTION_DETAIL_SUCCESS(HttpStatus.OK, "경매 상세정보를 성공적으로 조회하였습니다."),
+	AUCTION_INSTANT_BUY_SUCCESS(HttpStatus.OK, "즉시 구매를 성공적으로 처리하였습니다."),
 
 	// Category Code
 	CATEGORY_CREATE_SUCCESS(HttpStatus.OK, "카테고리가 성공적으로 생성되었습니다."),
@@ -49,7 +50,12 @@ public enum SuccessCode {
 
 	// Review Code
 	REVIEW_ADD_SUCCESS(HttpStatus.OK, "리뷰가 성공적으로 생성되었습니다."),
-	REVIEW_LIST_ACCESS_SUCCESS(HttpStatus.OK, "리뷰 리스트를 성공적으로 조회하였습니다.");
+	REVIEW_LIST_ACCESS_SUCCESS(HttpStatus.OK, "리뷰 리스트를 성공적으로 조회하였습니다."),
+
+	// Like Code
+	AUCTION_LIKE_SUCCESS(HttpStatus.OK, "경매 찜을 성공적으로 했습니다."),
+	AUCTION_UNLIKE_SUCCESS(HttpStatus.OK, "경매 찜 취소를 성공적으로 했습니다"),
+	AUCTION_LIKE_LIST_SUCCESS(HttpStatus.OK, "사용자의 찜 목록을 성공적으로 조회했습니다");
 
 	private final HttpStatus httpStatus;
 	private final String description;

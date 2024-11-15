@@ -66,6 +66,18 @@ public interface BidApi {
 		Long auctionId
 	);
 
+	@Operation(summary = "즉시 구매", description = "경매 품목을 즉시 구매합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "즉시 구매를 성공적으로 완료하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<Void>> instantBuy(
+		@Parameter(description = "사용자 객체 정보", required = true) UserPrincipal userPrincipal,
+		@Parameter(description = "경매 ID") Long auctionId
+	);
+
 	@Operation(summary = "사용자의 입찰 내역 조회", description = "사용자의 입찰 내역을 조회합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "입찰 내역 조회에 성공하였습니다.",

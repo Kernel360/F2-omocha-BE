@@ -43,7 +43,7 @@ public enum ErrorCode {
 	AUCTION_IMAGE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "경매에서 생성된 이미지를 삭제할 수 없습니다."),
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
 	AUCTION_NOT_CONCLUDED(HttpStatus.BAD_REQUEST, "경매가 낙찰되지 않은 상태입니다."),
-
+	LIKE_NOT_NEGATIVE(HttpStatus.BAD_REQUEST, "찜 수가 음수가 되면 안됩니다"),
 	// Category Code
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없습니다."),
 
@@ -53,6 +53,7 @@ public enum ErrorCode {
 	INVALID_BID_UNIT(HttpStatus.BAD_REQUEST, "입찰 금액이 입찰 단위에 유효하지 않습니다."),
 	BID_BELOW_START_PRICE(HttpStatus.BAD_REQUEST, "입찰 가격이 시작 가격보다 낮습니다."),
 	BID_NOT_EXCEEDING_CURRENT_HIGHEST(HttpStatus.BAD_REQUEST, "입찰 가격이 최고가보다 높지 않습니다."),
+	BID_EXCEEDS_INSTANT_BUY_PRICE(HttpStatus.BAD_REQUEST, "입찰 가격이 즉시 구매 가격과 같거나 높습니다."),
 
 	// Qna Code
 	QUESTION_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),

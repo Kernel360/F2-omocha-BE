@@ -23,11 +23,19 @@ public class ReviewReaderImpl implements ReviewReader {
 	}
 
 	@Override
-	public Page<ReviewInfo.RetrieveReviews> getReviews(
+	public Page<ReviewInfo.RetrieveReviews> getReceivedReviews(
 		ReviewCommand.RetrieveReviews retrieveReviews,
 		Pageable pageable
 	) {
 		return reviewRepository.getReceivedReviews(retrieveReviews, pageable);
+	}
+
+	@Override
+	public Page<ReviewInfo.RetrieveReviews> getGivenReviews(
+		ReviewCommand.RetrieveReviews retrieveReviews,
+		Pageable pageable
+	) {
+		return reviewRepository.getGivenReviews(retrieveReviews, pageable);
 	}
 
 	@Override

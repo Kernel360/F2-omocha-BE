@@ -7,7 +7,12 @@ public interface ReviewReader {
 
 	boolean checkExistReview(Long auctionId, Long memberId);
 
-	Page<ReviewInfo.RetrieveReviews> getReviews(
+	Page<ReviewInfo.RetrieveReviews> getReceivedReviews(
+		ReviewCommand.RetrieveReviews retrieveReviews,
+		Pageable pageable
+	);
+
+	Page<ReviewInfo.RetrieveReviews> getGivenReviews(
 		ReviewCommand.RetrieveReviews retrieveReviews,
 		Pageable pageable
 	);

@@ -84,21 +84,4 @@ public class Review extends BaseEntity {
 			}
 		}
 	}
-
-	@Getter
-	@RequiredArgsConstructor
-	public enum Category {
-		WRITTEN("작성한 리뷰"),
-		RECEIVED("받은 리뷰");
-
-		private final String description;
-
-		public static Category fromString(String category) {
-			try {
-				return Category.valueOf(category);
-			} catch (Exception e) {
-				throw new IllegalArgumentException(category);
-			}
-		}
-	}
 }

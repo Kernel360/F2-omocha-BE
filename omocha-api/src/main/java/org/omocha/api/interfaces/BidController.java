@@ -31,13 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/bid")
+@RequestMapping("/api/v2/bids")
 public class BidController implements BidApi {
 
 	private final BidFacade bidFacade;
 	private final BidDtoMapper bidDtoMapper;
 	private final PageSort pageSort;
 
+	@Override
 	@GetMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<List<BidDto.BidListResponse>>> bidList(
 		@PathVariable("auction_id") Long auctionId
@@ -57,6 +58,7 @@ public class BidController implements BidApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@PostMapping("/{auction_id}")
 	public ResponseEntity<ResultDto<BidDto.BidAddResponse>> bidAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -80,6 +82,7 @@ public class BidController implements BidApi {
 			.body(resultDto);
 	}
 
+	@Override
 	@GetMapping("/{auction_id}/now-price")
 	public ResponseEntity<ResultDto<BidDto.NowPriceResponse>> nowPrice(
 		@PathVariable("auction_id") Long auctionId
@@ -114,7 +117,7 @@ public class BidController implements BidApi {
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		BidCommand.RetrieveMyBids retrieveMyBidsCommand = bidDtoMapper.toCommand(memberId, auctionId);
+		BidCommand.RetrieveMyBids retrieveMyBidsCommand = bidDtoMapper.toMyBidsCommand(memberId, auctionId);
 
 		Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo = bidFacade.retrieveMyBids(retrieveMyBidsCommand,
 			sortPage);
@@ -134,5 +137,27 @@ public class BidController implements BidApi {
 			.status(MY_BIDDING_LIST_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
+	}
+
+	@Override
+	@PostMapping("/{auction_id}/instant-buy")
+	public ResponseEntity<ResultDto<Void>> instantBuy(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable("auction_id") Long auctionId
+	) {
+		Long memberId = userPrincipal.getId();
+
+		BidCommand.BuyNow buyNowCommand = bidDtoMapper.toCommand(memberId, auctionId);
+
+		bidFacade.buyNow(buyNowCommand);
+
+		ResultDto<Void> result = ResultDto.res(
+			AUCTION_INSTANT_BUY_SUCCESS.getStatusCode(),
+			AUCTION_INSTANT_BUY_SUCCESS.getDescription()
+		);
+
+		return ResponseEntity
+			.status(AUCTION_INSTANT_BUY_SUCCESS.getHttpStatus())
+			.body(result);
 	}
 }

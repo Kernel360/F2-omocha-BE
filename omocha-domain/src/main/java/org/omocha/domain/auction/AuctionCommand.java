@@ -13,6 +13,7 @@ public class AuctionCommand {
 		String content,
 		Long startPrice,
 		Long bidUnit,
+		Long instantBuyPrice,
 		// TODO : VO 날짜 format 추가
 		LocalDateTime startDate,
 		LocalDateTime endDate,
@@ -29,6 +30,8 @@ public class AuctionCommand {
 				.startPrice(startPrice)
 				.bidCount(0L)
 				.bidUnit(bidUnit)
+				.instantBuyPrice(instantBuyPrice)
+				.likeCount(0L)
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();
@@ -38,7 +41,8 @@ public class AuctionCommand {
 	public record SearchAuction(
 		String title,
 		Auction.AuctionStatus auctionStatus,
-		Long categoryId
+		Long categoryId,
+		Long memberId
 	) {
 	}
 
@@ -49,9 +53,16 @@ public class AuctionCommand {
 	}
 
 	public record RemoveAuction(
-		Long memberId,
-		Long auctionId
+		Long auctionId,
+		Long memberId
 	) {
+	}
+
+	public record LikeAuction(
+		Long auctionId,
+		Long memberId
+	) {
+
 	}
 
 	public record RetrieveMyAuctions(

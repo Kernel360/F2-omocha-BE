@@ -21,13 +21,17 @@ public class ReviewFacade {
 		return reviewService.addReview(addReview);
 	}
 
-	// 리뷰 조회
-	public Page<ReviewInfo.RetrieveReviews> retrieveReviews(
+	public Page<ReviewInfo.RetrieveReviews> retrieveReceivedReviews(
 		ReviewCommand.RetrieveReviews retrieveReviews,
 		Pageable pageable
 	) {
-		return reviewService.retrieveReviews(retrieveReviews, pageable);
+		return reviewService.retrieveReceivedReviews(retrieveReviews, pageable);
 	}
 
-	// 평점 평균 조회는 member쪽에서 만들어야 할 듯?
+	public Page<ReviewInfo.RetrieveReviews> retrieveGivenReviews(
+		ReviewCommand.RetrieveReviews retrieveReviews,
+		Pageable pageable
+	) {
+		return reviewService.retrieveGivenReviews(retrieveReviews, pageable);
+	}
 }

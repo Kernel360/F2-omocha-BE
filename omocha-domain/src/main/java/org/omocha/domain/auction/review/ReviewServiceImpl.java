@@ -91,10 +91,18 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<ReviewInfo.RetrieveReviews> retrieveReviews(
+	public Page<ReviewInfo.RetrieveReviews> retrieveReceivedReviews(
 		ReviewCommand.RetrieveReviews retrieveReviews,
 		Pageable pageable
 	) {
-		return reviewReader.getReviews(retrieveReviews, pageable);
+		return reviewReader.getReceivedReviews(retrieveReviews, pageable);
+	}
+
+	@Override
+	public Page<ReviewInfo.RetrieveReviews> retrieveGivenReviews(
+		ReviewCommand.RetrieveReviews retrieveReviews,
+		Pageable pageable
+	) {
+		return reviewReader.getGivenReviews(retrieveReviews, pageable);
 	}
 }

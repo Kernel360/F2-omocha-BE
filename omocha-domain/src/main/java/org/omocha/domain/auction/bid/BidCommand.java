@@ -10,6 +10,13 @@ public class BidCommand {
 
 	}
 
+	public record BuyNow(
+		Long memberId,
+		Long auctionId
+	) {
+
+	}
+
 	public record RetrieveMyBids(
 		Long memberId,
 		Long auctionId

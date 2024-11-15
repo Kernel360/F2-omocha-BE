@@ -37,7 +37,7 @@ public interface BidDtoMapper {
 
 	BidDto.NowPriceResponse toResponse(BidInfo.NowPrice nowPrice);
 
-	BidCommand.RetrieveMyBids toCommand(Long memberId, Long auctionId);
+	BidCommand.RetrieveMyBids toMyBidsCommand(Long memberId, Long auctionId);
 
 	// BidInfo.RetrieveMyBids에 대한 변환
 	default Page<BidDto.MyBidListResponse> toMyBidListResponse(Page<BidInfo.RetrieveMyBids> retrieveMyBidsInfo) {
@@ -45,4 +45,6 @@ public interface BidDtoMapper {
 	}
 
 	BidDto.MyBidListResponse toResponse(BidInfo.RetrieveMyBids retrieveMyBidsInfo);
+
+	BidCommand.BuyNow toCommand(Long memberId, Long auctionId);
 }

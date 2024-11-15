@@ -43,16 +43,34 @@ public interface ReviewDtoMapper {
 
 	ReviewDto.ReviewAddResponse toResponse(Long reviewId);
 
-	ReviewCommand.RetrieveReviews toCommand(Long memberId, Review.Category category);
+	ReviewCommand.RetrieveReviews toCommand(Long memberId);
 
-	default Page<ReviewDto.ReviewListResponse> toResponse(Page<ReviewInfo.RetrieveReviews> userReviews) {
-		List<ReviewDto.ReviewListResponse> content = userReviews.getContent().stream()
-			.map(this::toResponse)
+	default Page<ReviewDto.ReceivedReviewListResponse> toReceivedReviewListResponse(
+		Page<ReviewInfo.RetrieveReviews> userReviews
+	) {
+		List<ReviewDto.ReceivedReviewListResponse> content = userReviews.getContent().stream()
+			.map(this::toReceivedReviewResponse)
 			.collect(Collectors.toList());
 
 		return new PageImpl<>(content, userReviews.getPageable(), userReviews.getTotalElements());
 	}
 
 	@Mapping(target = "thumbnailPath", source = "reviewInfo.auctionThumbnailPath")
-	ReviewDto.ReviewListResponse toResponse(ReviewInfo.RetrieveReviews reviewInfo);
+	@Mapping(target = "reviewerMemberId", source = "reviewInfo.memberId")
+	@Mapping(target = "reviewerMemberNickname", source = "reviewInfo.nickname")
+	ReviewDto.ReceivedReviewListResponse toReceivedReviewResponse(ReviewInfo.RetrieveReviews reviewInfo);
+
+	default Page<ReviewDto.GivenReviewListResponse> toGivenReviewListResponse(
+		Page<ReviewInfo.RetrieveReviews> userReviews) {
+		List<ReviewDto.GivenReviewListResponse> content = userReviews.getContent().stream()
+			.map(this::toGivenReviewResponse)
+			.collect(Collectors.toList());
+
+		return new PageImpl<>(content, userReviews.getPageable(), userReviews.getTotalElements());
+	}
+
+	@Mapping(target = "thumbnailPath", source = "reviewInfo.auctionThumbnailPath")
+	@Mapping(target = "recipientMemberId", source = "reviewInfo.memberId")
+	@Mapping(target = "recipientMemberNickname", source = "reviewInfo.nickname")
+	ReviewDto.GivenReviewListResponse toGivenReviewResponse(ReviewInfo.RetrieveReviews reviewInfo);
 }
