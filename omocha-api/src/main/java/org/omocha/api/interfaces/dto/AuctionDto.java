@@ -81,7 +81,7 @@ public class AuctionDto {
 		Long auctionId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
-		Long nowPrice, // TODO: 추후 Conclude Price도 넣기
+		Long nowPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
 		String thumbnailPath

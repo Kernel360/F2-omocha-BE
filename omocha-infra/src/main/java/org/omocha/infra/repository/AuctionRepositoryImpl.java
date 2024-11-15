@@ -3,6 +3,7 @@ package org.omocha.infra.repository;
 import static org.omocha.domain.auction.QAuction.*;
 import static org.omocha.domain.auction.QCategory.*;
 import static org.omocha.domain.auction.bid.QBid.*;
+import static org.omocha.domain.auction.conclude.QConclude.*;
 import static org.springframework.util.ObjectUtils.*;
 
 import java.util.List;
@@ -96,8 +97,11 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 	}
 
 	@Override
-	public Page<AuctionInfo.RetrieveMyAuctions> searchMyAuctionList(Long memberId, Auction.AuctionStatus auctionStatus,
-		Pageable pageable) {
+	public Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(
+		Long memberId,
+		Auction.AuctionStatus auctionStatus,
+		Pageable pageable
+	) {
 		JPAQuery<AuctionInfo.RetrieveMyAuctions> query = queryFactory
 			.select(new QAuctionInfo_RetrieveMyAuctions(
 				auction.auctionId,
@@ -143,21 +147,17 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.auctionStatus,
 				auction.thumbnailPath,
 				Expressions.cases()
-					.when(auction.auctionStatus.eq(Auction.AuctionStatus.BIDDING))
-					.then("입찰중")
-					.when(auction.conclude.isNotNull()
-						.and(auction.conclude.buyer.isNotNull())
-						.and(auction.conclude.buyer.memberId.eq(memberId))
+					.when(auction.auctionStatus.eq(Auction.AuctionStatus.BIDDING)).then("입찰중")
+					.when(conclude.buyer.memberId.eq(memberId)
 						.and(auction.auctionStatus.eq(Auction.AuctionStatus.CONCLUDED)
-							.or(auction.auctionStatus.eq(Auction.AuctionStatus.COMPLETED))))
-					.then("낙찰")
+							.or(auction.auctionStatus.eq(Auction.AuctionStatus.COMPLETED)))).then("낙찰")
 					.otherwise("패찰")
 					.as("bidStatus")
-
 			))
-			.from(auction)
-			.leftJoin(bid).on(bid.auction.eq(auction))
-			.where(bid.bidId.in(maxBidIds));
+			.from(bid)
+			.where(bid.bidId.in(maxBidIds))
+			.leftJoin(auction).on(bid.auction.eq(auction))
+			.leftJoin(conclude).on(auction.eq(conclude.auction));
 
 		for (Sort.Order o : sortPage.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(bid.getType(), bid.getMetadata());

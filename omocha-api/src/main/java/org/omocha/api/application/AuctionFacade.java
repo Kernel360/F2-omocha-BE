@@ -45,8 +45,8 @@ public class AuctionFacade {
 
 	public Page<AuctionInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
 		AuctionCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand,
-		Pageable sortPage
+		Pageable pageable
 	) {
-		return auctionService.retrieveMyBidAuctions(retrieveMyBidAuctionsCommand, sortPage);
+		return auctionService.retrieveMyBidAuctions(retrieveMyBidAuctionsCommand, pageable);
 	}
 }

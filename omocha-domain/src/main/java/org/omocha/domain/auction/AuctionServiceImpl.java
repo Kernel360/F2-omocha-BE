@@ -132,9 +132,9 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	public Page<AuctionInfo.RetrieveMyBidAuctions> retrieveMyBidAuctions(
 		AuctionCommand.RetrieveMyBidAuctions retrieveMyBidAuctionsCommand,
-		Pageable sortPage
+		Pageable pageable
 	) {
-		return auctionReader.getMyBidAuctionList(retrieveMyBidAuctionsCommand.memberId(), sortPage);
+		return auctionReader.getMyBidAuctionList(retrieveMyBidAuctionsCommand.memberId(), pageable);
 	}
 
 }

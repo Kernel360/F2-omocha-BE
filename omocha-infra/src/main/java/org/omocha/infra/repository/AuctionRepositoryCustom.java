@@ -15,7 +15,7 @@ public interface AuctionRepositoryCustom {
 		Pageable pageable
 	);
 
-	Page<AuctionInfo.RetrieveMyAuctions> searchMyAuctionList(
+	Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(
 		Long memberId,
 		Auction.AuctionStatus auctionStatus,
 		Pageable pageable

@@ -52,7 +52,7 @@ public class AuctionReaderImpl implements AuctionReader {
 	@Override
 	public Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(Long memberId, Auction.AuctionStatus auctionStatus,
 		Pageable pageable) {
-		return auctionRepository.searchMyAuctionList(memberId, auctionStatus, pageable);
+		return auctionRepository.getMyAuctionList(memberId, auctionStatus, pageable);
 	}
 
 	@Override
