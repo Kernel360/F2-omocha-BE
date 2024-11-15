@@ -4,6 +4,7 @@ import org.omocha.api.auth.jwt.JwtProvider;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
+import org.omocha.api.interfaces.AuthApi;
 import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/auth")
-public class AuthController {
+public class AuthController implements AuthApi {
 
 	private final AuthFacade authFacade;
 	private final AuthDtoMapper authDtoMapper;
 	private final JwtProvider jwtProvider;
 	private final PasswordManager passwordManager;
 
+	@Override
 	@PostMapping("/register")
 	public ResponseEntity<ResultDto<Void>> memberAdd(
 		@RequestBody @Valid AuthDto.MemberAddRequest memberAddRequest
@@ -55,6 +57,7 @@ public class AuthController {
 	}
 
 	// TODO : security 추가 이후에 작업 필요
+	@Override
 	@GetMapping("/validate-email")
 	public ResponseEntity<ResultDto<Boolean>> emailValidateCheck(
 		@RequestParam String email
@@ -73,6 +76,7 @@ public class AuthController {
 			.body(resultDto);
 	}
 
+	@Override
 	@PostMapping("/login")
 	public ResponseEntity<ResultDto<Void>> memberLogin(
 		@RequestBody @Valid AuthDto.MemberLoginRequest memberLoginRequest,
@@ -95,6 +99,7 @@ public class AuthController {
 			.body(resultDto);
 	}
 
+	@Override
 	@PostMapping("/logout")
 	public ResponseEntity<ResultDto<Void>> memberLogout(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
