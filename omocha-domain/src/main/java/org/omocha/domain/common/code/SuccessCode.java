@@ -33,6 +33,19 @@ public enum SuccessCode {
 	AUCTION_DETAIL_SUCCESS(HttpStatus.OK, "경매 상세정보를 성공적으로 조회하였습니다."),
 	AUCTION_INSTANT_BUY_SUCCESS(HttpStatus.OK, "즉시 구매를 성공적으로 처리하였습니다."),
 
+	// QnA Code
+
+	QUESTION_CREATE_SUCCESS(HttpStatus.OK, "문의가 성공적으로 생성되었습니다."),
+	QUESTION_MODIFY_SUCCESS(HttpStatus.OK, "문의가 성공적으로 수정되었습니다."),
+	QUESTION_DELETE_SUCCESS(HttpStatus.OK, "문의가 성공적으로 삭제되었습니다."),
+	QUESTION_ACCESS_SUCCESS(HttpStatus.OK, "문의 조회에 성공하였습니다."),
+	QNA_LIST_ACCESS_SUCCESS(HttpStatus.OK, "문의,답변 목록 조회에 성공하였습니다."),
+
+	ANSWER_CREATE_SUCCESS(HttpStatus.OK, "답변이 성공적으로 생성되었습니다."),
+	ANSWER_MODIFY_SUCCESS(HttpStatus.OK, "답변이 성공적으로 수정되었습니다."),
+	ANSWER_DELETE_SUCCESS(HttpStatus.OK, "답변이 성공적으로 삭제되었습니다."),
+	ANSWER_LIST_ACCESS_SUCCESS(HttpStatus.OK, "답변 목록 조회에 성공하였습니다."),
+
 	// Category Code
 	CATEGORY_CREATE_SUCCESS(HttpStatus.OK, "카테고리가 성공적으로 생성되었습니다."),
 	CATEGORY_HIERARCHY_SUCCESS(HttpStatus.OK, "카테고리 계층 정보를 성공적으로 조회하였습니다"),

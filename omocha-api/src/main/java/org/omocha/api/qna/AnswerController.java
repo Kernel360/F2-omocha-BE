@@ -1,13 +1,11 @@
 package org.omocha.api.qna;
 
-import static org.omocha.domain.exception.code.QnACode.*;
-
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.AnswerApi;
 import org.omocha.api.qna.dto.AnswerDto;
 import org.omocha.api.qna.dto.AnswerDtoMapper;
-import org.omocha.domain.exception.code.QnACode;
+import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.qna.answer.AnswerCommand;
 import org.omocha.domain.qna.answer.AnswerInfo;
 import org.springframework.http.ResponseEntity;
@@ -51,15 +49,15 @@ public class AnswerController implements AnswerApi {
 
 		// TODO : resultDto 수정 필요
 		ResultDto<AnswerDto.AnswerAddResponse> resultDto = ResultDto.res(
-			QnACode.ANSWER_CREATE_SUCCESS.getStatusCode(),
-			QnACode.ANSWER_CREATE_SUCCESS.getResultMsg(),
+			SuccessCode.ANSWER_CREATE_SUCCESS.getStatusCode(),
+			SuccessCode.ANSWER_CREATE_SUCCESS.getDescription(),
 			answerAddResponse
 		);
 
 		log.info("add answer finished");
 
 		return ResponseEntity
-			.status(QnACode.ANSWER_CREATE_SUCCESS.getHttpStatus())
+			.status(SuccessCode.ANSWER_CREATE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -83,15 +81,15 @@ public class AnswerController implements AnswerApi {
 		AnswerDto.AnswerModifyResponse answerModifyResponse = answerDtoMapper.toResponse(modifyAnswerInfo);
 
 		ResultDto<AnswerDto.AnswerModifyResponse> resultDto = ResultDto.res(
-			ANSWER_MODIFY_SUCCESS.getStatusCode(),
-			ANSWER_MODIFY_SUCCESS.getResultMsg(),
+			SuccessCode.ANSWER_MODIFY_SUCCESS.getStatusCode(),
+			SuccessCode.ANSWER_MODIFY_SUCCESS.getDescription(),
 			answerModifyResponse
 		);
 
 		log.info("modify answer finished");
 
 		return ResponseEntity
-			.status(ANSWER_MODIFY_SUCCESS.getHttpStatus())
+			.status(SuccessCode.ANSWER_MODIFY_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -111,14 +109,14 @@ public class AnswerController implements AnswerApi {
 		qnaFacade.removeAnswer(removeAnswerModify);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			QnACode.ANSWER_DELETE_SUCCESS.getStatusCode(),
-			QnACode.ANSWER_DELETE_SUCCESS.getResultMsg()
+			SuccessCode.ANSWER_DELETE_SUCCESS.getStatusCode(),
+			SuccessCode.ANSWER_DELETE_SUCCESS.getDescription()
 		);
 
 		log.info("remove answer finished");
 
 		return ResponseEntity
-			.status(QnACode.ANSWER_DELETE_SUCCESS.getHttpStatus())
+			.status(SuccessCode.ANSWER_DELETE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 

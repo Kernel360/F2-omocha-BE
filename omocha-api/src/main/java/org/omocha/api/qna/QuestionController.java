@@ -1,12 +1,11 @@
 package org.omocha.api.qna;
 
-import static org.omocha.domain.exception.code.QnACode.*;
-
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.interfaces.QuestionApi;
 import org.omocha.api.qna.dto.QuestionDto;
 import org.omocha.api.qna.dto.QuestionDtoMapper;
+import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.common.util.PageSort;
 import org.omocha.domain.qna.question.QuestionCommand;
 import org.omocha.domain.qna.question.QuestionInfo;
@@ -62,13 +61,13 @@ public class QuestionController implements QuestionApi {
 		log.info("qnaList finished ");
 
 		ResultDto<Page<QuestionDto.QnaListResponse>> resultDto = ResultDto.res(
-			QNA_LIST_ACCESS_SUCCESS.getStatusCode(),
-			QNA_LIST_ACCESS_SUCCESS.getResultMsg(),
+			SuccessCode.QNA_LIST_ACCESS_SUCCESS.getStatusCode(),
+			SuccessCode.QNA_LIST_ACCESS_SUCCESS.getDescription(),
 			qnaListResponse
 		);
 
 		return ResponseEntity
-			.status(QNA_LIST_ACCESS_SUCCESS.getHttpStatus())
+			.status(SuccessCode.QNA_LIST_ACCESS_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 
@@ -89,15 +88,15 @@ public class QuestionController implements QuestionApi {
 		QuestionDto.QuestionAddResponse questionAddResponse = questionDtoMapper.toResponse(addQuestionInfo);
 
 		ResultDto<QuestionDto.QuestionAddResponse> resultDto = ResultDto.res(
-			QUESTION_CREATE_SUCCESS.getStatusCode(),
-			QUESTION_CREATE_SUCCESS.getResultMsg(),
+			SuccessCode.QUESTION_CREATE_SUCCESS.getStatusCode(),
+			SuccessCode.QUESTION_CREATE_SUCCESS.getDescription(),
 			questionAddResponse
 		);
 
 		log.info("questionAdd finished questionAddResponse : {}", questionAddResponse);
 
 		return ResponseEntity
-			.status(QUESTION_CREATE_SUCCESS.getHttpStatus())
+			.status(SuccessCode.QUESTION_CREATE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -125,15 +124,15 @@ public class QuestionController implements QuestionApi {
 		QuestionDto.QuestionModifyResponse questionModifyResponse = questionDtoMapper.toResponse(modifyQuestionInfo);
 
 		ResultDto<QuestionDto.QuestionModifyResponse> resultDto = ResultDto.res(
-			QUESTION_MODIFY_SUCCESS.getStatusCode(),
-			QUESTION_MODIFY_SUCCESS.getResultMsg(),
+			SuccessCode.QUESTION_MODIFY_SUCCESS.getStatusCode(),
+			SuccessCode.QUESTION_MODIFY_SUCCESS.getDescription(),
 			questionModifyResponse
 		);
 
 		log.info("questionModify finished questionModifyResponse : {}", questionModifyResponse);
 
 		return ResponseEntity
-			.status(QUESTION_MODIFY_SUCCESS.getHttpStatus())
+			.status(SuccessCode.QUESTION_MODIFY_SUCCESS.getHttpStatus())
 			.body(resultDto);
 
 	}
@@ -154,14 +153,14 @@ public class QuestionController implements QuestionApi {
 		qnaFacade.removeQuestion(removeQuestionCommand);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			QUESTION_DELETE_SUCCESS.getStatusCode(),
-			QUESTION_DELETE_SUCCESS.getResultMsg()
+			SuccessCode.QUESTION_DELETE_SUCCESS.getStatusCode(),
+			SuccessCode.QUESTION_DELETE_SUCCESS.getDescription()
 		);
 
 		log.info("questionRemove finished ");
 
 		return ResponseEntity
-			.status(QUESTION_DELETE_SUCCESS.getStatusCode())
+			.status(SuccessCode.QUESTION_DELETE_SUCCESS.getStatusCode())
 			.body(resultDto);
 	}
 
