@@ -26,12 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/answer")
-public class AnswerController {
+@RequestMapping("/api/v2/answers")
+public class AnswerController implements AnswerApi {
 
 	private final QnaFacade qnaFacade;
 	private final AnswerDtoMapper answerDtoMapper;
 
+	@Override
 	@PostMapping()
 	public ResponseEntity<ResultDto<AnswerDto.AnswerAddResponse>> answerAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -62,10 +63,11 @@ public class AnswerController {
 			.body(resultDto);
 	}
 
-	@PatchMapping("/{answerId}")
+	@Override
+	@PatchMapping("/{answer_id}")
 	public ResponseEntity<ResultDto<AnswerDto.AnswerModifyResponse>> answerModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@PathVariable("answerId") Long answerId,
+		@PathVariable("answer_id") Long answerId,
 		@RequestBody AnswerDto.AnswerModifyRequest answerModifyRequest
 	) {
 
@@ -93,10 +95,11 @@ public class AnswerController {
 			.body(resultDto);
 	}
 
-	@DeleteMapping("/{answerId}")
+	@Override
+	@DeleteMapping("/{answer_id}")
 	public ResponseEntity<ResultDto<Void>> answerRemove(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@PathVariable(value = "answerId") Long answerId
+		@PathVariable(value = "answer_id") Long answerId
 	) {
 
 		log.info("received answerId : {} ", answerId);
