@@ -5,6 +5,7 @@ import java.util.Map;
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.exception.oauth.UnsupportedOAuthProviderException;
+import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.review.rating.Rating;
 
 import lombok.Builder;
@@ -16,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class OAuth2UserInfo {
 	private String name;
-	private String email;
+	private Email email;
 	private String provider;
 	private String providerId;
 
@@ -31,7 +32,7 @@ public class OAuth2UserInfo {
 	private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
 		return OAuth2UserInfo.builder()
 			.name((String)attributes.get("name"))
-			.email((String)attributes.get("email"))
+			.email(new Email((String)attributes.get("email")))
 			.provider("google")
 			.providerId((String)attributes.get("sub"))
 			.build();
@@ -42,7 +43,7 @@ public class OAuth2UserInfo {
 
 		return OAuth2UserInfo.builder()
 			.name((String)response.get("name"))
-			.email((String)response.get("email"))
+			.email(new Email((String)response.get("email")))
 			.provider("naver")
 			.providerId((String)response.get("id"))
 			.build();

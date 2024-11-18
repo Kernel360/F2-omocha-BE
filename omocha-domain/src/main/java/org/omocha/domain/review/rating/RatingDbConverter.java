@@ -11,7 +11,7 @@ public class RatingDbConverter implements AttributeConverter<Rating, Double> {
 	}
 
 	@Override
-	public Rating convertToEntityAttribute(Double aDouble) {
-		return new Rating(aDouble);
+	public Rating convertToEntityAttribute(Double rating) {
+		return new Rating(rating);
 	}
 }

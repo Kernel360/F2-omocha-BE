@@ -1,6 +1,7 @@
 package org.omocha.domain.member;
 
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.review.rating.Rating;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import lombok.Builder;
 public class MemberCommand {
 
 	public record AddMember(
-		String email,
+		Email email,
 		String password
 	) {
 		// TODO : 사용자 정보 확정 후 추가 수정 필요
@@ -26,7 +27,7 @@ public class MemberCommand {
 	}
 
 	public record MemberLogin(
-		String email,
+		Email email,
 		String password
 	) {
 

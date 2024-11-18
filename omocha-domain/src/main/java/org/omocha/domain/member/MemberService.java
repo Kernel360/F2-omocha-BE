@@ -1,5 +1,7 @@
 package org.omocha.domain.member;
 
+import org.omocha.domain.member.vo.Email;
+
 public interface MemberService {
 
 	MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId);
@@ -8,7 +10,7 @@ public interface MemberService {
 
 	MemberInfo.MemberDetail retrieveMember(Long memberId);
 
-	MemberInfo.Login retrieveMember(String email);
+	MemberInfo.Login retrieveMember(Email email);
 
 	MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand);
 

@@ -5,6 +5,7 @@ import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.likes.LikeReader;
 import org.omocha.domain.member.exception.MemberAlreadyExistException;
 import org.omocha.domain.member.validate.MemberValidator;
+import org.omocha.domain.member.vo.Email;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MemberInfo.Login retrieveMember(String email) {
+	public MemberInfo.Login retrieveMember(Email email) {
 		Member member = memberReader.getMember(email);
 
 		return MemberInfo.Login.toInfo(member);

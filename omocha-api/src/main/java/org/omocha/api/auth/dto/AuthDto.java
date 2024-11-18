@@ -1,6 +1,7 @@
 package org.omocha.api.auth.dto;
 
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -27,7 +28,7 @@ public class AuthDto {
 
 	// TODO: 넘겨줄 정보들에 대해 추후 정해야함, 일단은 Password 제외하고 다 넘겨줌
 	public record MemberDetailResponse(
-		String email,
+		Email email,
 		String nickname,
 		String birth,
 		String phoneNumber,

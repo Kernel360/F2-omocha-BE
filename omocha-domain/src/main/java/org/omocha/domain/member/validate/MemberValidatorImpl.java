@@ -3,6 +3,7 @@ package org.omocha.domain.member.validate;
 import org.omocha.domain.member.MemberReader;
 import org.omocha.domain.member.exception.MemberAlreadyExistException;
 import org.omocha.domain.member.exception.MemberNickNameDuplicateException;
+import org.omocha.domain.member.vo.Email;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ class MemberValidatorImpl implements MemberValidator {
 	// TODO : VO 구성 후 MemberPasswordValidator, MemberEmailValidator 논의
 
 	@Override
-	public boolean isEmailDuplicateForOauth(String email) {
+	public boolean isEmailDuplicateForOauth(Email email) {
 
 		// TODO : Exception 설정 후 수정 필요
 		if (memberReader.existsByEmailAndProviderIsNull(email)) {
@@ -29,7 +30,7 @@ class MemberValidatorImpl implements MemberValidator {
 
 	// TODO : exception 수정 필요
 	@Override
-	public void validateEmail(String email) {
+	public void validateEmail(Email email) {
 		if (memberReader.existsByEmail(email)) {
 			throw new MemberAlreadyExistException(email);
 		}

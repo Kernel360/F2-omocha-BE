@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.EmailDbConverter;
 import org.omocha.domain.review.rating.Rating;
 import org.omocha.domain.review.rating.RatingDbConverter;
 
@@ -30,8 +32,8 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberId;
 
-	// TODO : VO 로 변경 필요
-	private String email;
+	@Convert(converter = EmailDbConverter.class)
+	private Email email;
 
 	// TODO: Password VO로 변경해야함
 	private String password;
@@ -62,7 +64,7 @@ public class Member extends BaseEntity {
 
 	@Builder
 	public Member(
-		String email, String password, String nickname,
+		Email email, String password, String nickname,
 		String username, String birth, String phoneNumber,
 		String profileImageUrl, Rating averageRating, Role role,
 		String provider, String providerId, MemberStatus memberStatus

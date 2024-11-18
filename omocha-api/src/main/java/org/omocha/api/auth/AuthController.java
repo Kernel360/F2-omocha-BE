@@ -9,6 +9,7 @@ import org.omocha.api.common.util.PasswordManager;
 import org.omocha.api.interfaces.AuthApi;
 import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
+import org.omocha.domain.member.vo.Email;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +43,10 @@ public class AuthController implements AuthApi {
 		// log.debug("Member register started");
 		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
-		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(memberAddRequest.email(),
-			passwordManager.encrypt(memberAddRequest.password()));
+		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(
+			memberAddRequest.email(),
+			passwordManager.encrypt(memberAddRequest.password())
+		);
 
 		authFacade.addMember(addMemberCommand);
 
@@ -65,7 +68,7 @@ public class AuthController implements AuthApi {
 		@RequestParam String email
 	) {
 
-		boolean duplicate = authFacade.isEmailDuplicate(email);
+		boolean duplicate = authFacade.isEmailDuplicate(new Email(email));
 
 		ResultDto<Boolean> resultDto = ResultDto.res(
 			SuccessCode.VALIDATE_EMAIL_SUCCESS.getStatusCode(),

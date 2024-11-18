@@ -1,12 +1,12 @@
 package org.omocha.domain.member;
 
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
 
 public class MemberInfo {
 
 	public record MemberDetail(
-
-		String email,
+		Email email,
 		String nickname,
 		String birth,
 		String phoneNumber,
@@ -44,7 +44,7 @@ public class MemberInfo {
 	public record ModifyBasicInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
-		String email,
+		Email email,
 		String userName,
 		String nickName,
 		String phoneNumber,
@@ -87,7 +87,7 @@ public class MemberInfo {
 	public record RetrieveCurrentMemberInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
-		String email,
+		Email email,
 		String userName,
 		String nickName,
 		String phoneNumber,
