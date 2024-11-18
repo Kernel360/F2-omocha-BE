@@ -72,11 +72,13 @@ public class ReviewServiceImpl implements ReviewService {
 
 		if (reviewerId.equals(sellerMemberId)) {
 			return buyerMemberId;
-		} else if (reviewerId.equals(buyerMemberId)) {
-			return sellerMemberId;
-		} else {
-			throw new ReviewPermissionDeniedException(auction.getAuctionId(), reviewerId);
 		}
+
+		if (reviewerId.equals(buyerMemberId)) {
+			return sellerMemberId;
+		}
+
+		throw new ReviewPermissionDeniedException(auction.getAuctionId(), reviewerId);
 	}
 
 	private Review createReviewEntity(

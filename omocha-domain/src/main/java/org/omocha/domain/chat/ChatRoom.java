@@ -46,8 +46,6 @@ public class ChatRoom extends BaseEntity {
 	}
 
 	public boolean validateParticipant(Long memberId) {
-		return memberId != null &&
-			(buyerMemberId != null && buyerMemberId.equals(memberId) ||
-				sellerMemberId != null && sellerMemberId.equals(memberId));
+		return memberId != null && (buyerMemberId.equals(memberId) || sellerMemberId.equals(memberId));
 	}
 }
