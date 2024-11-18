@@ -84,8 +84,6 @@ public interface AuctionApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<AuctionDto.AuctionDetailsResponse>> auctionDetails(
-		@Parameter(description = "사용자 객체 정보", required = true)
-		UserPrincipal userPrincipal,
 		@Parameter(description = "경매 ID", required = true) Long auctionId
 	);
 

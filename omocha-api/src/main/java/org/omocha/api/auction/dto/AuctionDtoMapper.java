@@ -40,7 +40,7 @@ public interface AuctionDtoMapper {
 		Long memberId
 	);
 
-	AuctionCommand.RetrieveAuction toCommand(Long auctionId, Long memberId);
+	AuctionCommand.RetrieveAuction toCommand(Long auctionId);
 
 	AuctionDto.AuctionAddResponse toResponse(Long auctionId);
 

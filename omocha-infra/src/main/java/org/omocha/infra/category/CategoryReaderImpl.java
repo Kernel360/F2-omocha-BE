@@ -26,7 +26,7 @@ public class CategoryReaderImpl implements CategoryReader {
 	@Override
 	public Category getCategory(Long categoryId) {
 		return categoryRepository.findById(categoryId)
-			.orElseThrow(() -> new CategoryNotFoundException(categoryId));
+			.orElseThrow(() -> new CategoryNotFoundException(CategoryNotFoundException.Type.CATEGORY_ID, categoryId));
 	}
 
 	@Override

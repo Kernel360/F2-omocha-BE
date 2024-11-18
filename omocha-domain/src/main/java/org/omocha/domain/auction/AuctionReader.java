@@ -16,8 +16,6 @@ public interface AuctionReader {
 
 	List<Auction> getExpiredBiddingAuctionList();
 
-	void removeAuction(Auction auction);
-
 	Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(
 		Long aLong,
 		Auction.AuctionStatus auctionStatus,
