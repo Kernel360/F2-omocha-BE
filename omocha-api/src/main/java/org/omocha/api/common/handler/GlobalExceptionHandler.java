@@ -118,7 +118,7 @@ public class GlobalExceptionHandler {
 
 		ResultDto<Object> resultDto = ResultDto.res(
 			e.getMemberCode().getStatusCode(),
-			e.getMemberCode().getDescription()
+			e.getMessage()
 		);
 		return ResponseEntity
 			.status(e.getMemberCode().getHttpStatus())
@@ -135,7 +135,7 @@ public class GlobalExceptionHandler {
 
 		ResultDto<Object> resultDto = ResultDto.res(
 			e.getErrorCode().getStatusCode(),
-			e.getErrorCode().getDescription()
+			e.getMessage()
 		);
 		return ResponseEntity
 			.status(e.getErrorCode().getHttpStatus())
