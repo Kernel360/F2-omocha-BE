@@ -70,7 +70,7 @@ public class BidValidatorImpl implements BidValidator {
 	private void validateBidBelowInstantBuyPrice(Auction auction, Long bidPrice) {
 		Long instantBuyPrice = auction.getInstantBuyPrice();
 
-		if (bidPrice >= instantBuyPrice) {
+		if (instantBuyPrice != null && bidPrice >= instantBuyPrice) {
 			throw new BidExceedsInstantBuyException(bidPrice, instantBuyPrice);
 		}
 	}

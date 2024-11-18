@@ -30,8 +30,13 @@ public interface AuctionDtoMapper {
 		return new PageImpl<>(content, pageInfo.getPageable(), pageInfo.getTotalElements());
 	}
 
-	AuctionCommand.AddAuction toCommand(AuctionDto.AuctionAddRequest auctionRequest, Long memberId,
-		List<MultipartFile> images, MultipartFile thumbnailPath);
+	AuctionCommand.AddAuction toCommand(
+		AuctionDto.AuctionAddRequest auctionRequest,
+		Long memberId,
+		Long instantBuyPrice,
+		List<MultipartFile> images,
+		MultipartFile thumbnailPath
+	);
 
 	AuctionCommand.SearchAuction toCommand(
 		AuctionDto.AuctionSearchRequest condition,
