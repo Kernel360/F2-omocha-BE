@@ -6,6 +6,7 @@ import static org.omocha.domain.category.QAuctionCategory.*;
 import static org.omocha.domain.category.QCategory.*;
 import static org.omocha.domain.conclude.QConclude.*;
 import static org.omocha.domain.likes.QLikes.*;
+import static org.omocha.domain.review.QReview.*;
 import static org.springframework.util.ObjectUtils.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import org.omocha.domain.auction.QAuction;
 import org.omocha.domain.auction.QAuctionInfo_RetrieveMyAuctions;
 import org.omocha.domain.auction.QAuctionInfo_RetrieveMyBidAuctions;
 import org.omocha.domain.auction.QAuctionInfo_SearchAuction;
+import org.omocha.domain.review.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -156,12 +158,18 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 						.and(auction.auctionStatus.eq(Auction.AuctionStatus.CONCLUDED)
 							.or(auction.auctionStatus.eq(Auction.AuctionStatus.COMPLETED)))).then("낙찰")
 					.otherwise("패찰")
-					.as("bidStatus")
+					.as("bidStatus"),
+				Expressions.cases()
+					.when(review.reviewType.eq(Review.ReviewType.BUY_REVIEW))
+					.then(true)
+					.otherwise(false)
+					.as("reviewStatus")
 			))
 			.from(bid)
 			.where(bid.bidId.in(maxBidIds))
 			.leftJoin(auction).on(bid.auction.eq(auction))
-			.leftJoin(conclude).on(auction.eq(conclude.auction));
+			.leftJoin(conclude).on(auction.eq(conclude.auction))
+			.leftJoin(review).on(auction.eq(review.auction));
 
 		for (Sort.Order o : sortPage.getSort()) {
 			PathBuilder<?> pathBuilder = new PathBuilder<>(bid.getType(), bid.getMetadata());

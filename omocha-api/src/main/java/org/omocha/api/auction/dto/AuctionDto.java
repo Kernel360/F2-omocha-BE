@@ -122,7 +122,8 @@ public class AuctionDto {
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
-		String bidStatus
+		String bidStatus,
+		boolean reviewStatus
 	) {
 	}
 
