@@ -115,11 +115,15 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.auctionStatus,
 				auction.nowPrice,
 				auction.endDate,
-				auction.thumbnailPath
+				auction.thumbnailPath,
+				Expressions.cases()
+					.when(review.reviewType.eq(Review.ReviewType.SELL_REVIEW)).then(true).otherwise(false)
+					.as("reviewStatus")
 			))
 			.from(auction) // from 절 추가
 			.where(auction.memberId.eq(memberId)
-				.and(statusEquals(auctionStatus))); // statusEquals 메서드 확인
+				.and(statusEquals(auctionStatus)))
+			.leftJoin(review).on(auction.eq(review.auction)); // statusEquals 메서드 확인
 
 		applySorting(pageable, auction, query);
 

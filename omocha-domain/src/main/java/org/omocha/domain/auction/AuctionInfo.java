@@ -191,7 +191,8 @@ public class AuctionInfo {
 		Auction.AuctionStatus auctionStatus,
 		Long nowPrice,
 		LocalDateTime endDate,
-		String thumbnailPath
+		String thumbnailPath,
+		boolean reviewStatus
 	) {
 
 		@QueryProjection
@@ -201,7 +202,8 @@ public class AuctionInfo {
 			Auction.AuctionStatus auctionStatus,
 			Long nowPrice,
 			LocalDateTime endDate,
-			String thumbnailPath
+			String thumbnailPath,
+			boolean reviewStatus
 		) {
 			this.auctionId = auctionId;
 			this.title = title;
@@ -209,6 +211,7 @@ public class AuctionInfo {
 			this.nowPrice = nowPrice;
 			this.endDate = endDate;
 			this.thumbnailPath = thumbnailPath;
+			this.reviewStatus = reviewStatus;
 		}
 	}
 

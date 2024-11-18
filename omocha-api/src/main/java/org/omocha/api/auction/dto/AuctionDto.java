@@ -113,7 +113,8 @@ public class AuctionDto {
 		Long nowPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
-		String thumbnailPath
+		String thumbnailPath,
+		boolean reviewStatus
 	) {
 	}
 
