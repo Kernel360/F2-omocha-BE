@@ -34,12 +34,12 @@ public class MemberServiceImpl implements MemberService {
 			loginType = member.getProvider();
 		}
 
-		int likesCount = likeReader.getMemberLikesCount(memberId);
+		int likeCount = likeReader.getMemberLikeCount(memberId);
 
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);
 
-		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member, loginType, likesCount);
+		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member, loginType, likeCount);
 	}
 
 	@Override

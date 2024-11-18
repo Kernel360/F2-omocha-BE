@@ -28,7 +28,7 @@ public class LikeReaderImpl implements LikeReader {
 	}
 
 	@Override
-	public int getMemberLikesCount(Long memberId) {
+	public int getMemberLikeCount(Long memberId) {
 		return likeRepository.countByMemberMemberId(memberId);
 	}
 }

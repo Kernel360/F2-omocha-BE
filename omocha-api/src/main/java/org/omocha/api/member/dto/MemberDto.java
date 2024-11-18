@@ -14,7 +14,7 @@ public class MemberDto {
 		String birth,
 		String profileImageUrl,
 		String loginType,
-		int likesCount
+		int likeCount
 	) {
 	}
 
