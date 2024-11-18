@@ -93,10 +93,13 @@ public class MemberInfo {
 		String phoneNumber,
 		String birth,
 		String profileImageUrl,
-		String loginType
+		String loginType,
+		int likesCount
 	) {
 		public static RetrieveCurrentMemberInfo toInfo(
-			Member member, String loginType
+			Member member,
+			String loginType,
+			int likesCount
 		) {
 			return new RetrieveCurrentMemberInfo(
 				member.getMemberId(),
@@ -106,7 +109,8 @@ public class MemberInfo {
 				member.getPhoneNumber(),
 				member.getBirth(),
 				member.getProfileImageUrl(),
-				loginType
+				loginType,
+				likesCount
 			);
 
 		}

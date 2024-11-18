@@ -18,4 +18,6 @@ public interface LikeRepository extends JpaRepository<Likes, Long>, LikeReposito
 	@Modifying
 	@Query(value = "DELETE FROM LIKES WHERE auction_id = :auctionId AND member_id = :memberId", nativeQuery = true)
 	void unClickLike(Long auctionId, Long memberId);
+
+	int countByMemberMemberId(Long memberId);
 }

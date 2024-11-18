@@ -27,4 +27,8 @@ public class LikeReaderImpl implements LikeReader {
 		return likeRepository.getMyAuctionLikes(memberId, pageable);
 	}
 
+	@Override
+	public int getLikesCount(Long memberId) {
+		return likeRepository.countByMemberMemberId(memberId);
+	}
 }

@@ -13,7 +13,8 @@ public class MemberDto {
 		String phoneNumber,
 		String birth,
 		String profileImageUrl,
-		String loginType
+		String loginType,
+		int likesCount
 	) {
 	}
 
