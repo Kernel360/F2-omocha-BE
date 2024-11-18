@@ -21,14 +21,18 @@ public class AuctionInfo {
 		String thumbnailPath,
 		Long nowPrice,
 		Long bidCount,
+		Long likesCount,
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		LocalDateTime createdAt,
 		List<String> imagePaths,
 		List<CategoryInfo.CategoryResponse> categories
 	) {
-		public RetrieveAuction(Auction auction, List<String> imagePaths,
-			List<CategoryInfo.CategoryResponse> categories) {
+		public RetrieveAuction(
+			Auction auction,
+			List<String> imagePaths,
+			List<CategoryInfo.CategoryResponse> categories
+		) {
 			this(
 				auction.getAuctionId(),
 				auction.getMemberId(),
@@ -41,6 +45,7 @@ public class AuctionInfo {
 				auction.getThumbnailPath(),
 				auction.getNowPrice(),
 				auction.getBidCount(),
+				auction.getLikeCount(),
 				auction.getStartDate(),
 				auction.getEndDate(),
 				auction.getCreatedAt(),
@@ -63,6 +68,7 @@ public class AuctionInfo {
 		Long nowPrice,
 		Long concludePrice,
 		Long bidCount,
+		Long likesCount,
 		boolean isLiked, // 로그인 하지 않은 경우 false
 		LocalDateTime startDate,
 		LocalDateTime endDate,
@@ -83,6 +89,7 @@ public class AuctionInfo {
 			Long nowPrice,
 			Long concludePrice,
 			Long bidCount,
+			Long likesCount,
 			Boolean isLiked,
 			LocalDateTime startDate,
 			LocalDateTime endDate,
@@ -101,6 +108,7 @@ public class AuctionInfo {
 				nowPrice,
 				concludePrice,
 				bidCount,
+				likesCount,
 				isLiked,
 				startDate,
 				endDate,
@@ -123,6 +131,7 @@ public class AuctionInfo {
 				this.nowPrice,
 				this.concludePrice,
 				this.bidCount,
+				this.likesCount,
 				this.isLiked,
 				this.startDate,
 				this.endDate,
