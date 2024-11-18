@@ -51,7 +51,6 @@ public class AuctionController implements AuctionApi {
 	public ResponseEntity<ResultDto<AuctionDto.AuctionAddResponse>> auctionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart("auctionRequest") AuctionDto.AuctionAddRequest auctionRequest,
-		@RequestParam(value = "instantBuyPrice", required = false) Long instantBuyPrice,
 		@RequestPart(value = "images") List<MultipartFile> images,
 		@RequestPart(value = "thumbnailPath") MultipartFile thumbnailPath
 	) {
@@ -60,7 +59,7 @@ public class AuctionController implements AuctionApi {
 		Long memberId = userPrincipal.getId();
 
 		AuctionCommand.AddAuction auctionCommand = auctionDtoMapper.toCommand(
-			auctionRequest, memberId, instantBuyPrice, images, thumbnailPath);
+			auctionRequest, memberId, images, thumbnailPath);
 
 		Long auctionId = auctionFacade.addAuction(auctionCommand);
 

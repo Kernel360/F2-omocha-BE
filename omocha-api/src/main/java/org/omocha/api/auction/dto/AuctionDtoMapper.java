@@ -33,7 +33,6 @@ public interface AuctionDtoMapper {
 	AuctionCommand.AddAuction toCommand(
 		AuctionDto.AuctionAddRequest auctionRequest,
 		Long memberId,
-		Long instantBuyPrice,
 		List<MultipartFile> images,
 		MultipartFile thumbnailPath
 	);
