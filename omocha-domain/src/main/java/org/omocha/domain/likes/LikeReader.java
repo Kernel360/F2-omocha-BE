@@ -13,5 +13,5 @@ public interface LikeReader {
 		Pageable pageable
 	);
 
-	int getLikesCount(Long memberId);
+	int getMemberLikesCount(Long memberId);
 }

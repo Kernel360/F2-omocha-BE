@@ -31,10 +31,10 @@ public class MemberServiceImpl implements MemberService {
 
 		String loginType = "general";
 		if (StringUtils.isNotBlank(member.getProvider())) {
-			loginType = "oauth";
+			loginType = member.getProvider();
 		}
 
-		int likesCount = likeReader.getLikesCount(memberId);
+		int likesCount = likeReader.getMemberLikesCount(memberId);
 
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);
