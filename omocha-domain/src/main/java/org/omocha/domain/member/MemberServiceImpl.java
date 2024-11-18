@@ -1,5 +1,6 @@
 package org.omocha.domain.member;
 
+import org.apache.commons.lang3.StringUtils;
 import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.member.exception.MemberAlreadyExistException;
 import org.omocha.domain.member.validate.MemberValidator;
@@ -26,10 +27,15 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = memberReader.getMember(memberId);
 
+		String loginType = "general";
+		if (StringUtils.isNotBlank(member.getProvider())) {
+			loginType = "oauth";
+		}
+
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);
 
-		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member);
+		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member, loginType);
 	}
 
 	@Override

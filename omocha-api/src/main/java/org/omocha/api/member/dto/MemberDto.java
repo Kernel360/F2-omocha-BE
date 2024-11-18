@@ -12,8 +12,8 @@ public class MemberDto {
 		String nickName,
 		String phoneNumber,
 		String birth,
-		Role role,
-		String profileImageUrl
+		String profileImageUrl,
+		String loginType
 	) {
 	}
 

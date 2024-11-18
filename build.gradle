@@ -29,6 +29,9 @@ allprojects {
         testCompileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
 
+        // StringUtils
+        implementation 'org.apache.commons:commons-lang3:3.12.0'
+
         // TODO : 추후 어디에 저장해야할 지 고민해야함
         // MapStruct
         implementation 'org.mapstruct:mapstruct:1.5.5.Final'
