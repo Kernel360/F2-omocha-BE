@@ -90,7 +90,7 @@ public class AuctionServiceImpl implements AuctionService {
 		List<Long> categoryIds = auction.getAuctionCategories()
 			.stream()
 			.map(auctionCategory -> auctionCategory.getCategory().getCategoryId())
-			.collect(Collectors.toList());
+			.toList();
 
 		if (categoryIds.isEmpty()) {
 			throw new CategoryNotFoundException(CategoryNotFoundException.Type.AUCTION_ID, auction.getAuctionId());
