@@ -39,8 +39,6 @@ public interface AuctionApi {
 		UserPrincipal userPrincipal,
 		@Parameter(description = "경매 요청 데이터", required = true)
 		AuctionDto.AuctionAddRequest auctionRequest,
-		@Parameter(description = "즉시 구매 가격", required = false)
-		Long instantBuyPrice,
 		@Parameter(description = "이미지 파일 리스트", required = true)
 		List<MultipartFile> images,
 		@Parameter(description = "thumbnail 이미지 파일", required = true)

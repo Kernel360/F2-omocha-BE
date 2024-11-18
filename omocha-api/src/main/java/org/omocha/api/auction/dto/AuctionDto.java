@@ -15,6 +15,7 @@ public class AuctionDto {
 		String content,
 		Long startPrice,
 		Long bidUnit,
+		Long instantBuyPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -59,7 +59,7 @@ public class AuctionController implements AuctionApi {
 		Long memberId = userPrincipal.getId();
 
 		AuctionCommand.AddAuction auctionCommand = auctionDtoMapper.toCommand(
-			auctionRequest, memberId, instantBuyPrice, images, thumbnailPath);
+			auctionRequest, memberId, images, thumbnailPath);
 
 		Long auctionId = auctionFacade.addAuction(auctionCommand);
 
