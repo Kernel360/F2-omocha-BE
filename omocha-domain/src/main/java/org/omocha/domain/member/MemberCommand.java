@@ -7,21 +7,22 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Builder;
 
 public class MemberCommand {
+
 	public record AddMember(
 		String email,
 		String password
 	) {
 		// TODO : 사용자 정보 확정 후 추가 수정 필요
-		public Member toEntity() {
+		public Member toEntity(RandomNickNameGenerator randomNickNameGenerator) {
 			return Member.builder()
 				.email(email)
 				.password(password)
 				.averageRating(new Rating(0.0))
+				.nickname(randomNickNameGenerator.generateRandomNickname())
 				.role(Role.ROLE_USER)
 				.memberStatus(Member.MemberStatus.ACTIVATE)
 				.build();
 		}
-
 	}
 
 	public record MemberLogin(

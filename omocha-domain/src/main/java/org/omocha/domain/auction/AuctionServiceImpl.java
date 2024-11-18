@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.omocha.domain.auction.exception.AuctionHasBidException;
 import org.omocha.domain.auction.exception.AuctionImageNotFoundException;
 import org.omocha.domain.auction.exception.AuctionOwnerMismatchException;
-import org.omocha.domain.category.AuctionCategory;
 import org.omocha.domain.category.CategoryInfo;
 import org.omocha.domain.category.CategoryReader;
 import org.omocha.domain.category.CategoryStore;
@@ -65,8 +64,8 @@ public class AuctionServiceImpl implements AuctionService {
 
 		List<AuctionInfo.SearchAuction> categoryAuctions = auctionList.getContent().stream()
 			.map(auctionInfo -> {
-				List<CategoryInfo.CategoryResponse> categoryHierarchy = categoryReader.getCategoryHierarchyUpwards(
-					searchAuction.categoryId());
+				List<CategoryInfo.CategoryResponse> categoryHierarchy =
+					categoryReader.getCategoryHierarchyUpwards(searchAuction.categoryId());
 				return categoryHierarchy != null ? auctionInfo.withCategoryHierarchy(categoryHierarchy) : auctionInfo;
 			})
 			.collect(Collectors.toList());
@@ -88,14 +87,16 @@ public class AuctionServiceImpl implements AuctionService {
 			.map(Image::getImagePath)
 			.collect(Collectors.toList());
 
-		// TODO : auction.getAuctionCategories를 list로 받고 처리하도록 수정해야함
-		AuctionCategory auctionCategory = auction.getAuctionCategories()
+		List<Long> categoryIds = auction.getAuctionCategories()
 			.stream()
-			.findFirst()
-			.orElseThrow(
-				() -> new CategoryNotFoundException(auction.getAuctionId(), retrieveCommand.memberId()));
+			.map(auctionCategory -> auctionCategory.getCategory().getCategoryId())
+			.toList();
 
-		Long selectedCategoryId = auctionCategory.getCategory().getCategoryId();
+		if (categoryIds.isEmpty()) {
+			throw new CategoryNotFoundException(CategoryNotFoundException.Type.AUCTION_ID, auction.getAuctionId());
+		}
+
+		Long selectedCategoryId = categoryIds.get(0);
 
 		List<CategoryInfo.CategoryResponse> categoryHierarchy =
 			categoryReader.getCategoryHierarchyUpwards(selectedCategoryId);
@@ -118,7 +119,7 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new AuctionHasBidException(auction.getAuctionId());
 		}
 
-		auctionReader.removeAuction(auction);
+		auctionStore.removeAuction(auction);
 	}
 
 	@Override

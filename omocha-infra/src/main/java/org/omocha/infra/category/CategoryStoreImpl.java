@@ -19,6 +19,7 @@ public class CategoryStoreImpl implements CategoryStore {
 	private final CategoryRepository categoryRepository;
 	private final CategoryReader categoryReader;
 
+	@Override
 	public Category categoryStore(Category category) {
 		return categoryRepository.save(category);
 	}

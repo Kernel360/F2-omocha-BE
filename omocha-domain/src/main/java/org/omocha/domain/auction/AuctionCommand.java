@@ -47,8 +47,7 @@ public class AuctionCommand {
 	}
 
 	public record RetrieveAuction(
-		Long auctionId,
-		Long memberId
+		Long auctionId
 	) {
 	}
 

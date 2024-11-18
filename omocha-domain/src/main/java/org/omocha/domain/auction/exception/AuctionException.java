@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class AuctionException extends RuntimeException {
-	private final ErrorCode erorrCode;
+	private final ErrorCode errorCode;
 	private final String message;
 
-	public AuctionException(ErrorCode erorrCode, String message) {
+	public AuctionException(ErrorCode errorCode, String message) {
 		super(message);
-		this.erorrCode = erorrCode;
+		this.errorCode = errorCode;
 		this.message = message;
 	}
 

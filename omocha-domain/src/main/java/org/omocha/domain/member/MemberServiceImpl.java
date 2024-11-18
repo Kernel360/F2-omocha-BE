@@ -21,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
 	private final ImageProvider imageProvider;
 	private final LikeReader likeReader;
+	private final RandomNickNameGenerator randomNickNameGenerator;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -52,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
-		Member member = addMemberCommand.toEntity();
+		Member member = addMemberCommand.toEntity(randomNickNameGenerator);
 
 		memberStore.addMember(member);
 

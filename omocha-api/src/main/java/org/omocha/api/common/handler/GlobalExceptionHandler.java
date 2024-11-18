@@ -6,8 +6,8 @@ import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.auction.exception.AuctionException;
 import org.omocha.domain.bid.exception.BidException;
 import org.omocha.domain.chat.exception.ChatException;
-import org.omocha.domain.member.exception.jwt.JwtTokenException;
 import org.omocha.domain.member.exception.MemberException;
+import org.omocha.domain.member.exception.jwt.JwtTokenException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,14 +29,14 @@ public class GlobalExceptionHandler {
 	) {
 		// TODO: 로그에 치환문자{} 를 3개 이상 사용할 경우 Object[] 를 생성하는 비용이 발생
 		log.error("errorCode: {}, url: {}, message: {}",
-			e.getErorrCode(), request.getRequestURI(), e.getMessage(), e);
+			e.getErrorCode(), request.getRequestURI(), e.getMessage(), e);
 
 		ResultDto<Object> resultDto = ResultDto.res(
-			e.getErorrCode().getStatusCode(),
+			e.getErrorCode().getStatusCode(),
 			e.getMessage()
 		);
 		return ResponseEntity
-			.status(e.getErorrCode().getHttpStatus())
+			.status(e.getErrorCode().getHttpStatus())
 			.body(resultDto);
 	}
 

@@ -19,4 +19,9 @@ public class AuctionStoreImpl implements AuctionStore {
 	public Auction store(Auction auction) {
 		return auctionRepository.save(auction);
 	}
+
+	@Override
+	public void removeAuction(Auction auction) {
+		auctionRepository.delete(auction);
+	}
 }
