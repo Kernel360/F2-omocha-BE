@@ -1,6 +1,7 @@
 package org.omocha.domain.bid.validate;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.bid.Bid;
 import org.omocha.domain.bid.BidReader;
 import org.omocha.domain.bid.exception.BidBelowStartPriceException;
@@ -22,7 +23,7 @@ public class BidValidatorImpl implements BidValidator {
 	// 처음 입찰 : 시작가보다 낮은 입찰 가격이 발생할 때 예외
 	// 이후 입찰 : 입찰 가격 < 현재 최고가 보다 낮을 때 예외 발생
 	@Override
-	public void bidValidate(Auction auction, Long buyerMemberId, Long bidPrice) {
+	public void bidValidate(Auction auction, Long buyerMemberId, Price bidPrice) {
 		validateSelfBid(auction, buyerMemberId);
 
 		validateBidUnit(auction, bidPrice);
@@ -40,37 +41,37 @@ public class BidValidatorImpl implements BidValidator {
 		}
 	}
 
-	private void validateBidUnit(Auction auction, Long bidPrice) {
-		Long startPrice = auction.getStartPrice();
-		Long bidUnit = auction.getBidUnit();
+	private void validateBidUnit(Auction auction, Price bidPrice) {
+		Price startPrice = auction.getStartPrice();
+		Price bidUnit = auction.getBidUnit();
 
-		if ((bidPrice - startPrice) % bidUnit != 0) {
+		if ((bidPrice.getValue() - startPrice.getValue()) % bidUnit.getValue() != 0) {
 			throw new InvalidBidUnitException(startPrice, bidUnit);
 		}
 	}
 
-	private void validateBidAboveStartPrice(Auction auction, Long bidPrice) {
-		Long startPrice = auction.getStartPrice();
+	private void validateBidAboveStartPrice(Auction auction, Price bidPrice) {
+		Price startPrice = auction.getStartPrice();
 
-		if (bidPrice < startPrice) {
+		if (bidPrice.getValue() < startPrice.getValue()) {
 			throw new BidBelowStartPriceException(bidPrice, startPrice);
 		}
 	}
 
-	private void validateBidExceedsCurrentHighest(Auction auction, Long bidPrice) {
-		Long currentHighestBidPrice = bidReader.findHighestBid(auction.getAuctionId())
+	private void validateBidExceedsCurrentHighest(Auction auction, Price bidPrice) {
+		Price currentHighestBidPrice = bidReader.findHighestBid(auction.getAuctionId())
 			.map(Bid::getBidPrice)
-			.orElse(0L);
+			.orElse(new Price(0L));
 
-		if (bidPrice <= currentHighestBidPrice) {
+		if (bidPrice.getValue() <= currentHighestBidPrice.getValue()) {
 			throw new BidNotExceedingCurrentHighestException(bidPrice, currentHighestBidPrice);
 		}
 	}
 
-	private void validateBidBelowInstantBuyPrice(Auction auction, Long bidPrice) {
-		Long instantBuyPrice = auction.getInstantBuyPrice();
+	private void validateBidBelowInstantBuyPrice(Auction auction, Price bidPrice) {
+		Price instantBuyPrice = auction.getInstantBuyPrice();
 
-		if (instantBuyPrice != null && bidPrice >= instantBuyPrice) {
+		if (instantBuyPrice != null && bidPrice.getValue() >= instantBuyPrice.getValue()) {
 			throw new BidExceedsInstantBuyException(bidPrice, instantBuyPrice);
 		}
 	}

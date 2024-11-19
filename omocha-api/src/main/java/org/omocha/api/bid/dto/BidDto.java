@@ -2,13 +2,15 @@ package org.omocha.api.bid.dto;
 
 import java.time.LocalDateTime;
 
+import org.omocha.domain.auction.vo.Price;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class BidDto {
 
 	public record BidListResponse(
 		Long buyerMemberId,
-		Long bidPrice,
+		Price bidPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {
@@ -16,14 +18,14 @@ public class BidDto {
 	}
 
 	public record BidAddRequest(
-		Long bidPrice
+		Price bidPrice
 	) {
 
 	}
 
 	public record BidAddResponse(
 		Long buyerMemberId,
-		Long bidPrice,
+		Price bidPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {
@@ -31,7 +33,7 @@ public class BidDto {
 	}
 
 	public record NowPriceResponse(
-		Long nowPrice,
+		Price nowPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -41,7 +43,7 @@ public class BidDto {
 	}
 
 	public record MyBidListResponse(
-		Long bidPrice,
+		Price bidPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {

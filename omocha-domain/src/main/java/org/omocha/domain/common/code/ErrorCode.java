@@ -43,6 +43,8 @@ public enum ErrorCode {
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
 	AUCTION_NOT_CONCLUDED(HttpStatus.BAD_REQUEST, "경매가 낙찰되지 않은 상태입니다."),
 	LIKE_NOT_NEGATIVE(HttpStatus.BAD_REQUEST, "찜 수가 음수가 되면 안됩니다"),
+	NEGATIVE_PRICE(HttpStatus.BAD_REQUEST, "금액은 음수일 수 없습니다."),
+	PRICE_TOO_HIGH(HttpStatus.BAD_REQUEST, "허용 가능한 최대 금액을 초과했습니다."),
 
 	// Category Code
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없습니다."),

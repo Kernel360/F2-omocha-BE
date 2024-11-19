@@ -3,6 +3,7 @@ package org.omocha.domain.auction;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.omocha.domain.auction.vo.Price;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AuctionCommand {
@@ -11,9 +12,9 @@ public class AuctionCommand {
 		Long memberId,
 		String title,
 		String content,
-		Long startPrice,
-		Long bidUnit,
-		Long instantBuyPrice,
+		Price startPrice,
+		Price bidUnit,
+		Price instantBuyPrice,
 		// TODO : VO 날짜 format 추가
 		LocalDateTime startDate,
 		LocalDateTime endDate,
