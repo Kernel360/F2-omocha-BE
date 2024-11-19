@@ -25,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/bids")
@@ -111,8 +109,6 @@ public class BidController implements BidApi {
 		Pageable pageable
 	) {
 
-		log.info("myBidList started memberId : {} ", userPrincipal.getId());
-
 		Long memberId = userPrincipal.getId();
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
@@ -130,8 +126,6 @@ public class BidController implements BidApi {
 			MY_BIDDING_LIST_SUCCESS.getDescription(),
 			myBidListResponse
 		);
-
-		log.info("myBidList finished");
 
 		return ResponseEntity
 			.status(MY_BIDDING_LIST_SUCCESS.getHttpStatus())

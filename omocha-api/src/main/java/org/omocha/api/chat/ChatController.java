@@ -9,9 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ChatController {

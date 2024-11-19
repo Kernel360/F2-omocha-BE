@@ -48,7 +48,7 @@ public class ControllerLogging {
 						logBuilder.append("error invoking getId: ").append(e.getMessage()).append(" , ");
 					}
 				} else {
-					logBuilder.append("parameter value = ").append(arg);
+					logBuilder.append("parameter value = ").append(arg).append(" , ");
 				}
 			});
 

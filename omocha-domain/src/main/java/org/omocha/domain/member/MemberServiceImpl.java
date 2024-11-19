@@ -22,12 +22,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	@Transactional(readOnly = true)
 	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
-		log.debug("find me start for member {}", memberId);
 
 		Member member = memberReader.getMember(memberId);
 
 		// TODO : 개선 필요(서버측 문제?) , Exception
-		log.debug("find me finished for member {}", memberId);
 
 		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member);
 	}
@@ -69,8 +67,6 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
 
-		log.debug("modify member start for member {}", modifyBasicInfoCommand.memberId());
-
 		Member member = memberReader.getMember(modifyBasicInfoCommand.memberId());
 
 		memberValidator.validateDuplicateNickName(modifyBasicInfoCommand.nickName());
@@ -80,8 +76,6 @@ public class MemberServiceImpl implements MemberService {
 			modifyBasicInfoCommand.phoneNumber()
 		);
 
-		log.debug("modify member finished for member {}", modifyBasicInfoCommand.memberId());
-
 		return MemberInfo.ModifyBasicInfo.toInfo(member);
 
 	}
@@ -90,20 +84,15 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
 
-		log.debug("modify password start for member {}", modifyPasswordCommand.memberId());
-
 		Member member = memberReader.getMember(modifyPasswordCommand.memberId());
 
 		member.updatePassword(modifyPasswordCommand.newPassword());
 
-		log.debug("modify password finished for member {}", modifyPasswordCommand.memberId());
 	}
 
 	@Override
 	@Transactional
 	public MemberInfo.ModifyProfileImage modifyProfileImage(MemberCommand.ModifyProfileImage profileImageCommand) {
-
-		log.debug("modify profile image start for member {}", profileImageCommand.memberId());
 
 		String imagePath = "";
 
@@ -115,8 +104,6 @@ public class MemberServiceImpl implements MemberService {
 		imagePath = imageProvider.uploadFile(profileImageCommand.profileImage());
 
 		member.updateProfileImage(imagePath);
-
-		log.debug("modify profile image finished for member {}", profileImageCommand.memberId());
 
 		return MemberInfo.ModifyProfileImage.toInfo(imagePath);
 
