@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 public class PhoneNumberDbConverter implements AttributeConverter<PhoneNumber, String> {
 	@Override
 	public String convertToDatabaseColumn(PhoneNumber phoneNumber) {
-		return phoneNumber.getValue();
+		return phoneNumber != null ? phoneNumber.getValue() : null;
 	}
 
 	@Override

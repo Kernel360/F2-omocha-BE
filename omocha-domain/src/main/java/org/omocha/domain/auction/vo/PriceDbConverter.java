@@ -8,15 +8,12 @@ public class PriceDbConverter implements AttributeConverter<Price, Long> {
 
 	@Override
 	public Long convertToDatabaseColumn(Price price) {
-		return price.getValue();
+		return price != null ? price.getValue() : null;
 	}
 
 	@Override
 	public Price convertToEntityAttribute(Long price) {
-		if (price == null) {
-			return new Price(0L);
-		}
-
-		return new Price(price);
+		// TODO: VO 객체에 null을 반환?
+		return price != null ? new Price(price) : null;
 	}
 }
