@@ -5,11 +5,12 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import org.omocha.domain.image.ImageProvider;
+import org.omocha.domain.image.exception.ImageDeleteFailException;
+import org.omocha.domain.image.exception.ImageUploadFailException;
+import org.omocha.domain.image.exception.ImageWrongFileNameException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -45,10 +46,10 @@ public class S3Provider implements ImageProvider {
 			String imagePath = s3Key + fileName;
 			amazonS3.putObject(new PutObjectRequest(bucketName, imagePath, inputStream, objectMetadata)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
-			log.debug("Uploaded image to " + imagePath);
+			log.info("Uploaded image to " + imagePath);
 			return imagePath;
 		} catch (IOException e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+			throw new ImageUploadFailException(fileName);
 		}
 	}
 
@@ -58,8 +59,7 @@ public class S3Provider implements ImageProvider {
 			amazonS3.deleteObject(bucketName, imagePath);
 			log.info("Deleted file from S3: {}", imagePath);
 		} catch (AmazonServiceException e) {
-			log.error("Failed to delete file from S3: {}", imagePath, e);
-			throw new RuntimeException("S3에서 파일 삭제 중 오류가 발생했습니다.", e);
+			throw new ImageDeleteFailException(imagePath);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class S3Provider implements ImageProvider {
 		try {
 			return fileName.substring(fileName.lastIndexOf("."));
 		} catch (StringIndexOutOfBoundsException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
+			throw new ImageWrongFileNameException(fileName);
 		}
 	}
 }
