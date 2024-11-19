@@ -2,6 +2,7 @@ package org.omocha.domain.member;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.PhoneNumber;
 import org.omocha.domain.review.rating.Rating;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +45,7 @@ public class MemberCommand {
 	public record ModifyBasicInfo(
 		Long memberId,
 		String nickName,
-		String phoneNumber
+		PhoneNumber phoneNumber
 	) {
 	}
 

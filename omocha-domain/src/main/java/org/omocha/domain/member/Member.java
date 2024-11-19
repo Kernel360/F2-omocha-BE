@@ -6,6 +6,8 @@ import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.EmailDbConverter;
+import org.omocha.domain.member.vo.PhoneNumber;
+import org.omocha.domain.member.vo.PhoneNumberDbConverter;
 import org.omocha.domain.review.rating.Rating;
 import org.omocha.domain.review.rating.RatingDbConverter;
 
@@ -44,7 +46,8 @@ public class Member extends BaseEntity {
 
 	private String birth;
 
-	private String phoneNumber;
+	@Convert(converter = PhoneNumberDbConverter.class)
+	private PhoneNumber phoneNumber;
 
 	private String profileImageUrl;
 
@@ -65,7 +68,7 @@ public class Member extends BaseEntity {
 	@Builder
 	public Member(
 		Email email, String password, String nickname,
-		String username, String birth, String phoneNumber,
+		String username, String birth, PhoneNumber phoneNumber,
 		String profileImageUrl, Rating averageRating, Role role,
 		String provider, String providerId, MemberStatus memberStatus
 	) {
@@ -89,7 +92,7 @@ public class Member extends BaseEntity {
 
 	public void updateMember(
 		String nickname,
-		String phoneNumber
+		PhoneNumber phoneNumber
 	) {
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;

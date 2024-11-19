@@ -2,6 +2,7 @@ package org.omocha.api.member.dto;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.PhoneNumber;
 
 public class MemberDto {
 
@@ -11,7 +12,7 @@ public class MemberDto {
 		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		String birth,
 		String profileImageUrl,
 		String loginType,
@@ -31,7 +32,7 @@ public class MemberDto {
 		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		String birth,
 		Role role,
 		String profileImageUrl

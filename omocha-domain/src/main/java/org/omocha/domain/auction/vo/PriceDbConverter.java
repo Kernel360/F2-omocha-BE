@@ -1,7 +1,9 @@
 package org.omocha.domain.auction.vo;
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter
 public class PriceDbConverter implements AttributeConverter<Price, Long> {
 
 	@Override
@@ -10,11 +12,11 @@ public class PriceDbConverter implements AttributeConverter<Price, Long> {
 	}
 
 	@Override
-	public Price convertToEntityAttribute(Long value) {
-		if (value != null) {
-			return new Price(value);
+	public Price convertToEntityAttribute(Long price) {
+		if (price == null) {
+			return new Price(0L);
 		}
 
-		return new Price(0L);
+		return new Price(price);
 	}
 }

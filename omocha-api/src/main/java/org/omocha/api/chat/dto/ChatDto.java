@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 public class ChatDto {
 
 	public record ChatMessageRequest(
+		// TODO: @Valid 제거
 		@NotBlank(message = "MessageType이 공백 또는 null 이면 안됨")
 		Chat.MessageType messageType,
 		Long senderMemberId,

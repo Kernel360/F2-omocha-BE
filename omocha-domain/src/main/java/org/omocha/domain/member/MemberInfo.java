@@ -2,6 +2,7 @@ package org.omocha.domain.member;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.PhoneNumber;
 
 public class MemberInfo {
 
@@ -9,7 +10,7 @@ public class MemberInfo {
 		Email email,
 		String nickname,
 		String birth,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		String imageUrl,
 		Role role
 	) {
@@ -47,7 +48,7 @@ public class MemberInfo {
 		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		String birth,
 		Role role,
 		String profileImageUrl
@@ -90,7 +91,7 @@ public class MemberInfo {
 		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		String birth,
 		String profileImageUrl,
 		String loginType,

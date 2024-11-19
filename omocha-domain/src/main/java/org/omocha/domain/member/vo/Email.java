@@ -2,7 +2,7 @@ package org.omocha.domain.member.vo;
 
 import java.util.regex.Pattern;
 
-import org.omocha.domain.member.exception.InvalidEmailException;
+import org.omocha.domain.member.exception.InvalidEmailFormatException;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -13,7 +13,7 @@ public record Email(String value) {
 
 	public Email {
 		if (!isValid(value)) {
-			throw new InvalidEmailException(value);
+			throw new InvalidEmailFormatException(value);
 		}
 	}
 
