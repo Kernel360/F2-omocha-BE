@@ -6,11 +6,14 @@ import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.auction.exception.AuctionException;
 import org.omocha.domain.bid.exception.BidException;
 import org.omocha.domain.chat.exception.ChatException;
+import org.omocha.domain.image.exception.ImageException;
 import org.omocha.domain.member.exception.MemberException;
 import org.omocha.domain.member.exception.jwt.JwtTokenException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -57,39 +60,22 @@ public class GlobalExceptionHandler {
 			.body(resultDto);
 	}
 
-	// @ExceptionHandler(QnaException.class)
-	// public ResponseEntity<ResultDto<Object>> handleQnaException(
-	// 	QnaException e,
-	// 	HttpServletRequest request
-	// ) {
-	// 	log.error("errorCode: {}, url: {}, message: {}",
-	// 		e.getQnaCode(), request.getRequestURI(), e.getDetailMessage(), e);
-	//
-	// 	ResultDto<Object> resultDto = ResultDto.res(
-	// 		e.getQnaCode().getStatusCode(),
-	// 		e.getQnaCode().getResultMsg()
-	// 	);
-	// 	return ResponseEntity
-	// 		.status(e.getQnaCode().getHttpStatus())
-	// 		.body(resultDto);
-	// }
+	@ExceptionHandler(ImageException.class)
+	public ResponseEntity<ResultDto<Object>> handleImageException(
+		ImageException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			e.getErrorCode(), request.getRequestURI(), e.getMessage(), e);
 
-	// @ExceptionHandler(ImageException.class)
-	// public ResponseEntity<ResultDto<Object>> handleImageException(
-	// 	ImageException e,
-	// 	HttpServletRequest request
-	// ) {
-	// 	log.error("errorCode: {}, url: {}, message: {}",
-	// 		e.getImageCode(), request.getRequestURI(), e.getDetailMessage(), e);
-	//
-	// 	ResultDto<Object> resultDto = ResultDto.res(
-	// 		e.getImageCode().getStatusCode(),
-	// 		e.getImageCode().getResultMsg()
-	// 	);
-	// 	return ResponseEntity
-	// 		.status(e.getImageCode().getHttpStatus())
-	// 		.body(resultDto);
-	// }
+		ResultDto<Object> resultDto = ResultDto.res(
+			e.getErrorCode().getStatusCode(),
+			e.getMessage()
+		);
+		return ResponseEntity
+			.status(e.getErrorCode().getHttpStatus())
+			.body(resultDto);
+	}
 
 	@ExceptionHandler(JwtTokenException.class)
 	public ResponseEntity<ResultDto<Object>> handleJWTException(
@@ -141,22 +127,41 @@ public class GlobalExceptionHandler {
 			.status(e.getErrorCode().getHttpStatus())
 			.body(resultDto);
 	}
-	// @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-	// public ResponseEntity<ResultDto<Object>> handleHttpMediaTypeNotSupported(
-	// 	HttpMediaTypeNotSupportedException e,
-	// 	HttpServletRequest request
-	// ) {
-	// 	log.error("errorCode: {}, url: {}, message: {}",
-	// 		UNSUPPORTED_MEDIA_TYPE, request.getRequestURI(), e.getMessage(), e);
-	//
-	// 	ResultDto<Object> resultDto = ResultDto.res(
-	// 		UNSUPPORTED_MEDIA_TYPE.getStatusCode(),
-	// 		UNSUPPORTED_MEDIA_TYPE.getDescription()
-	// 	);
-	// 	return ResponseEntity
-	// 		.status(UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
-	// 		.body(resultDto);
-	// }
+
+	// TODO : Global Handler에서 exception 처리 안하기
+	@ExceptionHandler(MissingServletRequestPartException.class)
+	public ResponseEntity<ResultDto<Object>> missingServletRequestPartException(
+		MissingServletRequestPartException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			REQUEST_PART_NOT_FOUND, request.getRequestURI(), e.getMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			REQUEST_PART_NOT_FOUND.getStatusCode(),
+			REQUEST_PART_NOT_FOUND.getDescription()
+		);
+		return ResponseEntity
+			.status(REQUEST_PART_NOT_FOUND.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	public ResponseEntity<ResultDto<Object>> handleHttpMediaTypeNotSupported(
+		HttpMediaTypeNotSupportedException e,
+		HttpServletRequest request
+	) {
+		log.error("errorCode: {}, url: {}, message: {}",
+			UNSUPPORTED_MEDIA_TYPE, request.getRequestURI(), e.getMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			UNSUPPORTED_MEDIA_TYPE.getStatusCode(),
+			UNSUPPORTED_MEDIA_TYPE.getDescription()
+		);
+		return ResponseEntity
+			.status(UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
+			.body(resultDto);
+	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResultDto<Object>> handleGeneralException(
