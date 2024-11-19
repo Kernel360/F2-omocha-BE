@@ -54,7 +54,6 @@ public class AuctionController implements AuctionApi {
 		@RequestPart(value = "images", required = true) List<MultipartFile> images,
 		@RequestPart(value = "thumbnailPath", required = true) MultipartFile thumbnailPath
 	) {
-		log.info("Received auction add request: {}", auctionRequest);
 
 		Long memberId = userPrincipal.getId();
 
@@ -70,8 +69,6 @@ public class AuctionController implements AuctionApi {
 			AUCTION_CREATE_SUCCESS.getDescription(),
 			response
 		);
-
-		log.info("Auction created by memberId : {}", memberId);
 
 		return ResponseEntity
 			.status(AUCTION_CREATE_SUCCESS.getHttpStatus())
@@ -124,13 +121,9 @@ public class AuctionController implements AuctionApi {
 			.map(UserPrincipal::getId)
 			.orElse(null);
 
-		log.info("Received auction details request: {}, memberId: {}", auctionId, memberId);
-
 		AuctionCommand.RetrieveAuction auctionCommand = auctionDtoMapper.toCommand(auctionId, memberId);
 		AuctionInfo.RetrieveAuction detailInfo = auctionFacade.retrieveAuction(auctionCommand);
 		AuctionDto.AuctionDetailsResponse response = auctionDtoMapper.toResponse(detailInfo);
-
-		log.info("Auction details retrieved auctionId : {}", auctionId);
 
 		ResultDto<AuctionDto.AuctionDetailsResponse> result = ResultDto.res(
 			AUCTION_DETAIL_SUCCESS.getStatusCode(),
@@ -150,14 +143,11 @@ public class AuctionController implements AuctionApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
-		log.info("Received auction remove request: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		AuctionCommand.RemoveAuction removeCommand =
 			auctionDtoMapper.toRemoveCommand(auctionId, userPrincipal.getId());
 
 		auctionFacade.removeAuction(removeCommand);
-
-		log.info("Auction removed by memberId: {}, auctionId: {}", userPrincipal.getId(), auctionId);
 
 		ResultDto<Void> result = ResultDto.res(
 			AUCTION_DELETE_SUCCESS.getStatusCode(),
@@ -175,7 +165,6 @@ public class AuctionController implements AuctionApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId
 	) {
-		log.info("Received auction like request: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		AuctionCommand.LikeAuction likeCommand =
 			auctionDtoMapper.toLikeCommand(auctionId, userPrincipal.getId());
@@ -183,8 +172,6 @@ public class AuctionController implements AuctionApi {
 		AuctionInfo.LikeAuction likeInfo = auctionFacade.likeAuction(likeCommand);
 
 		AuctionDto.AuctionLikeResponse response = auctionDtoMapper.toLikeResponse(likeInfo);
-
-		log.info("Auction like request finished: auctionId: {}, memberId: {}", auctionId, userPrincipal.getId());
 
 		if ("LIKE".equals(response.likeType())) {
 			ResultDto<AuctionDto.AuctionLikeResponse> result = ResultDto.res(
@@ -219,8 +206,6 @@ public class AuctionController implements AuctionApi {
 	) {
 		Long memberId = userPrincipal.getId();
 
-		log.info("Received auction like list request. memberId : {}", memberId);
-
 		Pageable pageable = PageRequest.of(page, size);
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
@@ -234,8 +219,6 @@ public class AuctionController implements AuctionApi {
 			AUCTION_LIKE_LIST_SUCCESS.getDescription(),
 			response
 		);
-
-		log.info("Auction like list retrieved memberId : {}", memberId);
 
 		return ResponseEntity
 			.status(AUCTION_LIKE_LIST_SUCCESS.getHttpStatus())
@@ -253,8 +236,6 @@ public class AuctionController implements AuctionApi {
 		@PageableDefault(page = 0, size = 10)
 		Pageable pageable
 	) {
-
-		log.info("myAuctionList started memberId : {} , auctionStatus : {}", userPrincipal.getId(), auctionStatus);
 
 		Long memberId = userPrincipal.getId();
 
@@ -296,8 +277,6 @@ public class AuctionController implements AuctionApi {
 		Pageable pageable
 	) {
 
-		log.info("myBidAuctionList started memberId : {} ", userPrincipal.getId());
-
 		Long memberId = userPrincipal.getId();
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
@@ -318,8 +297,6 @@ public class AuctionController implements AuctionApi {
 			MY_BIDDING_AUCTION_LIST_SUCCESS.getDescription(),
 			myBidAuctionListResponse
 		);
-
-		log.info("myBidAuctionList finished");
 
 		return ResponseEntity
 			.status(MY_BIDDING_AUCTION_LIST_SUCCESS.getHttpStatus())

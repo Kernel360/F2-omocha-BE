@@ -41,8 +41,6 @@ public class MemberController implements MemberApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 
-		log.info("currentMemberInfo started memberId={}", userPrincipal.getId());
-
 		Long memberId = userPrincipal.getId();
 
 		MemberInfo.RetrieveCurrentMemberInfo memberInfoResponse = memberFacade.retrieveCurrentMemberInfo(memberId);
@@ -54,8 +52,6 @@ public class MemberController implements MemberApi {
 			MEMBER_INFO_RETRIEVE_SUCCESS.getDescription(),
 			currentMemberInfoResponse
 		);
-
-		log.info("currentMemberInfo finished ");
 
 		return ResponseEntity
 			.status(MEMBER_INFO_RETRIEVE_SUCCESS.getHttpStatus())
@@ -73,8 +69,6 @@ public class MemberController implements MemberApi {
 		@RequestPart(value = "profileImage", required = true) MultipartFile profileImage
 	) {
 
-		log.info("profileImageModify started memberId={}", userPrincipal.getId());
-
 		Long memberId = userPrincipal.getId();
 
 		MemberCommand.ModifyProfileImage modifyProfileImageCommand = memberDtoMapper.toCommand(memberId, profileImage);
@@ -90,8 +84,6 @@ public class MemberController implements MemberApi {
 			profileImageResponse
 		);
 
-		log.info("profileImageModify finished");
-
 		return ResponseEntity
 			.status(PROFILE_IMAGE_UPDATED.getHttpStatus())
 			.body(resultDto);
@@ -103,8 +95,6 @@ public class MemberController implements MemberApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody MemberDto.PasswordModifyRequest passwordModifyRequest
 	) {
-
-		log.info("passwordModify started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
 
@@ -121,8 +111,6 @@ public class MemberController implements MemberApi {
 			PASSWORD_UPDATED.getDescription()
 		);
 
-		log.info("passwordModify finished");
-
 		return ResponseEntity
 			.status(PASSWORD_UPDATED.getHttpStatus())
 			.body(resultDto);
@@ -136,9 +124,6 @@ public class MemberController implements MemberApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody MemberDto.MemberModifyRequest memberModifyRequest
 	) {
-
-		log.info("memberInfoModify started memberId={} , memberModifyRequest={}", userPrincipal.getId(),
-			memberModifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
@@ -154,8 +139,6 @@ public class MemberController implements MemberApi {
 			MEMBER_INFO_UPDATED.getDescription(),
 			memberModifyResponse
 		);
-
-		log.info("memberInfoModify finished");
 
 		return ResponseEntity
 			.status(MEMBER_INFO_UPDATED.getHttpStatus())

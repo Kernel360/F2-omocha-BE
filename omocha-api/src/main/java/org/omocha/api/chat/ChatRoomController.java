@@ -66,7 +66,6 @@ public class ChatRoomController implements ChatRoomApi {
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(required = false) String sort
 	) {
-		log.info("Fetching chat rooms for memberId: {}", userPrincipal.getId());
 
 		Pageable pageable = PageRequest.of(page, size);
 

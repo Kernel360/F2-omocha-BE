@@ -37,8 +37,6 @@ public class AnswerController implements AnswerApi {
 		@RequestBody AnswerDto.AnswerAddRequest answerAddRequest
 	) {
 
-		log.info("received CreateAnswerRequest : {}", answerAddRequest);
-
 		Long memberId = userPrincipal.getId();
 
 		AnswerCommand.AddAnswer addAnswerCommand = answerDtoMapper.toCommand(memberId, answerAddRequest);
@@ -54,8 +52,6 @@ public class AnswerController implements AnswerApi {
 			answerAddResponse
 		);
 
-		log.info("add answer finished");
-
 		return ResponseEntity
 			.status(SuccessCode.ANSWER_CREATE_SUCCESS.getHttpStatus())
 			.body(resultDto);
@@ -68,8 +64,6 @@ public class AnswerController implements AnswerApi {
 		@PathVariable("answer_id") Long answerId,
 		@RequestBody AnswerDto.AnswerModifyRequest answerModifyRequest
 	) {
-
-		log.info("received answerId : {} , ModifyAnswerRequest : {}", answerId, answerModifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
@@ -86,8 +80,6 @@ public class AnswerController implements AnswerApi {
 			answerModifyResponse
 		);
 
-		log.info("modify answer finished");
-
 		return ResponseEntity
 			.status(SuccessCode.ANSWER_MODIFY_SUCCESS.getHttpStatus())
 			.body(resultDto);
@@ -100,8 +92,6 @@ public class AnswerController implements AnswerApi {
 		@PathVariable(value = "answer_id") Long answerId
 	) {
 
-		log.info("received answerId : {} ", answerId);
-
 		Long memberId = userPrincipal.getId();
 
 		AnswerCommand.RemoveAnswer removeAnswerModify = answerDtoMapper.toCommand(memberId, answerId);
@@ -112,8 +102,6 @@ public class AnswerController implements AnswerApi {
 			SuccessCode.ANSWER_DELETE_SUCCESS.getStatusCode(),
 			SuccessCode.ANSWER_DELETE_SUCCESS.getDescription()
 		);
-
-		log.info("remove answer finished");
 
 		return ResponseEntity
 			.status(SuccessCode.ANSWER_DELETE_SUCCESS.getHttpStatus())

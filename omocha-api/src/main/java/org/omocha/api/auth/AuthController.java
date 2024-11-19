@@ -39,8 +39,6 @@ public class AuthController implements AuthApi {
 	public ResponseEntity<ResultDto<Void>> memberAdd(
 		@RequestBody @Valid AuthDto.MemberAddRequest memberAddRequest
 	) {
-		// log.debug("Member register started");
-		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
 
 		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(memberAddRequest.email(),
 			passwordManager.encrypt(memberAddRequest.password()));
@@ -84,8 +82,6 @@ public class AuthController implements AuthApi {
 		@RequestBody @Valid AuthDto.MemberLoginRequest memberLoginRequest,
 		HttpServletResponse response
 	) {
-		log.debug("Member login started");
-		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
 		MemberCommand.MemberLogin memberLogin = authDtoMapper.toCommand(memberLoginRequest);
 
@@ -107,7 +103,6 @@ public class AuthController implements AuthApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		HttpServletResponse response
 	) {
-		log.debug("Member logout started");
 
 		jwtProvider.logout(userPrincipal.getMember().getMemberId(), response);
 

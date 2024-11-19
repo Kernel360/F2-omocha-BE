@@ -2,7 +2,8 @@
 
     <!-- LOG_DIR과 LOG_PATTERN을 직접 정의 -->
     <property name="LOG_DIR" value="./omocha-server/server/logs"/>
-    <property name="LOG_PATTERN" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n"/>
+    <property name="LOG_PATTERN"
+              value="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%clr(traceId=%X{traceId})] [%logger{0}:%line] - %msg%n"/>
 
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
@@ -10,10 +11,14 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
-        <encoder>
-            <pattern><![CDATA[
-    [CONSOLE] %clr([%-5level]){magenta} %clr(%d{yyyy-MM-dd HH:mm:ss}){yellow} [%clr(%thread){green}] [%clr(%logger{0}){cyan}:%clr(%line){blue}] - %msg%n]]>
-            </pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
+                <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
+                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <pattern><![CDATA[
+    [CONSOLE] %clr([%-5level]){magenta} %clr(%d{yyyy-MM-dd HH:mm:ss}){yellow} [%clr(%thread){green}] [%clr(traceId=%X{traceId}){red}] [%clr(%logger{0}){cyan}:%clr(%line){blue}] - %msg%n]]>
+                </pattern>
+            </layout>
         </encoder>
     </appender>
 
@@ -24,10 +29,14 @@
             <maxFileSize>10MB</maxFileSize> <!--로그 파일의 최대 크기-->
             <maxHistory>30</maxHistory> <!--로그 파일 최대 보관주기 (단위: 일)-->
         </rollingPolicy>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>
-                [REQUEST] ${LOG_PATTERN}
-            </pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
+                <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
+                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <pattern>
+                    <![CDATA[[REQUEST] ${LOG_PATTERN}]]>
+                </pattern>
+            </layout>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!--File Header Form-->
         </encoder>
     </appender>
@@ -39,10 +48,14 @@
             <maxFileSize>10MB</maxFileSize> <!--로그 파일의 최대 크기-->
             <maxHistory>30</maxHistory> <!--로그 파일 최대 보관주기 (단위: 일)-->
         </rollingPolicy>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>
-                [QUERY] ${LOG_PATTERN}
-            </pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
+                <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
+                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <pattern>
+                    <![CDATA[ [QUERY] ${LOG_PATTERN} ]]>
+                </pattern>
+            </layout>
             <outputPatternAsHeader>true</outputPatternAsHeader> <!--File Header Form-->
         </encoder>
     </appender>
