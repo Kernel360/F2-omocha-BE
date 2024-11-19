@@ -4,7 +4,7 @@ import org.omocha.domain.review.exception.InvalidRatingException;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public record Rating(Double value) {
+public record Rating(double value) {
 
 	public static final int MIN = 0;
 	public static final int MAX = 5;
@@ -15,12 +15,12 @@ public record Rating(Double value) {
 		}
 	}
 
-	public static boolean isValidRating(Double value) {
+	public static boolean isValidRating(double value) {
 		return value >= MIN && value <= MAX;
 	}
 
 	@JsonValue
-	public Double getValue() {
+	public double getValue() {
 		return value;
 	}
 
