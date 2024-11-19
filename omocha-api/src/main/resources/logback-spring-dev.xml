@@ -8,7 +8,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     [CONSOLE] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%clr(traceId=%X{traceId})]
                     [%logger{0}:%line] - %msg%n
@@ -28,7 +29,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     [REQUEST] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%clr(traceId=%X{traceId})]
                     [%logger{0}:%line] - %msg%n
@@ -54,7 +56,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     [ERROR] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%clr(traceId=%X{traceId})] [%logger{0}:%line]
                     - %msg%n
@@ -80,7 +83,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     [WARN] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%clr(traceId=%X{traceId})] [%logger{0}:%line] -
                     %msg%n
@@ -101,7 +105,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     [QUERY] [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%thread] [%clr(traceId=%X{traceId})] [%logger{0}:%line]
                     - %msg%n

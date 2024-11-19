@@ -14,7 +14,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern><![CDATA[
     [CONSOLE] %clr([%-5level]){magenta} %clr(%d{yyyy-MM-dd HH:mm:ss}){yellow} [%clr(%thread){green}] [%clr(traceId=%X{traceId}){red}] [%clr(%logger{0}){cyan}:%clr(%line){blue}] - %msg%n]]>
                 </pattern>
@@ -32,7 +33,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     <![CDATA[[REQUEST] ${LOG_PATTERN}]]>
                 </pattern>
@@ -51,7 +53,8 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.omocha.api.common.logging.MaskingPatternLayout">
                 <maskPattern>([\w.-]+@[\w.-]+\.\w+)</maskPattern> <!-- email 마스킹 처리 -->
-                <maskPattern>password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
+                <maskPattern>(?:\w*\s*)?Password\s*=\s*([^,)\s]+)</maskPattern> <!-- password 마스킹 처리-->
                 <pattern>
                     <![CDATA[ [QUERY] ${LOG_PATTERN} ]]>
                 </pattern>
