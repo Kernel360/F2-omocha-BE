@@ -7,13 +7,13 @@ import org.omocha.domain.member.vo.PhoneNumber;
 public class AuthDto {
 
 	public record MemberAddRequest(
-		String email,
+		Email email,
 		String password
 	) {
 	}
 
 	public record MemberLoginRequest(
-		String email,
+		Email email,
 		String password
 	) {
 	}

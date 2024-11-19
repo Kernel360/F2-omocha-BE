@@ -2,15 +2,15 @@ package org.omocha.api.review.dto;
 
 import java.time.LocalDateTime;
 
-import org.omocha.domain.review.rating.Rating;
 import org.omocha.domain.review.Review;
+import org.omocha.domain.review.rating.Rating;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ReviewDto {
 	public record ReviewAddRequest(
-		String reviewType,
-		Double rating,
+		Review.ReviewType reviewType,
+		Rating rating,
 		String content
 	) {
 

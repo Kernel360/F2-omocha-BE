@@ -6,13 +6,10 @@ import java.util.stream.Collectors;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
-import org.omocha.domain.auction.vo.Price;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,14 +30,6 @@ public interface AuctionDtoMapper {
 		return new PageImpl<>(content, pageInfo.getPageable(), pageInfo.getTotalElements());
 	}
 
-	@Named("toPrice")
-	static Price toPrice(long price) {
-		return new Price(price);
-	}
-
-	@Mapping(target = "startPrice", source = "auctionRequest.startPrice", qualifiedByName = "toPrice")
-	@Mapping(target = "instantBuyPrice", source = "auctionRequest.instantBuyPrice", qualifiedByName = "toPrice")
-	@Mapping(target = "bidUnit", source = "auctionRequest.bidUnit", qualifiedByName = "toPrice")
 	AuctionCommand.AddAuction toCommand(
 		AuctionDto.AuctionAddRequest auctionRequest,
 		Long memberId,

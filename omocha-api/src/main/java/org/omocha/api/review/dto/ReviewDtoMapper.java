@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.omocha.domain.review.rating.Rating;
-import org.omocha.domain.review.Review;
 import org.omocha.domain.review.ReviewCommand;
 import org.omocha.domain.review.ReviewInfo;
 import org.springframework.data.domain.Page;
@@ -22,23 +19,11 @@ import org.springframework.data.domain.PageImpl;
 )
 public interface ReviewDtoMapper {
 
-	@Mapping(target = "reviewType", source = "request.reviewType", qualifiedByName = "toReviewType")
-	@Mapping(target = "rating", source = "request.rating", qualifiedByName = "toRating")
 	ReviewCommand.AddReview toCommand(
 		Long auctionId,
 		Long reviewerId,
 		ReviewDto.ReviewAddRequest request
 	);
-
-	@Named("toReviewType")
-	default Review.ReviewType toReviewType(String reviewType) {
-		return Review.ReviewType.fromString(reviewType);
-	}
-
-	@Named("toRating")
-	default Rating toRating(Double rating) {
-		return new Rating(rating);
-	}
 
 	ReviewDto.ReviewAddResponse toResponse(Long reviewId);
 

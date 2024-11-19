@@ -22,7 +22,7 @@ public class MemberDto {
 
 	public record MemberModifyRequest(
 		String nickName,
-		String phoneNumber
+		PhoneNumber phoneNumber
 	) {
 	}
 
