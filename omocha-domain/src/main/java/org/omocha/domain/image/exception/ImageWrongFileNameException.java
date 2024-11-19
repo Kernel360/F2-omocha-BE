@@ -6,7 +6,7 @@ public class ImageWrongFileNameException extends ImageException {
 	public ImageWrongFileNameException(String fileName) {
 		super(
 			ErrorCode.UNSUPPORTED_MEDIA_TYPE,
-			"잘못된 형식의 파일 입니다. 파일이름: " + fileName
+			"잘못된 형식의 파일 입니다. File name: " + fileName
 		);
 	}
 }

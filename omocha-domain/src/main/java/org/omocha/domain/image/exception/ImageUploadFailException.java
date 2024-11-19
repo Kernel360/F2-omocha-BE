@@ -6,7 +6,7 @@ public class ImageUploadFailException extends ImageException {
 	public ImageUploadFailException(String fileName) {
 		super(
 			ErrorCode.IMAGE_UPLOAD_FAIL,
-			"Failed to upload image to S3. FileName: " + fileName
+			"S3 이미지 업로드 실패했습니다. File name: " + fileName
 		);
 	}
 }
