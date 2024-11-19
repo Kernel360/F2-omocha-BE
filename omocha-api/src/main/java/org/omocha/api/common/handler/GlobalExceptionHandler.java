@@ -128,6 +128,7 @@ public class GlobalExceptionHandler {
 			.body(resultDto);
 	}
 
+	// TODO : Global Handler에서 exception 처리 안하기
 	@ExceptionHandler(MissingServletRequestPartException.class)
 	public ResponseEntity<ResultDto<Object>> missingServletRequestPartException(
 		MissingServletRequestPartException e,
