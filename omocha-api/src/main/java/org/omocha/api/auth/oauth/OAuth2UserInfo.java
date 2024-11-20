@@ -49,10 +49,11 @@ public class OAuth2UserInfo {
 			.build();
 	}
 
-	public Member toEntity() {
+	public Member toEntity(String randomNickname) {
 		return Member.builder()
-			.username(name)
 			.email(email)
+			.nickname(randomNickname)
+			.username(name)
 			.averageRating(new Rating(0.0))
 			.role(Role.ROLE_USER)
 			.provider(provider)

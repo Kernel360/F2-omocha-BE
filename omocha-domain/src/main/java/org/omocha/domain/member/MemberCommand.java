@@ -15,12 +15,12 @@ public class MemberCommand {
 		String password
 	) {
 		// TODO : 사용자 정보 확정 후 추가 수정 필요
-		public Member toEntity(RandomNickNameGenerator randomNickNameGenerator) {
+		public Member toEntity(String randomNickname) {
 			return Member.builder()
 				.email(email)
 				.password(password)
 				.averageRating(new Rating(0.0))
-				.nickname(randomNickNameGenerator.generateRandomNickname())
+				.nickname(randomNickname)
 				.role(Role.ROLE_USER)
 				.memberStatus(Member.MemberStatus.ACTIVATE)
 				.build();

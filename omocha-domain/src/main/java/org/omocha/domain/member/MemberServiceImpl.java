@@ -54,7 +54,8 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
-		Member member = addMemberCommand.toEntity(randomNickNameGenerator);
+		String randomNickname = randomNickNameGenerator.generateRandomNickname();
+		Member member = addMemberCommand.toEntity(randomNickname);
 
 		memberStore.addMember(member);
 
