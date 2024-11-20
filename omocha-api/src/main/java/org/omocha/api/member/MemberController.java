@@ -108,6 +108,12 @@ public class MemberController implements MemberApi {
 
 		Long memberId = userPrincipal.getId();
 
+		passwordManager.validateIdenticalPassword(
+			passwordModifyRequest.currentPassword(),
+			passwordModifyRequest.newPassword(),
+			memberId
+		);
+
 		MemberCommand.ModifyPassword modifyPasswordCommand = memberDtoMapper.toCommand(
 			memberId,
 			passwordModifyRequest.currentPassword(),

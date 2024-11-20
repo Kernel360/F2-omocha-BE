@@ -24,6 +24,7 @@ public enum ErrorCode {
 	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "회원이 일치하지 않습니다."),
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
+	IDENTICAL_PASSWORD(HttpStatus.BAD_REQUEST, "입력한 새 비밀번호가 기존 비밀번호와 동일합니다."),
 
 	// Mypage Code
 	NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "닉네임이 이미 사용 중입니다."),
