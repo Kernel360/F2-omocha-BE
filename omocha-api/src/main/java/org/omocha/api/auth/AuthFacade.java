@@ -6,6 +6,7 @@ import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.omocha.domain.member.MemberService;
 import org.omocha.domain.member.validate.MemberValidator;
+import org.omocha.domain.member.vo.Email;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +29,7 @@ public class AuthFacade {
 
 	}
 
-	public boolean isEmailDuplicate(String email) {
+	public boolean isEmailDuplicate(Email email) {
 		return memberValidator.isEmailDuplicateForOauth(email);
 	}
 

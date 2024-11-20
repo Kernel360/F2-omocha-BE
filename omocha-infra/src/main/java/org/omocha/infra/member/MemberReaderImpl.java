@@ -2,11 +2,12 @@ package org.omocha.infra.member;
 
 import java.util.Optional;
 
-import org.omocha.domain.member.exception.MemberNotFoundExceptionForEmail;
-import org.omocha.domain.member.exception.MemberNotFoundExceptionForId;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberReader;
+import org.omocha.domain.member.exception.MemberNotFoundExceptionForEmail;
+import org.omocha.domain.member.exception.MemberNotFoundExceptionForId;
+import org.omocha.domain.member.vo.Email;
 import org.omocha.infra.member.repository.MemberRepository;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ public class MemberReaderImpl implements MemberReader {
 	// TODO : Exception 관련 수정 필요
 
 	@Override
-	public boolean existsByEmail(String email) {
+	public boolean existsByEmail(Email email) {
 		return memberRepository.existsByEmail(email);
 	}
 
@@ -34,7 +35,7 @@ public class MemberReaderImpl implements MemberReader {
 	}
 
 	@Override
-	public Member getMember(String email) {
+	public Member getMember(Email email) {
 		return memberRepository.findByEmail(email)
 			.orElseThrow(() -> new MemberNotFoundExceptionForEmail(email));
 	}
@@ -45,7 +46,7 @@ public class MemberReaderImpl implements MemberReader {
 	}
 
 	@Override
-	public boolean existsByEmailAndProviderIsNull(String email) {
+	public boolean existsByEmailAndProviderIsNull(Email email) {
 		return memberRepository.existsByEmailAndProviderIsNull(email);
 	}
 

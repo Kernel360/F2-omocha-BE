@@ -14,6 +14,7 @@ public enum ErrorCode {
 
 	// Jwt Code
 	INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "올바르지 않는 Refresh Token 입니다."),
+
 	JWT_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT 토큰을 찾을 수 없습니다."),
 
 	// OAuth Code
@@ -22,30 +23,35 @@ public enum ErrorCode {
 	// Member Code
 	MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 회원입니다."),
 	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
-	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "회원이 일치하지 않습니다."),
-	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
-
-	// Mypage Code
+	IDENTICAL_PASSWORD(HttpStatus.BAD_REQUEST, "입력한 새 비밀번호가 기존 비밀번호와 동일합니다."),
 	NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "닉네임이 이미 사용 중입니다."),
+	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "회원이 일치하지 않습니다."),
 	INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "유효하지 않은 이메일 형식입니다."),
-	INVALID_PHONE_NUMBER_FORMAT(HttpStatus.BAD_REQUEST, "유효하지 않은 전화번호 형식입니다."),
-	INVALID_PASSWORD_FORMAT(HttpStatus.BAD_REQUEST, "비밀번호는 8자리 이상, 알파벳,특수문자 포함이어야 합니다."),
+	INVALID_PHONE_NUMBER_FORMAT(HttpStatus.BAD_REQUEST, "유효하지 않은 휴대폰번호 형식입니다."),
+
+	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
 
 	// Auction Code
 	AUCTION_ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 경매입니다."),
 	AUCTION_HAS_BIDS(HttpStatus.BAD_REQUEST, "입찰이 걸려있는 경매입니다. 경매를 종료할 수 없습니다."),
 	AUCTION_NOT_IN_BIDDING_STATUS(HttpStatus.BAD_REQUEST, "경매의 상태가 입찰중이 아닙니다."),
-	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매를 찾을 수 없습니다."),
-	AUCTION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "경매이미지를 찾을 수 없습니다."),
 	AUCTION_MEMBER_INVALID(HttpStatus.BAD_REQUEST, "경매를 생성한 회원이 아니여서 삭제를 할 수 없습니다."),
 	AUCTION_NOT_CONCLUDED(HttpStatus.BAD_REQUEST, "경매가 낙찰되지 않은 상태입니다."),
 	LIKE_NOT_NEGATIVE(HttpStatus.BAD_REQUEST, "찜 수가 음수가 되면 안됩니다"),
+	NEGATIVE_PRICE(HttpStatus.BAD_REQUEST, "금액은 음수일 수 없습니다."),
+	PRICE_TOO_HIGH(HttpStatus.BAD_REQUEST, "허용 가능한 최대 금액을 초과했습니다."),
+
+	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매를 찾을 수 없습니다."),
+	AUCTION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "경매이미지를 찾을 수 없습니다."),
 
 	// Image Code
 	IMAGE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "경매에서 생성된 이미지를 삭제할 수 없습니다."),
-	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
-	IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 파일 업로드가 실패했습니다"),
+
 	REQUEST_PART_NOT_FOUND(HttpStatus.NOT_FOUND, "RequestPart를 찾지 못했습니다"),
+
+	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
+
+	IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 파일 업로드가 실패했습니다"),
 
 	// Category Code
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없습니다."),
@@ -62,14 +68,17 @@ public enum ErrorCode {
 	CONCLUDE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 경매에는 낙찰 내역이 존재하지 않습니다."),
 
 	// Chat Code
-	CHATROOM_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 채팅방입니다."),
 	CHATROOM_ACCESS_FAIL(HttpStatus.FORBIDDEN, "채팅방에 접근 거부되었습니다"),
+
 	CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방을 찾을 수 없습니다"),
+
+	CHATROOM_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 채팅방입니다."),
 
 	// Review Code
 	INVALID_RATING(HttpStatus.BAD_REQUEST, "리뷰 평점은 " + Rating.MIN + "점부터 " + Rating.MAX + "점까지만 가능합니다."),
 	REVIEW_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 리뷰를 작성하였습니다."),
 	REVIEW_PERMISSION_DENIED(HttpStatus.BAD_REQUEST, "해당 경매에 리뷰를 작성할 권한이 없습니다."),
+	INVALID_REVIEW_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 리뷰 타입입니다."),
 
 	// Qna Code
 	QUESTION_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),

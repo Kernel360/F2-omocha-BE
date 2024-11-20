@@ -3,6 +3,8 @@ package org.omocha.domain.member;
 import java.time.LocalDate;
 
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.PhoneNumber;
 import org.omocha.domain.review.rating.Rating;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,16 +15,16 @@ import lombok.Builder;
 public class MemberCommand {
 
 	public record AddMember(
-		String email,
+		Email email,
 		String password
 	) {
 		// TODO : 사용자 정보 확정 후 추가 수정 필요
-		public Member toEntity(RandomNickNameGenerator randomNickNameGenerator) {
+		public Member toEntity(String randomNickname) {
 			return Member.builder()
 				.email(email)
 				.password(password)
 				.averageRating(new Rating(0.0))
-				.nickname(randomNickNameGenerator.generateRandomNickname())
+				.nickname(randomNickname)
 				.role(Role.ROLE_USER)
 				.memberStatus(Member.MemberStatus.ACTIVATE)
 				.build();
@@ -30,7 +32,7 @@ public class MemberCommand {
 	}
 
 	public record MemberLogin(
-		String email,
+		Email email,
 		String password
 	) {
 
@@ -47,7 +49,7 @@ public class MemberCommand {
 	public record ModifyBasicInfo(
 		Long memberId,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth
 	) {

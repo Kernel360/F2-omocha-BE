@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.omocha.api.auth.jwt.JwtCategory;
 import org.omocha.api.auth.jwt.JwtProvider;
+import org.omocha.api.auth.jwt.RefreshTokenManager;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
@@ -77,7 +78,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		FilterChain filterChain
 	) throws ServletException, IOException {
 		String refreshToken = jwtProvider.resolveTokenFromCookie(request, JwtCategory.REFRESH);
-		Long memberId = jwtProvider.getMemberIdFromToken(refreshToken);
+		Long memberId = RefreshTokenManager.findMemberIdByRefreshToken(refreshToken);
 
 		if (jwtProvider.validateRefreshToken(refreshToken)) {
 			String reissuedAccessToken = jwtProvider.generateAccessToken(memberId, response);

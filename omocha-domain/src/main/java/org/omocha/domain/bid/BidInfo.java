@@ -2,13 +2,15 @@ package org.omocha.domain.bid;
 
 import java.time.LocalDateTime;
 
+import org.omocha.domain.auction.vo.Price;
+
 import com.querydsl.core.annotations.QueryProjection;
 
 public class BidInfo {
 
 	public record BidList(
 		Long buyerMemberId,
-		Long bidPrice,
+		Price bidPrice,
 		LocalDateTime createdAt
 	) {
 		public static BidList toInfo(
@@ -25,7 +27,7 @@ public class BidInfo {
 	public record AddBid(
 		Long bidId,
 		Long buyerMemberId,
-		Long bidPrice,
+		Price bidPrice,
 		LocalDateTime createdAt
 	) {
 		public static AddBid toInfo(
@@ -41,7 +43,7 @@ public class BidInfo {
 	}
 
 	public record NowPrice(
-		Long nowPrice,
+		Price nowPrice,
 		LocalDateTime createdAt,
 		LocalDateTime calledAt
 	) {
@@ -57,12 +59,12 @@ public class BidInfo {
 	}
 
 	public record RetrieveMyBids(
-		Long bidPrice,
+		Price bidPrice,
 		LocalDateTime createdAt
 	) {
 		@QueryProjection
 		public RetrieveMyBids(
-			Long bidPrice,
+			Price bidPrice,
 			LocalDateTime createdAt
 		) {
 			this.bidPrice = bidPrice;

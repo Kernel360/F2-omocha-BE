@@ -2,6 +2,8 @@ package org.omocha.api.qna.dto;
 
 import java.time.LocalDateTime;
 
+import org.omocha.domain.member.vo.Email;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class QuestionDto {
@@ -19,7 +21,7 @@ public class QuestionDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
 		Long memberId,
-		String email,
+		Email email,
 		String nickName,
 		String profileImageUrl
 

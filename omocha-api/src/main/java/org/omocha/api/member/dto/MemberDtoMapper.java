@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.omocha.api.common.util.ValueObjectMapper;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Mapper(componentModel = "spring",
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+	unmappedTargetPolicy = ReportingPolicy.ERROR,
+	uses = ValueObjectMapper.class
 )
 public interface MemberDtoMapper {
 
@@ -30,6 +33,7 @@ public interface MemberDtoMapper {
 
 	MemberDto.CurrentMemberInfoResponse toResponse(MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo);
 
+	@Mapping(target = "phoneNumber", source = "memberModifyRequest.phoneNumber", qualifiedByName = "toPhoneNumber")
 	MemberCommand.ModifyBasicInfo toCommand(Long memberId, MemberDto.MemberModifyRequest memberModifyRequest);
 
 	MemberDto.MemberModifyResponse toResponse(MemberInfo.ModifyBasicInfo modifyBasicInfoInfo);

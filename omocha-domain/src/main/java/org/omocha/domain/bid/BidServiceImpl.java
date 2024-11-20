@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
+import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.bid.validate.BidValidator;
 import org.omocha.domain.chat.ChatCommand;
 import org.omocha.domain.chat.ChatService;
@@ -50,7 +51,7 @@ public class BidServiceImpl implements BidService {
 
 		Long buyerMemberId = addBid.buyerMemberId();
 		Long auctionId = addBid.auctionId();
-		Long bidPrice = addBid.bidPrice();
+		Price bidPrice = addBid.bidPrice();
 
 		Auction auction = auctionReader.getAuction(auctionId);
 		auction.validateAuctionStatus();
@@ -71,7 +72,7 @@ public class BidServiceImpl implements BidService {
 	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
 		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
 			.map(BidInfo.NowPrice::toInfo)
-			.orElseGet(() -> new BidInfo.NowPrice(0L, null, LocalDateTime.now()));
+			.orElseGet(() -> new BidInfo.NowPrice(new Price(0L), null, LocalDateTime.now()));
 	}
 
 	@Override

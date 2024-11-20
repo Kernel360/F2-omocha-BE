@@ -8,6 +8,8 @@ import org.hibernate.annotations.BatchSize;
 import org.omocha.domain.auction.exception.AuctionAlreadyEndedException;
 import org.omocha.domain.auction.exception.AuctionNotConcludedException;
 import org.omocha.domain.auction.exception.AuctionNotInBiddingStateException;
+import org.omocha.domain.auction.vo.Price;
+import org.omocha.domain.auction.vo.PriceDbConverter;
 import org.omocha.domain.category.AuctionCategory;
 import org.omocha.domain.category.Category;
 import org.omocha.domain.common.BaseEntity;
@@ -16,6 +18,7 @@ import org.omocha.domain.image.Image;
 import org.omocha.domain.likes.exception.LikeCountNegativeException;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -50,17 +53,21 @@ public class Auction extends BaseEntity {
 
 	private String content;
 
-	private Long startPrice;
+	@Convert(converter = PriceDbConverter.class)
+	private Price startPrice;
 
-	private Long nowPrice;
+	@Convert(converter = PriceDbConverter.class)
+	private Price nowPrice;
 
 	private Long bidCount;
 
-	private Long bidUnit;
+	@Convert(converter = PriceDbConverter.class)
+	private Price bidUnit;
 
 	private long likeCount;
 
-	private Long instantBuyPrice;
+	@Convert(converter = PriceDbConverter.class)
+	private Price instantBuyPrice;
 
 	@Enumerated(EnumType.STRING)
 	private AuctionStatus auctionStatus;
@@ -87,11 +94,11 @@ public class Auction extends BaseEntity {
 		Long memberId,
 		String title,
 		String content,
-		Long startPrice,
-		Long nowPrice,
+		Price startPrice,
+		Price nowPrice,
 		Long bidCount,
-		Long bidUnit,
-		Long instantBuyPrice,
+		Price bidUnit,
+		Price instantBuyPrice,
 		long likeCount,
 		String thumbnailPath,
 		LocalDateTime startDate,
@@ -128,7 +135,7 @@ public class Auction extends BaseEntity {
 		this.thumbnailPath = thumbnailPath;
 	}
 
-	public void updateNowPrice(Long newPrice) {
+	public void updateNowPrice(Price newPrice) {
 		this.nowPrice = newPrice;
 		this.bidCount += 1;
 	}

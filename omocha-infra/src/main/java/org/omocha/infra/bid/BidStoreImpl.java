@@ -1,6 +1,7 @@
 package org.omocha.infra.bid;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.bid.Bid;
 import org.omocha.domain.bid.BidStore;
 import org.omocha.domain.member.Member;
@@ -18,7 +19,7 @@ public class BidStoreImpl implements BidStore {
 	private final BidRepository bidRepository;
 
 	@Override
-	public Bid store(Auction auction, Member buyer, Long bidPrice) {
+	public Bid store(Auction auction, Member buyer, Price bidPrice) {
 
 		Bid savedBid = bidRepository.save(
 			Bid.builder()

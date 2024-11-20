@@ -3,18 +3,19 @@ package org.omocha.domain.member;
 import java.time.LocalDate;
 
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.PhoneNumber;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MemberInfo {
 
 	public record MemberDetail(
-
-		String email,
+		Email email,
 		String nickname,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		String imageUrl,
 		Role role
 	) {
@@ -49,10 +50,10 @@ public class MemberInfo {
 	public record ModifyBasicInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
-		String email,
+		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
 		Role role,
@@ -93,10 +94,10 @@ public class MemberInfo {
 	public record RetrieveCurrentMemberInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
-		String email,
+		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
+		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
 		String profileImageUrl,

@@ -2,6 +2,7 @@ package org.omocha.domain.qna.question;
 
 import java.time.LocalDateTime;
 
+import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.qna.answer.Answer;
 import org.omocha.domain.qna.answer.AnswerInfo;
 
@@ -31,7 +32,7 @@ public class QuestionInfo {
 		String content,
 		LocalDateTime createdAt,
 		Long memberId,
-		String email,
+		Email email,
 		String nickName,
 		String profileImageUrl
 

@@ -4,6 +4,7 @@ import static org.omocha.domain.chat.Chat.*;
 
 import java.time.LocalDateTime;
 
+import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.member.Member;
 
 import com.querydsl.core.annotations.QueryProjection;
@@ -18,7 +19,7 @@ public class ChatInfo {
 		String sellerName,
 		String sellerProfileImage,
 		String thumbnailPath,
-		Long concludePrice,
+		Price concludePrice,
 		Long buyerMemberId,
 		String buyerName,
 		String buyerProfileImage,
@@ -35,7 +36,7 @@ public class ChatInfo {
 			String sellerName,
 			String sellerProfileImage,
 			String thumbnailPath,
-			Long concludePrice,
+			Price concludePrice,
 			Long buyerMemberId,
 			String buyerName,
 			String buyerProfileImage,
