@@ -71,6 +71,12 @@ public class AuctionCommand {
 	) {
 	}
 
+	public record RetrieveMemberAuctions(
+		Long memberId,
+		Auction.AuctionStatus auctionStatus
+	) {
+	}
+
 	public record RetrieveMyBidAuctions(
 		Long memberId
 	) {

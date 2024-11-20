@@ -4,7 +4,9 @@ import org.omocha.domain.member.vo.Email;
 
 public interface MemberService {
 
-	MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId);
+	MemberInfo.RetrieveMyInfo retrieveMyInfo(Long memberId);
+
+	MemberInfo.RetrieveMemberInfo retrieveMemberInfo(Long memberId);
 
 	void addMember(MemberCommand.AddMember addMemberCommand);
 
@@ -12,7 +14,7 @@ public interface MemberService {
 
 	MemberInfo.Login retrieveMember(Email email);
 
-	MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand);
+	MemberInfo.ModifyMyInfo modifyMyInfo(MemberCommand.ModifyMyInfo modifyBasicInfoCommand);
 
 	void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand);
 

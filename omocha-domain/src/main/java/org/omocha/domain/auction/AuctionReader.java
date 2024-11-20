@@ -17,8 +17,12 @@ public interface AuctionReader {
 	List<Auction> getExpiredBiddingAuctionList();
 
 	Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(
-		Long aLong,
-		Auction.AuctionStatus auctionStatus,
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctions,
+		Pageable pageable
+	);
+
+	Page<AuctionInfo.RetrieveMemberAuctions> getMemberAuctionList(
+		AuctionCommand.RetrieveMemberAuctions retrieveMemberAuctions,
 		Pageable pageable
 	);
 

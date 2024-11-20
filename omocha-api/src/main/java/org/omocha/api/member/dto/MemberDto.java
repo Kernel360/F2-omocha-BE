@@ -3,10 +3,11 @@ package org.omocha.api.member.dto;
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.PhoneNumber;
+import org.omocha.domain.review.rating.Rating;
 
 public class MemberDto {
 
-	public record CurrentMemberInfoResponse(
+	public record MyInfoResponse(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		Email email,
@@ -15,18 +16,27 @@ public class MemberDto {
 		PhoneNumber phoneNumber,
 		String birth,
 		String profileImageUrl,
+		Rating averageRating,
 		String loginType,
 		int likeCount
 	) {
 	}
 
-	public record MemberModifyRequest(
+	public record MemberInfoResponse(
+		Long memberId,
+		String nickName,
+		String profileImageUrl,
+		Rating averageRating
+	) {
+	}
+
+	public record MyInfoModifyRequest(
 		String nickName,
 		String phoneNumber
 	) {
 	}
 
-	public record MemberModifyResponse(
+	public record MyInfoModifyResponse(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		Email email,

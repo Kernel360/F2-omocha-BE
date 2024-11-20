@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -35,31 +36,52 @@ public class MemberController implements MemberApi {
 
 	// TODO : 멤버 정보 반환? 고민해야됨
 	//		로그인시 or Api, + 회원 정보 추가
+	// EXPLAIN : 나의 정보 불러오기
 	@Override
-	@GetMapping()
-	public ResponseEntity<ResultDto<MemberDto.CurrentMemberInfoResponse>> currentMemberInfo(
+	@GetMapping("")
+	public ResponseEntity<ResultDto<MemberDto.MyInfoResponse>> myInfo(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-
-		log.info("currentMemberInfo started memberId={}", userPrincipal.getId());
+		log.info("myInfo started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
 
-		MemberInfo.RetrieveCurrentMemberInfo memberInfoResponse = memberFacade.retrieveCurrentMemberInfo(memberId);
+		MemberInfo.RetrieveMyInfo myInfo = memberFacade.retrieveMyInfo(memberId);
 
-		MemberDto.CurrentMemberInfoResponse currentMemberInfoResponse = memberDtoMapper.toResponse(memberInfoResponse);
+		MemberDto.MyInfoResponse response = memberDtoMapper.toResponse(myInfo);
 
-		ResultDto<MemberDto.CurrentMemberInfoResponse> resultDto = ResultDto.res(
+		ResultDto<MemberDto.MyInfoResponse> result = ResultDto.res(
 			MEMBER_INFO_RETRIEVE_SUCCESS.getStatusCode(),
 			MEMBER_INFO_RETRIEVE_SUCCESS.getDescription(),
-			currentMemberInfoResponse
+			response
 		);
 
 		log.info("currentMemberInfo finished ");
 
 		return ResponseEntity
 			.status(MEMBER_INFO_RETRIEVE_SUCCESS.getHttpStatus())
-			.body(resultDto);
+			.body(result);
+	}
+
+	// EXPLAIN : 상대방 정보 불러오기
+	@Override
+	@GetMapping("/{member_id}")
+	public ResponseEntity<ResultDto<MemberDto.MemberInfoResponse>> memberInfo(
+		@PathVariable("member_id") Long memberId
+	) {
+		MemberInfo.RetrieveMemberInfo memberInfo = memberFacade.retrieveMemberInfo(memberId);
+
+		MemberDto.MemberInfoResponse response = memberDtoMapper.toResponse(memberInfo);
+
+		ResultDto<MemberDto.MemberInfoResponse> result = ResultDto.res(
+			MEMBER_INFO_RETRIEVE_SUCCESS.getStatusCode(),
+			MEMBER_INFO_RETRIEVE_SUCCESS.getDescription(),
+			response
+		);
+
+		return ResponseEntity
+			.status(MEMBER_INFO_RETRIEVE_SUCCESS.getHttpStatus())
+			.body(result);
 
 	}
 
@@ -138,34 +160,33 @@ public class MemberController implements MemberApi {
 	// TODO : 사용자 정보 수정
 	@Override
 	@PatchMapping()
-	public ResponseEntity<ResultDto<MemberDto.MemberModifyResponse>> memberInfoModify(
+	public ResponseEntity<ResultDto<MemberDto.MyInfoModifyResponse>> myInfoModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody MemberDto.MemberModifyRequest memberModifyRequest
+		@RequestBody MemberDto.MyInfoModifyRequest modifyRequest
 	) {
 
 		log.info("memberInfoModify started memberId={} , memberModifyRequest={}", userPrincipal.getId(),
-			memberModifyRequest);
+			modifyRequest);
 
 		Long memberId = userPrincipal.getId();
 
-		MemberCommand.ModifyBasicInfo modifyBasicInfoCommand = memberDtoMapper.toCommand(memberId,
-			memberModifyRequest);
+		MemberCommand.ModifyMyInfo modifyCommand = memberDtoMapper.toCommand(memberId, modifyRequest);
 
-		MemberInfo.ModifyBasicInfo modifyBasicInfo = memberFacade.modifyBasicInfo(modifyBasicInfoCommand);
+		MemberInfo.ModifyMyInfo modifyInfo = memberFacade.modifyMyInfo(modifyCommand);
 
-		MemberDto.MemberModifyResponse memberModifyResponse = memberDtoMapper.toResponse(modifyBasicInfo);
+		MemberDto.MyInfoModifyResponse response = memberDtoMapper.toResponse(modifyInfo);
 
-		ResultDto<MemberDto.MemberModifyResponse> resultDto = ResultDto.res(
+		ResultDto<MemberDto.MyInfoModifyResponse> result = ResultDto.res(
 			MEMBER_INFO_UPDATED.getStatusCode(),
 			MEMBER_INFO_UPDATED.getDescription(),
-			memberModifyResponse
+			response
 		);
 
 		log.info("memberInfoModify finished");
 
 		return ResponseEntity
 			.status(MEMBER_INFO_UPDATED.getHttpStatus())
-			.body(resultDto);
+			.body(result);
 
 	}
 

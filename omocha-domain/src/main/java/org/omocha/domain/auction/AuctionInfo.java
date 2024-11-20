@@ -225,12 +225,41 @@ public class AuctionInfo {
 		}
 	}
 
+	public record RetrieveMemberAuctions(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		String thumbnailPath,
+		Price nowPrice,
+		LocalDateTime endDate
+	) {
+
+		@QueryProjection
+		public RetrieveMemberAuctions(
+			Long auctionId,
+			String title,
+			Auction.AuctionStatus auctionStatus,
+			String thumbnailPath,
+			Price nowPrice,
+			LocalDateTime endDate
+		) {
+			this.auctionId = auctionId;
+			this.title = title;
+			this.auctionStatus = auctionStatus;
+			this.nowPrice = nowPrice;
+			this.thumbnailPath = thumbnailPath;
+			this.endDate = endDate;
+		}
+	}
+
 	// TODO : 리뷰 추가 이후 리뷰 유무 추가
 	public record RetrieveMyBidAuctions(
 		Long auctionId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
+		Price nowPrice,
+		LocalDateTime endDate,
 		String bidStatus,
 		boolean reviewStatus
 	) {
@@ -240,6 +269,8 @@ public class AuctionInfo {
 			String title,
 			Auction.AuctionStatus auctionStatus,
 			String thumbnailPath,
+			Price nowPrice,
+			LocalDateTime endDate,
 			String bidStatus,
 			boolean reviewStatus
 		) {
@@ -247,6 +278,8 @@ public class AuctionInfo {
 			this.title = title;
 			this.auctionStatus = auctionStatus;
 			this.thumbnailPath = thumbnailPath;
+			this.nowPrice = nowPrice;
+			this.endDate = endDate;
 			this.bidStatus = bidStatus;
 			this.reviewStatus = reviewStatus;
 		}

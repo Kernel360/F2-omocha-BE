@@ -47,11 +47,21 @@ public class AuctionReaderImpl implements AuctionReader {
 	}
 
 	@Override
-	public Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(Long memberId, Auction.AuctionStatus auctionStatus,
-		Pageable pageable) {
-		return auctionRepository.getMyAuctionList(memberId, auctionStatus, pageable);
+	public Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctions,
+		Pageable pageable
+	) {
+		return auctionRepository.getMyAuctionList(retrieveMyAuctions, pageable);
 	}
 
+	@Override
+	public Page<AuctionInfo.RetrieveMemberAuctions> getMemberAuctionList(
+		AuctionCommand.RetrieveMemberAuctions retrieveMemberAuctions,
+		Pageable pageable
+	) {
+		return auctionRepository.getMemberAuctionList(retrieveMemberAuctions, pageable);
+	}
+	
 	@Override
 	public Page<AuctionInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage) {
 		return auctionRepository.getMyBidAuctionList(memberId, sortPage);

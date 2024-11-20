@@ -121,11 +121,25 @@ public class AuctionDto {
 	) {
 	}
 
+	public record MemberAuctionListResponse(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		Price nowPrice,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
+		String thumbnailPath
+	) {
+	}
+
 	public record MyBidAuctionResponse(
 		Long auctionId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
+		Price nowPrice,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
 		String bidStatus,
 		boolean reviewStatus
 	) {

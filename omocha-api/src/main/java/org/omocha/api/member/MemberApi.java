@@ -14,9 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "사용자 API(MemberController)", description = "사용자 정보 관련 API 입니다.")
+@Tag(name = "사용자 API(MemberController)", description = "사용자(내) 정보 관련 API 입니다.")
 public interface MemberApi {
-	@Operation(summary = "사용자 정보 가져오기", description = "사용자 정보를 가져옵니다.")
+	@Operation(summary = "사용자(내) 정보 가져오기", description = "사용자(내) 정보를 가져옵니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "유저 정보를 성공적으로 반환하였습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
@@ -27,9 +27,25 @@ public interface MemberApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<MemberDto.CurrentMemberInfoResponse>> currentMemberInfo(
+	ResponseEntity<ResultDto<MemberDto.MyInfoResponse>> myInfo(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		UserPrincipal userPrincipal
+	);
+
+	@Operation(summary = "사용자(상대방) 정보 가져오기", description = "사용자(상대방) 정보를 가져옵니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "유저 정보를 성공적으로 반환하였습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
+	})
+	ResponseEntity<ResultDto<MemberDto.MemberInfoResponse>> memberInfo(
+		@Parameter(description = "사용자(상대방) 객체 정보", required = true)
+		Long memberId
 	);
 
 	@Operation(summary = "사용자 프로필 이미지 변경", description = "사용자의 프로필 이미지를 변경합니다.")
@@ -79,11 +95,11 @@ public interface MemberApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<MemberDto.MemberModifyResponse>> memberInfoModify(
+	ResponseEntity<ResultDto<MemberDto.MyInfoModifyResponse>> myInfoModify(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		UserPrincipal userPrincipal,
-		@Parameter(description = "사용자 일반 정보 변경용 객체", schema = @Schema(implementation = MemberDto.MemberModifyRequest.class))
-		MemberDto.MemberModifyRequest memberModifyRequest
+		@Parameter(description = "사용자 일반 정보 변경용 객체", schema = @Schema(implementation = MemberDto.MyInfoModifyRequest.class))
+		MemberDto.MyInfoModifyRequest memberModifyRequest
 	);
 
 }

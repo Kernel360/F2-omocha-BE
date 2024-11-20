@@ -3,6 +3,7 @@ package org.omocha.domain.member;
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.PhoneNumber;
+import org.omocha.domain.review.rating.Rating;
 
 public class MemberInfo {
 
@@ -42,7 +43,7 @@ public class MemberInfo {
 		}
 	}
 
-	public record ModifyBasicInfo(
+	public record ModifyMyInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		Email email,
@@ -53,10 +54,10 @@ public class MemberInfo {
 		Role role,
 		String profileImageUrl
 	) {
-		public static ModifyBasicInfo toInfo(
+		public static ModifyMyInfo toInfo(
 			Member member
 		) {
-			return new ModifyBasicInfo(
+			return new ModifyMyInfo(
 				member.getMemberId(),
 				member.getEmail(),
 				member.getUsername(),
@@ -85,7 +86,7 @@ public class MemberInfo {
 
 	}
 
-	public record RetrieveCurrentMemberInfo(
+	public record RetrieveMyInfo(
 		// TODO : 회원 가입 정보 추가 후 변경
 		Long memberId,
 		Email email,
@@ -94,15 +95,16 @@ public class MemberInfo {
 		PhoneNumber phoneNumber,
 		String birth,
 		String profileImageUrl,
+		Rating averageRating,
 		String loginType,
 		int likeCount
 	) {
-		public static RetrieveCurrentMemberInfo toInfo(
+		public static RetrieveMyInfo toInfo(
 			Member member,
 			String loginType,
 			int likeCount
 		) {
-			return new RetrieveCurrentMemberInfo(
+			return new RetrieveMyInfo(
 				member.getMemberId(),
 				member.getEmail(),
 				member.getUsername(),
@@ -110,10 +112,29 @@ public class MemberInfo {
 				member.getPhoneNumber(),
 				member.getBirth(),
 				member.getProfileImageUrl(),
+				member.getAverageRating(),
 				loginType,
 				likeCount
 			);
 
+		}
+	}
+
+	public record RetrieveMemberInfo(
+		Long memberId,
+		String nickName,
+		String profileImageUrl,
+		Rating averageRating
+	) {
+		public static RetrieveMemberInfo toInfo(
+			Member member
+		) {
+			return new RetrieveMemberInfo(
+				member.getMemberId(),
+				member.getNickname(),
+				member.getProfileImageUrl(),
+				member.getAverageRating()
+			);
 		}
 	}
 
