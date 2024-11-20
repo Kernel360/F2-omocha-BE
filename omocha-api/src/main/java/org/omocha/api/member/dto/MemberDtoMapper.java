@@ -31,12 +31,14 @@ public interface MemberDtoMapper {
 		return new PageImpl<>(content, pageInfo.getPageable(), pageInfo.getTotalElements());
 	}
 
-	MemberDto.CurrentMemberInfoResponse toResponse(MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo);
+	MemberDto.MyInfoResponse toResponse(MemberInfo.RetrieveMyInfo retrieveMyInfo);
+
+	MemberDto.MemberInfoResponse toResponse(MemberInfo.RetrieveMemberInfo retrieveMemberInfo);
 
 	@Mapping(target = "phoneNumber", source = "memberModifyRequest.phoneNumber", qualifiedByName = "toPhoneNumber")
-	MemberCommand.ModifyBasicInfo toCommand(Long memberId, MemberDto.MemberModifyRequest memberModifyRequest);
+	MemberCommand.ModifyMyInfo toCommand(Long memberId, MemberDto.MyInfoModifyRequest memberModifyRequest);
 
-	MemberDto.MemberModifyResponse toResponse(MemberInfo.ModifyBasicInfo modifyBasicInfoInfo);
+	MemberDto.MyInfoModifyResponse toResponse(MemberInfo.ModifyMyInfo modifyBasicInfoInfo);
 
 	MemberCommand.ModifyPassword toCommand(Long memberId, String currentPassword, String newPassword);
 

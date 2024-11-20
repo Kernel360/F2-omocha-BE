@@ -26,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
+	public MemberInfo.RetrieveMyInfo retrieveMyInfo(Long memberId) {
 		log.debug("find me start for member {}", memberId);
 
 		Member member = memberReader.getMember(memberId);
@@ -41,7 +41,14 @@ public class MemberServiceImpl implements MemberService {
 		// TODO : 개선 필요(서버측 문제?) , Exception
 		log.debug("find me finished for member {}", memberId);
 
-		return MemberInfo.RetrieveCurrentMemberInfo.toInfo(member, loginType, likeCount);
+		return MemberInfo.RetrieveMyInfo.toInfo(member, loginType, likeCount);
+	}
+
+	@Override
+	public MemberInfo.RetrieveMemberInfo retrieveMemberInfo(Long memberId) {
+		Member member = memberReader.getMember(memberId);
+
+		return MemberInfo.RetrieveMemberInfo.toInfo(member);
 	}
 
 	@Override
@@ -80,23 +87,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
+	public MemberInfo.ModifyMyInfo modifyMyInfo(MemberCommand.ModifyMyInfo modifyMyInfoCommand) {
 
-		log.debug("modify member start for member {}", modifyBasicInfoCommand.memberId());
+		log.debug("modify member start for member {}", modifyMyInfoCommand.memberId());
 
-		Member member = memberReader.getMember(modifyBasicInfoCommand.memberId());
+		Member member = memberReader.getMember(modifyMyInfoCommand.memberId());
 
-		memberValidator.validateDuplicateNickName(modifyBasicInfoCommand.nickName());
+		memberValidator.validateDuplicateNickName(modifyMyInfoCommand.nickName());
 
 		member.updateMember(
-			modifyBasicInfoCommand.nickName(),
-			modifyBasicInfoCommand.phoneNumber(),
-			modifyBasicInfoCommand.birth()
+			modifyMyInfoCommand.nickName(),
+			modifyMyInfoCommand.phoneNumber(),
+			modifyMyInfoCommand.birth()
 		);
 
-		log.debug("modify member finished for member {}", modifyBasicInfoCommand.memberId());
+		log.debug("modify member finished for member {}", modifyMyInfoCommand.memberId());
 
-		return MemberInfo.ModifyBasicInfo.toInfo(member);
+		return MemberInfo.ModifyMyInfo.toInfo(member);
 
 	}
 

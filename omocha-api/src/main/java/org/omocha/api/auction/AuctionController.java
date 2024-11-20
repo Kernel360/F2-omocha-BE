@@ -217,9 +217,7 @@ public class AuctionController implements AuctionApi {
 
 		log.info("Received auction like list request. memberId : {}", memberId);
 
-		Pageable pageable = PageRequest.of(page, size);
-
-		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
+		Pageable sortPage = pageSort.sortPage(PageRequest.of(page, size), sort, direction);
 
 		Page<AuctionInfo.RetrieveMyAuctionLikes> likeInfo = auctionFacade.retrieveMyAuctionLikes(memberId, sortPage);
 
@@ -250,25 +248,18 @@ public class AuctionController implements AuctionApi {
 		Pageable pageable
 	) {
 
-		log.info("myAuctionList started memberId : {} , auctionStatus : {}", userPrincipal.getId(), auctionStatus);
-
 		Long memberId = userPrincipal.getId();
 
 		Pageable sortPage = pageSort.sortPage(pageable, sort, direction);
 
-		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand = auctionDtoMapper.toCommand(
-			memberId,
-			auctionStatus
-		);
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand =
+			auctionDtoMapper.toMyCommand(memberId, auctionStatus);
 
-		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo = auctionFacade.retrieveMyAuctions(
-			retrieveMyAuctionsCommand,
-			sortPage
-		);
+		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo =
+			auctionFacade.retrieveMyAuctions(retrieveMyAuctionsCommand, sortPage);
 
-		Page<AuctionDto.MyAuctionListResponse> myAuctionListResponse = auctionDtoMapper.toMyAuctionListResponse(
-			retrieveMyAuctionsInfo
-		);
+		Page<AuctionDto.MyAuctionListResponse> myAuctionListResponse =
+			auctionDtoMapper.toMyAuctionListResponse(retrieveMyAuctionsInfo);
 
 		ResultDto<Page<AuctionDto.MyAuctionListResponse>> resultDto = ResultDto.res(
 			MY_AUCTION_LIST_SUCCESS.getStatusCode(),
@@ -279,7 +270,39 @@ public class AuctionController implements AuctionApi {
 		return ResponseEntity
 			.status(MY_AUCTION_LIST_SUCCESS.getHttpStatus())
 			.body(resultDto);
+	}
 
+	@Override
+	@GetMapping("/member/{member_id}")
+	public ResponseEntity<ResultDto<Page<AuctionDto.MemberAuctionListResponse>>> memberAuctionList(
+		@PathVariable("member_id") Long memberId,
+		@RequestParam(value = "auctionStatus", required = false) Auction.AuctionStatus auctionStatus,
+		@RequestParam(value = "sort", defaultValue = "createdAt") String sort,
+		@RequestParam(value = "direction", defaultValue = "DESC") String direction,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
+
+		Pageable sortPage = pageSort.sortPage(PageRequest.of(page, size), sort, direction);
+
+		AuctionCommand.RetrieveMemberAuctions memberCommand =
+			auctionDtoMapper.toMemberCommand(memberId, auctionStatus);
+
+		Page<AuctionInfo.RetrieveMemberAuctions> memberInfo =
+			auctionFacade.retrieveMemberAuctions(memberCommand, sortPage);
+
+		Page<AuctionDto.MemberAuctionListResponse> response =
+			auctionDtoMapper.toMemberAuctionListResponse(memberInfo);
+
+		ResultDto<Page<AuctionDto.MemberAuctionListResponse>> result = ResultDto.res(
+			MEMBER_AUCTION_LIST_SUCCESS.getStatusCode(),
+			MEMBER_AUCTION_LIST_SUCCESS.getDescription(),
+			response
+		);
+
+		return ResponseEntity
+			.status(MEMBER_AUCTION_LIST_SUCCESS.getHttpStatus())
+			.body(result);
 	}
 
 	@Override

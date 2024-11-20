@@ -46,7 +46,7 @@ public class MemberCommand {
 
 	}
 
-	public record ModifyBasicInfo(
+	public record ModifyMyInfo(
 		Long memberId,
 		String nickName,
 		PhoneNumber phoneNumber,

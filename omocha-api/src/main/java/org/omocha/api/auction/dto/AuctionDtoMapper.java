@@ -75,15 +75,23 @@ public interface AuctionDtoMapper {
 
 	AuctionDto.AuctionLikeListResponse toResponse(AuctionInfo.RetrieveMyAuctionLikes myAuctionLikes);
 
-	AuctionCommand.RetrieveMyAuctions toCommand(Long memberId, Auction.AuctionStatus auctionStatus);
+	AuctionCommand.RetrieveMyAuctions toMyCommand(Long memberId, Auction.AuctionStatus auctionStatus);
 
-	// AuctionInfo.RetrieveMyAuctions 에 대한 변환
+	AuctionCommand.RetrieveMemberAuctions toMemberCommand(Long memberId, Auction.AuctionStatus auctionStatus);
+
 	default Page<AuctionDto.MyAuctionListResponse> toMyAuctionListResponse(
 		Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctionsInfo) {
 		return toResponsePage(retrieveMyAuctionsInfo, this::toResponse);
 	}
 
 	AuctionDto.MyAuctionListResponse toResponse(AuctionInfo.RetrieveMyAuctions retrieveMyAuctions);
+
+	default Page<AuctionDto.MemberAuctionListResponse> toMemberAuctionListResponse(
+		Page<AuctionInfo.RetrieveMemberAuctions> retrieveMemberAuctions) {
+		return toResponsePage(retrieveMemberAuctions, this::toResponse);
+	}
+
+	AuctionDto.MemberAuctionListResponse toResponse(AuctionInfo.RetrieveMemberAuctions retrieveMemberAuctions);
 
 	AuctionCommand.RetrieveMyBidAuctions toBidAuctionCommand(Long memberId);
 

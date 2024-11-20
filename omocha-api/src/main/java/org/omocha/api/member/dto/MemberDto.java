@@ -5,12 +5,13 @@ import java.time.LocalDate;
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.PhoneNumber;
+import org.omocha.domain.review.rating.Rating;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MemberDto {
 
-	public record CurrentMemberInfoResponse(
+	public record MyInfoResponse(
 		Long memberId,
 		Email email,
 		String userName,
@@ -19,12 +20,21 @@ public class MemberDto {
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
 		String profileImageUrl,
+		Rating averageRating,
 		String loginType,
 		int likeCount
 	) {
 	}
 
-	public record MemberModifyRequest(
+	public record MemberInfoResponse(
+		Long memberId,
+		String nickName,
+		String profileImageUrl,
+		Rating averageRating
+	) {
+	}
+
+	public record MyInfoModifyRequest(
 		String nickName,
 		String phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
@@ -32,7 +42,7 @@ public class MemberDto {
 	) {
 	}
 
-	public record MemberModifyResponse(
+	public record MyInfoModifyResponse(
 		Long memberId,
 		Email email,
 		String userName,
