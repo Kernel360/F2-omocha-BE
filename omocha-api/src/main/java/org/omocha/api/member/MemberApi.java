@@ -68,7 +68,7 @@ public interface MemberApi {
 		MemberDto.PasswordModifyRequest passwordModifyRequest
 	);
 
-	@Operation(summary = "사용자 정보 수정하기", description = "사용자의 일반 정보를 수정합니다.", deprecated = true)
+	@Operation(summary = "사용자 정보 수정하기", description = "사용자의 일반 정보를 수정합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "멤버 정보 수정이 완료되었습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),

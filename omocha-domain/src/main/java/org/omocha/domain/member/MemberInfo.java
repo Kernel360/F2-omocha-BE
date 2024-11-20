@@ -1,6 +1,10 @@
 package org.omocha.domain.member;
 
+import java.time.LocalDateTime;
+
 import org.omocha.domain.common.Role;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MemberInfo {
 
@@ -8,7 +12,8 @@ public class MemberInfo {
 
 		String email,
 		String nickname,
-		String birth,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime birth,
 		String phoneNumber,
 		String imageUrl,
 		Role role
@@ -48,7 +53,8 @@ public class MemberInfo {
 		String userName,
 		String nickName,
 		String phoneNumber,
-		String birth,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime birth,
 		Role role,
 		String profileImageUrl
 	) {
@@ -91,7 +97,8 @@ public class MemberInfo {
 		String userName,
 		String nickName,
 		String phoneNumber,
-		String birth,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime birth,
 		String profileImageUrl,
 		String loginType,
 		int likeCount

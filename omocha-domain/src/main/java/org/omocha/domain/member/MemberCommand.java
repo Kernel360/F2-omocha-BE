@@ -1,8 +1,12 @@
 package org.omocha.domain.member;
 
+import java.time.LocalDateTime;
+
 import org.omocha.domain.common.Role;
 import org.omocha.domain.review.rating.Rating;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Builder;
 
@@ -43,7 +47,9 @@ public class MemberCommand {
 	public record ModifyBasicInfo(
 		Long memberId,
 		String nickName,
-		String phoneNumber
+		String phoneNumber,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime birth
 	) {
 	}
 
