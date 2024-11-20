@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public record PhoneNumber(String value) {
 
-	private static final String REGEX = "^\\\\d{3}-\\\\d{3,4}-\\\\d{4}$";
+	private static final String REGEX = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$";
 	private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile(REGEX);
 
 	public PhoneNumber {
