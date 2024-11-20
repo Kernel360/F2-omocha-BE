@@ -23,8 +23,9 @@ public enum ErrorCode {
 	// Member Code
 	MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 회원입니다."),
 	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
-	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "회원이 일치하지 않습니다."),
+	IDENTICAL_PASSWORD(HttpStatus.BAD_REQUEST, "입력한 새 비밀번호가 기존 비밀번호와 동일합니다."),
 	NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "닉네임이 이미 사용 중입니다."),
+	INVALID_MEMBER(HttpStatus.BAD_REQUEST, "회원이 일치하지 않습니다."),
 	INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "유효하지 않은 이메일 형식입니다."),
 	INVALID_PHONE_NUMBER_FORMAT(HttpStatus.BAD_REQUEST, "유효하지 않은 휴대폰번호 형식입니다."),
 
