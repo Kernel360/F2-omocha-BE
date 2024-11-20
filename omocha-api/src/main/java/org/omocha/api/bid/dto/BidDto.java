@@ -18,7 +18,7 @@ public class BidDto {
 	}
 
 	public record BidAddRequest(
-		Price bidPrice
+		Long bidPrice
 	) {
 
 	}

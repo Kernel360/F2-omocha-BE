@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ReviewDto {
 	public record ReviewAddRequest(
-		Review.ReviewType reviewType,
-		Rating rating,
+		String reviewType,
+		Double rating,
 		String content
 	) {
 

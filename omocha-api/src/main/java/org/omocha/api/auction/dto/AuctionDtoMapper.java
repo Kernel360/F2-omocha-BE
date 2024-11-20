@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.omocha.api.common.util.ValueObjectMapper;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionInfo;
@@ -17,7 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Mapper(
 	componentModel = "spring",
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+	unmappedTargetPolicy = ReportingPolicy.ERROR,
+	uses = ValueObjectMapper.class
 )
 public interface AuctionDtoMapper {
 
@@ -30,6 +33,9 @@ public interface AuctionDtoMapper {
 		return new PageImpl<>(content, pageInfo.getPageable(), pageInfo.getTotalElements());
 	}
 
+	@Mapping(target = "startPrice", source = "auctionRequest.startPrice", qualifiedByName = "toPrice")
+	@Mapping(target = "instantBuyPrice", source = "auctionRequest.instantBuyPrice", qualifiedByName = "toPrice")
+	@Mapping(target = "bidUnit", source = "auctionRequest.bidUnit", qualifiedByName = "toPrice")
 	AuctionCommand.AddAuction toCommand(
 		AuctionDto.AuctionAddRequest auctionRequest,
 		Long memberId,

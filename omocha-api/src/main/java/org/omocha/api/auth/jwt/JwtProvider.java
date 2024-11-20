@@ -19,7 +19,6 @@ public class JwtProvider {
 
 	private final JwtGenerator jwtGenerator;
 	private final JwtUtil jwtUtil;
-	// private final MemberService memberService;
 
 	private final SecretKey accessKey;
 	private final SecretKey refreshKey;
@@ -68,7 +67,6 @@ public class JwtProvider {
 	public String resolveTokenFromCookie(HttpServletRequest request, JwtCategory tokenPrefix) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {
-			// throw new JwtTokenNotFoundException(JWT_TOKEN_NOT_FOUND);
 			return null;
 		}
 		return jwtUtil.resolveTokenFromCookie(cookies, tokenPrefix);
@@ -82,11 +80,6 @@ public class JwtProvider {
 			.getBody()
 			.getSubject());
 	}
-
-	// public MemberEntity findMemberByRefreshToken(String refreshToken) {
-	// 	Long memberId = RefreshToken.findMemberIdByRefreshToken(refreshToken);
-	// 	return memberService.findMember(memberId);
-	// }
 
 	public void logout(Long memberId, HttpServletResponse response) {
 		RefreshTokenManager.removeUserRefreshToken(memberId);

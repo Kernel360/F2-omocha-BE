@@ -77,6 +77,7 @@ public enum ErrorCode {
 	INVALID_RATING(HttpStatus.BAD_REQUEST, "리뷰 평점은 " + Rating.MIN + "점부터 " + Rating.MAX + "점까지만 가능합니다."),
 	REVIEW_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 리뷰를 작성하였습니다."),
 	REVIEW_PERMISSION_DENIED(HttpStatus.BAD_REQUEST, "해당 경매에 리뷰를 작성할 권한이 없습니다."),
+	INVALID_REVIEW_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 리뷰 타입입니다."),
 
 	// Qna Code
 	QUESTION_DENY(HttpStatus.FORBIDDEN, "수정,삭제가 거부되었습니다."),
