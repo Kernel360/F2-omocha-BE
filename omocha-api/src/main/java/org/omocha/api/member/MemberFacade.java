@@ -17,16 +17,16 @@ public class MemberFacade {
 	private final MemberService memberService;
 	private final PasswordManager passwordManager;
 
-	public MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo(Long memberId) {
-
-		return memberService.retrieveCurrentMemberInfo(memberId);
-
+	public MemberInfo.RetrieveMyInfo retrieveMyInfo(Long memberId) {
+		return memberService.retrieveMyInfo(memberId);
 	}
 
-	public MemberInfo.ModifyBasicInfo modifyBasicInfo(MemberCommand.ModifyBasicInfo modifyBasicInfoCommand) {
+	public MemberInfo.RetrieveMemberInfo retrieveMemberInfo(Long memberId) {
+		return memberService.retrieveMemberInfo(memberId);
+	}
 
-		return memberService.modifyBasicInfo(modifyBasicInfoCommand);
-
+	public MemberInfo.ModifyMyInfo modifyMyInfo(MemberCommand.ModifyMyInfo modifyMyInfo) {
+		return memberService.modifyMyInfo(modifyMyInfo);
 	}
 
 	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {

@@ -2,8 +2,8 @@ package org.omocha.api.review.dto;
 
 import java.time.LocalDateTime;
 
-import org.omocha.domain.review.rating.Rating;
 import org.omocha.domain.review.Review;
+import org.omocha.domain.review.rating.Rating;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

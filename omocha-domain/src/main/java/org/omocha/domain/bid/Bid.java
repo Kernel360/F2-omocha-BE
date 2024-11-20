@@ -1,9 +1,12 @@
 package org.omocha.domain.bid;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.vo.Price;
+import org.omocha.domain.auction.vo.PriceDbConverter;
 import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.member.Member;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +32,8 @@ public class Bid extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bidId;
 
-	private Long bidPrice;
+	@Convert(converter = PriceDbConverter.class)
+	private Price bidPrice;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "auction_id")
@@ -43,7 +47,7 @@ public class Bid extends BaseEntity {
 	public Bid(
 		Auction auction,
 		Member buyer,
-		Long bidPrice
+		Price bidPrice
 	) {
 		this.auction = auction;
 		this.buyer = buyer;

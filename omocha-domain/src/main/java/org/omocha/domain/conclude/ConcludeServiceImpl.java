@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
+import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.bid.Bid;
 import org.omocha.domain.bid.BidReader;
 import org.omocha.domain.chat.ChatCommand;
@@ -53,7 +54,7 @@ public class ConcludeServiceImpl implements ConcludeService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Long findConcludePrice(Long auctionId) {
+	public Price findConcludePrice(Long auctionId) {
 		return concludeReader.getConclude(auctionId).getConcludePrice();
 	}
 }

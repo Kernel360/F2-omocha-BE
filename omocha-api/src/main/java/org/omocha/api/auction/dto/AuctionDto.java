@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.category.CategoryInfo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -39,13 +40,13 @@ public class AuctionDto {
 		Long memberId,
 		String title,
 		String content,
-		Long startPrice,
-		Long bidUnit,
-		Long instantBuyPrice,
+		Price startPrice,
+		Price bidUnit,
+		Price instantBuyPrice,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
-		Long nowPrice,
-		Long concludePrice,
+		Price nowPrice,
+		Price concludePrice,
 		Long bidCount,
 		Long likeCount,
 		boolean isLiked,
@@ -64,12 +65,12 @@ public class AuctionDto {
 		Long memberId,
 		String title,
 		String content,
-		Long startPrice,
-		Long bidUnit,
-		Long instantBuyPrice,
+		Price startPrice,
+		Price bidUnit,
+		Price instantBuyPrice,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
-		Long nowPrice,
+		Price nowPrice,
 		Long bidCount,
 		Long likeCount,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -94,8 +95,8 @@ public class AuctionDto {
 		Long auctionId,
 		String title,
 		String thumbnailPath,
-		Long startPrice,
-		Long nowPrice,
+		Price startPrice,
+		Price nowPrice,
 		Auction.AuctionStatus auctionStatus,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
@@ -112,11 +113,22 @@ public class AuctionDto {
 		Long auctionId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
-		Long nowPrice,
+		Price nowPrice,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
 		String thumbnailPath,
 		boolean reviewStatus
+	) {
+	}
+
+	public record MemberAuctionListResponse(
+		Long auctionId,
+		String title,
+		Auction.AuctionStatus auctionStatus,
+		Price nowPrice,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
+		String thumbnailPath
 	) {
 	}
 
@@ -125,6 +137,9 @@ public class AuctionDto {
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
+		Price nowPrice,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		LocalDateTime endDate,
 		String bidStatus,
 		boolean reviewStatus
 	) {

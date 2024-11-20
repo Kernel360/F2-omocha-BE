@@ -14,6 +14,7 @@ import org.omocha.domain.category.exception.CategoryNotFoundException;
 import org.omocha.domain.image.Image;
 import org.omocha.domain.likes.LikeReader;
 import org.omocha.domain.likes.LikeStore;
+import org.omocha.domain.member.MemberReader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -35,6 +36,7 @@ public class AuctionServiceImpl implements AuctionService {
 	private final CategoryStore categoryStore;
 	private final LikeReader likeReader;
 	private final LikeStore likeStore;
+	private final MemberReader memberReader;
 
 	@Override
 	@Transactional
@@ -152,16 +154,20 @@ public class AuctionServiceImpl implements AuctionService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<AuctionInfo.RetrieveMyAuctions> retrieveMyAuctions(
-		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand, Pageable pageable) {
+		AuctionCommand.RetrieveMyAuctions retrieveMyAuctionsCommand,
+		Pageable pageable
+	) {
+		return auctionReader.getMyAuctionList(retrieveMyAuctionsCommand, pageable);
+	}
 
-		// TODO : AuctionStatus 에 따라 필요한 값이 다름
-		// 	biidng - nowPrice , conclude - concludePrice
-		return auctionReader.getMyAuctionList(
-			retrieveMyAuctionsCommand.memberId(),
-			retrieveMyAuctionsCommand.auctionStatus(),
-			pageable
-		);
+	@Override
+	public Page<AuctionInfo.RetrieveMemberAuctions> retrieveMemberAuctions(
+		AuctionCommand.RetrieveMemberAuctions retrieveMemberAuctions,
+		Pageable pageable
+	) {
+		memberReader.getMember(retrieveMemberAuctions.memberId());
 
+		return auctionReader.getMemberAuctionList(retrieveMemberAuctions, pageable);
 	}
 
 	@Override

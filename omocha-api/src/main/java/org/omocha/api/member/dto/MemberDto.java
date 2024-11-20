@@ -1,37 +1,55 @@
 package org.omocha.api.member.dto;
 
+import java.time.LocalDate;
+
 import org.omocha.domain.common.Role;
+import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.PhoneNumber;
+import org.omocha.domain.review.rating.Rating;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MemberDto {
 
-	public record CurrentMemberInfoResponse(
-		// TODO : 회원 가입 정보 추가 후 변경
+	public record MyInfoResponse(
 		Long memberId,
-		String email,
+		Email email,
 		String userName,
 		String nickName,
-		String phoneNumber,
-		String birth,
+		PhoneNumber phoneNumber,
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth,
 		String profileImageUrl,
+		Rating averageRating,
 		String loginType,
 		int likeCount
 	) {
 	}
 
-	public record MemberModifyRequest(
+	public record MemberInfoResponse(
+		Long memberId,
 		String nickName,
-		String phoneNumber
+		String profileImageUrl,
+		Rating averageRating
 	) {
 	}
 
-	public record MemberModifyResponse(
-		// TODO : 회원 가입 정보 추가 후 변경
-		Long memberId,
-		String email,
-		String userName,
+	public record MyInfoModifyRequest(
 		String nickName,
 		String phoneNumber,
-		String birth,
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth
+	) {
+	}
+
+	public record MyInfoModifyResponse(
+		Long memberId,
+		Email email,
+		String userName,
+		String nickName,
+		PhoneNumber phoneNumber,
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth,
 		Role role,
 		String profileImageUrl
 	) {

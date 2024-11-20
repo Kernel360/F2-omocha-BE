@@ -17,7 +17,8 @@ public enum SuccessCode {
 	VALIDATE_EMAIL_SUCCESS(HttpStatus.OK, "사용 가능한 이메일입니다."),
 
 	MEMBER_INFO_RETRIEVE_SUCCESS(HttpStatus.OK, "유저 정보를 성공적으로 반환하였습니다."),
-	MY_AUCTION_LIST_SUCCESS(HttpStatus.OK, "경매 내역을 성공적으로 조회하였습니다."),
+	MY_AUCTION_LIST_SUCCESS(HttpStatus.OK, "나의 경매 내역을 성공적으로 조회하였습니다."),
+	MEMBER_AUCTION_LIST_SUCCESS(HttpStatus.OK, "상대방의 경매 내역을 성공적으로 조회하였습니다."),
 	MY_BIDDING_LIST_SUCCESS(HttpStatus.OK, "입찰 내역을 성공적으로 조회하였습니다."),
 	MY_BIDDING_AUCTION_LIST_SUCCESS(HttpStatus.OK, "입찰한 경매 내역을 성공적으로 조회하였습니다."),
 

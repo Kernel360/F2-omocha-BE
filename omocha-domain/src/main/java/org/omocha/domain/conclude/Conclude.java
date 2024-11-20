@@ -3,8 +3,11 @@ package org.omocha.domain.conclude;
 import java.time.LocalDateTime;
 
 import org.omocha.domain.auction.Auction;
+import org.omocha.domain.auction.vo.Price;
+import org.omocha.domain.auction.vo.PriceDbConverter;
 import org.omocha.domain.member.Member;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +40,8 @@ public class Conclude {
 	@JoinColumn(name = "buyer_member_id")
 	private Member buyer;
 
-	private Long concludePrice;
+	@Convert(converter = PriceDbConverter.class)
+	private Price concludePrice;
 
 	private LocalDateTime concludedAt;
 
@@ -45,7 +49,7 @@ public class Conclude {
 	public Conclude(
 		Auction auction,
 		Member buyer,
-		Long concludePrice,
+		Price concludePrice,
 		LocalDateTime concludedAt
 	) {
 		this.auction = auction;

@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.omocha.api.common.util.ValueObjectMapper;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.MemberInfo;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Mapper(componentModel = "spring",
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+	unmappedTargetPolicy = ReportingPolicy.ERROR,
+	uses = ValueObjectMapper.class
 )
 public interface MemberDtoMapper {
 
@@ -28,11 +31,14 @@ public interface MemberDtoMapper {
 		return new PageImpl<>(content, pageInfo.getPageable(), pageInfo.getTotalElements());
 	}
 
-	MemberDto.CurrentMemberInfoResponse toResponse(MemberInfo.RetrieveCurrentMemberInfo retrieveCurrentMemberInfo);
+	MemberDto.MyInfoResponse toResponse(MemberInfo.RetrieveMyInfo retrieveMyInfo);
 
-	MemberCommand.ModifyBasicInfo toCommand(Long memberId, MemberDto.MemberModifyRequest memberModifyRequest);
+	MemberDto.MemberInfoResponse toResponse(MemberInfo.RetrieveMemberInfo retrieveMemberInfo);
 
-	MemberDto.MemberModifyResponse toResponse(MemberInfo.ModifyBasicInfo modifyBasicInfoInfo);
+	@Mapping(target = "phoneNumber", source = "memberModifyRequest.phoneNumber", qualifiedByName = "toPhoneNumber")
+	MemberCommand.ModifyMyInfo toCommand(Long memberId, MemberDto.MyInfoModifyRequest memberModifyRequest);
+
+	MemberDto.MyInfoModifyResponse toResponse(MemberInfo.ModifyMyInfo modifyBasicInfoInfo);
 
 	MemberCommand.ModifyPassword toCommand(Long memberId, String currentPassword, String newPassword);
 

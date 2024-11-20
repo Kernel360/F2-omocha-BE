@@ -3,6 +3,7 @@ package org.omocha.domain.review;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.member.Member;
+import org.omocha.domain.review.exception.InvalidReviewTypeException;
 import org.omocha.domain.review.rating.Rating;
 import org.omocha.domain.review.rating.RatingDbConverter;
 
@@ -69,7 +70,6 @@ public class Review extends BaseEntity {
 		this.content = content;
 	}
 
-	// TODO: Exception 추가해야함
 	@Getter
 	@RequiredArgsConstructor
 	public enum ReviewType {
@@ -82,7 +82,7 @@ public class Review extends BaseEntity {
 			try {
 				return ReviewType.valueOf(reviewType);
 			} catch (Exception e) {
-				throw new IllegalArgumentException(reviewType);
+				throw new InvalidReviewTypeException(reviewType);
 			}
 		}
 	}

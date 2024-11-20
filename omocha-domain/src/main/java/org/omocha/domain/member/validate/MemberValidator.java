@@ -1,9 +1,11 @@
 package org.omocha.domain.member.validate;
 
-public interface MemberValidator {
-	boolean isEmailDuplicateForOauth(String email);
+import org.omocha.domain.member.vo.Email;
 
-	void validateEmail(String email);
+public interface MemberValidator {
+	boolean isEmailDuplicateForOauth(Email email);
+
+	void validateEmail(Email email);
 
 	void validateDuplicateNickName(String nickName);
 }

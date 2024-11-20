@@ -1,11 +1,13 @@
 package org.omocha.domain.bid;
 
+import org.omocha.domain.auction.vo.Price;
+
 public class BidCommand {
 
 	public record AddBid(
 		Long auctionId,
 		Long buyerMemberId,
-		Long bidPrice
+		Price bidPrice
 	) {
 
 	}

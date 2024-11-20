@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.omocha.domain.review.rating.Rating;
+import org.omocha.api.common.util.ValueObjectMapper;
 import org.omocha.domain.review.Review;
 import org.omocha.domain.review.ReviewCommand;
 import org.omocha.domain.review.ReviewInfo;
@@ -18,7 +18,8 @@ import org.springframework.data.domain.PageImpl;
 @Mapper(
 	componentModel = "spring",
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+	unmappedTargetPolicy = ReportingPolicy.ERROR,
+	uses = ValueObjectMapper.class
 )
 public interface ReviewDtoMapper {
 
@@ -33,11 +34,6 @@ public interface ReviewDtoMapper {
 	@Named("toReviewType")
 	default Review.ReviewType toReviewType(String reviewType) {
 		return Review.ReviewType.fromString(reviewType);
-	}
-
-	@Named("toRating")
-	default Rating toRating(Double rating) {
-		return new Rating(rating);
 	}
 
 	ReviewDto.ReviewAddResponse toResponse(Long reviewId);
