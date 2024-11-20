@@ -1,6 +1,6 @@
 package org.omocha.domain.member;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import org.omocha.domain.common.BaseEntity;
@@ -41,7 +41,7 @@ public class Member extends BaseEntity {
 
 	private String username;
 
-	private LocalDateTime birth;
+	private LocalDate birth;
 
 	private String phoneNumber;
 
@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
 	@Builder
 	public Member(
 		String email, String password, String nickname,
-		String username, LocalDateTime birth, String phoneNumber,
+		String username, LocalDate birth, String phoneNumber,
 		String profileImageUrl, Rating averageRating, Role role,
 		String provider, String providerId, MemberStatus memberStatus
 	) {
@@ -89,7 +89,7 @@ public class Member extends BaseEntity {
 	public void updateMember(
 		String nickname,
 		String phoneNumber,
-		LocalDateTime birth
+		LocalDate birth
 	) {
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;

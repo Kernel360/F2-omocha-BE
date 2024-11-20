@@ -1,6 +1,6 @@
 package org.omocha.api.member.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.omocha.domain.common.Role;
 
@@ -14,8 +14,8 @@ public class MemberDto {
 		String userName,
 		String nickName,
 		String phoneNumber,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime birth,
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth,
 		String profileImageUrl,
 		String loginType,
 		int likeCount
@@ -25,8 +25,8 @@ public class MemberDto {
 	public record MemberModifyRequest(
 		String nickName,
 		String phoneNumber,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime birth
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth
 	) {
 	}
 
@@ -36,8 +36,8 @@ public class MemberDto {
 		String userName,
 		String nickName,
 		String phoneNumber,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime birth,
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth,
 		Role role,
 		String profileImageUrl
 	) {

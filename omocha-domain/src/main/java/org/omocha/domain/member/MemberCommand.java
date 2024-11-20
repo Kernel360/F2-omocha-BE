@@ -1,6 +1,6 @@
 package org.omocha.domain.member;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.review.rating.Rating;
@@ -48,8 +48,8 @@ public class MemberCommand {
 		Long memberId,
 		String nickName,
 		String phoneNumber,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-		LocalDateTime birth
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		LocalDate birth
 	) {
 	}
 
