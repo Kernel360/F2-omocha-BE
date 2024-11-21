@@ -27,15 +27,15 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		AccessDeniedException accessDeniedException
 	) throws IOException, ServletException {
 
-		log.info("[CustomAccessDeniedHandler] :: Request URL: {}", request.getRequestURL());
-		log.info("[CustomAccessDeniedHandler] :: HTTP Method: {}", request.getMethod());
-		log.info("[CustomAccessDeniedHandler] :: Client IP: {}", request.getRemoteAddr());
+		log.warn("[CustomAccessDeniedHandler] :: Request URL: {}", request.getRequestURL());
+		log.warn("[CustomAccessDeniedHandler] :: HTTP Method: {}", request.getMethod());
+		log.warn("[CustomAccessDeniedHandler] :: Client IP: {}", request.getRemoteAddr());
 
 		String authHeader = request.getHeader("Authorization");
 		if (authHeader != null) {
-			log.info("[CustomAccessDeniedHandler] :: Authorization Header: {}", authHeader);
+			log.warn("[CustomAccessDeniedHandler] :: Authorization Header: {}", authHeader);
 		} else {
-			log.info("[CustomAccessDeniedHandler] :: Authorization Header is missing");
+			log.warn("[CustomAccessDeniedHandler] :: Authorization Header is missing");
 		}
 
 		log.warn("[CustomAccessDeniedHandler] :: Access denied. Exception type: {}",
