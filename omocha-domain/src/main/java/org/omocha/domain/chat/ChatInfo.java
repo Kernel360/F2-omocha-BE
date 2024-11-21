@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.member.Member;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 
 public class ChatInfo {
@@ -23,7 +24,9 @@ public class ChatInfo {
 		Long buyerMemberId,
 		String buyerName,
 		String buyerProfileImage,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdDate,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime lastMessageTime,
 		String lastMessage
 	) {
@@ -69,6 +72,7 @@ public class ChatInfo {
 		String nickname,
 		String senderProfileImage,
 		String message,
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt
 	) {
 		@QueryProjection
