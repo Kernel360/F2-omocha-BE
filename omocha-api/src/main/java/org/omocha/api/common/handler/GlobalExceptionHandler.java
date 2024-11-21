@@ -8,7 +8,6 @@ import org.omocha.domain.bid.exception.BidException;
 import org.omocha.domain.chat.exception.ChatException;
 import org.omocha.domain.image.exception.ImageException;
 import org.omocha.domain.member.exception.MemberException;
-import org.omocha.domain.member.exception.jwt.JwtTokenException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -63,23 +62,6 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ImageException.class)
 	public ResponseEntity<ResultDto<Object>> handleImageException(
 		ImageException e,
-		HttpServletRequest request
-	) {
-		log.error("errorCode: {}, url: {}, message: {}",
-			e.getErrorCode(), request.getRequestURI(), e.getMessage(), e);
-
-		ResultDto<Object> resultDto = ResultDto.res(
-			e.getErrorCode().getStatusCode(),
-			e.getMessage()
-		);
-		return ResponseEntity
-			.status(e.getErrorCode().getHttpStatus())
-			.body(resultDto);
-	}
-
-	@ExceptionHandler(JwtTokenException.class)
-	public ResponseEntity<ResultDto<Object>> handleJWTException(
-		JwtTokenException e,
 		HttpServletRequest request
 	) {
 		log.error("errorCode: {}, url: {}, message: {}",
