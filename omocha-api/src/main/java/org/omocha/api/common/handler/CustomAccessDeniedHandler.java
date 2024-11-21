@@ -27,20 +27,20 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		AccessDeniedException accessDeniedException
 	) throws IOException, ServletException {
 
-		log.warn("[CustomAccessDeniedHandler] :: Request URL: {}", request.getRequestURL());
-		log.warn("[CustomAccessDeniedHandler] :: HTTP Method: {}", request.getMethod());
-		log.warn("[CustomAccessDeniedHandler] :: Client IP: {}", request.getRemoteAddr());
+		log.warn("Request URL: {}", request.getRequestURL());
+		log.warn("HTTP Method: {}", request.getMethod());
+		log.warn("Client IP: {}", request.getRemoteAddr());
 
 		String authHeader = request.getHeader("Authorization");
 		if (authHeader != null) {
-			log.warn("[CustomAccessDeniedHandler] :: Authorization Header: {}", authHeader);
+			log.warn("Authorization Header: {}", authHeader);
 		} else {
-			log.warn("[CustomAccessDeniedHandler] :: Authorization Header is missing");
+			log.warn("Authorization Header is missing");
 		}
 
-		log.warn("[CustomAccessDeniedHandler] :: Access denied. Exception type: {}",
+		log.warn("Access denied. Exception type: {}",
 			accessDeniedException.getClass().getSimpleName());
-		log.warn("[CustomAccessDeniedHandler] :: Exception message: {}", accessDeniedException.getMessage());
+		log.warn("Exception message: {}", accessDeniedException.getMessage());
 
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);

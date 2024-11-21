@@ -32,20 +32,20 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 		AuthenticationException authException
 	) throws IOException, ServletException {
 
-		log.warn("[CustomAuthenticationEntryPointHandler] :: Request URL: {}", request.getRequestURL());
-		log.warn("[CustomAuthenticationEntryPointHandler] :: HTTP Method: {}", request.getMethod());
-		log.warn("[CustomAuthenticationEntryPointHandler] :: Client IP: {}", request.getRemoteAddr());
+		log.warn("Request URL: {}", request.getRequestURL());
+		log.warn("HTTP Method: {}", request.getMethod());
+		log.warn("Client IP: {}", request.getRemoteAddr());
 
 		String authHeader = request.getHeader("Authorization");
 		if (authHeader != null) {
-			log.warn("[CustomAuthenticationEntryPointHandler] :: Authorization Header: {}", authHeader);
+			log.warn("Authorization Header: {}", authHeader);
 		} else {
-			log.warn("[CustomAuthenticationEntryPointHandler] :: Authorization Header is missing");
+			log.warn("Authorization Header is missing");
 		}
 
-		log.warn("[CustomAuthenticationEntryPointHandler] :: Authentication failed. Exception type: {}",
+		log.warn("Authentication failed. Exception type: {}",
 			authException.getClass().getSimpleName());
-		log.warn("[CustomAuthenticationEntryPointHandler] :: Exception message: {}", authException.getMessage());
+		log.warn("Exception message: {}", authException.getMessage());
 
 		jwtProvider.logout(response);
 

@@ -28,8 +28,9 @@ public class GlobalExceptionHandler {
 		log.info("Request URI: {}, Method: {}, Params: {}",
 			request.getRequestURI(),
 			request.getMethod(),
-			request.getQueryString(),
-			e);
+			request.getQueryString()
+		);
+		log.info(e.getMessage());
 
 		ResultDto<Object> resultDto = ResultDto.res(
 			e.getErrorCode().getStatusCode(),
