@@ -3,6 +3,7 @@ package org.omocha.api.auth;
 import org.omocha.api.auth.dto.AuthDto;
 import org.omocha.api.auth.dto.AuthDtoMapper;
 import org.omocha.api.auth.jwt.JwtProvider;
+import org.omocha.api.auth.jwt.RefreshTokenManager;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
@@ -112,7 +113,8 @@ public class AuthController implements AuthApi {
 	) {
 		log.debug("Member logout started");
 
-		jwtProvider.logout(userPrincipal.getMember().getMemberId(), response);
+		RefreshTokenManager.removeUserRefreshToken(userPrincipal.getMember().getMemberId());
+		jwtProvider.logout(response);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			SuccessCode.MEMBER_LOGOUT_SUCCESS.getStatusCode(),
