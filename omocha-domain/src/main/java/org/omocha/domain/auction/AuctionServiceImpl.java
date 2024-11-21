@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.omocha.domain.auction.exception.AuctionBidUnitTooHighException;
+import org.omocha.domain.auction.exception.AuctionEndDateBeforeNowException;
 import org.omocha.domain.auction.exception.AuctionHasBidException;
 import org.omocha.domain.auction.exception.AuctionImageNotFoundException;
 import org.omocha.domain.auction.exception.AuctionOwnerMismatchException;
+import org.omocha.domain.auction.exception.AuctionStartPriceHigherInstantBuyPriceException;
 import org.omocha.domain.category.CategoryInfo;
 import org.omocha.domain.category.CategoryReader;
 import org.omocha.domain.category.CategoryStore;
@@ -43,6 +46,24 @@ public class AuctionServiceImpl implements AuctionService {
 	public Long addAuction(AuctionCommand.AddAuction addCommand) {
 		if (addCommand.images() == null || addCommand.images().isEmpty()) {
 			throw new AuctionImageNotFoundException(addCommand.memberId());
+		}
+
+		if (addCommand.startPrice().getValue() > addCommand.instantBuyPrice().getValue()) {
+			throw new AuctionStartPriceHigherInstantBuyPriceException(
+				addCommand.startPrice(),
+				addCommand.instantBuyPrice()
+			);
+		}
+
+		if ((addCommand.instantBuyPrice().getValue() - addCommand.startPrice().getValue())
+			< addCommand.bidUnit().getValue()) {
+			throw new AuctionBidUnitTooHighException(
+				addCommand.bidUnit(),
+				addCommand.instantBuyPrice().getValue() - addCommand.startPrice().getValue());
+		}
+
+		if (addCommand.endDate().isBefore(LocalDateTime.now())) {
+			throw new AuctionEndDateBeforeNowException(addCommand.endDate());
 		}
 
 		Auction auction = auctionStore.store(addCommand.toEntity());

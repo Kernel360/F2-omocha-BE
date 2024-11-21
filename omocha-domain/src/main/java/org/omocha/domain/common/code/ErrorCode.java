@@ -40,6 +40,9 @@ public enum ErrorCode {
 	LIKE_NOT_NEGATIVE(HttpStatus.BAD_REQUEST, "찜 수가 음수가 되면 안됩니다"),
 	NEGATIVE_PRICE(HttpStatus.BAD_REQUEST, "금액은 음수일 수 없습니다."),
 	PRICE_TOO_HIGH(HttpStatus.BAD_REQUEST, "허용 가능한 최대 금액을 초과했습니다."),
+	START_PRICE_HIGHER_THAN_INSTANT_BUY_PRICE(HttpStatus.BAD_REQUEST, "시작 가격이 즉시 구매 가격보다 높을 수 없습니다."),
+	END_TIME_BEFORE_NOW(HttpStatus.BAD_REQUEST, "종료 시간이 현재 시간보다 이전입니다."),
+	BID_UNIT_TOO_HIGH(HttpStatus.BAD_REQUEST, "입찰 단위가 너무 높습니다."),
 
 	AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, "경매를 찾을 수 없습니다."),
 	AUCTION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "경매이미지를 찾을 수 없습니다."),
