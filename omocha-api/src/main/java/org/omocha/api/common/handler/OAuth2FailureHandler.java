@@ -13,16 +13,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Slf4j
+@Component
 public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-	private final String REDIRECT_URI;
 	private final String ERROR_PARAM_PREFIX = "error";
 
-	public OAuth2FailureHandler(@Value("${url.base}") String REDIRECT_URI) {
-		this.REDIRECT_URI = REDIRECT_URI;
-	}
+	@Value("${url.base}")
+	private String REDIRECT_URI;
 
 	@Override
 	public void onAuthenticationFailure(
@@ -30,7 +28,6 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 		HttpServletResponse response,
 		AuthenticationException exception
 	) throws IOException, ServletException {
-
 		log.info("OAuth2FailureHandler onAuthenticationFailure");
 
 		String redirectUrl = UriComponentsBuilder.fromUriString(REDIRECT_URI)

@@ -82,10 +82,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		if (memberId != null && jwtProvider.validateRefreshToken(refreshToken)) {
 			jwtProvider.generateAccessToken(memberId, response);
 			jwtProvider.generateRefreshToken(memberId, response);
-
 			setAuthenticationToContext(memberId);
-		} else {
-			jwtProvider.logout(response);
 		}
 
 		filterChain.doFilter(request, response);

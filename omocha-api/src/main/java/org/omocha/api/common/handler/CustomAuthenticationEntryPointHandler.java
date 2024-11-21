@@ -1,9 +1,10 @@
 package org.omocha.api.common.handler;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
+import org.omocha.api.auth.jwt.JwtProvider;
 import org.omocha.api.common.response.ResultDto;
+import org.omocha.domain.common.code.ErrorCode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -14,11 +15,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CustomAuthenticationEntryPointHandler implements AuthenticationEntryPoint {
+
+	private final JwtProvider jwtProvider;
 
 	@Override
 	public void commence(
@@ -26,29 +31,31 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 		HttpServletResponse response,
 		AuthenticationException authException
 	) throws IOException, ServletException {
+		
+		log.info("[CustomAuthenticationEntryPointHandler] :: Request URL: {}", request.getRequestURL());
+		log.info("[CustomAuthenticationEntryPointHandler] :: HTTP Method: {}", request.getMethod());
+		log.info("[CustomAuthenticationEntryPointHandler] :: Client IP: {}", request.getRemoteAddr());
 
-		// TODO: 배포서버 디버깅을 위한 임시 코드, 추후 삭제 예정
-		log.info("[CustomAuthenticationEntryPointHandler] :: ----------------------------------");
-		log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getHeader("User-Agent"));
-		log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getRemoteAddr());
-		Enumeration<String> headerNames = request.getHeaderNames();
-		while (headerNames.hasMoreElements()) {
-			String headerName = headerNames.nextElement();
-			String headerValue = request.getHeader(headerName);
-			log.info(headerName + ": " + headerValue);
+		String authHeader = request.getHeader("Authorization");
+		if (authHeader != null) {
+			log.info("[CustomAuthenticationEntryPointHandler] :: Authorization Header: {}", authHeader);
+		} else {
+			log.info("[CustomAuthenticationEntryPointHandler] :: Authorization Header is missing");
 		}
-		log.info("[CustomAuthenticationEntryPointHandler] :: ----------------------------------");
-		log.info("[CustomAuthenticationEntryPointHandler] :: {}", authException.getMessage());
-		log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getRequestURL());
-		log.info("[CustomAuthenticationEntryPointHandler] :: 인증되지 않은 사용자입니다.");
 
-		// TODO: 예외처리 추가 작업 필요
+		log.warn("[CustomAuthenticationEntryPointHandler] :: Authentication failed. Exception type: {}",
+			authException.getClass().getSimpleName());
+		log.warn("[CustomAuthenticationEntryPointHandler] :: Exception message: {}", authException.getMessage());
+		log.debug("[CustomAuthenticationEntryPointHandler] :: Stack trace: ", authException);
+
+		jwtProvider.logout(response);
+
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			HttpServletResponse.SC_UNAUTHORIZED,
-			authException.getMessage()
+			ErrorCode.UNAUTHORIZED.getStatusCode(),
+			ErrorCode.UNAUTHORIZED.getDescription()
 		);
 
 		ObjectMapper mapper = new ObjectMapper();

@@ -89,8 +89,10 @@ public enum ErrorCode {
 
 	ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 답변이 존재합니다."),
 
-	// EXPLAIN: 500 SERVER ERROR
-	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버오류 발생");
+	// Common Code
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 정보가 올바르지 않습니다. 로그인 후 다시 시도해주세요."),
+	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버오류가 발생했습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String description;
