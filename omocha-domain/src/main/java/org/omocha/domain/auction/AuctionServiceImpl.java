@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.omocha.domain.auction.exception.AuctionBidUnitTooHighException;
 import org.omocha.domain.auction.exception.AuctionEndDateBeforeNowException;
 import org.omocha.domain.auction.exception.AuctionHasBidException;
 import org.omocha.domain.auction.exception.AuctionImageNotFoundException;
@@ -55,15 +54,20 @@ public class AuctionServiceImpl implements AuctionService {
 			);
 		}
 
-		if ((addCommand.instantBuyPrice().getValue() - addCommand.startPrice().getValue())
-			< addCommand.bidUnit().getValue()) {
-			throw new AuctionBidUnitTooHighException(
-				addCommand.bidUnit(),
-				addCommand.instantBuyPrice().getValue() - addCommand.startPrice().getValue());
-		}
+		// TODO : FE와 회의 후 주석처리함
+		// if ((addCommand.instantBuyPrice().getValue() - addCommand.startPrice().getValue())
+		// 	< addCommand.bidUnit().getValue()) {
+		// 	throw new AuctionBidUnitTooHighException(
+		// 		addCommand.bidUnit(),
+		// 		addCommand.instantBuyPrice().getValue() - addCommand.startPrice().getValue(),
+		// 		addCommand.startPrice(),
+		// 		addCommand.instantBuyPrice()
+		// 	);
+		// }
 
-		if (addCommand.endDate().isBefore(LocalDateTime.now())) {
-			throw new AuctionEndDateBeforeNowException(addCommand.endDate());
+		LocalDateTime nowDate = LocalDateTime.now();
+		if (addCommand.endDate().isBefore(nowDate)) {
+			throw new AuctionEndDateBeforeNowException(addCommand.endDate(), nowDate);
 		}
 
 		Auction auction = auctionStore.store(addCommand.toEntity());
