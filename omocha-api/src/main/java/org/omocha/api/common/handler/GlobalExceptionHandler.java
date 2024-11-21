@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 		HttpServletRequest request
 	) {
 		// TODO: 로그에 치환문자{} 를 3개 이상 사용할 경우 Object[] 를 생성하는 비용이 발생
-		log.error("Request URI: {}, Method: {}, Params: {}",
+		log.info("Request URI: {}, Method: {}, Params: {}",
 			request.getRequestURI(),
 			request.getMethod(),
 			request.getQueryString(),
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 		MissingServletRequestPartException e,
 		HttpServletRequest request
 	) {
-		log.error("errorCode: {}, url: {}, message: {}",
+		log.warn("errorCode: {}, url: {}, message: {}",
 			REQUEST_PART_NOT_FOUND, request.getRequestURI(), e.getMessage(), e);
 
 		ResultDto<Object> resultDto = ResultDto.res(
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
 		HttpMediaTypeNotSupportedException e,
 		HttpServletRequest request
 	) {
-		log.error("errorCode: {}, url: {}, message: {}",
+		log.warn("errorCode: {}, url: {}, message: {}",
 			UNSUPPORTED_MEDIA_TYPE, request.getRequestURI(), e.getMessage(), e);
 
 		ResultDto<Object> resultDto = ResultDto.res(
