@@ -47,6 +47,7 @@ public class JwtProvider {
 
 	public String generateRefreshToken(Long memberId, HttpServletResponse response) {
 		String refreshToken = jwtGenerator.generateRefreshToken(memberId, refreshKey, REFRESH_EXPIRATION);
+
 		RefreshTokenManager.removeUserRefreshToken(memberId);
 		RefreshTokenManager.putRefreshToken(refreshToken, memberId);
 
@@ -81,9 +82,7 @@ public class JwtProvider {
 			.getSubject());
 	}
 
-	public void logout(Long memberId, HttpServletResponse response) {
-		RefreshTokenManager.removeUserRefreshToken(memberId);
-
+	public void logout(HttpServletResponse response) {
 		ResponseCookie accessCookie = jwtUtil.resetTokenToCookie(JwtCategory.ACCESS);
 		ResponseCookie refreshCookie = jwtUtil.resetTokenToCookie(JwtCategory.REFRESH);
 

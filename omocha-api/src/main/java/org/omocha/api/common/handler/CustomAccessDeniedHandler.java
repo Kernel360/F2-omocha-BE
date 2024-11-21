@@ -3,6 +3,7 @@ package org.omocha.api.common.handler;
 import java.io.IOException;
 
 import org.omocha.api.common.response.ResultDto;
+import org.omocha.domain.common.code.ErrorCode;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -25,17 +26,28 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		HttpServletResponse response,
 		AccessDeniedException accessDeniedException
 	) throws IOException, ServletException {
-		log.info("[CustomAccessDeniedHandler] :: {}", accessDeniedException.getMessage());
-		log.info("[CustomAccessDeniedHandler] :: {}", request.getRequestURL());
-		log.info("[CustomAccessDeniedHandler] :: 접근 권한이 없습니다.");
 
-		// TODO: 예외처리 추가 작업 필요
+		log.info("[CustomAccessDeniedHandler] :: Request URL: {}", request.getRequestURL());
+		log.info("[CustomAccessDeniedHandler] :: HTTP Method: {}", request.getMethod());
+		log.info("[CustomAccessDeniedHandler] :: Client IP: {}", request.getRemoteAddr());
+
+		String authHeader = request.getHeader("Authorization");
+		if (authHeader != null) {
+			log.info("[CustomAccessDeniedHandler] :: Authorization Header: {}", authHeader);
+		} else {
+			log.info("[CustomAccessDeniedHandler] :: Authorization Header is missing");
+		}
+
+		log.warn("[CustomAccessDeniedHandler] :: Access denied. Exception type: {}",
+			accessDeniedException.getClass().getSimpleName());
+		log.warn("[CustomAccessDeniedHandler] :: Exception message: {}", accessDeniedException.getMessage());
+
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
 		ResultDto<Void> resultDto = ResultDto.res(
-			HttpServletResponse.SC_FORBIDDEN,
-			accessDeniedException.getMessage()
+			ErrorCode.FORBIDDEN.getStatusCode(),
+			ErrorCode.FORBIDDEN.getDescription()
 		);
 
 		ObjectMapper mapper = new ObjectMapper();

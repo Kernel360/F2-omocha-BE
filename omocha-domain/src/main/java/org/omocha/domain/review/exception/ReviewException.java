@@ -1,17 +1,18 @@
 package org.omocha.domain.review.exception;
 
 import org.omocha.domain.common.code.ErrorCode;
+import org.omocha.domain.common.exception.OmochaException;
 
 import lombok.Getter;
 
 @Getter
-public class ReviewException extends RuntimeException {
-	private final ErrorCode bidCode;
+public class ReviewException extends OmochaException {
+	private final ErrorCode errorCode;
 	private final String message;
 
-	public ReviewException(ErrorCode bidCode, String message) {
-		super(message);
-		this.bidCode = bidCode;
+	public ReviewException(ErrorCode errorCode, String message) {
+		super(errorCode, message);
+		this.errorCode = errorCode;
 		this.message = message;
 	}
 }

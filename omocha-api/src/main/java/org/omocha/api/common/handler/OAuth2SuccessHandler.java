@@ -31,9 +31,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		HttpServletResponse response,
 		Authentication authentication
 	) throws IOException, ServletException {
-
-		// TODO: 로그인 페이지에서 로그인요청을 했다면 로그인 페이지로
-		//       다른 페이지에서 권한이 필요해 로그인 요청을 했다면 해당 페이지로 redirect 로직 필요
 		log.info("OAuth2SuccessHandler onAuthenticationSuccess");
 
 		UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();

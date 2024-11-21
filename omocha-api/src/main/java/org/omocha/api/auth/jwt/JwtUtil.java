@@ -12,6 +12,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +23,7 @@ public class JwtUtil {
 	@Value("${url.domain}")
 	private String domain;
 
+	// TODO: 추후 에러 핸들링 리팩토링
 	public boolean validateToken(String token, Key secretKey) {
 		try {
 			Jwts.parserBuilder()
@@ -29,16 +31,16 @@ public class JwtUtil {
 				.build()
 				.parseClaimsJws(token);
 			return true;
-		} catch (SecurityException e) {
-			log.warn("Invalid JWT signature: {}", e.getMessage());
-		} catch (MalformedJwtException e) {
-			log.warn("Invalid JWT token: {}", e.getMessage());
 		} catch (ExpiredJwtException e) {
 			log.warn("JWT token is expired: {}", e.getMessage());
-		} catch (UnsupportedJwtException e) {
-			log.warn("JWT token is unsupported: {}", e.getMessage());
 		} catch (IllegalArgumentException e) {
 			log.warn("JWT claims string is empty: {}", e.getMessage());
+		} catch (MalformedJwtException e) {
+			log.warn("Invalid JWT token: {}", e.getMessage());
+		} catch (UnsupportedJwtException e) {
+			log.warn("JWT token is unsupported: {}", e.getMessage());
+		} catch (SecurityException | SignatureException e) {
+			log.warn("Invalid JWT signature: {}", e.getMessage());
 		}
 
 		return false;

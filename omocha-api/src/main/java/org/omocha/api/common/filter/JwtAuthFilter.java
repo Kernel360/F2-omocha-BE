@@ -38,13 +38,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		String accessToken = jwtProvider.resolveTokenFromCookie(request, JwtCategory.ACCESS);
 
-		// TODO: 추후 리팩토링 필요함
 		if (StringUtils.isBlank(accessToken)) {
 			skipThisFilter(request, response, filterChain);
 			return;
 		}
 
-		// TODO: userPrincipal에서 memberId 가져와서 비교한 후 진행하도록
 		if (jwtProvider.validateAccessToken(accessToken)) {
 			passThisFilter(request, response, filterChain, accessToken);
 			return;
@@ -68,7 +66,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		FilterChain filterChain,
 		String accessToken
 	) throws IOException, ServletException {
-		setAuthenticationToContext(accessToken);
+		Long memberId = jwtProvider.getMemberIdFromToken(accessToken);
+		setAuthenticationToContext(memberId);
 		filterChain.doFilter(request, response);
 	}
 
@@ -76,32 +75,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		HttpServletRequest request,
 		HttpServletResponse response,
 		FilterChain filterChain
-	) throws ServletException, IOException {
+	) throws IOException, ServletException {
 		String refreshToken = jwtProvider.resolveTokenFromCookie(request, JwtCategory.REFRESH);
 		Long memberId = RefreshTokenManager.findMemberIdByRefreshToken(refreshToken);
 
-		if (jwtProvider.validateRefreshToken(refreshToken)) {
-			String reissuedAccessToken = jwtProvider.generateAccessToken(memberId, response);
+		if (memberId != null && jwtProvider.validateRefreshToken(refreshToken)) {
+			jwtProvider.generateAccessToken(memberId, response);
 			jwtProvider.generateRefreshToken(memberId, response);
-
-			setAuthenticationToContext(reissuedAccessToken);
-		} else {
-			jwtProvider.logout(memberId, response);
+			setAuthenticationToContext(memberId);
 		}
 
 		filterChain.doFilter(request, response);
 	}
 
-	private void setAuthenticationToContext(String accessToken) {
-		Authentication authentication = getAuthentication(accessToken);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-	}
-
-	private Authentication getAuthentication(String accessToken) {
-		Long memberId = jwtProvider.getMemberIdFromToken(accessToken);
+	private void setAuthenticationToContext(Long memberId) {
 		Member member = memberReader.getMember(memberId);
 		UserDetails principal = new UserPrincipal(member);
 
-		return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
+		Authentication authentication = new UsernamePasswordAuthenticationToken(
+			principal, "", principal.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 }
