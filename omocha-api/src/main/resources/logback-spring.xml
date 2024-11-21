@@ -2,4 +2,6 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="logback-spring-${spring.profiles.active}.xml"/>
+
+    <conversionRule conversionWord="highlight" converterClass="com.jdh.sample.config.log.CustomHighlightConverter"/>
 </configuration>
