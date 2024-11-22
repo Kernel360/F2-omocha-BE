@@ -61,7 +61,7 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect_uri: http://localhost:8080/api/v1/login/oauth2/code/google
+            redirect_uri: http://localhost:8080/api/v2/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -69,7 +69,7 @@ spring:
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect_uri: http://localhost:8080/api/v1/login/oauth2/code/naver
+            redirect_uri: http://localhost:8080/api/v2/login/oauth2/code/naver
             client-name: Naver
             authorization-grant-type: authorization_code
             scope:
@@ -147,7 +147,7 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect_uri: https://api.omocha-auction.com/api/v1/login/oauth2/code/google
+            redirect_uri: https://api.omocha-auction.com/api/v2/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -155,7 +155,7 @@ spring:
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect_uri: https://api.omocha-auction.com/api/v1/login/oauth2/code/naver
+            redirect_uri: https://api.omocha-auction.com/api/v2/login/oauth2/code/naver
             client-name: Naver
             authorization-grant-type: authorization_code
             scope:

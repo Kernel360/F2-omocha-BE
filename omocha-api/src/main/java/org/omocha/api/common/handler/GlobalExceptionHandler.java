@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 		HttpServletRequest request
 	) {
 		// TODO: 로그에 치환문자{} 를 3개 이상 사용할 경우 Object[] 를 생성하는 비용이 발생
-		log.info("Request URI: {}, Method: {}, Params: {}",
+		log.warn("Request URI: {}, Method: {}, Params: {}",
 			request.getRequestURI(),
 			request.getMethod(),
 			request.getQueryString()
