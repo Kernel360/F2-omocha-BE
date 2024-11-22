@@ -47,7 +47,8 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new AuctionImageNotFoundException(addCommand.memberId());
 		}
 
-		if (addCommand.startPrice().getValue() > addCommand.instantBuyPrice().getValue()) {
+		if (addCommand.instantBuyPrice() != null && (addCommand.startPrice().getValue() > addCommand.instantBuyPrice()
+			.getValue())) {
 			throw new AuctionStartPriceHigherInstantBuyPriceException(
 				addCommand.startPrice(),
 				addCommand.instantBuyPrice()
