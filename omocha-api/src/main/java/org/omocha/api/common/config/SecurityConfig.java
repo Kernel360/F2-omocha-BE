@@ -56,7 +56,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/api/v2/auctions/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/member/{member_id}").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/bids/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/v2/question/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/questions/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/reviews/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v2/categories/**").permitAll()
 				.anyRequest().authenticated())
