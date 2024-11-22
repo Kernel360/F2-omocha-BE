@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
 		ResultDto<Object> resultDto = ResultDto.res(
 			e.getErrorCode().getStatusCode(),
-			e.getMessage()
+			e.getErrorCode().getDescription()
 		);
 		return ResponseEntity
 			.status(e.getErrorCode().getHttpStatus())
