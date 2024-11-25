@@ -1,4 +1,4 @@
-package org.omocha.api.interfaces;
+package org.omocha.api.qna;
 
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;

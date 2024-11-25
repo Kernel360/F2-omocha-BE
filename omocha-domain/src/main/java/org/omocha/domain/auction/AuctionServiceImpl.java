@@ -16,6 +16,7 @@ import org.omocha.domain.category.exception.CategoryNotFoundException;
 import org.omocha.domain.image.Image;
 import org.omocha.domain.likes.LikeReader;
 import org.omocha.domain.likes.LikeStore;
+import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -110,6 +111,7 @@ public class AuctionServiceImpl implements AuctionService {
 	@Transactional(readOnly = true)
 	public AuctionInfo.RetrieveAuction retrieveAuction(AuctionCommand.RetrieveAuction retrieveCommand) {
 		Auction auction = auctionReader.getAuction(retrieveCommand.auctionId());
+		Member member = memberReader.getMember(auction.getMemberId());
 
 		List<String> imagePaths = auction.getImages().stream()
 			.map(Image::getImagePath)
@@ -129,7 +131,7 @@ public class AuctionServiceImpl implements AuctionService {
 		List<CategoryInfo.CategoryResponse> categoryHierarchy =
 			categoryReader.getCategoryHierarchyUpwards(selectedCategoryId);
 
-		return new AuctionInfo.RetrieveAuction(auction, imagePaths, categoryHierarchy);
+		return new AuctionInfo.RetrieveAuction(auction, member, imagePaths, categoryHierarchy);
 	}
 
 	@Override

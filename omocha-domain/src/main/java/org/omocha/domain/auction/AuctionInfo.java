@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.category.CategoryInfo;
+import org.omocha.domain.member.Member;
+import org.omocha.domain.member.vo.Email;
 
 import com.querydsl.core.annotations.QueryProjection;
 
@@ -13,6 +15,8 @@ public class AuctionInfo {
 	public record RetrieveAuction(
 		Long auctionId,
 		Long memberId,
+		Email email,
+		String nickname,
 		String title,
 		String content,
 		Price startPrice,
@@ -31,12 +35,15 @@ public class AuctionInfo {
 	) {
 		public RetrieveAuction(
 			Auction auction,
+			Member member,
 			List<String> imagePaths,
 			List<CategoryInfo.CategoryResponse> categories
 		) {
 			this(
 				auction.getAuctionId(),
-				auction.getMemberId(),
+				member.getMemberId(),
+				member.getEmail(),
+				member.getNickname(),
 				auction.getTitle(),
 				auction.getContent(),
 				auction.getStartPrice(),

@@ -2,7 +2,6 @@ package org.omocha.api.qna;
 
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
-import org.omocha.api.interfaces.AnswerApi;
 import org.omocha.api.qna.dto.AnswerDto;
 import org.omocha.api.qna.dto.AnswerDtoMapper;
 import org.omocha.domain.common.code.SuccessCode;
