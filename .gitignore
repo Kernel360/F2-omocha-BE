@@ -4,6 +4,8 @@ build/
 data/logs
 docker-postgres
 omocha-domain/src/main/generated
+HELP.md
+omocha.iml
 
 ### STS ###
 .apt_generated
