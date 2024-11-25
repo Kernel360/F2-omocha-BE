@@ -53,7 +53,7 @@ public enum ErrorCode {
 	REQUEST_PART_NOT_FOUND(HttpStatus.NOT_FOUND, "RequestPart를 찾지 못했습니다"),
 
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
-
+	MAX_UPLOAD_SIZE_FAIL(HttpStatus.EXPECTATION_FAILED, "파일 크기가 너무 큽니다!"),
 	IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 파일 업로드가 실패했습니다"),
 
 	// Category Code

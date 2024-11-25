@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,6 +74,23 @@ public class GlobalExceptionHandler {
 		);
 		return ResponseEntity
 			.status(UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler({MaxUploadSizeExceededException.class})
+	public ResponseEntity<ResultDto<Object>> handleMaxUploadSizeException(
+		MaxUploadSizeExceededException e,
+		HttpServletRequest request
+	) {
+		log.warn("errorCode: {}, url: {}, message: {}",
+			MAX_UPLOAD_SIZE_FAIL, request.getRequestURI(), e.getMessage(), e);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			MAX_UPLOAD_SIZE_FAIL.getStatusCode(),
+			MAX_UPLOAD_SIZE_FAIL.getDescription()
+		);
+		return ResponseEntity
+			.status(MAX_UPLOAD_SIZE_FAIL.getHttpStatus())
 			.body(resultDto);
 	}
 
