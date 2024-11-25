@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 			.body(resultDto);
 	}
 
-	@ExceptionHandler({MaxUploadSizeExceededException.class})
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ResponseEntity<ResultDto<Object>> handleMaxUploadSizeException(
 		MaxUploadSizeExceededException e,
 		HttpServletRequest request
