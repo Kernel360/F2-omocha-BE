@@ -5,10 +5,13 @@ import static org.omocha.domain.common.code.ErrorCode.*;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.common.exception.OmochaException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +77,37 @@ public class GlobalExceptionHandler {
 		return ResponseEntity
 			.status(UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
 			.body(resultDto);
+	}
+
+	// Request Json 파싱 에러
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ResultDto<Object>> onHttpMessageNotReadable(
+		HttpMessageNotReadableException e,
+		HttpServletRequest request
+	) {
+		log.warn("errorCode: {}, url: {}, message: {}",
+			BAD_REQUEST_INVALID_FIELD, request.getRequestURI(), e.getMessage(), e);
+
+		if (e.getCause() instanceof MismatchedInputException mismatchedInputException) {
+
+			ResultDto<Object> fieldErrorResult = ResultDto.res(
+				BAD_REQUEST_INVALID_FIELD.getStatusCode(),
+				mismatchedInputException.getPath().get(0).getFieldName() + " 필드의 값이 잘못되었습니다."
+			);
+
+			return ResponseEntity
+				.status(BAD_REQUEST_INVALID_FIELD.getHttpStatus())
+				.body(fieldErrorResult);
+		}
+
+		ResultDto<Object> generalErrorResult = ResultDto.res(
+			BAD_REQUEST_INVALID_FIELD.getStatusCode(),
+			"확인할 수 없는 형태의 데이터가 들어왔습니다"
+		);
+
+		return ResponseEntity
+			.status(BAD_REQUEST_INVALID_FIELD.getHttpStatus())
+			.body(generalErrorResult);
 	}
 
 	@ExceptionHandler(Exception.class)
