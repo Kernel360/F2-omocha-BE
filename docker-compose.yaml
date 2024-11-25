@@ -19,7 +19,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ${LOG_HOME_DIR}:/omocha-server
+      - ${EC2_HOME_DIR}:/omocha
     networks:
       - backend
 
