@@ -10,19 +10,22 @@ import org.omocha.domain.member.vo.Email;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class AuctionDto {
 
 	public record AuctionAddRequest(
-		String title,
-		String content,
-		Long startPrice,
-		Long bidUnit,
+		@NotBlank String title,
+		@NotBlank String content,
+		@NotNull Long startPrice,
+		@NotNull Long bidUnit,
 		Long instantBuyPrice,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
-		List<Long> categoryIds
+		@NotNull List<Long> categoryIds
 	) {
 	}
 

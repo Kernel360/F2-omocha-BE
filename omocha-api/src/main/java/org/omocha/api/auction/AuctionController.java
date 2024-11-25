@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +51,7 @@ public class AuctionController implements AuctionApi {
 	)
 	public ResponseEntity<ResultDto<AuctionDto.AuctionAddResponse>> auctionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestPart("auctionRequest") AuctionDto.AuctionAddRequest auctionRequest,
+		@RequestPart("auctionRequest") @Valid AuctionDto.AuctionAddRequest auctionRequest,
 		@RequestPart(value = "images") List<MultipartFile> images,
 		@RequestPart(value = "thumbnailPath") MultipartFile thumbnailPath
 	) {

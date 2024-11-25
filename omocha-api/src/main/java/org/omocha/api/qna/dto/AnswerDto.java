@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class AnswerDto {
 
 	public record AnswerDetails(
@@ -16,9 +19,9 @@ public class AnswerDto {
 	}
 
 	public record AnswerAddRequest(
-		Long questionId,
-		String title,
-		String content
+		@NotNull Long questionId,
+		@NotBlank String title,
+		@NotBlank String content
 	) {
 	}
 
@@ -32,8 +35,8 @@ public class AnswerDto {
 	}
 
 	public record AnswerModifyRequest(
-		String title,
-		String content
+		@NotBlank String title,
+		@NotBlank String content
 	) {
 	}
 

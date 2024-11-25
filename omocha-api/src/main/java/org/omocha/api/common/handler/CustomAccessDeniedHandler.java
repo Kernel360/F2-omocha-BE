@@ -27,19 +27,16 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		AccessDeniedException accessDeniedException
 	) throws IOException, ServletException {
 
-		log.warn("Request URL: {}", request.getRequestURL());
-		log.warn("HTTP Method: {}", request.getMethod());
-		log.warn("Client IP: {}", request.getRemoteAddr());
-
-		String authHeader = request.getHeader("Authorization");
-		if (authHeader != null) {
-			log.warn("Authorization Header: {}", authHeader);
-		} else {
-			log.warn("Authorization Header is missing");
-		}
+		log.warn("Client IP: {}, Request URL: {}, HTTP Method: {}",
+			request.getRemoteAddr(),
+			request.getRequestURL(),
+			request.getMethod()
+		);
 
 		log.warn("Access denied. Exception type: {}",
-			accessDeniedException.getClass().getSimpleName());
+			accessDeniedException.getClass().getSimpleName()
+		);
+
 		log.warn("Exception message: {}", accessDeniedException.getMessage());
 
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);

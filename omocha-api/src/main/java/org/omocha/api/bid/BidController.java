@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,7 +63,7 @@ public class BidController implements BidApi {
 	public ResponseEntity<ResultDto<BidDto.BidAddResponse>> bidAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("auction_id") Long auctionId,
-		@RequestBody BidDto.BidAddRequest addRequest
+		@RequestBody @Valid BidDto.BidAddRequest addRequest
 	) {
 		Long buyerMemberId = userPrincipal.getId();
 		BidCommand.AddBid addBidCommand = bidDtoMapper.toCommand(buyerMemberId, auctionId, addRequest);

@@ -4,17 +4,19 @@ import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.PhoneNumber;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AuthDto {
 
 	public record MemberAddRequest(
-		String email,
-		String password
+		@NotBlank String email,
+		@NotBlank String password
 	) {
 	}
 
 	public record MemberLoginRequest(
-		String email,
-		String password
+		@NotBlank String email,
+		@NotBlank String password
 	) {
 	}
 

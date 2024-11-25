@@ -9,6 +9,8 @@ import org.omocha.domain.review.rating.Rating;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class MemberDto {
 
 	public record MyInfoResponse(
@@ -56,8 +58,8 @@ public class MemberDto {
 	}
 
 	public record PasswordModifyRequest(
-		String currentPassword,
-		String newPassword
+		@NotBlank String currentPassword,
+		@NotBlank String newPassword
 	) {
 	}
 

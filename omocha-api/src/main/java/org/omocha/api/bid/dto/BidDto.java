@@ -7,6 +7,8 @@ import org.omocha.domain.member.vo.Email;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotNull;
+
 public class BidDto {
 
 	public record BidListResponse(
@@ -21,7 +23,7 @@ public class BidDto {
 	}
 
 	public record BidAddRequest(
-		Long bidPrice
+		@NotNull Long bidPrice
 	) {
 
 	}

@@ -2,10 +2,13 @@ package org.omocha.api.category.dto;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class CategoryDto {
 
 	public record CategoryAddRequest(
-		String name,
+		@NotBlank String name,
 		Long parentId
 	) {
 	}
@@ -16,8 +19,8 @@ public class CategoryDto {
 	}
 
 	public record CategoryUpdateRequest(
-		Long categoryId,
-		String name,
+		@NotNull Long categoryId,
+		@NotBlank String name,
 		Long parentId
 	) {
 	}
