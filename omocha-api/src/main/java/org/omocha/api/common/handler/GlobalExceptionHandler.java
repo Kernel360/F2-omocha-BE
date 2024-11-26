@@ -167,8 +167,12 @@ public class GlobalExceptionHandler {
 		Exception e,
 		HttpServletRequest request
 	) {
-		log.error("Client IP: {}, Request URI: {}, Method: {}, Params: {}",
+		log.error("Client IP: {}, User-Agent: {}",
 			request.getRemoteAddr(),
+			request.getHeader("User-Agent")
+		);
+
+		log.error("Request URI: {}, Method: {}, Params: {}",
 			request.getRequestURI(),
 			request.getMethod(),
 			request.getQueryString(),

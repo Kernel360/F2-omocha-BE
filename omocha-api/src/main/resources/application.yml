@@ -27,6 +27,14 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
 
+logging:
+  file:
+    path: ${LOG_PATH}
+
+jwt:
+  access_secret: ${JWT_ACCESS_SECRET}
+  refresh_secret: ${JWT_REFRESH_SECRET}
+
 cloud:
   aws:
     stack:
@@ -39,10 +47,6 @@ cloud:
     s3:
       bucket: ${S3_BUCKET_NAME}
       upload-path: ${S3_IMAGE_PATH}
-
-jwt:
-  access_secret: ${JWT_ACCESS_SECRET}
-  refresh_secret: ${JWT_REFRESH_SECRET}
 ---
 spring:
   config:
@@ -61,7 +65,7 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect_uri: http://localhost:8080/api/v2/login/oauth2/code/google
+            redirect_uri: ${SERVER_DOMAIN}/api/v2/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -69,7 +73,7 @@ spring:
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect_uri: http://localhost:8080/api/v2/login/oauth2/code/naver
+            redirect_uri: ${SERVER_DOMAIN}/api/v2/login/oauth2/code/naver
             client-name: Naver
             authorization-grant-type: authorization_code
             scope:
@@ -83,9 +87,15 @@ spring:
             user-name-attribute: response
 
 url:
-  base: http://localhost:8080
-  domain: ""
-  backend-domain: http://localhost:8080
+  base-domain: ""
+  server-domain: ${SERVER_DOMAIN}
+  client-domain: ${CLIENT_DOMAIN}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
 ---
 spring:
   config:
@@ -104,7 +114,7 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect_uri: https://dev.omocha-auction.com/api/v2/login/oauth2/code/google
+            redirect_uri: ${SERVER_DOMAIN}/api/v2/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -112,7 +122,7 @@ spring:
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect_uri: https://dev.omocha-auction.com/api/v2/login/oauth2/code/naver
+            redirect_uri: ${SERVER_DOMAIN}/api/v2/login/oauth2/code/naver
             client-name: Naver
             authorization-grant-type: authorization_code
             scope:
@@ -126,9 +136,15 @@ spring:
             user-name-attribute: response
 
 url:
-  base: https://local.omocha-auction.com
-  domain: omocha-auction.com
-  backend-domain: https://dev.omocha-auction.com
+  base-domain: ${DOMAIN_URL}
+  server-domain: ${SERVER_DOMAIN}
+  client-domain: ${CLIENT_DOMAIN}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
 ---
 spring:
   config:
@@ -147,7 +163,7 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect_uri: https://api.omocha-auction.com/api/v2/login/oauth2/code/google
+            redirect_uri: ${SERVER_DOMAIN}/api/v2/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -155,7 +171,7 @@ spring:
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect_uri: https://api.omocha-auction.com/api/v2/login/oauth2/code/naver
+            redirect_uri: ${SERVER_DOMAIN}/api/v2/login/oauth2/code/naver
             client-name: Naver
             authorization-grant-type: authorization_code
             scope:
@@ -169,10 +185,12 @@ spring:
             user-name-attribute: response
 
 url:
-  base: https://www.omocha-auction.com
-  domain: omocha-auction.com
-  backend-domain: https://api.omocha-auction.com
+  base-domain: ${DOMAIN_URL}
+  server-domain: ${SERVER_DOMAIN}
+  client-domain: ${REDIRECT_URL}
 
 springdoc:
+  api-docs:
+    enabled: false
   swagger-ui:
     enabled: false

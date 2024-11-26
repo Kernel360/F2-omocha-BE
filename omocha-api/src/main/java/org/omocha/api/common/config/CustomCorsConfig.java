@@ -3,23 +3,29 @@ package org.omocha.api.common.config;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class CustomCorsConfig implements CorsConfigurationSource {
-	private final List<String> ALLOWED_ORIGIN = List.of(
-		"https://www.omocha-auction.com",
-		"https://api.omocha-auction.com",
-		"https://dev.omocha-auction.com",
-		"https://local.omocha-auction.com",
-		"http://localhost:3000",
-		"http://localhost:3001"
 
-	);
+	@Value("${url.client-domain}")
+	private String Client;
+	@Value("${url.server-domain}")
+	private String Server;
+
+	private List<String> ALLOWED_ORIGIN;
+
+	@PostConstruct
+	public void init() {
+		ALLOWED_ORIGIN = List.of(Client, Server);
+	}
+
 	private final List<String> ALLOWED_METHODS = List.of("POST", "GET", "PATCH", "OPTIONS", "DELETE");
 
 	@Override

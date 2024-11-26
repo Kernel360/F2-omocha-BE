@@ -19,7 +19,7 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 
 	private final String ERROR_PARAM_PREFIX = "error";
 
-	@Value("${url.base}")
+	@Value("${url.client-domain}")
 	private String REDIRECT_URI;
 
 	@Override
