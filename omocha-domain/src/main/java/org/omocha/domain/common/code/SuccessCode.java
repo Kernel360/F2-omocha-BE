@@ -69,7 +69,11 @@ public enum SuccessCode {
 	// Like Code
 	AUCTION_LIKE_SUCCESS(HttpStatus.OK, "경매 찜을 성공적으로 했습니다."),
 	AUCTION_UNLIKE_SUCCESS(HttpStatus.OK, "경매 찜 취소를 성공적으로 했습니다"),
-	AUCTION_LIKE_LIST_SUCCESS(HttpStatus.OK, "사용자의 찜 목록을 성공적으로 조회했습니다");
+	AUCTION_LIKE_LIST_SUCCESS(HttpStatus.OK, "사용자의 찜 목록을 성공적으로 조회했습니다"),
+
+	// Mail Code
+	MAIL_CODE_SUCCESS(HttpStatus.OK, "메일 인증에 성공하였습니다."),
+	MAIL_SEND_SUCCESS(HttpStatus.OK, "메일이 성공적으로 발송되었습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String description;
