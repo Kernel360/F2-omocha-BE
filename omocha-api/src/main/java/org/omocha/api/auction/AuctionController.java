@@ -52,15 +52,14 @@ public class AuctionController implements AuctionApi {
 	public ResponseEntity<ResultDto<AuctionDto.AuctionAddResponse>> auctionAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart("auctionRequest") @Valid AuctionDto.AuctionAddRequest auctionRequest,
-		@RequestPart(value = "images") List<MultipartFile> images,
-		@RequestPart(value = "thumbnailPath") MultipartFile thumbnailPath
+		@RequestPart(value = "images") List<MultipartFile> images
 	) {
 		log.info("Received auction add request: {}", auctionRequest);
 
 		Long memberId = userPrincipal.getId();
 
 		AuctionCommand.AddAuction auctionCommand = auctionDtoMapper.toCommand(
-			auctionRequest, memberId, images, thumbnailPath);
+			auctionRequest, memberId, images);
 
 		Long auctionId = auctionFacade.addAuction(auctionCommand);
 

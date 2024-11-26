@@ -124,7 +124,6 @@ public class AuctionAddTest {
 			.endDate(LocalDateTime.now().plusDays(7))
 			.memberId(memberId)
 			.images(images)
-			.thumbnailPath(thumbnailFile)
 			.categoryIds(categoryIds)
 			.build();
 	}

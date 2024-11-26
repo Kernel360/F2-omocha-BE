@@ -11,6 +11,7 @@ import org.omocha.domain.image.ImageCommand;
 import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.image.ImageStore;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +27,15 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 	@Override
 	public List<Image> store(Auction auction, AuctionCommand.AddAuction addCommand) {
 
-		String thumbnailPath = imageProvider.uploadFile(addCommand.thumbnailPath());
-		auction.thumbnailPathUpload(thumbnailPath);
+		List<MultipartFile> images = addCommand.images();
 
-		return addCommand.images().stream()
+		MultipartFile multipartFile = images.get(0);
+
+		String thumbnail = imageProvider.uploadFile(multipartFile);
+		auction.thumbnailPathUpload(thumbnail);
+
+		return images.stream()
+			.skip(1)
 			.map(auctionImageRequest -> {
 				String imagePath = imageProvider.uploadFile(auctionImageRequest);
 				String fileName = auctionImageRequest.getOriginalFilename();
@@ -42,6 +48,5 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
 				return image;
 			}).collect(Collectors.toList());
-
 	}
 }

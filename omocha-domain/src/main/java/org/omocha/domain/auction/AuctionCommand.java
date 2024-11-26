@@ -22,7 +22,6 @@ public class AuctionCommand {
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		List<MultipartFile> images,
-		MultipartFile thumbnailPath,
 		List<Long> categoryIds
 
 	) {
