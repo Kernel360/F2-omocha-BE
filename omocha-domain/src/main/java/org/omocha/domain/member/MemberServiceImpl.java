@@ -55,12 +55,10 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public void addMember(MemberCommand.AddMember addMemberCommand) {
 
-		// TODO : Validator과 함께 수정 필요
 		if (memberReader.existsByEmail(addMemberCommand.email())) {
 			throw new MemberAlreadyExistException(addMemberCommand.email());
 		}
 
-		// TODO : security 추가 후 패스워드 인코딩 해야됨
 		String randomNickname = randomNickNameGenerator.generateRandomNickname();
 		Member member = addMemberCommand.toEntity(randomNickname);
 

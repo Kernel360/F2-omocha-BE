@@ -18,7 +18,6 @@ public class MemberCommand {
 		Email email,
 		String password
 	) {
-		// TODO : 사용자 정보 확정 후 추가 수정 필요
 		public Member toEntity(String randomNickname) {
 			return Member.builder()
 				.email(email)
@@ -27,6 +26,7 @@ public class MemberCommand {
 				.nickname(randomNickname)
 				.role(Role.ROLE_USER)
 				.memberStatus(Member.MemberStatus.ACTIVATE)
+				.emailVerified(true)
 				.build();
 		}
 	}

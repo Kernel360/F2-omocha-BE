@@ -66,12 +66,15 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private MemberStatus memberStatus;
 
+	private boolean emailVerified;
+
 	@Builder
 	public Member(
 		Email email, String password, String nickname,
 		String username, LocalDate birth, PhoneNumber phoneNumber,
 		String profileImageUrl, Rating averageRating, Role role,
-		String provider, String providerId, MemberStatus memberStatus
+		String provider, String providerId, MemberStatus memberStatus,
+		boolean emailVerified
 	) {
 		this.password = password;
 		this.nickname = nickname;
@@ -85,6 +88,7 @@ public class Member extends BaseEntity {
 		this.provider = provider;
 		this.providerId = providerId;
 		this.memberStatus = memberStatus;
+		this.emailVerified = emailVerified;
 	}
 
 	public enum MemberStatus {
