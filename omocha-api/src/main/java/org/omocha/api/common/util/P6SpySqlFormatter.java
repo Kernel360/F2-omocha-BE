@@ -15,7 +15,7 @@ import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.P6SpyOptions;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
 
-@Profile({"local"})
+@Profile({"local", "test"})
 @Component
 public class P6SpySqlFormatter extends JdbcEventListener implements MessageFormattingStrategy {
 

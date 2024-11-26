@@ -3,6 +3,7 @@ package org.omocha.domain.bid;
 import java.time.LocalDateTime;
 
 import org.omocha.domain.auction.vo.Price;
+import org.omocha.domain.member.vo.Email;
 
 import com.querydsl.core.annotations.QueryProjection;
 
@@ -10,6 +11,8 @@ public class BidInfo {
 
 	public record BidList(
 		Long buyerMemberId,
+		Email buyerEmail,
+		String buyerNickname,
 		Price bidPrice,
 		LocalDateTime createdAt
 	) {
@@ -18,6 +21,8 @@ public class BidInfo {
 		) {
 			return new BidList(
 				bid.getBuyer().getMemberId(),
+				bid.getBuyer().getEmail(),
+				bid.getBuyer().getNickname(),
 				bid.getBidPrice(),
 				bid.getCreatedAt()
 			);

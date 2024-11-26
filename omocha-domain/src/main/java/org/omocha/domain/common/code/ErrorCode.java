@@ -53,7 +53,7 @@ public enum ErrorCode {
 	REQUEST_PART_NOT_FOUND(HttpStatus.NOT_FOUND, "RequestPart를 찾지 못했습니다"),
 
 	UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 Content-Type 입니다."),
-
+	MAX_UPLOAD_SIZE_FAIL(HttpStatus.EXPECTATION_FAILED, "파일 크기가 너무 큽니다!"),
 	IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 파일 업로드가 실패했습니다"),
 
 	// Category Code
@@ -93,6 +93,8 @@ public enum ErrorCode {
 	ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 답변이 존재합니다."),
 
 	// Common Code
+	NOT_NULL_FIELD(HttpStatus.BAD_REQUEST, "해당 필드들은 필수 입력 사항입니다."),
+	BAD_REQUEST_INVALID_FIELD(HttpStatus.BAD_REQUEST, "요청받은 필드값이 올바르지 않습니다."),
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 정보가 올바르지 않습니다. 로그인 후 다시 시도해주세요."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버오류가 발생했습니다.");

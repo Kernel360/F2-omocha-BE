@@ -6,6 +6,9 @@ import org.omocha.domain.member.vo.Email;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class QuestionDto {
 
 	public record QnaListResponse(
@@ -24,15 +27,13 @@ public class QuestionDto {
 		Email email,
 		String nickName,
 		String profileImageUrl
-
 	) {
-
 	}
 
 	public record QuestionAddRequest(
-		Long auctionId,
-		String title,
-		String content
+		@NotNull Long auctionId,
+		@NotBlank String title,
+		@NotBlank String content
 	) {
 	}
 
@@ -44,12 +45,11 @@ public class QuestionDto {
 		LocalDateTime createAt
 
 	) {
-
 	}
 
 	public record QuestionModifyRequest(
-		String title,
-		String content
+		@NotBlank String title,
+		@NotBlank String content
 	) {
 	}
 

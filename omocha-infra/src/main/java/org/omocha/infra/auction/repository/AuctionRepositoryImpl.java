@@ -103,6 +103,14 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
 	}
 
+	private static Expression<Boolean> isLiked(Long memberId) {
+		return memberId != null ?
+			new CaseBuilder()
+				.when(likes.likesId.isNotNull()).then(true)
+				.otherwise(false)
+			: Expressions.constant(false);
+	}
+
 	@Override
 	public Page<AuctionInfo.RetrieveMyAuctions> getMyAuctionList(
 		AuctionCommand.RetrieveMyAuctions retrieveMyAuctions,
@@ -235,14 +243,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		return PageableExecutionUtils.getPage(bidAuctions, sortPage, countQuery::fetchOne);
 	}
 
-	private static Expression<Boolean> isLiked(Long memberId) {
-		return memberId != null ?
-			new CaseBuilder()
-				.when(likes.likesId.isNotNull()).then(true)
-				.otherwise(false)
-			: Expressions.constant(false);
-	}
-
 	private JPAQuery<Long> getCountQuery(
 		AuctionCommand.SearchAuction searchAuction,
 		QAuction auction,
@@ -251,7 +251,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 	) {
 		JPAQuery<Long> query = queryFactory
 			.select(auction.count())
-			.from(auction)
 			.from(auction)
 			.leftJoin(conclude).on(conclude.auction.eq(auction))
 			.leftJoin(auctionCategory).on(auctionCategory.auction.eq(auction))

@@ -11,7 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-	@Value("${url.backend-domain}")
+	@Value("${url.server-domain}")
 	private String domain;
 
 	@Override

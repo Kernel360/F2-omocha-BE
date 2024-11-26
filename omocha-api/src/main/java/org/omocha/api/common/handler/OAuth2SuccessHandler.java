@@ -22,7 +22,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	private final JwtProvider jwtProvider;
 
-	@Value("${url.base}")
+	@Value("${url.client-domain}")
 	private String REDIRECT_URI;
 
 	@Override

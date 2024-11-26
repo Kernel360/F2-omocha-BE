@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -123,7 +124,7 @@ public class MemberController implements MemberApi {
 	@PatchMapping("/password")
 	public ResponseEntity<ResultDto<Void>> passwordModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody MemberDto.PasswordModifyRequest passwordModifyRequest
+		@RequestBody @Valid MemberDto.PasswordModifyRequest passwordModifyRequest
 	) {
 
 		log.info("passwordModify started memberId={}", userPrincipal.getId());
@@ -162,7 +163,7 @@ public class MemberController implements MemberApi {
 	@PatchMapping()
 	public ResponseEntity<ResultDto<MemberDto.MyInfoModifyResponse>> myInfoModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody MemberDto.MyInfoModifyRequest modifyRequest
+		@RequestBody @Valid MemberDto.MyInfoModifyRequest modifyRequest
 	) {
 
 		log.info("memberInfoModify started memberId={} , memberModifyRequest={}", userPrincipal.getId(),

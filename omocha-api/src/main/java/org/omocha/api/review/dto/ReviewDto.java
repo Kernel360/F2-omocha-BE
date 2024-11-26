@@ -7,11 +7,14 @@ import org.omocha.domain.review.rating.Rating;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ReviewDto {
 	public record ReviewAddRequest(
-		String reviewType,
-		Double rating,
-		String content
+		@NotBlank String reviewType,
+		@NotNull Double rating,
+		@NotBlank String content
 	) {
 
 	}
@@ -19,14 +22,6 @@ public class ReviewDto {
 	public record ReviewAddResponse(
 		Long reviewId
 	) {
-
-	}
-
-	public record ReviewListRequest(
-		Long memberId,
-		String category
-	) {
-
 	}
 
 	public record ReceivedReviewListResponse(
@@ -41,7 +36,6 @@ public class ReviewDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createAt
 	) {
-
 	}
 
 	public record GivenReviewListResponse(
@@ -56,6 +50,5 @@ public class ReviewDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createAt
 	) {
-
 	}
 }

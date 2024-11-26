@@ -2,7 +2,6 @@ package org.omocha.api.qna;
 
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
-import org.omocha.api.interfaces.AnswerApi;
 import org.omocha.api.qna.dto.AnswerDto;
 import org.omocha.api.qna.dto.AnswerDtoMapper;
 import org.omocha.domain.common.code.SuccessCode;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +34,7 @@ public class AnswerController implements AnswerApi {
 	@PostMapping()
 	public ResponseEntity<ResultDto<AnswerDto.AnswerAddResponse>> answerAdd(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody AnswerDto.AnswerAddRequest answerAddRequest
+		@RequestBody @Valid AnswerDto.AnswerAddRequest answerAddRequest
 	) {
 
 		log.info("received CreateAnswerRequest : {}", answerAddRequest);
@@ -66,7 +66,7 @@ public class AnswerController implements AnswerApi {
 	public ResponseEntity<ResultDto<AnswerDto.AnswerModifyResponse>> answerModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("answer_id") Long answerId,
-		@RequestBody AnswerDto.AnswerModifyRequest answerModifyRequest
+		@RequestBody @Valid AnswerDto.AnswerModifyRequest answerModifyRequest
 	) {
 
 		log.info("received answerId : {} , ModifyAnswerRequest : {}", answerId, answerModifyRequest);

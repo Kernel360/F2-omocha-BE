@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,7 +31,7 @@ public class CategoryController implements CategoryApi {
 	@Override
 	@PostMapping
 	public ResponseEntity<ResultDto<CategoryDto.CategoryAddResponse>> categoryAdd(
-		@RequestBody CategoryDto.CategoryAddRequest request
+		@RequestBody @Valid CategoryDto.CategoryAddRequest request
 	) {
 		CategoryCommand.AddCategory addCommand = categoryMapper.toCommand(request);
 

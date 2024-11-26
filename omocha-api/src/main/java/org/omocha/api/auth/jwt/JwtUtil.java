@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class JwtUtil {
 
-	@Value("${url.domain}")
+	@Value("${url.base-domain}")
 	private String domain;
 
 	// TODO: 추후 에러 핸들링 리팩토링

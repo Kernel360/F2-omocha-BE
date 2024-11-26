@@ -7,7 +7,6 @@ import org.omocha.api.auth.jwt.RefreshTokenManager;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
-import org.omocha.api.interfaces.AuthApi;
 import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.vo.Email;

@@ -6,22 +6,26 @@ import java.util.List;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.category.CategoryInfo;
+import org.omocha.domain.member.vo.Email;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class AuctionDto {
 
 	public record AuctionAddRequest(
-		String title,
-		String content,
-		Long startPrice,
-		Long bidUnit,
+		@NotBlank String title,
+		@NotBlank String content,
+		@NotNull Long startPrice,
+		@NotNull Long bidUnit,
 		Long instantBuyPrice,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime startDate,
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+		@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
-		List<Long> categoryIds
+		@NotNull List<Long> categoryIds
 	) {
 	}
 
@@ -63,6 +67,8 @@ public class AuctionDto {
 	public record AuctionDetailsResponse(
 		Long auctionId,
 		Long memberId,
+		Email email,
+		String nickname,
 		String title,
 		String content,
 		Price startPrice,

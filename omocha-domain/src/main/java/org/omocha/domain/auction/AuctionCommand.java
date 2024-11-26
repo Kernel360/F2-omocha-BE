@@ -6,8 +6,11 @@ import java.util.List;
 import org.omocha.domain.auction.vo.Price;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.Builder;
+
 public class AuctionCommand {
 
+	@Builder
 	public record AddAuction(
 		Long memberId,
 		String title,
