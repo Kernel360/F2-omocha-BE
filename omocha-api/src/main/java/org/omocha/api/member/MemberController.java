@@ -163,7 +163,7 @@ public class MemberController implements MemberApi {
 	@PatchMapping()
 	public ResponseEntity<ResultDto<MemberDto.MyInfoModifyResponse>> myInfoModify(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody MemberDto.MyInfoModifyRequest modifyRequest
+		@RequestBody @Valid MemberDto.MyInfoModifyRequest modifyRequest
 	) {
 
 		log.info("memberInfoModify started memberId={} , memberModifyRequest={}", userPrincipal.getId(),

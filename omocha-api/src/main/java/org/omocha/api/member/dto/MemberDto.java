@@ -10,6 +10,7 @@ import org.omocha.domain.review.rating.Rating;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class MemberDto {
 
@@ -37,9 +38,9 @@ public class MemberDto {
 	}
 
 	public record MyInfoModifyRequest(
-		String nickName,
-		String phoneNumber,
-		@JsonFormat(pattern = "yyyy-MM-dd")
+		@NotBlank String nickName,
+		@NotBlank String phoneNumber,
+		@NotNull @JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth
 	) {
 	}
