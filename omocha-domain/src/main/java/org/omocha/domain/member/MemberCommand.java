@@ -48,7 +48,7 @@ public class MemberCommand {
 
 	public record ModifyMyInfo(
 		Long memberId,
-		String nickName,
+		String nickname,
 		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth

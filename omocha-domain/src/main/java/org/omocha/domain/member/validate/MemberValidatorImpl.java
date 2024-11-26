@@ -37,9 +37,9 @@ class MemberValidatorImpl implements MemberValidator {
 	}
 
 	@Override
-	public void validateDuplicateNickName(String nickName) {
-		if (memberReader.existsByNickName(nickName)) {
-			throw new MemberNickNameDuplicateException(nickName);
+	public void validateDuplicateNickName(String nickname) {
+		if (memberReader.existsByNickName(nickname)) {
+			throw new MemberNickNameDuplicateException(nickname);
 		}
 	}
 

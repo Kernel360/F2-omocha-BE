@@ -93,10 +93,10 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = memberReader.getMember(modifyMyInfoCommand.memberId());
 
-		memberValidator.validateDuplicateNickName(modifyMyInfoCommand.nickName());
+		memberValidator.validateDuplicateNickName(modifyMyInfoCommand.nickname());
 
 		member.updateMember(
-			modifyMyInfoCommand.nickName(),
+			modifyMyInfoCommand.nickname(),
 			modifyMyInfoCommand.phoneNumber(),
 			modifyMyInfoCommand.birth()
 		);

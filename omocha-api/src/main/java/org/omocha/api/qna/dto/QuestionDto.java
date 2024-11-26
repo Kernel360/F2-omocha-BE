@@ -25,7 +25,7 @@ public class QuestionDto {
 		LocalDateTime createdAt,
 		Long memberId,
 		Email email,
-		String nickName,
+		String nickname,
 		String profileImageUrl
 	) {
 	}

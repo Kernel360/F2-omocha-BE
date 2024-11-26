@@ -18,7 +18,7 @@ public class MemberDto {
 		Long memberId,
 		Email email,
 		String userName,
-		String nickName,
+		String nickname,
 		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
@@ -31,14 +31,14 @@ public class MemberDto {
 
 	public record MemberInfoResponse(
 		Long memberId,
-		String nickName,
+		String nickname,
 		String profileImageUrl,
 		Rating averageRating
 	) {
 	}
 
 	public record MyInfoModifyRequest(
-		@NotBlank String nickName,
+		@NotBlank String nickname,
 		@NotBlank String phoneNumber,
 		@NotNull @JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth
@@ -49,7 +49,7 @@ public class MemberDto {
 		Long memberId,
 		Email email,
 		String userName,
-		String nickName,
+		String nickname,
 		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
