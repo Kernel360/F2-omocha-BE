@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
 	private final ImageProvider imageProvider;
 	private final LikeReader likeReader;
-	private final RandomNicknameGenerator randomNickNameGenerator;
+	private final RandomNicknameGenerator randomNicknameGenerator;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		// TODO : security 추가 후 패스워드 인코딩 해야됨
-		String randomNickname = randomNickNameGenerator.generateRandomNickname();
+		String randomNickname = randomNicknameGenerator.generateRandomNickname();
 		Member member = addMemberCommand.toEntity(randomNickname);
 
 		memberStore.addMember(member);
@@ -93,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = memberReader.getMember(modifyMyInfoCommand.memberId());
 
-		memberValidator.validateDuplicateNickName(modifyMyInfoCommand.nickname());
+		memberValidator.validateDuplicateNickname(modifyMyInfoCommand.nickname());
 
 		member.updateMember(
 			modifyMyInfoCommand.nickname(),

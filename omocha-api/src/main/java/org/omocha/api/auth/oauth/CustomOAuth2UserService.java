@@ -22,7 +22,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	private final MemberReader memberReader;
 	private final MemberStore memberStore;
-	private final RandomNicknameGenerator randomNickNameGenerator;
+	private final RandomNicknameGenerator randomNicknameGenerator;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -39,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			.providerId(oAuth2UserInfo.getProviderId())
 			.build();
 
-		String randomNickname = randomNickNameGenerator.generateRandomNickname();
+		String randomNickname = randomNicknameGenerator.generateRandomNickname();
 
 		Member member = memberReader.findMember(oAuthProvider)
 			.orElseGet(() -> memberStore.addMember(oAuth2UserInfo.toEntity(randomNickname)));

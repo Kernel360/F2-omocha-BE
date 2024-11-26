@@ -16,5 +16,5 @@ public interface MemberReader {
 
 	boolean existsByEmailAndProviderIsNull(Email email);
 
-	boolean existsByNickName(String nickname);
+	boolean existsByNickname(String nickname);
 }
