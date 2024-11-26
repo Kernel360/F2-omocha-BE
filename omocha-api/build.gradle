@@ -44,3 +44,7 @@ tasks.named("bootJar") {
         }
     }
 }
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

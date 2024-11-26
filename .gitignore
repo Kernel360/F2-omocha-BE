@@ -7,6 +7,9 @@ omocha-domain/src/main/generated
 HELP.md
 omocha.iml
 
+omocha-api/src/main/resources/logback-spring-test.yml
+application-test.yml
+
 ### STS ###
 .apt_generated
 .classpath
