@@ -1,4 +1,4 @@
-package org.omocha.api.interfaces;
+package org.omocha.api.auth;
 
 import org.omocha.api.auth.dto.AuthDto;
 import org.omocha.api.auth.jwt.UserPrincipal;

@@ -6,6 +6,7 @@ import java.util.List;
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.category.CategoryInfo;
+import org.omocha.domain.member.vo.Email;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -63,6 +64,8 @@ public class AuctionDto {
 	public record AuctionDetailsResponse(
 		Long auctionId,
 		Long memberId,
+		Email email,
+		String nickname,
 		String title,
 		String content,
 		Price startPrice,

@@ -22,13 +22,6 @@ public class ReviewDto {
 
 	}
 
-	public record ReviewListRequest(
-		Long memberId,
-		String category
-	) {
-
-	}
-
 	public record ReceivedReviewListResponse(
 		Long reviewerMemberId,
 		String reviewerMemberNickname,
