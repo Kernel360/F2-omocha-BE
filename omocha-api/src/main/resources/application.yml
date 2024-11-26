@@ -26,15 +26,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-
-logging:
-  file:
-    path: ${LOG_PATH}
-
-jwt:
-  access_secret: ${JWT_ACCESS_SECRET}
-  refresh_secret: ${JWT_REFRESH_SECRET}
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -48,6 +39,16 @@ jwt:
           timeout: 5000
           starttls:
             enable: true
+
+logging:
+  file:
+    path: ${LOG_PATH}
+
+jwt:
+  access_secret: ${JWT_ACCESS_SECRET}
+  refresh_secret: ${JWT_REFRESH_SECRET}
+
+
 
 cloud:
   aws:
