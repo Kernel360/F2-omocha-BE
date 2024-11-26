@@ -4,12 +4,34 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="logback-spring-${spring.profiles.active}.xml"/>
 
-    <conversionRule conversionWord="highlight" converterClass="com.jdh.sample.config.log.CustomHighlightConverter"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev,prod">
+        <logger name="org.omocha" level="INFO" additivity="false">
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </logger>
+    </springProfile>
+
+    <conversionRule conversionWord="highlight" converterClass="com.jdh.sample.config.log.CustomHighlightConverter"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul}){black} [%clr(%thread){magenta}] %clr(%-5level){highlight} %clr(%logger{0}){cyan}:%clr(%line){blue} - %msg%n"/>
     <property name="FILE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul} [%thread] %-5level [%logger{0}:%line] - %msg%n"/>
     <property name="FILE_DATE_FORMAT" value="%d{yyMMdd}"/>
+
+    <springProperty name="LOG_DIR" source="logging.file.path"/>
 
 </configuration>
