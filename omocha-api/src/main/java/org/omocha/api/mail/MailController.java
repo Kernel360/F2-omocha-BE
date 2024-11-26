@@ -17,11 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v2/mail")
 @RequiredArgsConstructor
-public class MailController {
+public class MailController extends MailApi {
 
 	private final MailFacade mailFacade;
 	private final MailDtoMapper mailDtoMapper;
 
+	@Override
 	@PostMapping("")
 	public ResponseEntity<ResultDto<Void>> mailSend(
 		@RequestBody MailDto.MailSendRequest mailSendRequest
@@ -42,6 +43,7 @@ public class MailController {
 
 	}
 
+	@Override
 	@GetMapping("")
 	public ResponseEntity<ResultDto<Boolean>> mailCodeVerification(
 		@RequestBody MailDto.MailCodeVerification codeVerificationRequest
