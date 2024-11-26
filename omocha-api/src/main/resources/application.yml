@@ -187,7 +187,7 @@ spring:
 url:
   base-domain: ${DOMAIN_URL}
   server-domain: ${SERVER_DOMAIN}
-  client-domain: ${REDIRECT_URL}
+  client-domain: ${CLIENT_DOMAIN}
 
 springdoc:
   api-docs:
