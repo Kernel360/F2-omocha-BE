@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberReader memberReader;
 	private final ImageProvider imageProvider;
 	private final LikeReader likeReader;
-	private final RandomNickNameGenerator randomNickNameGenerator;
+	private final RandomNicknameGenerator randomNickNameGenerator;
 
 	@Override
 	@Transactional(readOnly = true)
