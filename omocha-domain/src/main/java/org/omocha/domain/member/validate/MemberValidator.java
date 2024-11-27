@@ -7,5 +7,5 @@ public interface MemberValidator {
 
 	void validateEmail(Email email);
 
-	void validateDuplicateNickName(String nickName);
+	void validateDuplicateNickname(String nickname);
 }

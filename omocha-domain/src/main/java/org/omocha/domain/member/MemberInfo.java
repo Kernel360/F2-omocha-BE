@@ -53,7 +53,7 @@ public class MemberInfo {
 		Long memberId,
 		Email email,
 		String userName,
-		String nickName,
+		String nickname,
 		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
@@ -97,7 +97,7 @@ public class MemberInfo {
 		Long memberId,
 		Email email,
 		String userName,
-		String nickName,
+		String nickname,
 		PhoneNumber phoneNumber,
 		@JsonFormat(pattern = "yyyy-MM-dd")
 		LocalDate birth,
@@ -129,7 +129,7 @@ public class MemberInfo {
 
 	public record RetrieveMemberInfo(
 		Long memberId,
-		String nickName,
+		String nickname,
 		String profileImageUrl,
 		Rating averageRating
 	) {

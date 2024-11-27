@@ -2,7 +2,7 @@ package org.omocha.domain.member.validate;
 
 import org.omocha.domain.member.MemberReader;
 import org.omocha.domain.member.exception.MemberAlreadyExistException;
-import org.omocha.domain.member.exception.MemberNickNameDuplicateException;
+import org.omocha.domain.member.exception.MemberNicknameDuplicateException;
 import org.omocha.domain.member.vo.Email;
 import org.springframework.stereotype.Component;
 
@@ -37,9 +37,9 @@ class MemberValidatorImpl implements MemberValidator {
 	}
 
 	@Override
-	public void validateDuplicateNickName(String nickName) {
-		if (memberReader.existsByNickName(nickName)) {
-			throw new MemberNickNameDuplicateException(nickName);
+	public void validateDuplicateNickname(String nickname) {
+		if (memberReader.existsByNickname(nickname)) {
+			throw new MemberNicknameDuplicateException(nickname);
 		}
 	}
 

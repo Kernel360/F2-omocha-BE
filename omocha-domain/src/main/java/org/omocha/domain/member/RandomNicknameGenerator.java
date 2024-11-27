@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Component
 @Getter
-public class RandomNickNameGenerator {
+public class RandomNicknameGenerator {
 
 	private static final List<String> prefixNicknames = List.of("귀여운", "멋진", "빠른", "강한", "용감한");
 	private static final List<String> suffixNicknames = List.of("호랑이", "사자", "독수리", "곰", "늑대");
