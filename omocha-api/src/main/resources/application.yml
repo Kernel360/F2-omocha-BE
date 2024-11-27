@@ -36,9 +36,12 @@ spring:
       mail:
         smtp:
           auth: true
-          timeout: 5000
           starttls:
             enable: true
+            required: true
+          timeout: 5000
+          connection-timeout: 5000
+          write-timeout: 5000
 
 logging:
   file:

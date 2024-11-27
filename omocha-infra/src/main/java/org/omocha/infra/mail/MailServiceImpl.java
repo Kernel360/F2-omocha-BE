@@ -3,9 +3,12 @@ package org.omocha.infra.mail;
 import org.omocha.domain.mail.CodeManager;
 import org.omocha.domain.mail.MailCommand;
 import org.omocha.domain.mail.MailService;
+import org.omocha.domain.mail.exception.MailSendFailException;
 import org.omocha.domain.member.vo.Email;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
@@ -13,6 +16,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@EnableAsync
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
@@ -21,6 +25,7 @@ public class MailServiceImpl implements MailService {
 	@Value("{OMOCHA_EMAIL}")
 	private String fromEmail;
 
+	@Async
 	@Override
 	public void sendMail(MailCommand.SendMail sendCommand) {
 		String code = CodeManager.addCode(sendCommand.email().getValue());
@@ -48,10 +53,17 @@ public class MailServiceImpl implements MailService {
 			body += "<h3>" + "감사합니다." + "</h3>";
 			mimeMessage.setText(body, "UTF-8", "html");
 		} catch (MessagingException e) {
-			e.printStackTrace();
+			throw new MailSendFailException(email.getValue());
 		}
 
 		return mimeMessage;
+	}
+
+	@Override
+	public void deleteCode() {
+
+		CodeManager.removeCode();
+
 	}
 
 }

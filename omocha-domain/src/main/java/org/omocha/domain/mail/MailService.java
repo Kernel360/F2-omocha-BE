@@ -5,4 +5,6 @@ public interface MailService {
 	void sendMail(MailCommand.SendMail sendCommand);
 
 	Boolean verifyMailCode(MailCommand.VerifyMailCode verifyMailCodeCommand);
+
+	void deleteCode();
 }

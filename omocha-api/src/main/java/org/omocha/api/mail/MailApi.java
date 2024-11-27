@@ -18,6 +18,8 @@ public abstract class MailApi {
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "메일이 성공적으로 발송되었습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "메일 전송에 실패했습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 	})
 	public abstract ResponseEntity<ResultDto<Void>> mailSend(
 		MailDto.MailSendRequest mailSendRequest
@@ -27,6 +29,9 @@ public abstract class MailApi {
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "메일 인증에 성공하였습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "404", description = "키 값을 찾을 수 없습니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+
 	})
 	public abstract ResponseEntity<ResultDto<Boolean>> mailCodeVerification(
 		MailDto.MailCodeVerification codeVerificationRequest
