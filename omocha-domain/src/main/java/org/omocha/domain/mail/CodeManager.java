@@ -29,7 +29,7 @@ public class CodeManager {
 	}
 
 	public static String addCode(String email) {
-		String code = getCode();
+		String code = createCode();
 		AuthCode authCode = new AuthCode(code);
 		codes.put(email, authCode);
 		return code;
@@ -42,7 +42,7 @@ public class CodeManager {
 
 	}
 
-	public static String getCode() {
+	public static String createCode() {
 		return String.valueOf(UUID.randomUUID());
 	}
 }
