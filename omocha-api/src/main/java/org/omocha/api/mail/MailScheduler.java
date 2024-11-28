@@ -12,7 +12,7 @@ public class MailScheduler {
 
 	private final MailService mailService;
 
-	@Scheduled(cron = "0 * * * * *")
+	@Scheduled(cron = "0 0 0 * * *")
 	public void scheduleDeleteExpiredCode() {
 
 		mailService.deleteCode();

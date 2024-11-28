@@ -34,6 +34,6 @@ public abstract class MailApi {
 
 	})
 	public abstract ResponseEntity<ResultDto<Boolean>> mailCodeVerification(
-		MailDto.MailCodeVerification codeVerificationRequest
+		MailDto.MailCodeVerificationRequest codeVerificationRequest
 	);
 }

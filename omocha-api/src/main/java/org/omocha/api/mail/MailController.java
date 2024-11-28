@@ -46,7 +46,7 @@ public class MailController extends MailApi {
 	@Override
 	@GetMapping("")
 	public ResponseEntity<ResultDto<Boolean>> mailCodeVerification(
-		@RequestBody MailDto.MailCodeVerification codeVerificationRequest
+		@RequestBody MailDto.MailCodeVerificationRequest codeVerificationRequest
 	) {
 
 		MailCommand.VerifyMailCode verifyMailCodeCommand = mailDtoMapper.toCommand(

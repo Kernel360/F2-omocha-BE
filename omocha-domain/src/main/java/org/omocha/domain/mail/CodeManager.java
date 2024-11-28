@@ -1,16 +1,16 @@
 package org.omocha.domain.mail;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.omocha.domain.mail.exception.MailCodeKeyNotFoundException;
 
 public class CodeManager {
 	private static final long CODE_EXPIRATION_MINUTES = 5; // 유효 기간 상수 (5분)
 
-	protected static Map<String, AuthCode> codes = new HashMap<>();
+	protected static Map<String, AuthCode> codes = new ConcurrentHashMap<>();
 
 	public static boolean checkCode(String email, String code) {
 

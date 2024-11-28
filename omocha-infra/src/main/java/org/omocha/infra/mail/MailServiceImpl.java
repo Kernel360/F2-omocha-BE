@@ -39,7 +39,6 @@ public class MailServiceImpl implements MailService {
 		return CodeManager.checkCode(verifyMailCodeCommand.email().getValue(), verifyMailCodeCommand.code());
 	}
 
-	// TODO : FE와 협의 후 결정
 	public MimeMessage createMimeMessage(Email email, String code) {
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 
