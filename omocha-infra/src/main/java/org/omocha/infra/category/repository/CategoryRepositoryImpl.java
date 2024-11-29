@@ -34,7 +34,9 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 	}
 
 	private void collectSubCategoryIds(Long categoryId, List<Long> categoryIds, QCategory category) {
-		categoryIds.add(categoryId);
+		if (!categoryIds.contains(categoryId)) {
+			categoryIds.add(categoryId);
+		}
 
 		List<Long> subCategoryIds = queryFactory
 			.select(category.categoryId)
@@ -43,9 +45,8 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 			.fetch();
 
 		for (Long subId : subCategoryIds) {
-			categoryIds.add(subId);
 			collectSubCategoryIds(subId, categoryIds, category); // 재귀 호출
 		}
 	}
-	
+
 }
