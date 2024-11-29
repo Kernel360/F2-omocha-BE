@@ -6,7 +6,6 @@ import org.omocha.api.auth.jwt.JwtProvider;
 import org.omocha.api.auth.jwt.RefreshTokenManager;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
-import org.omocha.api.common.util.PasswordManager;
 import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.vo.Email;
@@ -33,7 +32,6 @@ public class AuthController implements AuthApi {
 	private final AuthFacade authFacade;
 	private final AuthDtoMapper authDtoMapper;
 	private final JwtProvider jwtProvider;
-	private final PasswordManager passwordManager;
 
 	@Override
 	@PostMapping("/register")
@@ -45,7 +43,7 @@ public class AuthController implements AuthApi {
 
 		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(
 			memberAddRequest.email(),
-			passwordManager.encrypt(memberAddRequest.password())
+			memberAddRequest.password()
 		);
 
 		authFacade.addMember(addMemberCommand);
@@ -53,7 +51,6 @@ public class AuthController implements AuthApi {
 		ResultDto<Void> resultDto = ResultDto.res(
 			SuccessCode.MEMBER_CREATE_SUCCESS.getStatusCode(),
 			SuccessCode.MEMBER_CREATE_SUCCESS.getDescription()
-
 		);
 
 		return ResponseEntity
@@ -61,7 +58,6 @@ public class AuthController implements AuthApi {
 			.body(resultDto);
 	}
 
-	// TODO : security 추가 이후에 작업 필요
 	@Override
 	@GetMapping("/validate-email")
 	public ResponseEntity<ResultDto<Boolean>> emailValidateCheck(

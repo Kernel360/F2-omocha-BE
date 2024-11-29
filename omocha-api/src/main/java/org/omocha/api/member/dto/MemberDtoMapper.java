@@ -40,7 +40,8 @@ public interface MemberDtoMapper {
 
 	MemberDto.MyInfoModifyResponse toResponse(MemberInfo.ModifyMyInfo modifyBasicInfoInfo);
 
-	MemberCommand.ModifyPassword toCommand(Long memberId, String currentPassword, String newPassword);
+	@Mapping(target = "newEncryptedPassword", source = "passwordModifyRequest.newPassword", qualifiedByName = "toPassword")
+	MemberCommand.ModifyPassword toCommand(Long memberId, MemberDto.PasswordModifyRequest passwordModifyRequest);
 
 	MemberCommand.ModifyProfileImage toCommand(Long memberId, MultipartFile profileImage);
 

@@ -2,6 +2,7 @@ package org.omocha.api.common.util;
 
 import org.omocha.domain.member.exception.MemberIdenticalPassword;
 import org.omocha.domain.member.exception.MemberInvalidPasswordException;
+import org.omocha.domain.member.vo.Password;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +20,14 @@ public class PasswordManager {
 		return passwordEncoder.encode(password);
 	}
 
-	public void match(String enteredPassword, String storedPassword, Long memberId) {
-
-		// TODO : Exception 변경해야함
-		if (!passwordEncoder.matches(enteredPassword, storedPassword)) {
+	public void match(String enteredPassword, Password storedEncryptedPassword, Long memberId) {
+		if (!passwordEncoder.matches(enteredPassword, storedEncryptedPassword.getValue())) {
 			throw new MemberInvalidPasswordException(memberId);
 		}
-
 	}
 
-	public void validateIdenticalPassword(String currentPassword, String newPassword, Long memberId) {
-		if (currentPassword.equals(newPassword)) {
+	public void validateIdenticalPassword(String currentPassword, Password newEncryptedPassword, Long memberId) {
+		if (currentPassword.equals(newEncryptedPassword.getValue())) {
 			throw new MemberIdenticalPassword(memberId);
 		}
 	}

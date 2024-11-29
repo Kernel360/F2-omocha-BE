@@ -24,9 +24,7 @@ public class AuthFacade {
 	private final PasswordManager passwordManager;
 
 	public void addMember(MemberCommand.AddMember addMemberCommand) {
-
 		memberService.addMember(addMemberCommand);
-
 	}
 
 	public boolean isEmailDuplicate(Email email) {
@@ -37,7 +35,7 @@ public class AuthFacade {
 
 		MemberInfo.Login loginInfo = memberService.retrieveMember(memberLoginCommand.email());
 
-		passwordManager.match(memberLoginCommand.password(), loginInfo.password(), loginInfo.memberId());
+		passwordManager.match(memberLoginCommand.password(), loginInfo.encryptedPassword(), loginInfo.memberId());
 
 		jwtProvider.generateAccessToken(loginInfo.memberId(), response);
 		jwtProvider.generateRefreshToken(loginInfo.memberId(), response);
