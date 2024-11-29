@@ -4,7 +4,10 @@ import org.omocha.domain.mail.MailCommand;
 import org.omocha.domain.mail.MailSender;
 import org.omocha.domain.mail.exception.MailSendFailException;
 import org.omocha.domain.member.vo.Email;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import jakarta.mail.MessagingException;
@@ -12,19 +15,24 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
 @Component
+@EnableAsync
 @RequiredArgsConstructor
 public class MailSenderImpl implements MailSender {
 
 	private final JavaMailSender mailSender;
 
-	@Override
-	public void sendMail(MailCommand.SendMail sendCommand, String code, String hostEmail) {
+	@Value("{OMOCHA_EMAIL}")
+	private String fromEmail;
 
-		MimeMessage mail = createMimeMessage(sendCommand.email(), code, hostEmail);
+	@Async
+	@Override
+	public void sendMail(MailCommand.SendMail sendCommand, String code) {
+
+		MimeMessage mail = createMimeMessage(sendCommand.email(), code);
 		mailSender.send(mail);
 	}
 
-	private MimeMessage createMimeMessage(Email email, String code, String fromEmail) {
+	private MimeMessage createMimeMessage(Email email, String code) {
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 
 		try {
