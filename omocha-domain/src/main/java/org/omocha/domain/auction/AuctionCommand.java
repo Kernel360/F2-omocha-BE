@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.omocha.domain.auction.vo.Price;
+import org.omocha.domain.category.Category;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Builder;
@@ -22,10 +23,10 @@ public class AuctionCommand {
 		LocalDateTime startDate,
 		LocalDateTime endDate,
 		List<MultipartFile> images,
-		List<Long> categoryIds
+		Long categoryId
 
 	) {
-		public Auction toEntity() {
+		public Auction toEntity(Category category) {
 			return Auction.builder()
 				.memberId(memberId)
 				.title(title)
@@ -37,6 +38,7 @@ public class AuctionCommand {
 				.likeCount(0L)
 				.startDate(startDate)
 				.endDate(endDate)
+				.category(category)
 				.build();
 		}
 	}

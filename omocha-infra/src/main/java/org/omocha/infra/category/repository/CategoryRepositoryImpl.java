@@ -47,17 +47,5 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 			collectSubCategoryIds(subId, categoryIds, category); // 재귀 호출
 		}
 	}
-
-/*	private void collectSubCategoryIds(Long categoryId, List<Long> categoryIds, QCategory category) {
-		List<Long> subCategoryIds = queryFactory
-			.select(category.categoryId)
-			.from(category)
-			.where(category.parent.categoryId.eq(categoryId))
-			.fetch();
-
-		for (Long subId : subCategoryIds) {
-			categoryIds.add(subId);
-			collectSubCategoryIds(subId, categoryIds, category);
-		}
-	}*/
+	
 }

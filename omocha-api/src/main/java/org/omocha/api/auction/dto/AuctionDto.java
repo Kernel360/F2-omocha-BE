@@ -25,7 +25,7 @@ public class AuctionDto {
 		LocalDateTime startDate,
 		@NotNull @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime endDate,
-		@NotNull List<Long> categoryIds
+		@NotNull Long categoryId
 	) {
 	}
 
@@ -86,7 +86,7 @@ public class AuctionDto {
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		LocalDateTime createdAt,
 		List<String> imagePaths,
-		List<CategoryInfo.CategoryResponse> categories
+		Long categoryId
 	) {
 	}
 
@@ -99,6 +99,7 @@ public class AuctionDto {
 
 	public record AuctionLikeListResponse(
 		Long auctionId,
+		Long categoryId,
 		String title,
 		String thumbnailPath,
 		Price startPrice,

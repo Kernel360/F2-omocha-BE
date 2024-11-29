@@ -31,13 +31,13 @@ public class AuctionInfo {
 		LocalDateTime endDate,
 		LocalDateTime createdAt,
 		List<String> imagePaths,
-		List<CategoryInfo.CategoryResponse> categories
+		Long categoryId
 	) {
 		public RetrieveAuction(
 			Auction auction,
 			Member member,
 			List<String> imagePaths,
-			List<CategoryInfo.CategoryResponse> categories
+			Long categoryId
 		) {
 			this(
 				auction.getAuctionId(),
@@ -58,7 +58,7 @@ public class AuctionInfo {
 				auction.getEndDate(),
 				auction.getCreatedAt(),
 				imagePaths,
-				categories
+				auction.getCategory().getCategoryId()
 			);
 		}
 	}
@@ -166,6 +166,7 @@ public class AuctionInfo {
 
 	public record RetrieveMyAuctionLikes(
 		Long auctionId,
+		Long categoryId,
 		String title,
 		String thumbnailPath,
 		Price startPrice,
@@ -179,6 +180,7 @@ public class AuctionInfo {
 		@QueryProjection
 		public RetrieveMyAuctionLikes(
 			Long auctionId,
+			Long categoryId,
 			String title,
 			String thumbnailPath,
 			Price startPrice,
@@ -190,6 +192,7 @@ public class AuctionInfo {
 			LocalDateTime likedDate
 		) {
 			this.auctionId = auctionId;
+			this.categoryId = categoryId;
 			this.title = title;
 			this.thumbnailPath = thumbnailPath;
 			this.startPrice = startPrice;

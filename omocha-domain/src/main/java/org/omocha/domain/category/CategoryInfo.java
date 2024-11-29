@@ -9,6 +9,7 @@ public class CategoryInfo {
 		Long categoryId,
 		String name,
 		Long parentId,
+		int orderIndex,
 		List<CategoryResponse> subCategories
 
 	) {
@@ -17,6 +18,7 @@ public class CategoryInfo {
 				category.getCategoryId(),
 				category.getName(),
 				category.getParent() != null ? category.getParent().getCategoryId() : 0,
+				category.getOrderIndex(),
 				new ArrayList<>()
 			);
 		}

@@ -66,8 +66,6 @@ public class AuctionAddTest {
 			return memberRepository.save(newMember);
 		});
 
-		// 테스트용 카테고리 생성 또는 기존 카테고리 사용
-		List<Long> categoryIds = new ArrayList<>();
 		Category category = categoryRepository.findById(1L).orElseGet(() -> {
 			Category newCategory = Category.builder()
 				.name("영화")
@@ -76,11 +74,10 @@ public class AuctionAddTest {
 			// 필요한 필드 설정
 			return categoryRepository.save(newCategory);
 		});
-		categoryIds.add(category.getCategoryId());
 
 		for (int i = 1; i <= 500; i++) {
 			AuctionCommand.AddAuction addAuctionCommand = createDummyAuctionCommand(i, member.getMemberId(),
-				categoryIds);
+				category.getCategoryId());
 			auctionFacade.addAuction(addAuctionCommand);
 		}
 		System.out.println("더미 경매 데이터를 성공적으로 삽입했습니다.");
@@ -95,7 +92,7 @@ public class AuctionAddTest {
 
 	}
 
-	private AuctionCommand.AddAuction createDummyAuctionCommand(int index, Long memberId, List<Long> categoryIds) {
+	private AuctionCommand.AddAuction createDummyAuctionCommand(int index, Long memberId, Long categoryId) {
 		// MockMultipartFile을 사용하여 가짜 이미지 파일 생성
 		MockMultipartFile imageFile = new MockMultipartFile(
 			"image" + index + ".jpg",
@@ -124,7 +121,7 @@ public class AuctionAddTest {
 			.endDate(LocalDateTime.now().plusDays(7))
 			.memberId(memberId)
 			.images(images)
-			.categoryIds(categoryIds)
+			.categoryId(categoryId)
 			.build();
 	}
 
