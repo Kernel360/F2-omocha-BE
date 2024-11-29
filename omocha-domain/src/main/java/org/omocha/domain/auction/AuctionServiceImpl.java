@@ -119,7 +119,7 @@ public class AuctionServiceImpl implements AuctionService {
 			.collect(Collectors.toList());
 
 		Category category = auction.getCategory();
-		if (category == null || category.getCategoryId() == null) {
+		if (category == null) {
 			throw new CategoryNotFoundException(CategoryNotFoundException.Type.AUCTION_ID, auction.getAuctionId());
 		}
 
