@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.omocha.domain.auction.Auction;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +32,11 @@ public class Category {
 
 	private String name;
 
+	private int orderIndex;
+
+	@OneToMany(mappedBy = "category")
+	private List<Auction> auctions = new ArrayList<>();
+
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
 	private Category parent;
@@ -37,13 +44,11 @@ public class Category {
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Category> subCategories = new ArrayList<>();
 
-	@OneToMany(mappedBy = "category")
-	private List<AuctionCategory> auctionCategories = new ArrayList<>();
-
 	@Builder
-	public Category(String name, Category parent) {
+	public Category(String name, Category parent, int orderIndex) {
 		this.name = name;
 		this.setParent(parent);
+		this.orderIndex = orderIndex;
 	}
 
 	public void setParent(Category parent) {

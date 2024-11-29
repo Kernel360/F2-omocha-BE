@@ -2,6 +2,7 @@ package org.omocha.infra.category;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,26 @@ public class CategoryReaderImpl implements CategoryReader {
 			}
 		}
 
+		sortCategories(rootCategories);
+
 		return rootCategories;
+	}
+
+	private void sortCategories(List<CategoryInfo.CategoryResponse> categories) {
+		if (categories == null || categories.isEmpty()) {
+			return;
+		}
+
+		categories.sort(Comparator.comparingInt(CategoryInfo.CategoryResponse::orderIndex));
+
+		for (CategoryInfo.CategoryResponse category : categories) {
+			sortCategories(category.subCategories());
+		}
+	}
+
+	@Override
+	public List<Long> getSubCategoryIds(Long categoryId) {
+		return categoryRepository.getSubCategoryIds(categoryId);
 	}
 
 	@Override
@@ -62,11 +82,6 @@ public class CategoryReaderImpl implements CategoryReader {
 
 		Category category = getCategory(categoryId);
 		return categoryHierarchyUpwards(category);
-	}
-
-	@Override
-	public List<Long> getSubCategoryIds(Long categoryId) {
-		return categoryRepository.getSubCategoryIds(categoryId);
 	}
 
 	private List<CategoryInfo.CategoryResponse> categoryHierarchyUpwards(Category category) {

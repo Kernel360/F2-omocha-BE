@@ -40,9 +40,7 @@ public interface AuctionApi {
 		@Parameter(description = "경매 요청 데이터", required = true)
 		AuctionDto.AuctionAddRequest auctionRequest,
 		@Parameter(description = "이미지 파일 리스트", required = true)
-		List<MultipartFile> images,
-		@Parameter(description = "thumbnail 이미지 파일", required = true)
-		MultipartFile thumbnailPath
+		List<MultipartFile> images
 	);
 
 	@Operation(summary = "경매 목록 조회", description = "경매 목록을 조회합니다.")

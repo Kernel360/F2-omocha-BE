@@ -39,8 +39,7 @@ public interface AuctionDtoMapper {
 	AuctionCommand.AddAuction toCommand(
 		AuctionDto.AuctionAddRequest auctionRequest,
 		Long memberId,
-		List<MultipartFile> images,
-		MultipartFile thumbnailPath
+		List<MultipartFile> images
 	);
 
 	AuctionCommand.SearchAuction toCommand(

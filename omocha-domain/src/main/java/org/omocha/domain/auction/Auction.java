@@ -10,7 +10,6 @@ import org.omocha.domain.auction.exception.AuctionNotConcludedException;
 import org.omocha.domain.auction.exception.AuctionNotInBiddingStateException;
 import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.auction.vo.PriceDbConverter;
-import org.omocha.domain.category.AuctionCategory;
 import org.omocha.domain.category.Category;
 import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.conclude.Conclude;
@@ -26,6 +25,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -83,8 +84,9 @@ public class Auction extends BaseEntity {
 		cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images = new ArrayList<>();
 
-	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<AuctionCategory> auctionCategories = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 	@OneToOne(mappedBy = "auction")
 	private Conclude conclude;
@@ -102,7 +104,8 @@ public class Auction extends BaseEntity {
 		long likeCount,
 		String thumbnailPath,
 		LocalDateTime startDate,
-		LocalDateTime endDate
+		LocalDateTime endDate,
+		Category category
 	) {
 		this.memberId = memberId;
 		this.title = title;
@@ -117,6 +120,7 @@ public class Auction extends BaseEntity {
 		this.auctionStatus = AuctionStatus.BIDDING;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.category = category;
 	}
 
 	@Getter
@@ -163,15 +167,6 @@ public class Auction extends BaseEntity {
 		if (!(auctionStatus.equals(AuctionStatus.CONCLUDED) || auctionStatus.equals(AuctionStatus.COMPLETED))) {
 			throw new AuctionNotConcludedException(auctionId, auctionStatus);
 		}
-	}
-
-	public void addCategory(Category category) {
-		AuctionCategory auctionCategory = AuctionCategory.builder()
-			.auction(this)
-			.category(category)
-			.build();
-
-		this.auctionCategories.add(auctionCategory);
 	}
 
 	public void increaseLikeCount() {

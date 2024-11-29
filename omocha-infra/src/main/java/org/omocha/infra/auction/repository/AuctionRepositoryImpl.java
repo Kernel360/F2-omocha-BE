@@ -2,8 +2,6 @@ package org.omocha.infra.auction.repository;
 
 import static org.omocha.domain.auction.QAuction.*;
 import static org.omocha.domain.bid.QBid.*;
-import static org.omocha.domain.category.QAuctionCategory.*;
-import static org.omocha.domain.category.QCategory.*;
 import static org.omocha.domain.conclude.QConclude.*;
 import static org.omocha.domain.likes.QLikes.*;
 import static org.omocha.domain.review.QReview.*;
@@ -76,9 +74,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 				auction.createdAt
 			))
 			.from(auction)
-			.leftJoin(conclude).on(conclude.auction.eq(auction))
-			.leftJoin(auctionCategory).on(auctionCategory.auction.eq(auction))
-			.leftJoin(category).on(auctionCategory.category.eq(category));
+			.leftJoin(conclude).on(conclude.auction.eq(auction));
 
 		if (memberId != null) {
 			query.leftJoin(likes).on(likes.auction.eq(auction)
@@ -252,9 +248,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		JPAQuery<Long> query = queryFactory
 			.select(auction.count())
 			.from(auction)
-			.leftJoin(conclude).on(conclude.auction.eq(auction))
-			.leftJoin(auctionCategory).on(auctionCategory.auction.eq(auction))
-			.leftJoin(category).on(auctionCategory.category.eq(category));
+			.leftJoin(conclude).on(conclude.auction.eq(auction));
 
 		if (memberId != null) {
 			query.leftJoin(likes).on(likes.auction.eq(auction)
@@ -313,7 +307,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 	}
 
 	private BooleanExpression categoryContains(List<Long> categoryIds) {
-		return categoryIds.isEmpty() ? null : category.categoryId.in(categoryIds);
+		return categoryIds.isEmpty() ? null : auction.category.categoryId.in(categoryIds);
 	}
 
 }

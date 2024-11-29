@@ -1,7 +1,5 @@
 package org.omocha.infra.category;
 
-import org.omocha.domain.auction.Auction;
-import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.category.Category;
 import org.omocha.domain.category.CategoryReader;
 import org.omocha.domain.category.CategoryStore;
@@ -22,17 +20,6 @@ public class CategoryStoreImpl implements CategoryStore {
 	@Override
 	public Category categoryStore(Category category) {
 		return categoryRepository.save(category);
-	}
-
-	@Override
-	public void auctionCategoryStore(Auction auction, AuctionCommand.AddAuction addCommand) {
-		if (addCommand.categoryIds() != null && !addCommand.categoryIds().isEmpty()) {
-			for (Long categoryId : addCommand.categoryIds()) {
-				Category category = categoryReader.getCategory(categoryId);
-				auction.addCategory(category);
-			}
-		}
-
 	}
 
 }

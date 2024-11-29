@@ -37,6 +37,7 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
 		JPAQuery<AuctionInfo.RetrieveMyAuctionLikes> query = queryFactory
 			.select(new QAuctionInfo_RetrieveMyAuctionLikes(
 				auction.auctionId,
+				auction.category.categoryId,
 				auction.title,
 				auction.thumbnailPath,
 				auction.startPrice,

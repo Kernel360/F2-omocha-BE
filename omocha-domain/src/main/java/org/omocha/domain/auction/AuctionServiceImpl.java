@@ -9,6 +9,7 @@ import org.omocha.domain.auction.exception.AuctionHasBidException;
 import org.omocha.domain.auction.exception.AuctionImageNotFoundException;
 import org.omocha.domain.auction.exception.AuctionOwnerMismatchException;
 import org.omocha.domain.auction.exception.AuctionStartPriceHigherInstantBuyPriceException;
+import org.omocha.domain.category.Category;
 import org.omocha.domain.category.CategoryInfo;
 import org.omocha.domain.category.CategoryReader;
 import org.omocha.domain.category.CategoryStore;
@@ -72,9 +73,9 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new AuctionEndDateBeforeNowException(addCommand.endDate(), nowDate);
 		}
 
-		Auction auction = auctionStore.store(addCommand.toEntity());
+		Category category = categoryReader.getCategory(addCommand.categoryId());
+		Auction auction = auctionStore.store(addCommand.toEntity(category));
 		auctionImagesFactory.store(auction, addCommand);
-		categoryStore.auctionCategoryStore(auction, addCommand);
 
 		return auction.getAuctionId();
 	}
@@ -117,21 +118,12 @@ public class AuctionServiceImpl implements AuctionService {
 			.map(Image::getImagePath)
 			.collect(Collectors.toList());
 
-		List<Long> categoryIds = auction.getAuctionCategories()
-			.stream()
-			.map(auctionCategory -> auctionCategory.getCategory().getCategoryId())
-			.toList();
-
-		if (categoryIds.isEmpty()) {
+		Category category = auction.getCategory();
+		if (category == null) {
 			throw new CategoryNotFoundException(CategoryNotFoundException.Type.AUCTION_ID, auction.getAuctionId());
 		}
 
-		Long selectedCategoryId = categoryIds.get(0);
-
-		List<CategoryInfo.CategoryResponse> categoryHierarchy =
-			categoryReader.getCategoryHierarchyUpwards(selectedCategoryId);
-
-		return new AuctionInfo.RetrieveAuction(auction, member, imagePaths, categoryHierarchy);
+		return new AuctionInfo.RetrieveAuction(auction, member, imagePaths, category.getCategoryId());
 	}
 
 	@Override

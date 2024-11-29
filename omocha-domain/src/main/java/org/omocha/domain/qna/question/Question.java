@@ -38,7 +38,7 @@ public class Question extends BaseEntity {
 	@JoinColumn(name = "auction_id", nullable = false)
 	private Auction auction;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
