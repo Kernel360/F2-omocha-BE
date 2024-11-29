@@ -25,7 +25,9 @@ public class MemberDto {
 		String profileImageUrl,
 		Rating averageRating,
 		String loginType,
-		int likeCount
+		int likeCount,
+		boolean emailVerified
+		
 	) {
 	}
 

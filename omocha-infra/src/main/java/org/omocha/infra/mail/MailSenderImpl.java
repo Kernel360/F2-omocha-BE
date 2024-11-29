@@ -38,7 +38,7 @@ public class MailSenderImpl implements MailSender {
 		try {
 			mimeMessage.setFrom(fromEmail);
 			mimeMessage.setRecipients(MimeMessage.RecipientType.TO, email.getValue());
-			mimeMessage.setSubject("이메일 인증");
+			mimeMessage.setSubject("Omocha 이메일 인증");
 			String body = "";
 			body += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
 			body += "<h1>" + code + "</h1>";

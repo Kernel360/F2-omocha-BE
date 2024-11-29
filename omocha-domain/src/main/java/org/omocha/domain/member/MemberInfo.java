@@ -104,7 +104,8 @@ public class MemberInfo {
 		String profileImageUrl,
 		Rating averageRating,
 		String loginType,
-		int likeCount
+		int likeCount,
+		boolean emailVerified
 	) {
 		public static RetrieveMyInfo toInfo(
 			Member member,
@@ -121,7 +122,8 @@ public class MemberInfo {
 				member.getProfileImageUrl(),
 				member.getAverageRating(),
 				loginType,
-				likeCount
+				likeCount,
+				member.isEmailVerified()
 			);
 
 		}
