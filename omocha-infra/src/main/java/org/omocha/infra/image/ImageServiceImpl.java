@@ -9,6 +9,7 @@ import org.omocha.domain.image.ImageService;
 import org.omocha.domain.image.ImageStore;
 import org.omocha.domain.image.exception.ImagePathNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,7 @@ public class ImageServiceImpl implements ImageService {
 	private final ImageReader imageReader;
 
 	@Override
+	@Transactional
 	public ImageInfo.AddImage addImage(ImageCommand.AddImage addCommand) {
 		String imagePath = imageProvider.uploadFile(addCommand.image());
 		String fileName = addCommand.image().getOriginalFilename();
@@ -32,6 +34,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteImage(ImageCommand.DeleteImage deleteCommand) {
 		String imagePath = deleteCommand.imagePath();
 
