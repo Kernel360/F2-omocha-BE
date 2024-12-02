@@ -49,7 +49,7 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
 				likes.createdAt
 			))
 			.from(likes)
-			.join(likes.auction, auction)
+			.leftJoin(likes.auction, auction)
 			.where(likes.member.memberId.eq(memberId));
 
 		// 정렬 적용 (필요한 경우)

@@ -1,24 +1,40 @@
 package org.omocha.domain.image;
 
-import org.omocha.domain.auction.Auction;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ImageCommand {
 
 	public record AddAuctionImage(
 		String fileName,
-		String imagePath,
-		Auction auction
+		String imagePath
 	) {
 		public Image toEntity(
 			String fileName,
-			String imagePath,
-			Auction auction
+			String imagePath
 		) {
 			return Image.builder()
 				.fileName(fileName)
 				.imagePath(imagePath)
-				.auction(auction)
 				.build();
 		}
+	}
+
+	public record AddImage(
+		MultipartFile image
+	) {
+		public Image toEntity(
+			String imagePath,
+			String fileName
+		) {
+			return Image.builder()
+				.imagePath(imagePath)
+				.fileName(fileName)
+				.build();
+		}
+	}
+
+	public record DeleteImage(
+		String imagePath
+	) {
 	}
 }

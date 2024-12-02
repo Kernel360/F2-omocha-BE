@@ -1,0 +1,46 @@
+package org.omocha.infra.image;
+
+import org.omocha.domain.image.Image;
+import org.omocha.domain.image.ImageCommand;
+import org.omocha.domain.image.ImageInfo;
+import org.omocha.domain.image.ImageProvider;
+import org.omocha.domain.image.ImageReader;
+import org.omocha.domain.image.ImageService;
+import org.omocha.domain.image.ImageStore;
+import org.omocha.domain.image.exception.ImagePathNotFoundException;
+import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class ImageServiceImpl implements ImageService {
+
+	private final ImageProvider imageProvider;
+	private final ImageStore imageStore;
+	private final ImageReader imageReader;
+
+	@Override
+	public ImageInfo.AddImage addImage(ImageCommand.AddImage addCommand) {
+		String imagePath = imageProvider.uploadFile(addCommand.image());
+		String fileName = addCommand.image().getOriginalFilename();
+
+		Image image = addCommand.toEntity(imagePath, fileName);
+		imageStore.store(image);
+
+		return new ImageInfo.AddImage(imagePath);
+	}
+
+	@Override
+	public void deleteImage(ImageCommand.DeleteImage deleteCommand) {
+		String imagePath = deleteCommand.imagePath();
+
+		if (imagePath.isBlank()) {
+			throw new ImagePathNotFoundException(imagePath);
+		}
+
+		imageProvider.deleteFile(imagePath);
+		Image image = imageReader.getImage(imagePath);
+		imageStore.delete(image);
+	}
+}
