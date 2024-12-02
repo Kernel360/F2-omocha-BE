@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/images")
-public class ImageController {
+public class ImageController implements ImageApi {
 
 	private final ImageDtoMapper imageDtoMapper;
 
@@ -34,6 +34,7 @@ public class ImageController {
 	@PostMapping(
 		consumes = MediaType.MULTIPART_FORM_DATA_VALUE
 	)
+	@Override
 	public ResponseEntity<ResultDto<ImageDto.ImageAddResponse>> imageAdd(
 		@RequestPart(value = "image") MultipartFile image
 	) {
@@ -55,6 +56,7 @@ public class ImageController {
 	}
 
 	@DeleteMapping("")
+	@Override
 	public ResponseEntity<ResultDto<Void>> imageDelete(
 		@RequestBody @Valid ImageDto.ImageDeleteRequest request
 	) {
