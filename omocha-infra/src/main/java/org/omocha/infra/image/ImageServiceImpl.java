@@ -7,7 +7,6 @@ import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.image.ImageReader;
 import org.omocha.domain.image.ImageService;
 import org.omocha.domain.image.ImageStore;
-import org.omocha.domain.image.exception.ImagePathNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,11 +36,6 @@ public class ImageServiceImpl implements ImageService {
 	@Transactional
 	public void deleteImage(ImageCommand.DeleteImage deleteCommand) {
 		String imagePath = deleteCommand.imagePath();
-
-		if (imagePath.isBlank()) {
-			throw new ImagePathNotFoundException(imagePath);
-		}
-
 		imageProvider.deleteFile(imagePath);
 		Image image = imageReader.getImage(imagePath);
 		imageStore.delete(image);
