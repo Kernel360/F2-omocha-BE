@@ -62,7 +62,7 @@ jobs:
       - name: Add GitHub Actions IP
         run: |
           aws ec2 authorize-security-group-ingress \
-              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --group-id ${{ secrets.PROD_SECURITY_GROUP_ID }} \
               --protocol tcp \
               --port ${{ secrets.EC2_SSH_PORT }} \
               --cidr ${{ steps.ip.outputs.ipv4 }}/32
