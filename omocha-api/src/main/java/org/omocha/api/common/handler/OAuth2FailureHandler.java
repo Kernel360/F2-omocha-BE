@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.omocha.domain.common.code.SuccessCode;
+import org.omocha.domain.common.code.ErrorCode;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -34,8 +34,8 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 
 		//TODO: 추후 result_date 삭제
 		Map<String, Object> responseBody = new HashMap<>();
-		responseBody.put("status_code", SuccessCode.MEMBER_LOGIN_SUCCESS.getStatusCode());
-		responseBody.put("result_msg", SuccessCode.MEMBER_LOGIN_SUCCESS.getDescription());
+		responseBody.put("status_code", ErrorCode.OAUTH_FAILURE.getStatusCode());
+		responseBody.put("result_msg", ErrorCode.OAUTH_FAILURE.getDescription());
 		responseBody.put("result_data", null);
 
 		response.setContentType("application/json");
