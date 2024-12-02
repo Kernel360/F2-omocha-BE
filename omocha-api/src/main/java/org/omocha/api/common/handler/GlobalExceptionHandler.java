@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
@@ -40,6 +41,23 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity
 			.status(e.getErrorCode().getHttpStatus())
+			.body(resultDto);
+	}
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<ResultDto<Object>> handleNoResourceFoundException(
+		NoResourceFoundException e,
+		HttpServletRequest request
+	) {
+		warnLogging(e, request);
+
+		ResultDto<Object> resultDto = ResultDto.res(
+			URL_NOT_FOUND.getStatusCode(),
+			URL_NOT_FOUND.getDescription()
+		);
+
+		return ResponseEntity
+			.status(URL_NOT_FOUND.getHttpStatus())
 			.body(resultDto);
 	}
 

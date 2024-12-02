@@ -2,8 +2,6 @@ package org.omocha.api.auth;
 
 import org.omocha.api.auth.dto.AuthDto;
 import org.omocha.api.auth.dto.AuthDtoMapper;
-import org.omocha.api.auth.jwt.JwtProvider;
-import org.omocha.api.auth.jwt.RefreshTokenManager;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.api.common.util.PasswordManager;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +29,6 @@ public class AuthController implements AuthApi {
 
 	private final AuthFacade authFacade;
 	private final AuthDtoMapper authDtoMapper;
-	private final JwtProvider jwtProvider;
 	private final PasswordManager passwordManager;
 
 	@Override
@@ -40,8 +36,8 @@ public class AuthController implements AuthApi {
 	public ResponseEntity<ResultDto<Void>> memberAdd(
 		@RequestBody @Valid AuthDto.MemberAddRequest memberAddRequest
 	) {
-		// log.debug("Member register started");
-		// log.info("Received MemberAddRequest: {}", memberCreateRequest);
+		log.debug("Member register started");
+		log.info("Received MemberAddRequest: {}", memberAddRequest);
 
 		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(
 			memberAddRequest.email(),
@@ -61,12 +57,13 @@ public class AuthController implements AuthApi {
 			.body(resultDto);
 	}
 
-	// TODO : security 추가 이후에 작업 필요
 	@Override
 	@GetMapping("/validate-email")
 	public ResponseEntity<ResultDto<Boolean>> emailValidateCheck(
 		@RequestParam String email
 	) {
+		log.debug("Email Validate Check started");
+		log.info("Received email: {}", email);
 
 		boolean duplicate = authFacade.isEmailDuplicate(new Email(email));
 
@@ -83,20 +80,20 @@ public class AuthController implements AuthApi {
 
 	@Override
 	@PostMapping("/login")
-	public ResponseEntity<ResultDto<Void>> memberLogin(
-		@RequestBody @Valid AuthDto.MemberLoginRequest memberLoginRequest,
-		HttpServletResponse response
+	public ResponseEntity<ResultDto<AuthDto.JwtResponse>> memberLogin(
+		@RequestBody @Valid AuthDto.MemberLoginRequest memberLoginRequest
 	) {
 		log.debug("Member login started");
 		log.info("Received MemberLoginRequest: {}", memberLoginRequest);
 
-		MemberCommand.MemberLogin memberLogin = authDtoMapper.toCommand(memberLoginRequest);
+		MemberCommand.LoginMember loginMember = authDtoMapper.toCommand(memberLoginRequest);
 
-		authFacade.memberLogin(memberLogin, response);
+		AuthDto.JwtResponse result = authFacade.loginMember(loginMember);
 
-		ResultDto<Void> resultDto = ResultDto.res(
+		ResultDto<AuthDto.JwtResponse> resultDto = ResultDto.res(
 			SuccessCode.MEMBER_LOGIN_SUCCESS.getStatusCode(),
-			SuccessCode.MEMBER_LOGIN_SUCCESS.getDescription()
+			SuccessCode.MEMBER_LOGIN_SUCCESS.getDescription(),
+			result
 		);
 
 		return ResponseEntity
@@ -105,23 +102,26 @@ public class AuthController implements AuthApi {
 	}
 
 	@Override
-	@PostMapping("/logout")
-	public ResponseEntity<ResultDto<Void>> memberLogout(
+	@PostMapping("/token-reissue")
+	public ResponseEntity<ResultDto<AuthDto.JwtResponse>> tokenReissue(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		HttpServletResponse response
+		@RequestBody @Valid AuthDto.TokenReissueRequest tokenReissueRequest
 	) {
-		log.debug("Member logout started");
+		log.debug("Token Reissue started");
+		log.info("Received tokenReissueRequest: {}", tokenReissueRequest);
 
-		RefreshTokenManager.removeUserRefreshToken(userPrincipal.getMember().getMemberId());
-		jwtProvider.logout(response);
+		MemberCommand.ReissueToken reissueToken = authDtoMapper.toCommand(userPrincipal.getId(), tokenReissueRequest);
 
-		ResultDto<Void> resultDto = ResultDto.res(
-			SuccessCode.MEMBER_LOGOUT_SUCCESS.getStatusCode(),
-			SuccessCode.MEMBER_LOGOUT_SUCCESS.getDescription()
+		AuthDto.JwtResponse result = authFacade.reissueToken(reissueToken);
+
+		ResultDto<AuthDto.JwtResponse> resultDto = ResultDto.res(
+			SuccessCode.TOKEN_REISSUE_SUCCESS.getStatusCode(),
+			SuccessCode.TOKEN_REISSUE_SUCCESS.getDescription(),
+			result
 		);
 
 		return ResponseEntity
-			.status(SuccessCode.MEMBER_LOGOUT_SUCCESS.getHttpStatus())
+			.status(SuccessCode.TOKEN_REISSUE_SUCCESS.getHttpStatus())
 			.body(resultDto);
 	}
 }

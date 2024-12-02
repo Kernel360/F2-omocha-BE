@@ -33,11 +33,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 			request.getMethod()
 		);
 
-		log.warn("Access denied. Exception type: {}",
-			accessDeniedException.getClass().getSimpleName()
+		log.warn("Exception type: {}, Exception message: {}",
+			accessDeniedException.getClass().getSimpleName(), accessDeniedException.getMessage()
 		);
-
-		log.warn("Exception message: {}", accessDeniedException.getMessage());
 
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);

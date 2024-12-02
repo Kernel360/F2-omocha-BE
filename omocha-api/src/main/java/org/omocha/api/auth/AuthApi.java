@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Tag(name = "인증 API(AuthController)", description = "새로운 회원 생성, 로그인, 로그아웃 API 입니다.")
 public interface AuthApi {
@@ -27,6 +27,7 @@ public interface AuthApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<Void>> memberAdd(
+		@RequestBody(description = "회원가입 정보", required = true)
 		AuthDto.MemberAddRequest memberAddRequest
 	);
 
@@ -55,23 +56,22 @@ public interface AuthApi {
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Void>> memberLogin(
-		AuthDto.MemberLoginRequest memberLoginRequest,
-		HttpServletResponse response
+	ResponseEntity<ResultDto<AuthDto.JwtResponse>> memberLogin(
+		@RequestBody(description = "사용자 로그인 정보", required = true)
+		AuthDto.MemberLoginRequest memberLoginRequest
 	);
 
-	@Operation(summary = "회원 로그아웃", description = "회원 로그아웃을 수행합니다.")
+	@Operation(summary = "토큰 재발급", description = "JWT를 재발급 합니다.")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "성공적으로 로그아웃 하였습니다.",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
-		@ApiResponse(responseCode = "404", description = "회원을 찾을 수 없습니다.",
+		@ApiResponse(responseCode = "200", description = "토큰을 성공적으로 재발급 하였습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
-	ResponseEntity<ResultDto<Void>> memberLogout(
+	ResponseEntity<ResultDto<AuthDto.JwtResponse>> tokenReissue(
 		@Parameter(description = "사용자 객체 정보", required = true)
 		UserPrincipal userPrincipal,
-		HttpServletResponse response
+		@RequestBody(description = "RefreshToken", required = true)
+		AuthDto.TokenReissueRequest tokenReissueRequest
 	);
 }

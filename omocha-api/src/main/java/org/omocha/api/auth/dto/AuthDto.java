@@ -20,6 +20,17 @@ public class AuthDto {
 	) {
 	}
 
+	public record TokenReissueRequest(
+		@NotBlank String refreshToken
+	) {
+	}
+
+	public record JwtResponse(
+		String accessToken,
+		String refreshToken
+	) {
+	}
+
 	public record MemberDetailResponse(
 		Email email,
 		String nickname,
@@ -28,7 +39,6 @@ public class AuthDto {
 		String imageUrl,
 		Role role
 	) {
-
 	}
 
 }

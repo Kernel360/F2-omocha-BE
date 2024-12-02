@@ -13,6 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 
 @OpenAPIDefinition(
@@ -42,5 +46,20 @@ public class SwaggerConfig {
 			.group("사용자를 위한 API")
 			.pathsToMatch(paths)
 			.build();
+	}
+
+	@Bean
+	public OpenAPI api() {
+		SecurityScheme apiKey = new SecurityScheme()
+			.type(SecurityScheme.Type.APIKEY)
+			.in(SecurityScheme.In.HEADER)
+			.name("Authorization");
+
+		SecurityRequirement securityRequirement = new SecurityRequirement()
+			.addList("Access Token");
+
+		return new OpenAPI()
+			.components(new Components().addSecuritySchemes("Access Token", apiKey))
+			.addSecurityItem(securityRequirement);
 	}
 }
