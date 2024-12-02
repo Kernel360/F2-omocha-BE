@@ -7,7 +7,6 @@ import javax.crypto.SecretKey;
 import org.omocha.api.auth.dto.AuthDto;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.exception.InvalidRefreshTokenException;
-import org.omocha.domain.member.exception.InvalidTokenOwnerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -53,17 +52,11 @@ public class JwtProvider {
 		Long memberIdByRefreshToken = RefreshTokenManager.findMemberIdByRefreshToken(
 			reissueTokenCommand.refreshToken());
 
-		if (!memberIdByRefreshToken.equals(reissueTokenCommand.memberId())) {
-			throw new InvalidTokenOwnerException(
-				reissueTokenCommand.memberId(), reissueTokenCommand.refreshToken()
-			);
-		}
-
 		if (!validateRefreshToken(reissueTokenCommand.refreshToken())) {
 			throw new InvalidRefreshTokenException(reissueTokenCommand.refreshToken());
 		}
 
-		return generateToken(reissueTokenCommand.memberId());
+		return generateToken(memberIdByRefreshToken);
 	}
 
 	public boolean validateAccessToken(String token) {

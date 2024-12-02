@@ -1,7 +1,6 @@
 package org.omocha.api.auth;
 
 import org.omocha.api.auth.dto.AuthDto;
-import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
 import org.springframework.http.ResponseEntity;
 
@@ -69,8 +68,6 @@ public interface AuthApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
 	})
 	ResponseEntity<ResultDto<AuthDto.JwtResponse>> tokenReissue(
-		@Parameter(description = "사용자 객체 정보", required = true)
-		UserPrincipal userPrincipal,
 		@RequestBody(description = "RefreshToken", required = true)
 		AuthDto.TokenReissueRequest tokenReissueRequest
 	);

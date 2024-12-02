@@ -2,14 +2,11 @@ package org.omocha.api.auth;
 
 import org.omocha.api.auth.dto.AuthDto;
 import org.omocha.api.auth.dto.AuthDtoMapper;
-import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
-import org.omocha.api.common.util.PasswordManager;
 import org.omocha.domain.common.code.SuccessCode;
 import org.omocha.domain.member.MemberCommand;
 import org.omocha.domain.member.vo.Email;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -102,13 +99,12 @@ public class AuthController implements AuthApi {
 	@Override
 	@PostMapping("/token-reissue")
 	public ResponseEntity<ResultDto<AuthDto.JwtResponse>> tokenReissue(
-		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody @Valid AuthDto.TokenReissueRequest tokenReissueRequest
 	) {
 		log.debug("Token Reissue started");
 		log.info("Received tokenReissueRequest: {}", tokenReissueRequest);
 
-		MemberCommand.ReissueToken reissueToken = authDtoMapper.toCommand(userPrincipal.getId(), tokenReissueRequest);
+		MemberCommand.ReissueToken reissueToken = authDtoMapper.toCommand(tokenReissueRequest);
 
 		AuthDto.JwtResponse result = authFacade.reissueToken(reissueToken);
 
