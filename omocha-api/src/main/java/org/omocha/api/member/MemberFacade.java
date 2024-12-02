@@ -31,6 +31,12 @@ public class MemberFacade {
 
 	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
 
+		passwordManager.validateIdenticalPassword(
+			modifyPasswordCommand.currentPassword(),
+			modifyPasswordCommand.newEncryptedPassword(),
+			modifyPasswordCommand.memberId()
+		);
+
 		MemberInfo.RetrievePassword retrievePasswordInfo = memberService.retrievePassword(
 			modifyPasswordCommand.memberId()
 		);
@@ -42,7 +48,6 @@ public class MemberFacade {
 		);
 
 		memberService.modifyPassword(modifyPasswordCommand);
-
 	}
 
 	public MemberInfo.ModifyProfileImage modifyProfileImage(

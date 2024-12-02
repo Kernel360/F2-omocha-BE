@@ -33,7 +33,7 @@ public class AuthFacade {
 
 	public AuthDto.JwtResponse loginMember(MemberCommand.LoginMember loginMemberCommand) {
 		MemberInfo.Login loginInfo = memberService.retrieveMember(loginMemberCommand.email());
-		passwordManager.match(loginMemberCommand.password(), loginInfo.password(), loginInfo.memberId());
+		passwordManager.match(loginMemberCommand.password(), loginInfo.encryptedPassword(), loginInfo.memberId());
 
 		return jwtProvider.generateToken(loginInfo.memberId());
 	}

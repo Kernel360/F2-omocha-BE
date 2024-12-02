@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.Password;
 import org.omocha.domain.member.vo.PhoneNumber;
 import org.omocha.domain.review.rating.Rating;
 
@@ -36,7 +37,7 @@ public class MemberInfo {
 
 	public record Login(
 		Long memberId,
-		String password
+		Password encryptedPassword
 	) {
 		public static Login toInfo(
 			Member member
@@ -72,9 +73,7 @@ public class MemberInfo {
 				member.getBirth(),
 				member.getRole(),
 				member.getProfileImageUrl()
-
 			);
-
 		}
 	}
 
@@ -149,7 +148,7 @@ public class MemberInfo {
 
 	public record RetrievePassword(
 		Long memberId,
-		String password
+		Password password
 	) {
 		public static RetrievePassword toInfo(
 			Member member

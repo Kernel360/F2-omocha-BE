@@ -17,6 +17,7 @@ import org.omocha.domain.member.MemberInfo;
 public interface AuthDtoMapper {
 
 	@Mapping(target = "email", source = "email", qualifiedByName = "toEmail")
+	@Mapping(target = "encryptedPassword", source = "password", qualifiedByName = "toPassword")
 	MemberCommand.AddMember toCommand(String email, String password);
 
 	@Mapping(target = "email", source = "memberLoginRequest.email", qualifiedByName = "toEmail")

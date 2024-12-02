@@ -12,13 +12,9 @@ public record Email(String value) {
 	private static final Pattern EMAIL_PATTERN = Pattern.compile(REGEX);
 
 	public Email {
-		if (!isValid(value)) {
+		if (!EMAIL_PATTERN.matcher(value).matches()) {
 			throw new InvalidEmailFormatException(value);
 		}
-	}
-
-	public static boolean isValid(String email) {
-		return EMAIL_PATTERN.matcher(email).matches();
 	}
 
 	@JsonValue

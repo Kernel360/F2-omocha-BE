@@ -29,7 +29,6 @@ public class AuthController implements AuthApi {
 
 	private final AuthFacade authFacade;
 	private final AuthDtoMapper authDtoMapper;
-	private final PasswordManager passwordManager;
 
 	@Override
 	@PostMapping("/register")
@@ -41,7 +40,7 @@ public class AuthController implements AuthApi {
 
 		MemberCommand.AddMember addMemberCommand = authDtoMapper.toCommand(
 			memberAddRequest.email(),
-			passwordManager.encrypt(memberAddRequest.password())
+			memberAddRequest.password()
 		);
 
 		authFacade.addMember(addMemberCommand);
@@ -49,7 +48,6 @@ public class AuthController implements AuthApi {
 		ResultDto<Void> resultDto = ResultDto.res(
 			SuccessCode.MEMBER_CREATE_SUCCESS.getStatusCode(),
 			SuccessCode.MEMBER_CREATE_SUCCESS.getDescription()
-
 		);
 
 		return ResponseEntity

@@ -7,6 +7,8 @@ import org.omocha.domain.common.BaseEntity;
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.EmailDbConverter;
+import org.omocha.domain.member.vo.Password;
+import org.omocha.domain.member.vo.PasswordDbConverter;
 import org.omocha.domain.member.vo.PhoneNumber;
 import org.omocha.domain.member.vo.PhoneNumberDbConverter;
 import org.omocha.domain.review.rating.Rating;
@@ -38,8 +40,8 @@ public class Member extends BaseEntity {
 	@Convert(converter = EmailDbConverter.class)
 	private Email email;
 
-	// TODO: Password VO로 변경해야함
-	private String password;
+	@Convert(converter = PasswordDbConverter.class)
+	private Password password;
 
 	private String nickname;
 
@@ -70,7 +72,7 @@ public class Member extends BaseEntity {
 
 	@Builder
 	public Member(
-		Email email, String password, String nickname,
+		Email email, Password password, String nickname,
 		String username, LocalDate birth, PhoneNumber phoneNumber,
 		String profileImageUrl, Rating averageRating, Role role,
 		String provider, String providerId, MemberStatus memberStatus,
@@ -106,7 +108,7 @@ public class Member extends BaseEntity {
 	}
 
 	public void updatePassword(
-		String password
+		Password password
 	) {
 		this.password = password;
 	}
