@@ -93,7 +93,8 @@ public enum ErrorCode {
 	ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 답변이 존재합니다."),
 
 	// Mail Code
-	MAIL_CODE_KEY_NOT_FOUND(HttpStatus.NOT_FOUND, "키 값을 찾을 수 없습니다."),
+	MAIL_CODE_KEY_NOT_FOUND(HttpStatus.NOT_FOUND, "유효하지않은 인증 코드입니다."),
+	MAIL_AUTH_CODE_MISMATCH(HttpStatus.BAD_REQUEST, "코드가 일치하지 않습니다."),
 	MAIL_SEND_FAILED(HttpStatus.BAD_REQUEST, "메일 전송에 실패했습니다."),
 
 	// Common Code
