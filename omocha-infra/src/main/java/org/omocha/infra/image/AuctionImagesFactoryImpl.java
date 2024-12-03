@@ -1,7 +1,6 @@
 package org.omocha.infra.image;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
@@ -29,24 +28,45 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
 		List<MultipartFile> images = addCommand.images();
 
-		MultipartFile multipartFile = images.get(0);
+		MultipartFile thumbnailFile = images.get(0);
 
-		String thumbnail = imageProvider.uploadFile(multipartFile);
-		auction.thumbnailPathUpload(thumbnail);
+		processThumbnail(auction, thumbnailFile);
 
-		return images.stream()
+		List<Image> otherImages = images.stream()
 			.skip(1)
-			.map(auctionImageRequest -> {
-				String imagePath = imageProvider.uploadFile(auctionImageRequest);
-				String fileName = auctionImageRequest.getOriginalFilename();
+			.map(this::processImage)
+			.filter(image -> image != null)
+			.toList();
 
-				ImageCommand.AddAuctionImage addImageCommand = new ImageCommand.AddAuctionImage
-					(fileName, imagePath);
+		auction.getImages().addAll(otherImages);
 
-				Image image = addImageCommand.toEntity(fileName, imagePath);
-				imageStore.store(image);
-
-				return image;
-			}).collect(Collectors.toList());
+		return otherImages;
 	}
+
+	private Image processImage(MultipartFile imageFile) {
+		String fileName = imageFile.getOriginalFilename();
+		String imagePath = imageProvider.uploadFile(imageFile);
+
+		ImageCommand.AddAuctionImage addImageCommand = new ImageCommand.AddAuctionImage(fileName, imagePath);
+		Image image = addImageCommand.toEntity(fileName, imagePath);
+
+		imageStore.store(image);
+
+		return image;
+	}
+
+	private void processThumbnail(Auction auction, MultipartFile thumbnailFile) {
+		String fileName = thumbnailFile.getOriginalFilename();
+		String imagePath = imageProvider.uploadFile(thumbnailFile);
+
+		auction.thumbnailPathUpload(imagePath);
+
+		ImageCommand.AddAuctionImage addThumbnail =
+			new ImageCommand.AddAuctionImage(fileName, imagePath);
+
+		Image thumbnailImage = addThumbnail.toEntity(fileName, imagePath);
+
+		imageStore.store(thumbnailImage);
+	}
+
 }

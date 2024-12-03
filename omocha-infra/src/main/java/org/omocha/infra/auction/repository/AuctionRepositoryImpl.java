@@ -57,6 +57,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 			.select(new QAuctionInfo_SearchAuction(
 				auction.auctionId,
 				auction.memberId,
+				auction.category.categoryId,
 				auction.title,
 				auction.content,
 				auction.startPrice,

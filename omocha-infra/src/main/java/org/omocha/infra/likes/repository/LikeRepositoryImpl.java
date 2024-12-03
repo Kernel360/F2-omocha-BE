@@ -42,6 +42,7 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
 				auction.thumbnailPath,
 				auction.startPrice,
 				auction.nowPrice,
+				auction.instantBuyPrice,
 				auction.auctionStatus,
 				auction.startDate,
 				auction.endDate,
