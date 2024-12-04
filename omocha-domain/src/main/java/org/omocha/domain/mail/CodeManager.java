@@ -1,48 +1,48 @@
 package org.omocha.domain.mail;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.omocha.domain.mail.exception.MailAuthCodeMisMachException;
 import org.omocha.domain.mail.exception.MailCodeKeyNotFoundException;
+import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 public class CodeManager {
-	private static final long CODE_EXPIRATION_MINUTES = 5; // 유효 기간 상수 (5분)
 
-	protected static Map<String, AuthCode> codes = new ConcurrentHashMap<>();
+	private final CodeCacheStore codeCacheStore;
+	private final CodeCacheReader codeCacheReader;
 
-	public static boolean checkCode(String email, String code) {
+	public static long CODE_EXPIRATION_MINUTES = 5;
 
-		if (codes.get(email) == null) {
-			throw new MailCodeKeyNotFoundException(email);
+	public boolean checkCode(String email, String requestCode) {
+
+		AuthCode savedCode = codeCacheReader.findCode(email)
+			.orElseThrow(() -> new MailCodeKeyNotFoundException(email, requestCode));
+
+		if (!requestCode.equals(savedCode.code)) {
+			throw new MailAuthCodeMisMachException(email, requestCode, savedCode.code);
 		}
 
-		if (codes.get(email).createdAt.plusMinutes(CODE_EXPIRATION_MINUTES).isBefore(LocalDateTime.now())) {
+		if (savedCode.createdAt.plusMinutes(CODE_EXPIRATION_MINUTES).isBefore(LocalDateTime.now())) {
 			return false;
 		}
-		if (codes.get(email).code.equals(code)) {
-			codes.remove(email);
-			return true;
-		}
-		return false;
+
+		return true;
 	}
 
-	public static String addCode(String email) {
+	public String addCode(String email) {
 		String code = createCode();
 		AuthCode authCode = new AuthCode(code);
-		codes.put(email, authCode);
+		codeCacheStore.storeCode(email, authCode);
+
 		return code;
 	}
 
-	public static void removeCode() {
-		LocalDateTime now = LocalDateTime.now();
-
-		codes.values().removeIf(value -> value.createdAt.plusMinutes(CODE_EXPIRATION_MINUTES).isBefore(now));
-
-	}
-
-	public static String createCode() {
+	public String createCode() {
 		return String.valueOf(UUID.randomUUID());
 	}
 }

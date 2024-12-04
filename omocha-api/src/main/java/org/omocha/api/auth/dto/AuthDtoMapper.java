@@ -23,7 +23,7 @@ public interface AuthDtoMapper {
 	@Mapping(target = "email", source = "memberLoginRequest.email", qualifiedByName = "toEmail")
 	MemberCommand.LoginMember toCommand(AuthDto.MemberLoginRequest memberLoginRequest);
 
-	MemberCommand.ReissueToken toCommand(Long memberId, AuthDto.TokenReissueRequest tokenReissueRequest);
+	MemberCommand.ReissueToken toCommand(AuthDto.TokenReissueRequest tokenReissueRequest);
 
 	AuthDto.MemberDetailResponse toResponse(MemberInfo.MemberDetail memberDetailInfo);
 

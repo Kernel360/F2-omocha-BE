@@ -11,6 +11,10 @@ dependencies {
     // websocket
     api 'org.springframework.boot:spring-boot-starter-websocket'
 
+    // redis
+    implementation 'org.springframework.data:spring-data-redis'
+    implementation 'io.lettuce:lettuce-core:'
+
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 }

@@ -39,7 +39,6 @@ public class MemberCommand {
 	}
 
 	public record ReissueToken(
-		Long memberId,
 		String refreshToken
 	) {
 	}

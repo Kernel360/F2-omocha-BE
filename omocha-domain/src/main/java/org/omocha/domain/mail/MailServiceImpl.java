@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 public class MailServiceImpl implements MailService {
 
 	private final MailSender mailSender;
+	private final CodeManager codeManager;
 
 	@Override
 	public void sendMail(MailCommand.SendMail sendCommand) {
-		String code = CodeManager.addCode(sendCommand.email().getValue());
+		String code = codeManager.addCode(sendCommand.email().getValue());
 
 		mailSender.sendMail(sendCommand, code);
 
@@ -20,14 +21,7 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	public Boolean verifyMailCode(MailCommand.VerifyMailCode verifyMailCodeCommand) {
-		return CodeManager.checkCode(verifyMailCodeCommand.email().getValue(), verifyMailCodeCommand.code());
-	}
-
-	@Override
-	public void deleteCode() {
-
-		CodeManager.removeCode();
-
+		return codeManager.checkCode(verifyMailCodeCommand.email().getValue(), verifyMailCodeCommand.code());
 	}
 
 }

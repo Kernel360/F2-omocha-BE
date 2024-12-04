@@ -6,5 +6,4 @@ public interface MailService {
 
 	Boolean verifyMailCode(MailCommand.VerifyMailCode verifyMailCodeCommand);
 
-	void deleteCode();
 }
