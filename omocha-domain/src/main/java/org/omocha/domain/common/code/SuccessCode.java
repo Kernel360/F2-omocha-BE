@@ -10,10 +10,10 @@ import lombok.Getter;
 public enum SuccessCode {
 
 	// Member Code
-
 	MEMBER_CREATE_SUCCESS(HttpStatus.OK, "회원을 성공적으로 생성하였습니다."),
 	MEMBER_LOGIN_SUCCESS(HttpStatus.OK, "로그인이 완료되었습니다."),
 	MEMBER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃이 완료되었습니다."),
+	TOKEN_REISSUE_SUCCESS(HttpStatus.OK, "토큰을 성공적으로 재발급 하였습니다."),
 	VALIDATE_EMAIL_SUCCESS(HttpStatus.OK, "사용 가능한 이메일입니다."),
 
 	MEMBER_INFO_RETRIEVE_SUCCESS(HttpStatus.OK, "유저 정보를 성공적으로 반환하였습니다."),
@@ -35,7 +35,6 @@ public enum SuccessCode {
 	AUCTION_INSTANT_BUY_SUCCESS(HttpStatus.OK, "즉시 구매를 성공적으로 처리하였습니다."),
 
 	// QnA Code
-
 	QUESTION_CREATE_SUCCESS(HttpStatus.OK, "문의가 성공적으로 생성되었습니다."),
 	QUESTION_MODIFY_SUCCESS(HttpStatus.OK, "문의가 성공적으로 수정되었습니다."),
 	QUESTION_DELETE_SUCCESS(HttpStatus.OK, "문의가 성공적으로 삭제되었습니다."),
@@ -70,6 +69,10 @@ public enum SuccessCode {
 	AUCTION_LIKE_SUCCESS(HttpStatus.OK, "경매 찜을 성공적으로 했습니다."),
 	AUCTION_UNLIKE_SUCCESS(HttpStatus.OK, "경매 찜 취소를 성공적으로 했습니다"),
 	AUCTION_LIKE_LIST_SUCCESS(HttpStatus.OK, "사용자의 찜 목록을 성공적으로 조회했습니다"),
+
+	// Image Code
+	IMAGE_UPLOAD_SUCCESS(HttpStatus.OK, "이미지를 성공적으로 업로드 했습니다"),
+	IMAGE_DELETE_SUCCESS(HttpStatus.OK, "이미지를 성공적으로 삭제 했습니다"),
 
 	// Mail Code
 	MAIL_CODE_SUCCESS(HttpStatus.OK, "메일 인증에 성공하였습니다."),

@@ -2,7 +2,6 @@ package org.omocha.api.common.handler;
 
 import java.io.IOException;
 
-import org.omocha.api.auth.jwt.JwtProvider;
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.common.code.ErrorCode;
 import org.springframework.http.MediaType;
@@ -23,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomAuthenticationEntryPointHandler implements AuthenticationEntryPoint {
 
-	private final JwtProvider jwtProvider;
-
 	@Override
 	public void commence(
 		HttpServletRequest request,
@@ -37,13 +34,9 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 			request.getRequestURL(),
 			request.getMethod()
 		);
-
-		log.warn("Authentication failed. Exception type: {}",
-			authException.getClass().getSimpleName());
-
-		log.warn("Exception message: {}", authException.getMessage());
-
-		jwtProvider.logout(response);
+		log.warn("Exception type: {}, Exception message: {}",
+			authException.getClass().getSimpleName(), authException.getMessage()
+		);
 
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

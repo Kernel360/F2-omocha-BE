@@ -80,8 +80,8 @@ public class Auction extends BaseEntity {
 	private LocalDateTime endDate;
 
 	@BatchSize(size = 10)
-	@OneToMany(mappedBy = "auction", fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "auction_id")
 	private List<Image> images = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)

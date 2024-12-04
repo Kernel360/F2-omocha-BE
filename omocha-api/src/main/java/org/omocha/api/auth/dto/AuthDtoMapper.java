@@ -17,10 +17,13 @@ import org.omocha.domain.member.MemberInfo;
 public interface AuthDtoMapper {
 
 	@Mapping(target = "email", source = "email", qualifiedByName = "toEmail")
+	@Mapping(target = "encryptedPassword", source = "password", qualifiedByName = "toPassword")
 	MemberCommand.AddMember toCommand(String email, String password);
 
 	@Mapping(target = "email", source = "memberLoginRequest.email", qualifiedByName = "toEmail")
-	MemberCommand.MemberLogin toCommand(AuthDto.MemberLoginRequest memberLoginRequest);
+	MemberCommand.LoginMember toCommand(AuthDto.MemberLoginRequest memberLoginRequest);
+
+	MemberCommand.ReissueToken toCommand(AuthDto.TokenReissueRequest tokenReissueRequest);
 
 	AuthDto.MemberDetailResponse toResponse(MemberInfo.MemberDetail memberDetailInfo);
 

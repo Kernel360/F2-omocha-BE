@@ -1,14 +1,10 @@
 package org.omocha.domain.image;
 
-import org.omocha.domain.auction.Auction;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,19 +28,13 @@ public class Image {
 
 	private String imagePath;
 
-	@ManyToOne
-	@JoinColumn(name = "auction_id")
-	private Auction auction;
-
 	@Builder
 	public Image(
 		String fileName,
-		String imagePath,
-		Auction auction
+		String imagePath
 	) {
 		this.fileName = fileName;
 		this.imagePath = imagePath;
-		this.auction = auction;
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.Member;
-import org.omocha.domain.member.exception.oauth.UnsupportedOAuthProviderException;
+import org.omocha.domain.member.exception.UnsupportedOAuthProviderException;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.review.rating.Rating;
 
@@ -59,6 +59,7 @@ public class OAuth2UserInfo {
 			.provider(provider)
 			.providerId(providerId)
 			.memberStatus(Member.MemberStatus.ACTIVATE)
+			.emailVerified(true)
 			.build();
 	}
 

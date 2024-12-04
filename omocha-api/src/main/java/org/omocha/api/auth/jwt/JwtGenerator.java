@@ -20,32 +20,19 @@ public class JwtGenerator {
 
 	private final MemberService memberService;
 
-	public String generateAccessToken(
+	public String generateToken(
 		Long memberId,
-		Key accessKey,
-		long ACCESS_EXPIRATION
+		String TokenType,
+		Key key,
+		long EXPIRATION
 	) {
 		return Jwts.builder()
 			.setHeader(createHeader())
-			.setClaims(createClaims(memberId))
+			.setClaims(createClaims(memberId, TokenType))
 			.setSubject(String.valueOf(memberId))
 			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXPIRATION))
-			.signWith(accessKey)
-			.compact();
-	}
-
-	public String generateRefreshToken(
-		Long memberId,
-		Key refreshKey,
-		long REFRESH_EXPIRATION
-	) {
-		return Jwts.builder()
-			.setHeader(createHeader())
-			.setSubject(String.valueOf(memberId))
-			.setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION))
-			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.signWith(refreshKey)
+			.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+			.signWith(key)
 			.compact();
 	}
 
@@ -57,11 +44,11 @@ public class JwtGenerator {
 		return header;
 	}
 
-	private Map<String, Object> createClaims(Long memberId) {
+	private Map<String, Object> createClaims(Long memberId, String tokenType) {
 		MemberInfo.MemberDetail memberDetail = memberService.retrieveMember(memberId);
 
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("MemberId", memberId);
+		claims.put("TokenType", tokenType);
 		claims.put("Role", memberDetail.role());
 
 		return claims;

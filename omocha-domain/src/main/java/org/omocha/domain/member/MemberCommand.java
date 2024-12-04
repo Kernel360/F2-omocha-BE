@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.omocha.domain.common.Role;
 import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.Password;
 import org.omocha.domain.member.vo.PhoneNumber;
 import org.omocha.domain.review.rating.Rating;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,12 +17,12 @@ public class MemberCommand {
 
 	public record AddMember(
 		Email email,
-		String password
+		Password encryptedPassword
 	) {
 		public Member toEntity(String randomNickname) {
 			return Member.builder()
 				.email(email)
-				.password(password)
+				.password(encryptedPassword)
 				.averageRating(new Rating(0.0))
 				.nickname(randomNickname)
 				.role(Role.ROLE_USER)
@@ -31,11 +32,15 @@ public class MemberCommand {
 		}
 	}
 
-	public record MemberLogin(
+	public record LoginMember(
 		Email email,
 		String password
 	) {
+	}
 
+	public record ReissueToken(
+		String refreshToken
+	) {
 	}
 
 	@Builder
@@ -43,7 +48,6 @@ public class MemberCommand {
 		String provider,
 		String providerId
 	) {
-
 	}
 
 	public record ModifyMyInfo(
@@ -58,7 +62,7 @@ public class MemberCommand {
 	public record ModifyPassword(
 		Long memberId,
 		String currentPassword,
-		String newPassword
+		Password newEncryptedPassword
 	) {
 	}
 
@@ -66,6 +70,5 @@ public class MemberCommand {
 		Long memberId,
 		MultipartFile profileImage
 	) {
-
 	}
 }

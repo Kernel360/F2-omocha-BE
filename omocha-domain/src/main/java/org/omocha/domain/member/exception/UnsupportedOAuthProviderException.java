@@ -1,8 +1,8 @@
-package org.omocha.domain.member.exception.oauth;
+package org.omocha.domain.member.exception;
 
 import org.omocha.domain.common.code.ErrorCode;
 
-public class UnsupportedOAuthProviderException extends OauthException {
+public class UnsupportedOAuthProviderException extends MemberException {
 	public UnsupportedOAuthProviderException(String provider) {
 		super(
 			ErrorCode.INVALID_BID_UNIT,

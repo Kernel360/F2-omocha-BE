@@ -7,9 +7,7 @@ import org.omocha.domain.member.MemberService;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberFacade {
@@ -31,6 +29,12 @@ public class MemberFacade {
 
 	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
 
+		passwordManager.validateIdenticalPassword(
+			modifyPasswordCommand.currentPassword(),
+			modifyPasswordCommand.newEncryptedPassword(),
+			modifyPasswordCommand.memberId()
+		);
+
 		MemberInfo.RetrievePassword retrievePasswordInfo = memberService.retrievePassword(
 			modifyPasswordCommand.memberId()
 		);
@@ -42,7 +46,6 @@ public class MemberFacade {
 		);
 
 		memberService.modifyPassword(modifyPasswordCommand);
-
 	}
 
 	public MemberInfo.ModifyProfileImage modifyProfileImage(

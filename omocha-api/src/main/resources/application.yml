@@ -61,8 +61,6 @@ jwt:
   access_secret: ${JWT_ACCESS_SECRET}
   refresh_secret: ${JWT_REFRESH_SECRET}
 
-
-
 cloud:
   aws:
     stack:
@@ -115,7 +113,6 @@ spring:
             user-name-attribute: response
 
 url:
-  base-domain: ""
   server-domain: ${SERVER_DOMAIN}
   client-domain: ${CLIENT_DOMAIN}
 
@@ -164,7 +161,6 @@ spring:
             user-name-attribute: response
 
 url:
-  base-domain: ${DOMAIN_URL}
   server-domain: ${SERVER_DOMAIN}
   client-domain: ${CLIENT_DOMAIN}
 
@@ -213,7 +209,6 @@ spring:
             user-name-attribute: response
 
 url:
-  base-domain: ${DOMAIN_URL}
   server-domain: ${SERVER_DOMAIN}
   client-domain: ${CLIENT_DOMAIN}
 

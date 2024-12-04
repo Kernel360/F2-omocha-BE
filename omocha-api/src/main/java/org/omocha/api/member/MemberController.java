@@ -4,7 +4,6 @@ import static org.omocha.domain.common.code.SuccessCode.*;
 
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
-import org.omocha.api.common.util.PasswordManager;
 import org.omocha.api.member.dto.MemberDto;
 import org.omocha.api.member.dto.MemberDtoMapper;
 import org.omocha.domain.member.MemberCommand;
@@ -33,11 +32,7 @@ public class MemberController implements MemberApi {
 
 	private final MemberFacade memberFacade;
 	private final MemberDtoMapper memberDtoMapper;
-	private final PasswordManager passwordManager;
 
-	// TODO : 멤버 정보 반환? 고민해야됨
-	//		로그인시 or Api, + 회원 정보 추가
-	// EXPLAIN : 나의 정보 불러오기
 	@Override
 	@GetMapping("")
 	public ResponseEntity<ResultDto<MemberDto.MyInfoResponse>> myInfo(
@@ -95,7 +90,6 @@ public class MemberController implements MemberApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestPart(value = "profileImage", required = true) MultipartFile profileImage
 	) {
-
 		log.info("profileImageModify started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
@@ -126,21 +120,13 @@ public class MemberController implements MemberApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody @Valid MemberDto.PasswordModifyRequest passwordModifyRequest
 	) {
-
 		log.info("passwordModify started memberId={}", userPrincipal.getId());
 
 		Long memberId = userPrincipal.getId();
 
-		passwordManager.validateIdenticalPassword(
-			passwordModifyRequest.currentPassword(),
-			passwordModifyRequest.newPassword(),
-			memberId
-		);
-
 		MemberCommand.ModifyPassword modifyPasswordCommand = memberDtoMapper.toCommand(
 			memberId,
-			passwordModifyRequest.currentPassword(),
-			passwordManager.encrypt(passwordModifyRequest.newPassword())
+			passwordModifyRequest
 		);
 
 		memberFacade.modifyPassword(modifyPasswordCommand);
@@ -155,7 +141,6 @@ public class MemberController implements MemberApi {
 		return ResponseEntity
 			.status(PASSWORD_UPDATED.getHttpStatus())
 			.body(resultDto);
-
 	}
 
 	// TODO : 사용자 정보 수정
@@ -188,7 +173,6 @@ public class MemberController implements MemberApi {
 		return ResponseEntity
 			.status(MEMBER_INFO_UPDATED.getHttpStatus())
 			.body(result);
-
 	}
 
 }

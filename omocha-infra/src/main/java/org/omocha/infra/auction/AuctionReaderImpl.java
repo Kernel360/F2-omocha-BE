@@ -9,7 +9,6 @@ import org.omocha.domain.auction.AuctionInfo;
 import org.omocha.domain.auction.AuctionReader;
 import org.omocha.domain.auction.exception.AuctionNotFoundException;
 import org.omocha.infra.auction.repository.AuctionRepository;
-import org.omocha.infra.likes.repository.LikeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AuctionReaderImpl implements AuctionReader {
 
 	private final AuctionRepository auctionRepository;
-	private final LikeRepository likeRepository;
 
 	@Override
 	public Page<AuctionInfo.SearchAuction> getAuctionList(
@@ -61,7 +59,7 @@ public class AuctionReaderImpl implements AuctionReader {
 	) {
 		return auctionRepository.getMemberAuctionList(retrieveMemberAuctions, pageable);
 	}
-	
+
 	@Override
 	public Page<AuctionInfo.RetrieveMyBidAuctions> getMyBidAuctionList(Long memberId, Pageable sortPage) {
 		return auctionRepository.getMyBidAuctionList(memberId, sortPage);

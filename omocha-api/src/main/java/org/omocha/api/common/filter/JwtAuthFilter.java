@@ -1,11 +1,11 @@
 package org.omocha.api.common.filter;
 
-import java.io.IOException;
+import static org.omocha.api.common.config.SecurityConfig.*;
 
-import org.apache.commons.lang3.StringUtils;
-import org.omocha.api.auth.jwt.JwtCategory;
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.omocha.api.auth.jwt.JwtProvider;
-import org.omocha.api.auth.jwt.RefreshTokenManager;
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
@@ -36,64 +36,36 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		FilterChain filterChain
 	) throws ServletException, IOException {
 
-		String accessToken = jwtProvider.resolveTokenFromCookie(request, JwtCategory.ACCESS);
-
-		if (StringUtils.isBlank(accessToken)) {
-			skipThisFilter(request, response, filterChain);
+		if (isPermittedUri(request.getRequestURI())) {
+			filterChain.doFilter(request, response);
 			return;
 		}
 
+		String accessToken = request.getHeader("Authorization");
 		if (jwtProvider.validateAccessToken(accessToken)) {
-			passThisFilter(request, response, filterChain, accessToken);
-			return;
+			setAuthenticationToContext(accessToken);
 		}
 
-		refreshTokenHandle(request, response, filterChain);
-	}
-
-	private void skipThisFilter(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		FilterChain filterChain
-	) throws IOException, ServletException {
-		SecurityContextHolder.getContext().setAuthentication(null);
 		filterChain.doFilter(request, response);
 	}
 
-	private void passThisFilter(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		FilterChain filterChain,
-		String accessToken
-	) throws IOException, ServletException {
+	private boolean isPermittedUri(String requestUri) {
+		return Arrays.stream(PERMITTED_ALL_URI)
+			.anyMatch(permitted -> {
+				String replace = permitted.replace("*", "");
+				return requestUri.contains(replace) || replace.contains(requestUri);
+			});
+	}
+
+	private void setAuthenticationToContext(String accessToken) {
 		Long memberId = jwtProvider.getMemberIdFromToken(accessToken);
-		setAuthenticationToContext(memberId);
-		filterChain.doFilter(request, response);
-	}
 
-	private void refreshTokenHandle(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		FilterChain filterChain
-	) throws IOException, ServletException {
-		String refreshToken = jwtProvider.resolveTokenFromCookie(request, JwtCategory.REFRESH);
-		Long memberId = RefreshTokenManager.findMemberIdByRefreshToken(refreshToken);
-
-		if (memberId != null && jwtProvider.validateRefreshToken(refreshToken)) {
-			jwtProvider.generateAccessToken(memberId, response);
-			jwtProvider.generateRefreshToken(memberId, response);
-			setAuthenticationToContext(memberId);
-		}
-
-		filterChain.doFilter(request, response);
-	}
-
-	private void setAuthenticationToContext(Long memberId) {
 		Member member = memberReader.getMember(memberId);
 		UserDetails principal = new UserPrincipal(member);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(
 			principal, "", principal.getAuthorities());
+
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 }

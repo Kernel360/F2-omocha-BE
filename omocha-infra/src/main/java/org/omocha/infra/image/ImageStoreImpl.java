@@ -19,4 +19,9 @@ public class ImageStoreImpl implements ImageStore {
 	public Image store(Image image) {
 		return imageRepository.save(image);
 	}
+
+	@Override
+	public void delete(Image image) {
+		imageRepository.delete(image);
+	}
 }

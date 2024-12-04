@@ -109,13 +109,13 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public void modifyPassword(MemberCommand.ModifyPassword modifyPasswordCommand) {
 
-		log.debug("modify password start for member {}", modifyPasswordCommand.memberId());
+		log.debug("modify encryptedPassword start for member {}", modifyPasswordCommand.memberId());
 
 		Member member = memberReader.getMember(modifyPasswordCommand.memberId());
 
-		member.updatePassword(modifyPasswordCommand.newPassword());
+		member.updatePassword(modifyPasswordCommand.newEncryptedPassword());
 
-		log.debug("modify password finished for member {}", modifyPasswordCommand.memberId());
+		log.debug("modify encryptedPassword finished for member {}", modifyPasswordCommand.memberId());
 	}
 
 	@Override

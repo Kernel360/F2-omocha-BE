@@ -41,9 +41,9 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 				String fileName = auctionImageRequest.getOriginalFilename();
 
 				ImageCommand.AddAuctionImage addImageCommand = new ImageCommand.AddAuctionImage
-					(fileName, imagePath, auction);
+					(fileName, imagePath);
 
-				Image image = addImageCommand.toEntity(fileName, imagePath, auction);
+				Image image = addImageCommand.toEntity(fileName, imagePath);
 				imageStore.store(image);
 
 				return image;
