@@ -8,12 +8,12 @@ import org.omocha.domain.mail.AuthCode;
 import org.omocha.domain.mail.CodeCacheStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 
 @Getter
-@Repository
+@Component
 public class CodeCacheStoreImpl implements CodeCacheStore {
 
 	private static final int DURATION = 30;

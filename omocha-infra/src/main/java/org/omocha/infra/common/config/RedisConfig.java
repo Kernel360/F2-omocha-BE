@@ -21,7 +21,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 public class RedisConfig {
 
-	@Value("${spring.data.redis.url}")
+	@Value("${spring.data.redis.host}")
 	private String host;
 
 	@Value("${spring.data.redis.port}")

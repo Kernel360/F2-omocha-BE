@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class AuthCode {
-	@JsonProperty()
+	@JsonProperty
 	String code;
-	@JsonProperty()
+	@JsonProperty
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	LocalDateTime createdAt;
 

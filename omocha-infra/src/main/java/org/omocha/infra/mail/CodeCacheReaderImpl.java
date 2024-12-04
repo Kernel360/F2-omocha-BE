@@ -7,12 +7,12 @@ import org.omocha.domain.mail.CodeCacheReader;
 import org.omocha.infra.common.RedisPrefix;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 
 @Getter
-@Repository
+@Component
 public class CodeCacheReaderImpl implements CodeCacheReader {
 
 	private final RedisTemplate<String, AuthCode> template;
