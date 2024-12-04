@@ -46,6 +46,12 @@ spring:
           timeout: 5000
           connection-timeout: 5000
           write-timeout: 5000
+  data:
+    redis:
+      url: ${REDIS_URL}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
 
 logging:
   file:

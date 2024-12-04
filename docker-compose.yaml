@@ -22,6 +22,24 @@ services:
       - ${EC2_HOME_DIR}:/omocha
     networks:
       - backend
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    image:
+      redis/redis-stack-server:7.2.0-v13
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes: # 마운트할 볼륨 설정
+      - ${REDIS_DATA_PATH}:/data
+      - ${REDIS_DEFAULT_CONFIG_FILE}:/usr/local/etc/redis/redis-stack.conf
+    command: redis-server /usr/local/etc/redis/redis-stack.conf
+    networks:
+      -backend
+    restart: always
+
+
 
   database:
     image: postgres:16.4

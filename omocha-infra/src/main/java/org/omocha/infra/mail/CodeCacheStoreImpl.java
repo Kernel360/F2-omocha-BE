@@ -1,5 +1,7 @@
 package org.omocha.infra.mail;
 
+import static org.omocha.infra.common.RedisPrefix.*;
+
 import java.time.Duration;
 
 import org.omocha.domain.mail.AuthCode;
@@ -14,7 +16,7 @@ import lombok.Getter;
 @Repository
 public class CodeCacheStoreImpl implements CodeCacheStore {
 
-	private static final String PREFIX = "AuthCode :";
+	private static final int DURATION = 30;
 
 	private final RedisTemplate<String, AuthCode> template;
 
@@ -24,16 +26,16 @@ public class CodeCacheStoreImpl implements CodeCacheStore {
 
 	@Override
 	public void storeCode(String email, AuthCode code) {
-		template.opsForValue().set(setPrefix() + email, code, Duration.ofMinutes(30));
+		template.opsForValue().set(appendPrefixKey(email), code, Duration.ofMinutes(DURATION));
 	}
 
 	@Override
 	public void deleteCode(String email) {
-		template.delete(setPrefix() + email);
+		template.delete(appendPrefixKey(email));
 	}
 
-	public String setPrefix() {
-		return PREFIX;
+	private String appendPrefixKey(String key) {
+		return AUTHCODE_PREFIX.getPrefix() + key;
 	}
 
 }

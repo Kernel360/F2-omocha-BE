@@ -74,6 +74,13 @@ jobs:
           echo "${{ secrets.DEV_ENV }}" > .env
         shell: bash
 
+      - name: Set RedisConfigFile values
+        run: |
+          cd ./
+          touch ./redis-stack.conf
+          echo "${{ secrets.REDIS_CONF }}" > redis-stack.conf
+        shell: bash
+
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -81,7 +88,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
-          source: "./docker-compose.yaml, ./.env"
+          source: "./docker-compose.yaml, ./.env, ./redis-stack.conf"
           target: ${{ secrets.SCP_TARGET_PATH }}
 
       - name: Test SSH connection

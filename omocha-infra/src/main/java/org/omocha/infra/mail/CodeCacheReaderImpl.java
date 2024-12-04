@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.omocha.domain.mail.AuthCode;
 import org.omocha.domain.mail.CodeCacheReader;
+import org.omocha.infra.common.RedisPrefix;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,8 +15,6 @@ import lombok.Getter;
 @Repository
 public class CodeCacheReaderImpl implements CodeCacheReader {
 
-	private static final String PREFIX = "AuthCode :";
-
 	private final RedisTemplate<String, AuthCode> template;
 
 	public CodeCacheReaderImpl(@Qualifier("redisTemplateForAuthCode") RedisTemplate<String, AuthCode> template) {
@@ -24,12 +23,11 @@ public class CodeCacheReaderImpl implements CodeCacheReader {
 
 	@Override
 	public Optional<AuthCode> findCode(String key) {
-		return Optional.ofNullable(template.opsForValue().get(setPrefix() + key));
-
+		return Optional.ofNullable(template.opsForValue().get(appendPrefixKey(key)));
 	}
 
-	public String setPrefix() {
-		return PREFIX;
+	private String appendPrefixKey(String key) {
+		return RedisPrefix.AUTHCODE_PREFIX.getPrefix() + key;
 	}
 
 }
