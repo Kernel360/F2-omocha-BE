@@ -23,33 +23,36 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtProvider {
 
 	private final JwtGenerator jwtGenerator;
+	private final RefreshTokenManager refreshTokenManager;
 
 	private final SecretKey accessKey;
 	private final SecretKey refreshKey;
-	private final static long ACCESS_EXPIRATION = 1000L * 60L * 30L;
-	public final static long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
+	private static final long ACCESS_EXPIRATION = 1000L * 60L * 30L;
+	public static final long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
 
 	public JwtProvider(
 		@Value("${jwt.access_secret}") String ACCESS_SECRET,
 		@Value("${jwt.refresh_secret}") String REFRESH_SECRET,
-		JwtGenerator jwtGenerator
+		JwtGenerator jwtGenerator,
+		RefreshTokenManager refreshTokenManager
 	) {
 		this.accessKey = Keys.hmacShaKeyFor(ACCESS_SECRET.getBytes());
 		this.refreshKey = Keys.hmacShaKeyFor(REFRESH_SECRET.getBytes());
 		this.jwtGenerator = jwtGenerator;
+		this.refreshTokenManager = refreshTokenManager;
 	}
 
 	public AuthDto.JwtResponse generateToken(Long memberId) {
 		String accessToken = jwtGenerator.generateToken(memberId, "ACCESS", accessKey, ACCESS_EXPIRATION);
 		String refreshToken = jwtGenerator.generateToken(memberId, "REFRESH", refreshKey, REFRESH_EXPIRATION);
 
-		RefreshTokenManager.putRefreshToken(refreshToken, memberId);
+		refreshTokenManager.putRefreshToken(refreshToken, memberId);
 
 		return new AuthDto.JwtResponse(accessToken, refreshToken);
 	}
 
 	public AuthDto.JwtResponse reissueToken(MemberCommand.ReissueToken reissueTokenCommand) {
-		Long memberIdByRefreshToken = RefreshTokenManager.findMemberIdByRefreshToken(
+		Long memberIdByRefreshToken = refreshTokenManager.findMemberIdByRefreshToken(
 			reissueTokenCommand.refreshToken());
 
 		if (!validateRefreshToken(reissueTokenCommand.refreshToken())) {

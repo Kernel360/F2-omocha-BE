@@ -1,38 +1,35 @@
 package org.omocha.api.auth.jwt;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.omocha.infra.auth.TokenCacheReader;
+import org.omocha.infra.auth.TokenCacheStore;
+import org.springframework.stereotype.Component;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public class RefreshTokenManager {
 
-	protected static final Map<String, Long> refreshTokens = new ConcurrentHashMap<>();
+	public TokenCacheReader tokenCacheReader;
+	public TokenCacheStore tokenCacheStore;
 
-	public static Long findMemberIdByRefreshToken(String refreshToken) {
-		return refreshTokens.get(refreshToken);
+	public RefreshTokenManager(TokenCacheReader tokenCacheReader, TokenCacheStore tokenCacheStore) {
+		this.tokenCacheReader = tokenCacheReader;
+		this.tokenCacheStore = tokenCacheStore;
 	}
 
-	public static void putRefreshToken(String refreshToken, Long memberId) {
-		refreshTokens.put(refreshToken, memberId);
-	}
+	public Long findMemberIdByRefreshToken(String refreshToken) {
+		String str = tokenCacheReader.findValue(refreshToken);
 
-	private static void removeRefreshToken(String refreshToken) {
-		refreshTokens.remove(refreshToken);
-	}
-
-	public static void removeUserRefreshToken(Long memberId) {
-		if (memberId == null) {
-			return;
+		if (str == null) {
+			return null;
 		}
+		return Long.parseLong(str);
+	}
 
-		for (Map.Entry<String, Long> entry : refreshTokens.entrySet()) {
-			if (entry.getValue().equals(memberId)) {
-				removeRefreshToken(entry.getKey());
-			}
-		}
+	public void putRefreshToken(String refreshToken, Long memberId) {
+		tokenCacheStore.storeKey(refreshToken, memberId);
+	}
+
+	private void removeRefreshToken(String refreshToken) {
+		tokenCacheStore.deleteKey(refreshToken);
 	}
 
 }

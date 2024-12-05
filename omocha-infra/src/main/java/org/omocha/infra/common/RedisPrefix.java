@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RedisPrefix {
 
-	AUTHCODE_PREFIX("AuthCode:");
+	AUTHCODE_PREFIX("AuthCode:"),
+	TOKEN_PREFIX("RefreshToken:");
 
 	private final String prefix;
 
