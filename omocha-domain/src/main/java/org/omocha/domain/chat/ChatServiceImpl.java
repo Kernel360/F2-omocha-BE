@@ -8,7 +8,6 @@ import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +22,8 @@ public class ChatServiceImpl implements ChatService {
 	private final AuctionReader auctionReader;
 	private final ChatStore chatStore;
 	private final ChatReader chatReader;
+	private final ChatMessageSender chatMessageSender;
 	private final MemberReader memberReader;
-	private final SimpMessageSendingOperations messagingTemplate;
 
 	@Override
 	@Transactional
@@ -33,7 +32,6 @@ public class ChatServiceImpl implements ChatService {
 
 		Auction auction = auctionReader.getAuction(addChatRoom.auctionId());
 
-		// TODO : exception 변경
 		if (chatReader.existsByAuctionId(auction.getAuctionId())) {
 			throw new ChatRoomAlreadyExistException(auction.getAuctionId());
 		}
@@ -68,6 +66,7 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public void sendChatMessage(Chat savedChat) {
 
 		Member sender = memberReader.getMember(savedChat.getSenderMemberId());
@@ -75,11 +74,10 @@ public class ChatServiceImpl implements ChatService {
 		ChatInfo.RetrieveChatRoomMessage chatMessage =
 			ChatInfo.RetrieveChatRoomMessage.toInfo(sender, savedChat);
 
-		messagingTemplate.convertAndSend("/sub/channel/" + savedChat.getRoomId(), chatMessage);
+		chatMessageSender.sendMessage("/sub/channel/" + savedChat.getRoomId(), chatMessage);
 
 		log.info("Message [{}] sent by member: {} to chat room: {}", chatMessage.message(),
 			chatMessage.nickname(), savedChat.getRoomId());
-
 	}
 
 	@Override

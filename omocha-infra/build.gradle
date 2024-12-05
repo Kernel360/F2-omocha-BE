@@ -1,8 +1,15 @@
 dependencies {
     implementation project(':omocha-domain')
 
+    // postgresql
+    testRuntimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
+
     // aws s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    // websocket
+    api 'org.springframework.boot:spring-boot-starter-websocket'
 
     // redis
     implementation 'org.springframework.data:spring-data-redis'
@@ -10,8 +17,6 @@ dependencies {
 
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-
 }
 
 

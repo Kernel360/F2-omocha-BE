@@ -19,6 +19,7 @@ import org.omocha.domain.common.Role;
 import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.vo.Email;
+import org.omocha.domain.member.vo.Password;
 import org.omocha.domain.review.rating.Rating;
 import org.omocha.infra.category.repository.CategoryRepository;
 import org.omocha.infra.member.repository.MemberRepository;
@@ -56,7 +57,7 @@ public class AuctionAddTest {
 		Member member = memberRepository.findById(1L).orElseGet(() -> {
 			Member newMember = Member.builder()
 				.email(new Email("test@test.com"))
-				.password("test")
+				.password(new Password("test"))
 				.averageRating(new Rating(0.0))
 				.nickname("randomNickname")
 				.role(Role.ROLE_USER)
