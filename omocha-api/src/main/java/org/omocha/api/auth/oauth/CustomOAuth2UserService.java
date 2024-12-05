@@ -29,20 +29,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 
 		String provider = userRequest.getClientRegistration().getRegistrationId();
-
 		Map<String, Object> attributes = oAuth2User.getAttributes();
-
 		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(provider, attributes);
 
 		MemberCommand.OAuthProvider oAuthProvider = MemberCommand.OAuthProvider.builder()
 			.provider(oAuth2UserInfo.getProvider())
 			.providerId(oAuth2UserInfo.getProviderId())
 			.build();
-
-		String randomNickname = randomNicknameGenerator.generateRandomNickname();
-
+		
 		Member member = memberReader.findMember(oAuthProvider)
-			.orElseGet(() -> memberStore.addMember(oAuth2UserInfo.toEntity(randomNickname)));
+			.orElseGet(() -> {
+				String randomNickname = randomNicknameGenerator.generateRandomNickname();
+				return memberStore.addMember(oAuth2UserInfo.toEntity(randomNickname));
+			});
 
 		return new UserPrincipal(member, oAuth2User.getAttributes());
 	}
