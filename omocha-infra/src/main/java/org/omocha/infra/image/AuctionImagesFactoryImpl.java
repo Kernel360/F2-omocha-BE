@@ -6,7 +6,6 @@ import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
 import org.omocha.domain.auction.AuctionImagesFactory;
 import org.omocha.domain.image.Image;
-import org.omocha.domain.image.ImageCommand;
 import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.image.ImageStore;
 import org.springframework.stereotype.Component;
@@ -47,8 +46,7 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 		String fileName = imageFile.getOriginalFilename();
 		String imagePath = imageProvider.uploadFile(imageFile);
 
-		ImageCommand.AddAuctionImage addImageCommand = new ImageCommand.AddAuctionImage(fileName, imagePath);
-		Image image = addImageCommand.toEntity(fileName, imagePath);
+		Image image = buildImage(fileName, imagePath);
 
 		imageStore.store(image);
 
@@ -61,12 +59,17 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
 		auction.thumbnailPathUpload(imagePath);
 
-		ImageCommand.AddAuctionImage addThumbnail =
-			new ImageCommand.AddAuctionImage(fileName, imagePath);
-
-		Image thumbnailImage = addThumbnail.toEntity(fileName, imagePath);
+		Image thumbnailImage = buildImage(fileName, imagePath);
 
 		imageStore.store(thumbnailImage);
+	}
+
+	private static Image buildImage(String fileName, String imagePath) {
+		Image image = Image.builder()
+			.fileName(fileName)
+			.imagePath(imagePath)
+			.build();
+		return image;
 	}
 
 }
