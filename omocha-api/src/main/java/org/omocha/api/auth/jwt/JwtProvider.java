@@ -27,8 +27,8 @@ public class JwtProvider {
 
 	private final SecretKey accessKey;
 	private final SecretKey refreshKey;
-	private static final long ACCESS_EXPIRATION = 1000L * 60L * 30L;
-	public static final long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
+	private final long ACCESS_EXPIRATION = 1000L * 60L * 30L;
+	private final long REFRESH_EXPIRATION = 1000L * 60L * 60L * 24L;
 
 	public JwtProvider(
 		@Value("${jwt.access_secret}") String ACCESS_SECRET,
@@ -55,7 +55,7 @@ public class JwtProvider {
 		Long memberIdByRefreshToken = refreshTokenManager.findMemberIdByRefreshToken(
 			reissueTokenCommand.refreshToken());
 
-		if (!validateRefreshToken(reissueTokenCommand.refreshToken())) {
+		if (memberIdByRefreshToken == null || !validateRefreshToken(reissueTokenCommand.refreshToken())) {
 			throw new InvalidRefreshTokenException(reissueTokenCommand.refreshToken());
 		}
 

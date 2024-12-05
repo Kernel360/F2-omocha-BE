@@ -16,12 +16,10 @@ public class RefreshTokenManager {
 	}
 
 	public Long findMemberIdByRefreshToken(String refreshToken) {
+
 		String str = tokenCacheReader.findValue(refreshToken);
 
-		if (str == null) {
-			return null;
-		}
-		return Long.parseLong(str);
+		return str != null ? Long.parseLong(str) : null;
 	}
 
 	public void putRefreshToken(String refreshToken, Long memberId) {

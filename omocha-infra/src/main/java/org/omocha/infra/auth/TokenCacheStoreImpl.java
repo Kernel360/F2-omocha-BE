@@ -4,20 +4,18 @@ import static org.omocha.infra.common.RedisPrefix.*;
 
 import java.time.Duration;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class TokenCacheStoreImpl implements TokenCacheStore {
 
-	private static final int DURATION = 7;
+	private static final int DURATION = 1;
 
-	private final RedisTemplate<String, String> redisTemplate;
-
-	public TokenCacheStoreImpl(@Qualifier("redisTemplateForToken") RedisTemplate<String, String> redisTemplate) {
-		this.redisTemplate = redisTemplate;
-	}
+	private final StringRedisTemplate redisTemplate;
 
 	@Override
 	public void storeKey(String key, Long value) {
