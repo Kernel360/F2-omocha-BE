@@ -1,10 +1,6 @@
 package org.omocha.infra.auth;
 
-import static org.omocha.infra.common.RedisPrefix.*;
-
-import java.time.Duration;
-
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.omocha.infra.auth.repository.TokenRepository;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -13,22 +9,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TokenCacheStoreImpl implements TokenCacheStore {
 
-	private static final int DURATION = 1;
-
-	private final StringRedisTemplate redisTemplate;
+	private final TokenRepository tokenRepository;
 
 	@Override
 	public void storeKey(String key, Long value) {
-
-		redisTemplate.opsForValue().set(appendPrefix(key), value.toString(), Duration.ofDays(DURATION));
+		tokenRepository.storeKey(key, value);
 	}
 
 	@Override
 	public void deleteKey(String key) {
-		redisTemplate.delete(appendPrefix(key));
-	}
-
-	private String appendPrefix(String key) {
-		return TOKEN_PREFIX.getPrefix() + key;
+		tokenRepository.deleteKey(key);
 	}
 }

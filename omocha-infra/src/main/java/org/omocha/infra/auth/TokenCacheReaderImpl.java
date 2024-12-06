@@ -1,8 +1,6 @@
 package org.omocha.infra.auth;
 
-import static org.omocha.infra.common.RedisPrefix.*;
-
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.omocha.infra.auth.repository.TokenRepository;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -11,17 +9,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TokenCacheReaderImpl implements TokenCacheReader {
 
-	private final StringRedisTemplate redisTemplate;
+	public final TokenRepository tokenRepository;
 
 	@Override
 	public String findValue(String key) {
 
-		return redisTemplate.opsForValue().get(appendPrefix(key));
-	}
-
-	private String appendPrefix(String key) {
-		return TOKEN_PREFIX.getPrefix() + key;
-
+		return tokenRepository.findValue(key);
 	}
 
 }
