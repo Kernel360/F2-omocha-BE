@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.omocha.domain.common.annotation.DistributedLock;
 import org.omocha.domain.common.exception.redis.LockInterruptedException;
-import org.omocha.domain.common.exception.redis.RLockNotAvailable;
+import org.omocha.domain.common.exception.redis.RLockNotAvailableException;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.Order;
@@ -54,7 +54,7 @@ public class DistributedLockAop {
 				);
 
 			if (!available) {
-				throw new RLockNotAvailable();
+				throw new RLockNotAvailableException();
 			}
 
 			return aopForTransaction.proceed(joinPoint);
