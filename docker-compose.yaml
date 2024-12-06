@@ -36,7 +36,7 @@ services:
       - ${REDIS_DEFAULT_CONFIG_FILE}:/usr/local/etc/redis/redis-stack.conf
     command: redis-server /usr/local/etc/redis/redis-stack.conf
     networks:
-      -backend
+      - backend
     restart: always
 
 
