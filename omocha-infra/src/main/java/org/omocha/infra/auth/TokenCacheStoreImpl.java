@@ -1,6 +1,6 @@
 package org.omocha.infra.auth;
 
-import org.omocha.infra.auth.repository.TokenRepository;
+import org.omocha.infra.auth.repository.TokenCacheRepository;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TokenCacheStoreImpl implements TokenCacheStore {
 
-	private final TokenRepository tokenRepository;
+	private final TokenCacheRepository tokenRepository;
 
 	@Override
 	public void storeKey(String key, Long value) {

@@ -5,9 +5,11 @@ import static org.omocha.infra.common.RedisPrefix.*;
 import java.time.Duration;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 
+@Repository
 @RequiredArgsConstructor
 public class TokenCacheRepositoryImpl implements TokenCacheRepository {
 
