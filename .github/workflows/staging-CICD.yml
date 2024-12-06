@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
-          source: "./docker-compose.yaml, ./.env, ./redis-stack.conf"
+          source: "./docker-compose.yaml, ./.env"
           target: ${{ secrets.SCP_TARGET_PATH }}
 
       - name: Test SSH connection
