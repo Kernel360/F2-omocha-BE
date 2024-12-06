@@ -12,6 +12,20 @@ import com.querydsl.core.annotations.QueryProjection;
 
 public class AuctionInfo {
 
+	public record AddAuction(
+		Long auctionId,
+		boolean isInstantBuy
+	) {
+		public static AuctionInfo.AddAuction toInfo(
+			Auction auction
+		) {
+			return new AuctionInfo.AddAuction(
+				auction.getAuctionId(),
+				(auction.getInstantBuyPrice() != null)
+			);
+		}
+	}
+
 	public record RetrieveAuction(
 		Long auctionId,
 		Long memberId,

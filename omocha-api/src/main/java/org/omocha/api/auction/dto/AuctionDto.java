@@ -30,7 +30,8 @@ public class AuctionDto {
 	}
 
 	public record AuctionAddResponse(
-		Long auctionId
+		Long auctionId,
+		boolean isInstantBuy
 	) {
 	}
 
