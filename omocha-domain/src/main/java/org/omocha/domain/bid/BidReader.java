@@ -18,4 +18,5 @@ public interface BidReader {
 		Pageable sortPage
 	);
 
+	BidCacheDto findNowPrice(Long auctionId);
 }

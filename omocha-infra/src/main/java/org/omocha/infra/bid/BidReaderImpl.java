@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.omocha.domain.bid.Bid;
+import org.omocha.domain.bid.BidCacheDto;
 import org.omocha.domain.bid.BidInfo;
 import org.omocha.domain.bid.BidReader;
 import org.omocha.infra.bid.repository.BidRepository;
@@ -34,6 +35,11 @@ public class BidReaderImpl implements BidReader {
 	@Override
 	public Page<BidInfo.RetrieveMyBids> getMyBidList(Long memberId, Long auctionId, Pageable sortPage) {
 		return bidRepository.getMyBidList(memberId, auctionId, sortPage);
+	}
+
+	@Override
+	public BidCacheDto findNowPrice(Long auctionId) {
+		return bidRepository.findHighestBid(auctionId);
 	}
 
 }

@@ -33,4 +33,9 @@ public class BidStoreImpl implements BidStore {
 
 		return savedBid;
 	}
+
+	@Override
+	public void storeHighestBid(Long auctionId, Bid bid) {
+		bidRepository.storeHighestBid(auctionId, bid);
+	}
 }

@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum RedisPrefix {
 
 	AUTHCODE_PREFIX("AuthCode:"),
-	TOKEN_PREFIX("RefreshToken:");
+	TOKEN_PREFIX("RefreshToken:"),
+	HIGHEST_BID_PREFIX("HighestBid:");
 
 	private final String prefix;
 

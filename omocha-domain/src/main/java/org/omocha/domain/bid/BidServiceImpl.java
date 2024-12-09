@@ -32,6 +32,7 @@ public class BidServiceImpl implements BidService {
 	private final MemberReader memberReader;
 	private final ConcludeStore concludeStore;
 	private final ChatService chatService;
+	private final HighestBidManager highestBidManager;
 
 	// TODO : 동시성 해결 해결 해야 함
 
@@ -62,7 +63,7 @@ public class BidServiceImpl implements BidService {
 
 		Bid bid = bidStore.store(auction, member, bidPrice);
 
-		HighestBidManager.setHighestBid(auctionId, bid);
+		highestBidManager.setHighestBid(auctionId, bid);
 
 		return BidInfo.AddBid.toInfo(bid);
 	}
@@ -70,7 +71,7 @@ public class BidServiceImpl implements BidService {
 	@Override
 	@Transactional(readOnly = true)
 	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
-		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
+		return highestBidManager.getCurrentHighestBid(auctionId)
 			.map(BidInfo.NowPrice::toInfo)
 			.orElseGet(() -> new BidInfo.NowPrice(new Price(0L), null, LocalDateTime.now()));
 	}
