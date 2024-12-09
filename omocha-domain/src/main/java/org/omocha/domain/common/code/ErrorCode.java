@@ -98,8 +98,8 @@ public enum ErrorCode {
 	MAIL_SEND_FAILED(HttpStatus.BAD_REQUEST, "메일 전송에 실패했습니다."),
 
 	// Redis
-	LOCK_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "Lock 획득 과정에서 interrupted 되었습니다"),
-	RLOCK_NOT_AVAILABLE(HttpStatus.INTERNAL_SERVER_ERROR, "Lock 획득 시도에 실패했습니다."),
+	LOCK_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "요청 처리 중 오류가 발생했습니다."),
+	RLOCK_NOT_AVAILABLE(HttpStatus.CONFLICT, "다른 사용자가 현재 리소스를 사용 중입니다."),
 
 	// Common Code
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 정보가 올바르지 않습니다. 재로그인 후 다시 시도해주세요."),

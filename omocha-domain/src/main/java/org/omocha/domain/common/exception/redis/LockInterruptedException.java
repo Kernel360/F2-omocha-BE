@@ -7,7 +7,7 @@ public class LockInterruptedException extends OmochaException {
 	public LockInterruptedException() {
 		super(
 			ErrorCode.RLOCK_NOT_AVAILABLE,
-			"락 획득 과정에서 interrupted 되었습니다."
+			"스레드가 대기 상태나 차단 상태에서 인터럽트 발생했습니다."
 		);
 	}
 }
