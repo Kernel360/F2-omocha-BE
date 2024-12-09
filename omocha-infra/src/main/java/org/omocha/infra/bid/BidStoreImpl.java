@@ -31,11 +31,9 @@ public class BidStoreImpl implements BidStore {
 
 		auction.updateNowPrice(bidPrice);
 
+		bidRepository.storeHighestBid(auction.getAuctionId(), savedBid);
+
 		return savedBid;
 	}
 
-	@Override
-	public void storeHighestBid(Long auctionId, Bid bid) {
-		bidRepository.storeHighestBid(auctionId, bid);
-	}
 }

@@ -63,8 +63,6 @@ public class BidServiceImpl implements BidService {
 
 		Bid bid = bidStore.store(auction, member, bidPrice);
 
-		highestBidManager.setHighestBid(auctionId, bid);
-
 		return BidInfo.AddBid.toInfo(bid);
 	}
 

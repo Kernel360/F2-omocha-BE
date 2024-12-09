@@ -11,11 +11,6 @@ import lombok.RequiredArgsConstructor;
 public class HighestBidManager {
 
 	private final BidReader bidReader;
-	private final BidStore bidStore;
-
-	public void setHighestBid(Long auctionId, Bid highestBid) {
-		bidStore.storeHighestBid(auctionId, highestBid);
-	}
 
 	public BidCacheDto getHighestBid(Long auctionId) {
 		return bidReader.findNowPrice(auctionId);

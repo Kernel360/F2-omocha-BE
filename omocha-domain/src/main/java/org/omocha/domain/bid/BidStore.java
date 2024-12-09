@@ -6,6 +6,4 @@ import org.omocha.domain.member.Member;
 
 public interface BidStore {
 	Bid store(Auction auction, Member buyer, Price bidPrice);
-
-	void storeHighestBid(Long auctionId, Bid bid);
 }
