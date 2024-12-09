@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.omocha.api.common.util.ValueObjectMapper;
+import org.omocha.domain.chat.Chat;
 import org.omocha.domain.chat.ChatCommand;
 
 @Mapper(
@@ -26,4 +28,8 @@ public interface ChatDtoMapper {
 
 	ChatCommand.RetrieveChatRoomMessage toCommand(Long roomId, Long memberId, LocalDateTime cursor);
 
+	@Named("toChatType")
+	default Chat.MessageType toChatType(String type) {
+		return Chat.MessageType.valueOf(type.toUpperCase());
+	}
 }

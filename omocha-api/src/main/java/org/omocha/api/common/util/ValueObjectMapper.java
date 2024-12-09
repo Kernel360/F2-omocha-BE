@@ -2,7 +2,6 @@ package org.omocha.api.common.util;
 
 import org.mapstruct.Named;
 import org.omocha.domain.auction.vo.Price;
-import org.omocha.domain.chat.Chat;
 import org.omocha.domain.member.vo.Email;
 import org.omocha.domain.member.vo.Password;
 import org.omocha.domain.member.vo.PhoneNumber;
@@ -44,11 +43,6 @@ public class ValueObjectMapper {
 	@Named("toRating")
 	public Rating toRating(Double rating) {
 		return new Rating(rating);
-	}
-
-	@Named("toChatType")
-	public Chat.MessageType toChatType(String type) {
-		return Chat.MessageType.valueOf(type.toUpperCase());
 	}
 
 }
