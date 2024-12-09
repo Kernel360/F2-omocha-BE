@@ -47,7 +47,6 @@ public class BidServiceImpl implements BidService {
 
 	// TODO : 최고 입찰가 관련 논의 후 수정 필요
 	@Override
-	@Transactional
 	@DistributedLock(key = "#addBid.auctionId()")
 	public BidInfo.AddBid addBid(BidCommand.AddBid addBid) {
 
