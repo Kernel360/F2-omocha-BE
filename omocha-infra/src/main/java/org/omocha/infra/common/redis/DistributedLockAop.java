@@ -1,5 +1,7 @@
 package org.omocha.infra.common.redis;
 
+import static org.omocha.infra.common.RedisPrefix.*;
+
 import java.lang.reflect.Method;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -24,8 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DistributedLockAop {
 
-	private static final String REDISSON_LOCK_PREFIX = "redis-lock-";
-
 	private final RedissonClient redissonClient;
 	private final AopForTransaction aopForTransaction;
 
@@ -35,7 +35,7 @@ public class DistributedLockAop {
 		Method method = signature.getMethod();
 		DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-		String key = REDISSON_LOCK_PREFIX +
+		String key = REDISSON_LOCK_PREFIX.getPrefix() +
 			CustomSpringELParser.getDynamicValue(
 				signature.getParameterNames(),
 				joinPoint.getArgs(),

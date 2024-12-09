@@ -3,10 +3,12 @@ package org.omocha.infra.common.redis;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-public class CustomSpringELParser {
-	private CustomSpringELParser() {
-	}
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class CustomSpringELParser {
+	
 	public static Object getDynamicValue(String[] parameterNames, Object[] args, String key) {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		StandardEvaluationContext context = new StandardEvaluationContext();

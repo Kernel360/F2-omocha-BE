@@ -8,7 +8,7 @@ public class RLockNotAvailableException extends OmochaException {
 	public RLockNotAvailableException() {
 		super(
 			ErrorCode.RLOCK_NOT_AVAILABLE,
-			"최초 획득 락 시도에 실패했습니다."
+			"최초 락 획득 시도에 실패했습니다."
 		);
 	}
 }
