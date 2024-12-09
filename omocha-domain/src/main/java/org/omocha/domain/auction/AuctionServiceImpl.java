@@ -44,7 +44,7 @@ public class AuctionServiceImpl implements AuctionService {
 
 	@Override
 	@Transactional
-	public Long addAuction(AuctionCommand.AddAuction addCommand) {
+	public AuctionInfo.AddAuction addAuction(AuctionCommand.AddAuction addCommand) {
 		if (addCommand.images() == null || addCommand.images().isEmpty()) {
 			throw new AuctionImageNotFoundException(addCommand.memberId());
 		}
@@ -77,7 +77,7 @@ public class AuctionServiceImpl implements AuctionService {
 		Auction auction = auctionStore.store(addCommand.toEntity(category));
 		auctionImagesFactory.store(auction, addCommand);
 
-		return auction.getAuctionId();
+		return AuctionInfo.AddAuction.toInfo(auction);
 	}
 
 	@Override

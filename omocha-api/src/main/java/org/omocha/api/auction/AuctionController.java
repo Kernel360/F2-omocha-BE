@@ -61,9 +61,9 @@ public class AuctionController implements AuctionApi {
 		AuctionCommand.AddAuction auctionCommand = auctionDtoMapper.toCommand(
 			auctionRequest, memberId, images);
 
-		Long auctionId = auctionFacade.addAuction(auctionCommand);
+		AuctionInfo.AddAuction addInfo = auctionFacade.addAuction(auctionCommand);
 
-		AuctionDto.AuctionAddResponse response = auctionDtoMapper.toResponse(auctionId);
+		AuctionDto.AuctionAddResponse response = auctionDtoMapper.toResponse(addInfo);
 
 		ResultDto<AuctionDto.AuctionAddResponse> result = ResultDto.res(
 			AUCTION_CREATE_SUCCESS.getStatusCode(),

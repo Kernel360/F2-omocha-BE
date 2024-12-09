@@ -17,7 +17,7 @@ public class AuctionFacade {
 
 	private final AuctionService auctionService;
 
-	public Long addAuction(AuctionCommand.AddAuction addCommand) {
+	public AuctionInfo.AddAuction addAuction(AuctionCommand.AddAuction addCommand) {
 		return auctionService.addAuction(addCommand);
 	}
 

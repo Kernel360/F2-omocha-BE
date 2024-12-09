@@ -51,7 +51,7 @@ public interface AuctionDtoMapper {
 
 	AuctionCommand.RetrieveAuction toCommand(Long auctionId);
 
-	AuctionDto.AuctionAddResponse toResponse(Long auctionId);
+	AuctionDto.AuctionAddResponse toResponse(AuctionInfo.AddAuction addAuction);
 
 	default Page<AuctionDto.AuctionSearchResponse> toSearchResponse(Page<AuctionInfo.SearchAuction> auctionListResult) {
 		return toResponsePage(auctionListResult, this::toResponse);

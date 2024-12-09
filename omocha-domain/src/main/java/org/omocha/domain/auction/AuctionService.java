@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface AuctionService {
 
-	Long addAuction(AuctionCommand.AddAuction addCommand);
+	AuctionInfo.AddAuction addAuction(AuctionCommand.AddAuction addCommand);
 
 	Page<AuctionInfo.SearchAuction> searchAuction(
 		AuctionCommand.SearchAuction searchAuction,

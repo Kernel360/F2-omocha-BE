@@ -74,13 +74,6 @@ jobs:
           echo "${{ secrets.DEV_ENV }}" > .env
         shell: bash
 
-      - name: Set RedisConfigFile values
-        run: |
-          cd ./
-          touch ./redis-stack.conf
-          echo "${{ secrets.REDIS_CONF }}" > redis-stack.conf
-        shell: bash
-
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -88,7 +81,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
-          source: "./docker-compose.yaml, ./.env, ./redis-stack.conf"
+          source: "./docker-compose.yaml, ./.env"
           target: ${{ secrets.SCP_TARGET_PATH }}
 
       - name: Test SSH connection
@@ -122,11 +115,10 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.DEV_DOCKERHUB_REPOSITORY }}
             
             cd ${{ secrets.SCP_TARGET_PATH }}
-            sudo docker compose up -d --no-deps ${{ secrets.API_SERVER_NAME }}
-            
-            
             
             sudo docker compose up -d --no-deps redis
+            
+            sudo docker compose up -d --no-deps ${{ secrets.API_SERVER_NAME }}
             
             sudo docker image prune -af --filter "until=24h"
 

@@ -9,7 +9,10 @@ public enum RedisPrefix {
 
 	AUTHCODE_PREFIX("AuthCode:"),
 
-	REDISSON_LOCK_PREFIX("RedisLock:");
+	REDISSON_LOCK_PREFIX("RedisLock:"),
+  
+	TOKEN_PREFIX("RefreshToken:");
+
 
 	private final String prefix;
 
