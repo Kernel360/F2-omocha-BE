@@ -99,7 +99,7 @@ public enum ErrorCode {
 
 	// Redis
 	LOCK_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "요청 처리 중 오류가 발생했습니다."),
-	RLOCK_NOT_AVAILABLE(HttpStatus.CONFLICT, "다른 사용자가 현재 리소스를 사용 중입니다."),
+	RLOCK_NOT_AVAILABLE(HttpStatus.CONFLICT, "선입찰자가 있습니다."),
 
 	// Common Code
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 정보가 올바르지 않습니다. 재로그인 후 다시 시도해주세요."),
