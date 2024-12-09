@@ -42,7 +42,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			userPrincipal.getId(), result.accessToken(), result.refreshToken());
 
 		String redirectUrl =
-			CALLBACK_URI + "?access_token=" + result.accessToken() + "&refresh_token=" + result.refreshToken();
+			CALLBACK_URI + "?provider=" + userPrincipal.getProvider()
+				+ "&access_token=" + result.accessToken() + "&refresh_token=" + result.refreshToken();
 
 		clearAuthenticationAttributes(request);
 		getRedirectStrategy().sendRedirect(request, response, redirectUrl);

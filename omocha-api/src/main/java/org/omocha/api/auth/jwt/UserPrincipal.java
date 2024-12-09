@@ -52,6 +52,10 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 		return member.getPassword().getValue();
 	}
 
+	public String getProvider() {
+		return member.getProvider();
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
