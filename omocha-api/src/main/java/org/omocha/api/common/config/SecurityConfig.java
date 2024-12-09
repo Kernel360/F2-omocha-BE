@@ -37,7 +37,7 @@ public class SecurityConfig {
 	public static final String[] PERMITTED_ALL_URI = {
 		"/health",                                                           // AWS ELB health check 경로
 		"/swagger-ui/**", "/v3/api-docs/**",                                 // Swagger 관련 경로
-		"/sub/**", "/pub/**", "/{roomId}/messages", "/omocha-websocket/",    // websoket 경로
+		"/sub/**", "/pub/**", "/{roomId}/messages", "/omocha-websocket/**",    // websoket 경로
 		"/api/v2/auth/**", "/api/v2/mail/**"
 	};
 

@@ -228,6 +228,7 @@ public class AuctionInfo {
 
 	public record RetrieveMyAuctions(
 		Long auctionId,
+		Long categoryId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		Price nowPrice,
@@ -239,6 +240,7 @@ public class AuctionInfo {
 		@QueryProjection
 		public RetrieveMyAuctions(
 			Long auctionId,
+			Long categoryId,
 			String title,
 			Auction.AuctionStatus auctionStatus,
 			Price nowPrice,
@@ -247,6 +249,7 @@ public class AuctionInfo {
 			boolean reviewStatus
 		) {
 			this.auctionId = auctionId;
+			this.categoryId = categoryId;
 			this.title = title;
 			this.auctionStatus = auctionStatus;
 			this.nowPrice = nowPrice;
@@ -286,6 +289,7 @@ public class AuctionInfo {
 	// TODO : 리뷰 추가 이후 리뷰 유무 추가
 	public record RetrieveMyBidAuctions(
 		Long auctionId,
+		Long categoryId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
@@ -297,6 +301,7 @@ public class AuctionInfo {
 		@QueryProjection
 		public RetrieveMyBidAuctions(
 			Long auctionId,
+			Long categoryId,
 			String title,
 			Auction.AuctionStatus auctionStatus,
 			String thumbnailPath,
@@ -306,6 +311,7 @@ public class AuctionInfo {
 			boolean reviewStatus
 		) {
 			this.auctionId = auctionId;
+			this.categoryId = categoryId;
 			this.title = title;
 			this.auctionStatus = auctionStatus;
 			this.thumbnailPath = thumbnailPath;

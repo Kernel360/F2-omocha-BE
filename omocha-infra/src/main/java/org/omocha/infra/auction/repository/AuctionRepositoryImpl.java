@@ -119,6 +119,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		JPAQuery<AuctionInfo.RetrieveMyAuctions> query = queryFactory
 			.select(new QAuctionInfo_RetrieveMyAuctions(
 				auction.auctionId,
+				auction.category.categoryId,
 				auction.title,
 				auction.auctionStatus,
 				auction.nowPrice,
@@ -197,6 +198,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
 		JPAQuery<AuctionInfo.RetrieveMyBidAuctions> query = queryFactory
 			.select(new QAuctionInfo_RetrieveMyBidAuctions(
 				auction.auctionId,
+				auction.category.categoryId,
 				auction.title,
 				auction.auctionStatus,
 				auction.thumbnailPath,
