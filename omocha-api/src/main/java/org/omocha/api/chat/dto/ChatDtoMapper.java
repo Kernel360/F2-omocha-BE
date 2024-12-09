@@ -4,13 +4,16 @@ import java.time.LocalDateTime;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.omocha.api.common.util.ValueObjectMapper;
 import org.omocha.domain.chat.ChatCommand;
 
 @Mapper(
 	componentModel = "spring",
 	injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-	unmappedTargetPolicy = ReportingPolicy.ERROR
+	unmappedTargetPolicy = ReportingPolicy.ERROR,
+	uses = ValueObjectMapper.class
 )
 public interface ChatDtoMapper {
 
@@ -18,6 +21,7 @@ public interface ChatDtoMapper {
 
 	ChatCommand.RetrieveMyChatRoom toCommand(Long memberId);
 
+	@Mapping(target = "messageType", source = "chatMessageRequest.messageType", qualifiedByName = "toChatType")
 	ChatCommand.AddChatMessage toCommand(ChatDto.ChatMessageRequest chatMessageRequest, Long roomId);
 
 	ChatCommand.RetrieveChatRoomMessage toCommand(Long roomId, Long memberId, LocalDateTime cursor);

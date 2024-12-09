@@ -103,7 +103,7 @@ public class BidTest {
 		AuctionCommand.AddAuction dummyAuctionCommand = createDummyAuctionCommand(1, sellerMember.getMemberId(),
 			category.getCategoryId());
 
-		Long savedAuctionId = auctionFacade.addAuction(dummyAuctionCommand);
+		Long savedAuctionId = auctionFacade.addAuction(dummyAuctionCommand).auctionId();
 
 		savedAuction = auctionRepository.findById(savedAuctionId).orElse(null);
 
