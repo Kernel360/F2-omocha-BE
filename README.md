@@ -33,10 +33,10 @@
 
 ### **채팅 | 마이페이지**
 
-| 채팅                                                                                                                                                                                                                            | 마이페이지                                                                                                    |
+| 채팅                                                                                                                                                                                                                            | 마이페이지 (찜 & 거래내역)                                                                                                   |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| ![채팅](https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_chat.gif)                                                                                                                     | <img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_mypage.png"> |
-| 낙찰 후 자동으로 채팅방이 생성됩니다. 판매자와 구매자가 거래를 할 수 있습니다.                                                                                                                                                                                 | 회원 정보를 확인하고 개인 설정을 관리할 수 있습니다.                                                                           |
+| ![채팅](https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_chat.gif)                                                                                                                     | ![마이페이지](https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/마이페이지.gif) |
+| 낙찰 후 자동으로 채팅방이 생성됩니다. 판매자와 구매자가 거래를 할 수 있습니다.                                                                                                                                                                                 | 회원 정보(찜 목록 / 판매 내역 / 입찰 내역)를 확인하고 개인 설정을 관리할 수 있습니다.                                                                         |
 | - 채팅방에 들어가면 WebSocket이 연결되고 상대방에게 메시지를 보낼 수 있음.   <br/> - STOMP(Simple/Streaming Text Oriented Messaging Protocal) 텍스트 기반의 메세지 프로토콜 사용 <br/> - 채팅방 입장: Topic 구독 <br/> - 채팅방에서 메세지를 송수신: 해당 Topic으로 메세지를 송신(pub), 메세지를 수신(sub) | - *추가 필요*                                                                                                |
 
 ---
