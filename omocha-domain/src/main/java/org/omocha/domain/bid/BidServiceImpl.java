@@ -2,6 +2,7 @@ package org.omocha.domain.bid;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
@@ -32,7 +33,6 @@ public class BidServiceImpl implements BidService {
 	private final MemberReader memberReader;
 	private final ConcludeStore concludeStore;
 	private final ChatService chatService;
-	private final HighestBidManager highestBidManager;
 
 	// TODO : 동시성 해결 해결 해야 함
 
@@ -69,7 +69,7 @@ public class BidServiceImpl implements BidService {
 	@Override
 	@Transactional(readOnly = true)
 	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
-		return highestBidManager.getCurrentHighestBid(auctionId)
+		return getCurrentHighestBid(auctionId)
 			.map(BidInfo.NowPrice::toInfo)
 			.orElseGet(() -> new BidInfo.NowPrice(new Price(0L), null, LocalDateTime.now()));
 	}
@@ -100,6 +100,16 @@ public class BidServiceImpl implements BidService {
 
 		return bidReader.getMyBidList(retrieveMyBidsCommand.memberId(), retrieveMyBidsCommand.auctionId(), sortPage);
 
+	}
+
+	private BidCacheDto getHighestBid(Long auctionId) {
+		return bidReader.findNowPrice(auctionId);
+	}
+
+	private Optional<BidCacheDto> getCurrentHighestBid(Long auctionId) {
+		return Optional.ofNullable(getHighestBid(auctionId))
+			.or(() -> bidReader.findHighestBid(auctionId)
+				.map(BidCacheDto::toRedis));
 	}
 
 }

@@ -5,7 +5,9 @@ import org.omocha.domain.bid.BidCacheDto;
 import org.omocha.infra.common.RedisPrefix;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class BidCacheRepositoryImpl implements BidCacheRepository {
 
 	private final RedisTemplate<String, BidCacheDto> redisTemplate;
