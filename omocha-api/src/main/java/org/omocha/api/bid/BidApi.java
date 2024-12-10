@@ -2,8 +2,8 @@ package org.omocha.api.bid;
 
 import java.util.List;
 
-import org.omocha.api.bid.dto.BidDto;
 import org.omocha.api.auth.jwt.UserPrincipal;
+import org.omocha.api.bid.dto.BidDto;
 import org.omocha.api.common.response.ResultDto;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -39,6 +39,8 @@ public interface BidApi {
 		@ApiResponse(responseCode = "200", description = "입찰에 성공하였습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 		@ApiResponse(responseCode = "400", description = "잘못된 요청입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "409", description = "입찰에 실패하였습니다. 선입찰자가 존재합니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))

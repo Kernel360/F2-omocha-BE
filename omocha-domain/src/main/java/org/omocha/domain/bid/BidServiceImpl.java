@@ -10,6 +10,7 @@ import org.omocha.domain.auction.vo.Price;
 import org.omocha.domain.bid.validate.BidValidator;
 import org.omocha.domain.chat.ChatCommand;
 import org.omocha.domain.chat.ChatService;
+import org.omocha.domain.common.annotation.DistributedLock;
 import org.omocha.domain.conclude.ConcludeStore;
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
@@ -47,7 +48,7 @@ public class BidServiceImpl implements BidService {
 
 	// TODO : 최고 입찰가 관련 논의 후 수정 필요
 	@Override
-	@Transactional
+	@DistributedLock(key = "#addBid.auctionId()")
 	public BidInfo.AddBid addBid(BidCommand.AddBid addBid) {
 
 		Long buyerMemberId = addBid.buyerMemberId();

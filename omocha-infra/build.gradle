@@ -14,6 +14,8 @@ dependencies {
     // redis
     implementation 'org.springframework.data:spring-data-redis'
     implementation 'io.lettuce:lettuce-core:'
+    
+    implementation 'org.redisson:redisson-spring-boot-starter:3.27.0'
 
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
