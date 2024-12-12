@@ -76,7 +76,10 @@ public enum SuccessCode {
 
 	// Mail Code
 	MAIL_CODE_SUCCESS(HttpStatus.OK, "메일 인증에 성공하였습니다."),
-	MAIL_SEND_SUCCESS(HttpStatus.OK, "메일이 성공적으로 발송되었습니다.");
+	MAIL_SEND_SUCCESS(HttpStatus.OK, "메일이 성공적으로 발송되었습니다."),
+
+	// Notification Code
+	NOTIFICATION_READ_SUCCESS(HttpStatus.OK, "알림 읽음 처리를 완료하였습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String description;

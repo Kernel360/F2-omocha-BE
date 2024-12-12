@@ -26,7 +26,7 @@ public class RefreshTokenManager {
 		tokenCacheStore.storeKey(refreshToken, memberId);
 	}
 
-	private void removeRefreshToken(String refreshToken) {
+	public void removeRefreshToken(String refreshToken) {
 		tokenCacheStore.deleteKey(refreshToken);
 	}
 
