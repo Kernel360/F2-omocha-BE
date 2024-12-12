@@ -36,13 +36,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			.provider(oAuth2UserInfo.getProvider())
 			.providerId(oAuth2UserInfo.getProviderId())
 			.build();
-		
+
 		Member member = memberReader.findMember(oAuthProvider)
 			.orElseGet(() -> {
 				String randomNickname = randomNicknameGenerator.generateRandomNickname();
 				return memberStore.addMember(oAuth2UserInfo.toEntity(randomNickname));
 			});
 
-		return new UserPrincipal(member, oAuth2User.getAttributes());
+		return new UserPrincipal(member, attributes);
 	}
 }

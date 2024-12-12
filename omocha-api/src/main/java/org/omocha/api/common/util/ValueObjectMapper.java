@@ -44,4 +44,5 @@ public class ValueObjectMapper {
 	public Rating toRating(Double rating) {
 		return new Rating(rating);
 	}
+
 }

@@ -1,6 +1,8 @@
 package org.omocha.infra.image;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionCommand;
@@ -29,14 +31,15 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
 		MultipartFile thumbnailFile = images.get(0);
 
-		processThumbnail(auction, thumbnailFile);
+		Image thumbnailImage = processThumbnail(auction, thumbnailFile);
 
 		List<Image> otherImages = images.stream()
 			.skip(1)
 			.map(this::processImage)
-			.filter(image -> image != null)
-			.toList();
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
 
+		auction.getImages().add(thumbnailImage);
 		auction.getImages().addAll(otherImages);
 
 		return otherImages;
@@ -53,7 +56,7 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 		return image;
 	}
 
-	private void processThumbnail(Auction auction, MultipartFile thumbnailFile) {
+	private Image processThumbnail(Auction auction, MultipartFile thumbnailFile) {
 		String fileName = thumbnailFile.getOriginalFilename();
 		String imagePath = imageProvider.uploadFile(thumbnailFile);
 
@@ -62,6 +65,8 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 		Image thumbnailImage = buildImage(fileName, imagePath);
 
 		imageStore.store(thumbnailImage);
+
+		return thumbnailImage;
 	}
 
 	private static Image buildImage(String fileName, String imagePath) {

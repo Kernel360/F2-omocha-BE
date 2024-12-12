@@ -121,6 +121,7 @@ public class AuctionDto {
 
 	public record MyAuctionListResponse(
 		Long auctionId,
+		Long categoryId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		Price nowPrice,
@@ -144,6 +145,7 @@ public class AuctionDto {
 
 	public record MyBidAuctionResponse(
 		Long auctionId,
+		Long categoryId,
 		String title,
 		Auction.AuctionStatus auctionStatus,
 		String thumbnailPath,
