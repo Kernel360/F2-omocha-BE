@@ -15,9 +15,6 @@ public class FileNameGenerator {
 	}
 
 	private String extractBaseName(String filename) {
-		if (filename == null || !filename.contains(".")) {
-			return "file";
-		}
 		return filename.substring(0, filename.lastIndexOf("."));
 	}
 

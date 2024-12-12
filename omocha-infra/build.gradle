@@ -17,12 +17,12 @@ dependencies {
 
     implementation 'org.redisson:redisson-spring-boot-starter:3.27.0'
 
-
     // mail\
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    implementation "com.sksamuel.scrimage:scrimage-core:4.3.0"
-    implementation "com.sksamuel.scrimage:scrimage-webp:4.3.0"
+    // scrimage: 이미지 변환
+    implementation 'com.sksamuel.scrimage:scrimage-core:4.3.0'
+    implementation 'com.sksamuel.scrimage:scrimage-webp:4.3.0'
 
 }
 
