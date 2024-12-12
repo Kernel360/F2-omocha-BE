@@ -6,6 +6,7 @@ public interface ImageProvider {
 
 	String uploadFile(MultipartFile file);
 
-	void deleteFile(String imagePath);
+	String uploadWebpFile(byte[] byteFile, String webpImagePath);
 
+	void deleteFile(String imagePath);
 }

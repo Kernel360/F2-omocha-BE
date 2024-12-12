@@ -2,6 +2,7 @@ package org.omocha.infra.image;
 
 import org.omocha.domain.image.Image;
 import org.omocha.domain.image.ImageCommand;
+import org.omocha.domain.image.ImageConverter;
 import org.omocha.domain.image.ImageInfo;
 import org.omocha.domain.image.ImageProvider;
 import org.omocha.domain.image.ImageReader;
@@ -19,11 +20,12 @@ public class ImageServiceImpl implements ImageService {
 	private final ImageProvider imageProvider;
 	private final ImageStore imageStore;
 	private final ImageReader imageReader;
+	private final ImageConverter imageConverter;
 
 	@Override
 	@Transactional
 	public ImageInfo.AddImage addImage(ImageCommand.AddImage addCommand) {
-		String imagePath = imageProvider.uploadFile(addCommand.image());
+		String imagePath = imageConverter.convertToWebp(addCommand.image());
 		String fileName = addCommand.image().getOriginalFilename();
 
 		Image image = addCommand.toEntity(imagePath, fileName);
