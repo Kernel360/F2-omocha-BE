@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.omocha.api.common.response.ResultDto;
 import org.omocha.domain.common.exception.OmochaException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -14,6 +15,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -205,5 +208,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity
 			.status(INTERNAL_SERVER_ERROR.getHttpStatus())
 			.body(resultDto);
+	}
+
+	// TODO: SSE Timeout 임시
+	@ExceptionHandler(AsyncRequestTimeoutException.class)
+	public void handleSSETimeoutException(HttpServletResponse response) {
+		response.setStatus(HttpStatus.REQUEST_TIMEOUT.value());
 	}
 }

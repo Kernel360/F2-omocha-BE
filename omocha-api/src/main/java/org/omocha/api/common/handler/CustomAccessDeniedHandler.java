@@ -27,10 +27,10 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		AccessDeniedException accessDeniedException
 	) throws IOException, ServletException {
 
-		log.warn("Client IP: {}, Request URL: {}, HTTP Method: {}",
-			request.getRemoteAddr(),
+		log.warn("Request URL: {}, HTTP Method: {}, Client IP: {}",
 			request.getRequestURL(),
-			request.getMethod()
+			request.getMethod(),
+			request.getRemoteAddr()
 		);
 
 		log.warn("Exception type: {}, Exception message: {}",

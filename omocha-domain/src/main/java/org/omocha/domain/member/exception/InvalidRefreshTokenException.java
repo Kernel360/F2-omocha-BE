@@ -5,8 +5,8 @@ import org.omocha.domain.common.code.ErrorCode;
 public class InvalidRefreshTokenException extends MemberException {
 	public InvalidRefreshTokenException(String refreshToken) {
 		super(
-			ErrorCode.INVALID_EMAIL_FORMAT,
-			"유효하지 Refresh Token입니다. refreshToken: " + refreshToken
+			ErrorCode.INVALID_REFRESH_TOKEN,
+			"올바르지 않는 Refresh Token 입니다. refreshToken: " + refreshToken
 		);
 	}
 }
