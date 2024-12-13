@@ -7,7 +7,10 @@
 - **오타쿠를 위한 피규어, 장난감 등의 다양한 굿즈를 경매하는 서비스!**
 - 희귀한 제품이 많은 피규어 시장을 타겟으로 함
 
----
+<details>
+<summary> 소개 </summary>
+<p align="left"><img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/1%ED%8C%80_omocha_panel.jpg" width="800"></p>
+</details>
 
 ## ⭐ **주요 기능**
 
@@ -53,7 +56,6 @@
 | 경매 물품에 대해 질문,답변을 할 수 있습니다.                                                                                      | 관심있는 경매물을 찜하고 한 곳에 모아 쉽게 확인 할 수 있습니다.                                                                            |                                                                                      |
 | - 회원 : 경매 물품에 대한 질문을 작성 할 수 있습니다.<br/>- 답변이 달리면 추가 수정 및 삭제가 `불가`합니다. <br/> - 판매자 : 답변을 작성할 수 있습니다.              | - 경매물 상단의 버튼을 클릭하여 `찜` 할 수 있습니다.<br/>- 이후 다시 누르게 되면 `찜`이 해제됩니다.                                                  |
 
----
 
 ## **기술 스택**
 
@@ -82,13 +84,11 @@ Version Control<BR>
 
 </details>
 
----
 
 ## **System Architecture**
 
 ![SA](https://github.com/gooot/ProjectImage/blob/main/Omocha/v1/SAv2.png)
 
----
 
 ## 👨‍👩‍👧‍👦 **팀원 소개**
 
