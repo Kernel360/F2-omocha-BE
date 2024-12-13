@@ -61,6 +61,17 @@ public class BidInfo {
 				LocalDateTime.now()
 			);
 		}
+
+		public static NowPrice toInfo(
+			BidCacheDto bidCacheDto
+		) {
+			return new NowPrice(
+				bidCacheDto.getPrice(),
+				bidCacheDto.getCreatedAt(),
+				LocalDateTime.now()
+			);
+
+		}
 	}
 
 	public record RetrieveMyBids(

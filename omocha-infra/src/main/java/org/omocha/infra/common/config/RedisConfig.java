@@ -1,5 +1,6 @@
 package org.omocha.infra.common.config;
 
+import org.omocha.domain.bid.BidCacheDto;
 import org.omocha.domain.mail.AuthCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +56,26 @@ public class RedisConfig {
 			.registerModule(new JavaTimeModule()); // JavaTimeModule 등록
 
 		RedisTemplate<String, AuthCode> template = new RedisTemplate<>();
+		template.setConnectionFactory(connectionFactory);
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
+
+		return template;
+	}
+
+	@Bean
+	public RedisTemplate<String, BidCacheDto> redisTemplateForBid(RedisConnectionFactory connectionFactory) {
+		PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+			.allowIfBaseType(Object.class)
+			.build();
+
+		ObjectMapper objectMapper = new ObjectMapper()
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS)
+			.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL)
+			.registerModule(new JavaTimeModule()); // JavaTimeModule 등록
+
+		RedisTemplate<String, BidCacheDto> template = new RedisTemplate<>();
 		template.setConnectionFactory(connectionFactory);
 		template.setKeySerializer(new StringRedisSerializer());
 		template.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));

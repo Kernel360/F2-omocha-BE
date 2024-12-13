@@ -2,6 +2,7 @@ package org.omocha.domain.bid;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
@@ -65,8 +66,6 @@ public class BidServiceImpl implements BidService {
 
 		Bid bid = bidStore.store(auction, member, bidPrice);
 
-		HighestBidManager.setHighestBid(auctionId, bid);
-
 		notificationService.sendBidEvent(auctionId, auction.getMemberId(), buyerMemberId);
 
 		return BidInfo.AddBid.toInfo(bid);
@@ -75,7 +74,7 @@ public class BidServiceImpl implements BidService {
 	@Override
 	@Transactional(readOnly = true)
 	public BidInfo.NowPrice retrieveNowPrice(Long auctionId) {
-		return HighestBidManager.getCurrentHighestBid(auctionId, bidReader)
+		return getCurrentHighestBid(auctionId)
 			.map(BidInfo.NowPrice::toInfo)
 			.orElseGet(() -> new BidInfo.NowPrice(new Price(0L), null, LocalDateTime.now()));
 	}
@@ -106,6 +105,16 @@ public class BidServiceImpl implements BidService {
 
 		return bidReader.getMyBidList(retrieveMyBidsCommand.memberId(), retrieveMyBidsCommand.auctionId(), sortPage);
 
+	}
+
+	private BidCacheDto getHighestBid(Long auctionId) {
+		return bidReader.findNowPrice(auctionId);
+	}
+
+	private Optional<BidCacheDto> getCurrentHighestBid(Long auctionId) {
+		return Optional.ofNullable(getHighestBid(auctionId))
+			.or(() -> bidReader.findHighestBid(auctionId)
+				.map(BidCacheDto::toRedis));
 	}
 
 }
