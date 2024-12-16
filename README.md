@@ -6,6 +6,8 @@
 
 - **오타쿠를 위한 피규어, 장난감 등의 다양한 굿즈를 경매하는 서비스!**
 - 희귀한 제품이 많은 피규어 시장을 타겟으로 함
+- **개발 기간**
+  **2024.09.09 ~ 2024.12.20**
 
 <details>
 <summary> 소개 </summary>
@@ -56,39 +58,48 @@
 | 경매 물품에 대해 질문,답변을 할 수 있습니다.                                                                                      | 관심있는 경매물을 찜하고 한 곳에 모아 쉽게 확인 할 수 있습니다.                                                                            |                                                                                      |
 | - 회원 : 경매 물품에 대한 질문을 작성 할 수 있습니다.<br/>- 답변이 달리면 추가 수정 및 삭제가 `불가`합니다. <br/> - 판매자 : 답변을 작성할 수 있습니다.              | - 경매물 상단의 버튼을 클릭하여 `찜` 할 수 있습니다.<br/>- 이후 다시 누르게 되면 `찜`이 해제됩니다.                                                  |
 
-
 ## **기술 스택**
 
 <details>
 <summary> 접기 / 펼치기</summary>
 
-Framework<BR>
-<img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=Spring-Boot&logoColor=white"><br>
+**Framework<BR>**
+<img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=Spring-Boot&logoColor=white">
+<img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+<img src="https://img.shields.io/badge/.env-4D4D4D?style=for-the-badge&logo=dotenv&logoColor=white">
+<img src="https://img.shields.io/badge/Querydsl-3E6E87?style=for-the-badge&logo=graphql&logoColor=white">
 
-Language<BR>
+**Language<BR>**
 <img src="https://img.shields.io/badge/Java_17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"><br>
 
-INFRA<BR>
+**INFRA<BR>**
 <img src="https://img.shields.io/badge/AWS_EC2-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white">
 <img src="https://img.shields.io/badge/AWS_RDS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white">
 <img src="https://img.shields.io/badge/AWS_S3-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white">
 <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
 <img src="https://img.shields.io/badge/Redis-D82C20?style=for-the-badge&logo=redis&logoColor=white">
-<img src="https://img.shields.io/badge/STOMP-6A0FAD?style=for-the-badge&logo=apache&logoColor=white">
+<img src="https://img.shields.io/badge/STOMP-6A0FAD?style=for-the-badge&logo=apache&logoColor=white"><br>
 
-CI/CD<BR>
-<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white"><br>
+**CI/CD<BR>**
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white"><br>
 
-Version Control<BR>
-<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/GitHub-2088FF?style=for-the-badge&logo=github&logoColor=white"><br>
+**Version Control<BR>**
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/GitHub-2088FF?style=for-the-badge&logo=github&logoColor=white"><br>
+
+**Authentication<BR>**
+<img src="https://img.shields.io/badge/OAuth2.0-005EA2?style=for-the-badge&logo=oauth&logoColor=white">
+<img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=json-web-tokens&logoColor=white"><br>
+
+
+
 
 </details>
-
 
 ## **System Architecture**
 
 ![SA](https://github.com/gooot/ProjectImage/blob/main/Omocha/v1/SAv2.png)
-
 
 ## 👨‍👩‍👧‍👦 **팀원 소개**
 
