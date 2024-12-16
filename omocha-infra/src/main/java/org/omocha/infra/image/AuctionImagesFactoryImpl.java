@@ -56,8 +56,8 @@ public class AuctionImagesFactoryImpl implements AuctionImagesFactory {
 
 		return image;
 	}
-
-	private Image processThumbnail(Auction auction, MultipartFile file, String originalFileName) {
+  
+  private Image processThumbnail(Auction auction, MultipartFile file, String originalFileName) {
 		String imagePath = imageConverter.convertToWebp(file);
 
 		Image thumbnailImage = buildImage(originalFileName, imagePath);

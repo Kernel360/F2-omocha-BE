@@ -20,6 +20,8 @@ public abstract class MailApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 		@ApiResponse(responseCode = "400", description = "메일 전송에 실패했습니다.",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
+		@ApiResponse(responseCode = "400", description = "이미 존재하는 회원입니다.",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
 	})
 	public abstract ResponseEntity<ResultDto<Void>> mailSend(
 		MailDto.MailSendRequest mailSendRequest

@@ -7,7 +7,7 @@ spring:
   application:
     name: omocha
   profiles:
-    active: local # 개발 환경에 따라 변경할 것 (local | dev | prod)
+    active: dev # 개발 환경에 따라 변경할 것 (local | dev | prod)
   output:
     ansi:
       enabled: always
