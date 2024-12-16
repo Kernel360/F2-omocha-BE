@@ -16,5 +16,7 @@ public interface NotificationDtoMapper {
 
 	NotificationCommand.Connect toConnectCommand(Long memberId);
 
-	NotificationCommand.Read toReadCommand(Long notificationId);
+	NotificationCommand.Disconnect toDisconnectCommand(Long memberId);
+
+	NotificationCommand.Read toReadCommand(Long memberId, Long notificationId);
 }

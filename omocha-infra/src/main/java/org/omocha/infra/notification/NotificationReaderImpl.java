@@ -1,7 +1,5 @@
 package org.omocha.infra.notification;
 
-import java.util.List;
-
 import org.omocha.domain.notification.Notification;
 import org.omocha.domain.notification.NotificationReader;
 import org.omocha.infra.notification.repository.NotificationRepository;
@@ -17,8 +15,8 @@ public class NotificationReaderImpl implements NotificationReader {
 	private final NotificationRepository notificationRepository;
 
 	@Override
-	public List<SseEmitter> getEmitterList(Long memberId) {
-		return notificationRepository.getSseEmitterList(memberId);
+	public SseEmitter getEmitter(Long memberId) {
+		return notificationRepository.getSseEmitter(memberId);
 	}
 
 	@Override

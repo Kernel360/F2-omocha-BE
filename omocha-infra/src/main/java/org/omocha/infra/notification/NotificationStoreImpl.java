@@ -1,7 +1,5 @@
 package org.omocha.infra.notification;
 
-import java.util.UUID;
-
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.omocha.domain.notification.Notification;
@@ -22,13 +20,13 @@ public class NotificationStoreImpl implements NotificationStore {
 	private final MemberReader memberReader;
 
 	@Override
-	public void emitterStore(Long memberId, UUID emitterId, SseEmitter emitter) {
-		notificationRepository.storeSseEmitter(memberId, emitterId, emitter);
+	public void emitterStore(Long memberId, SseEmitter emitter) {
+		notificationRepository.storeSseEmitter(memberId, emitter);
 	}
 
 	@Override
-	public void emitterDelete(Long memberId, UUID emitterId) {
-		notificationRepository.removeSseEmitter(memberId, emitterId);
+	public void emitterDelete(Long memberId) {
+		notificationRepository.removeSseEmitter(memberId);
 	}
 
 	@Override

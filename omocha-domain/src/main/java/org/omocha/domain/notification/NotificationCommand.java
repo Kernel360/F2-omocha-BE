@@ -7,7 +7,14 @@ public class NotificationCommand {
 
 	}
 
+	public record Disconnect(
+		Long memberId
+	) {
+		
+	}
+
 	public record Read(
+		Long memberId,
 		Long notificationId
 	) {
 

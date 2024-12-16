@@ -5,7 +5,6 @@ import static org.omocha.domain.notification.enums.NotificationCode.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import org.omocha.domain.auction.Auction;
 import org.omocha.domain.auction.AuctionReader;
@@ -15,6 +14,7 @@ import org.omocha.domain.notification.enums.EventName;
 import org.omocha.domain.notification.enums.NotificationCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import lombok.RequiredArgsConstructor;
@@ -30,24 +30,30 @@ public class NotificationServiceImpl implements NotificationService {
 	private final AuctionReader auctionReader;
 	private final BidReader bidReader;
 
-	private static final long SSE_TIMEOUT = 1000L * 60 * 5;
+	private static final long SSE_TIMEOUT = 1000L * 10;
 	private static final long RECONNECTION_TIMEOUT = 1000L;
 
 	@Override
+	@Transactional
 	public SseEmitter connect(NotificationCommand.Connect connectCommand) {
 		Long memberId = connectCommand.memberId();
-		UUID emitterId = UUID.randomUUID();
 
 		SseEmitter emitter = new SseEmitter(SSE_TIMEOUT);
-		notificationStore.emitterStore(memberId, emitterId, emitter);
+		notificationStore.emitterStore(memberId, emitter);
 
-		configureEmitterEvents(memberId, emitter, emitterId);
+		configureEmitterEvents(memberId, emitter);
 		sendSseEvent(emitter, CONNECT, memberId, "Connect Success");
 
 		return emitter;
 	}
 
 	@Override
+	public void disconnect(NotificationCommand.Disconnect disconnectCommand) {
+		notificationStore.emitterDelete(disconnectCommand.memberId());
+	}
+
+	@Override
+	@Transactional
 	public void sendBidEvent(
 		Long auctionId,
 		Long sellerMemberId,
@@ -72,6 +78,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
+	@Transactional
 	public void sendConcludeEvent(
 		Long auctionId,
 		Long sellerMemberId,
@@ -122,8 +129,14 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
+	@Transactional
 	public void read(NotificationCommand.Read readCommand) {
 		Notification notification = notificationReader.getNotification(readCommand.notificationId());
+
+		if (!readCommand.memberId().equals(notification.getMember().getMemberId())) {
+			throw new RuntimeException("test");
+		}
+
 		notification.modifyAsRead();
 	}
 
@@ -141,23 +154,24 @@ public class NotificationServiceImpl implements NotificationService {
 
 		String notificationMessage = JsonUtils.toJson(rootResponse);
 
-		notificationReader.getEmitterList(memberId)
-			.forEach(emitter -> sendSseEvent(emitter, eventName, memberId, notificationMessage));
+		SseEmitter emitter = notificationReader.getEmitter(memberId);
+
+		sendSseEvent(emitter, eventName, memberId, notificationMessage);
 	}
 
-	private void configureEmitterEvents(Long memberId, SseEmitter emitter, UUID emitterId) {
+	private void configureEmitterEvents(Long memberId, SseEmitter emitter) {
 		emitter.onCompletion(() -> {
-			notificationStore.emitterDelete(memberId, emitterId);
+			notificationStore.emitterDelete(memberId);
 			log.info("onCompletion");
 		});
 
 		emitter.onTimeout(() -> {
-			notificationStore.emitterDelete(memberId, emitterId);
+			emitter.complete();
 			log.info("onTimeout");
 		});
 
 		emitter.onError((e) -> {
-			notificationStore.emitterDelete(memberId, emitterId);
+			notificationStore.emitterDelete(memberId);
 			log.info("onError");
 		});
 	}
@@ -179,7 +193,7 @@ public class NotificationServiceImpl implements NotificationService {
 					.reconnectTime(RECONNECTION_TIMEOUT)
 			);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to send event to emitter", e);
+			notificationStore.emitterDelete(memberId);
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class NotificationController implements NotificationApi {
 	public ResponseEntity<SseEmitter> connect(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-		NotificationCommand.Connect connectCommand = notificationDtoMapper.toConnectCommand(userPrincipal.getId());
+		NotificationCommand.Connect connectCommand = notificationDtoMapper.toConnectCommand(0L);
 
 		SseEmitter emitter = notificationFacade.connect(connectCommand);
 
@@ -41,11 +41,33 @@ public class NotificationController implements NotificationApi {
 	}
 
 	@Override
+	@PostMapping(value = "/disconnect")
+	public ResponseEntity<ResultDto<Void>> disconnect(
+		@AuthenticationPrincipal UserPrincipal userPrincipal
+	) {
+		NotificationCommand.Disconnect disconnectCommand = notificationDtoMapper.toDisconnectCommand(
+			0L);
+
+		notificationFacade.disconnect(disconnectCommand);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			SSE_DISCONNECT_SUCCESS.getStatusCode(),
+			SSE_DISCONNECT_SUCCESS.getDescription()
+		);
+
+		return ResponseEntity
+			.status(SSE_DISCONNECT_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
 	@PostMapping(value = "/read/{notification_id}")
 	public ResponseEntity<ResultDto<Void>> read(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("notification_id") Long notificationId
 	) {
-		NotificationCommand.Read readCommand = notificationDtoMapper.toReadCommand(notificationId);
+		NotificationCommand.Read readCommand = notificationDtoMapper.toReadCommand(
+			userPrincipal.getId(), notificationId);
 
 		notificationFacade.read(readCommand);
 
