@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.omocha.domain.mail.exception.MailTemplateFailException;
 import org.omocha.domain.member.vo.Email;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,13 +54,8 @@ public class AuthCodeTemplate implements TemplateStrategy {
 			mimeMessageHelper.setSubject("인증 코드");
 			mimeMessageHelper.setText(content, true);
 
-			// 	TODO : exception 처리해야함
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (TemplateException e) {
-			throw new RuntimeException(e);
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+		} catch (IOException | TemplateException | MessagingException e) {
+			throw new MailTemplateFailException(email, e);
 		}
 
 		return mimeMessage;

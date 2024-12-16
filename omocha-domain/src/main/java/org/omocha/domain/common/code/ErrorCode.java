@@ -96,6 +96,7 @@ public enum ErrorCode {
 	MAIL_CODE_KEY_NOT_FOUND(HttpStatus.NOT_FOUND, "유효하지않은 인증 코드입니다."),
 	MAIL_AUTH_CODE_MISMATCH(HttpStatus.BAD_REQUEST, "코드가 일치하지 않습니다."),
 	MAIL_SEND_FAILED(HttpStatus.BAD_REQUEST, "메일 전송에 실패했습니다."),
+	MAIL_TEMPLATE_FAILED(HttpStatus.BAD_REQUEST, "메일 메세지 작성에 실패하였습니다."),
 
 	// Redis
 	LOCK_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "요청 처리 중 오류가 발생했습니다."),
