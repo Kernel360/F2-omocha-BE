@@ -109,10 +109,15 @@ jobs:
             sudo docker kill ${{ secrets.API_SERVER_NAME }}
             sudo docker rm -f ${{ secrets.API_SERVER_NAME }}
             
+            sudo docker kill redis
+            
             sudo docker images -q ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.PROD_DOCKERHUB_REPOSITORY }} | xargs -r docker rmi
             sudo docker pull ${{ secrets.DOCKERHUB_NAME }}/${{ secrets.PROD_DOCKERHUB_REPOSITORY }}
             
             cd ${{ secrets.SCP_TARGET_PATH }}
+            
+            sudo docker compose up -d --no-deps redis
+            
             sudo docker compose up -d --no-deps ${{ secrets.API_SERVER_NAME }}
             
             sudo docker image prune -af --filter "until=24h"
