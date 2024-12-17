@@ -20,18 +20,24 @@ public class NotificationStoreImpl implements NotificationStore {
 	private final MemberReader memberReader;
 
 	@Override
-	public void emitterStore(Long memberId, SseEmitter emitter) {
-		notificationRepository.storeSseEmitter(memberId, emitter);
+	public void emitterStore(
+		Long memberId,
+		String emitterId,
+		SseEmitter emitter,
+		Long EXPIRATION
+	) {
+		notificationRepository.storeSseEmitter(memberId, emitterId, emitter, EXPIRATION);
 	}
 
 	@Override
-	public void emitterDelete(Long memberId) {
-		notificationRepository.removeSseEmitter(memberId);
+	public void emitterDelete(Long memberId, String emitterId) {
+		notificationRepository.removeSseEmitter(memberId, emitterId);
 	}
 
 	@Override
 	public Notification notificationStore(
 		Long memberId,
+		String eventId,
 		EventName eventName,
 		NotificationCode notificationCode,
 		String data
@@ -44,6 +50,8 @@ public class NotificationStoreImpl implements NotificationStore {
 			.notificationCode(notificationCode)
 			.data(data)
 			.build();
+
+		notificationRepository.storeNotificationCache(eventId, notification);
 
 		return notificationRepository.save(notification);
 	}

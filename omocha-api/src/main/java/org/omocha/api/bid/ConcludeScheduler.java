@@ -1,6 +1,9 @@
 package org.omocha.api.bid;
 
+import java.util.List;
+
 import org.omocha.domain.conclude.ConcludeService;
+import org.omocha.domain.notification.NotificationService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ConcludeScheduler {
 
 	private final ConcludeService concludeService;
-
-	// TODO: 추후 Redis로 낙찰 로직 처리하도록 변경(현재는 임시용)
+	private final NotificationService notificationService;
 
 	@Scheduled(cron = "0 * * * * *")
 	public void scheduleAuctionConclusions() {
-		concludeService.concludeAuction();
+		List<Long> concludedAuctionIdList = concludeService.concludeAuction();
+
+		notificationService.sendConcludeEvent(concludedAuctionIdList);
 	}
 }

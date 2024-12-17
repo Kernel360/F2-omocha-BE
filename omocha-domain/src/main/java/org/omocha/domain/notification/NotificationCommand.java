@@ -2,15 +2,10 @@ package org.omocha.domain.notification;
 
 public class NotificationCommand {
 	public record Connect(
-		Long memberId
+		Long memberId,
+		String lastEventId
 	) {
 
-	}
-
-	public record Disconnect(
-		Long memberId
-	) {
-		
 	}
 
 	public record Read(

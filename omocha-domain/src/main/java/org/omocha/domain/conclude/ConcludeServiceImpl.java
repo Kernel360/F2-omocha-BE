@@ -1,5 +1,6 @@
 package org.omocha.domain.conclude;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,6 @@ import org.omocha.domain.bid.BidReader;
 import org.omocha.domain.chat.ChatCommand;
 import org.omocha.domain.chat.ChatService;
 import org.omocha.domain.member.Member;
-import org.omocha.domain.notification.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +26,14 @@ public class ConcludeServiceImpl implements ConcludeService {
 	private final BidReader bidReader;
 	private final ConcludeStore concludeStore;
 	private final ChatService chatService;
-	private final NotificationService notificationService;
 
 	@Override
 	@Transactional
-	public void concludeAuction() {
-		List<Auction> expiredBiddingAuctions = auctionReader.getExpiredBiddingAuctionList();
+	public List<Long> concludeAuction() {
+		List<Auction> expiredBiddingAuctionList = auctionReader.getExpiredBiddingAuctionList();
+		List<Long> concludedAuctionIdList = new ArrayList<>();
 
-		for (Auction auction : expiredBiddingAuctions) {
+		for (Auction auction : expiredBiddingAuctionList) {
 			Optional<Bid> optionalHighestBid = bidReader.findHighestBid(auction.getAuctionId());
 
 			optionalHighestBid.ifPresentOrElse(highestBid -> {
@@ -42,25 +42,17 @@ public class ConcludeServiceImpl implements ConcludeService {
 				Member highestBuyer = highestBid.getBuyer();
 
 				auction.statusConcluded();
-
-				notificationService.sendConcludeEvent(
-					auction.getAuctionId(),
-					auction.getMemberId(),
-					highestBuyer.getMemberId()
-				);
+				concludedAuctionIdList.add(auction.getAuctionId());
 
 				var chatRoomCommand = new ChatCommand.AddChatRoom(
 					auction.getAuctionId(), highestBuyer.getMemberId());
 				chatService.addChatRoom(chatRoomCommand);
 			}, () -> {
 				auction.statusNoBids();
-
-				notificationService.sendConcludeEvent(
-					auction.getAuctionId(),
-					auction.getMemberId(),
-					null
-				);
+				concludedAuctionIdList.add(auction.getAuctionId());
 			});
 		}
+
+		return concludedAuctionIdList;
 	}
 }

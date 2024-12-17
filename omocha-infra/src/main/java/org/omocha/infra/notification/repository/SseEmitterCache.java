@@ -1,12 +1,20 @@
 package org.omocha.infra.notification.repository;
 
+import java.util.List;
+import java.util.Map;
+
+import org.omocha.domain.notification.Notification;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface SseEmitterCache {
 
-	SseEmitter getSseEmitter(Long memberId);
+	List<SseEmitter> getSseEmitterList(Long memberId);
 
-	void storeSseEmitter(Long memberId, SseEmitter emitter);
+	Map<String, Notification> getEventCacheList(Long memberId);
 
-	void removeSseEmitter(Long memberId);
+	void storeSseEmitter(Long memberId, String emitterId, SseEmitter emitter, Long EXPIRATION);
+
+	void storeNotificationCache(String eventId, Notification notification);
+
+	void removeSseEmitter(Long memberId, String emitterId);
 }

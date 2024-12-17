@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -31,33 +32,15 @@ public class NotificationController implements NotificationApi {
 	@Override
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public ResponseEntity<SseEmitter> connect(
-		@AuthenticationPrincipal UserPrincipal userPrincipal
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId
 	) {
-		NotificationCommand.Connect connectCommand = notificationDtoMapper.toConnectCommand(0L);
+		NotificationCommand.Connect connectCommand = notificationDtoMapper.toCommand(
+			userPrincipal.getId(), lastEventId);
 
 		SseEmitter emitter = notificationFacade.connect(connectCommand);
 
 		return ResponseEntity.ok(emitter);
-	}
-
-	@Override
-	@PostMapping(value = "/disconnect")
-	public ResponseEntity<ResultDto<Void>> disconnect(
-		@AuthenticationPrincipal UserPrincipal userPrincipal
-	) {
-		NotificationCommand.Disconnect disconnectCommand = notificationDtoMapper.toDisconnectCommand(
-			0L);
-
-		notificationFacade.disconnect(disconnectCommand);
-
-		ResultDto<Void> resultDto = ResultDto.res(
-			SSE_DISCONNECT_SUCCESS.getStatusCode(),
-			SSE_DISCONNECT_SUCCESS.getDescription()
-		);
-
-		return ResponseEntity
-			.status(SSE_DISCONNECT_SUCCESS.getHttpStatus())
-			.body(resultDto);
 	}
 
 	@Override
@@ -66,7 +49,7 @@ public class NotificationController implements NotificationApi {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable("notification_id") Long notificationId
 	) {
-		NotificationCommand.Read readCommand = notificationDtoMapper.toReadCommand(
+		NotificationCommand.Read readCommand = notificationDtoMapper.toCommand(
 			userPrincipal.getId(), notificationId);
 
 		notificationFacade.read(readCommand);

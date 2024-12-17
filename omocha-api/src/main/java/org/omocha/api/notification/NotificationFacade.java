@@ -17,10 +17,6 @@ public class NotificationFacade {
 		return notificationService.connect(connectCommand);
 	}
 
-	public void disconnect(NotificationCommand.Disconnect disconnectCommand) {
-		notificationService.disconnect(disconnectCommand);
-	}
-
 	public void read(NotificationCommand.Read readCommand) {
 		notificationService.read(readCommand);
 	}

@@ -101,6 +101,10 @@ public enum ErrorCode {
 	LOCK_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "요청 처리 중 오류가 발생했습니다."),
 	RLOCK_NOT_AVAILABLE(HttpStatus.CONFLICT, "선입찰자가 있습니다."),
 
+	// Notification Code
+	NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "알림을 찾을 수 없습니다."),
+	NOTIFICATION_ACCESS(HttpStatus.FORBIDDEN, "알림에 접근하려는 사용자가 알림 소유자와 일치하지 않습니다."),
+
 	// Common Code
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 정보가 올바르지 않습니다. 재로그인 후 다시 시도해주세요."),
 	OAUTH_FAILURE(HttpStatus.UNAUTHORIZED, "OAuth 로그인에 실패하였습니다."),
@@ -112,6 +116,8 @@ public enum ErrorCode {
 
 	URL_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 URL을 찾을 수 없습니다."),
 
+	JSON_SERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버오류가 발생했습니다."),
+	JSON_DESERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버오류가 발생했습니다."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버오류가 발생했습니다.");
 
 	private final HttpStatus httpStatus;

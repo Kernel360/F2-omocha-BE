@@ -1,5 +1,8 @@
 package org.omocha.domain.common.util;
 
+import org.omocha.domain.common.exception.json.JsonDeserializationException;
+import org.omocha.domain.common.exception.json.JsonSerializationException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -19,7 +22,7 @@ public class JsonUtils {
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (JsonProcessingException e) {
-			throw new RuntimeException("Failed to serialize object", e);
+			throw new JsonSerializationException(obj);
 		}
 	}
 
@@ -27,7 +30,7 @@ public class JsonUtils {
 		try {
 			return mapper.readValue(json, clazz);
 		} catch (JsonProcessingException e) {
-			throw new RuntimeException("Failed to serialize object", e);
+			throw new JsonDeserializationException(clazz, json);
 		}
 	}
 }

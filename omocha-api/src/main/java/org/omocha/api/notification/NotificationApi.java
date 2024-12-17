@@ -25,19 +25,9 @@ public interface NotificationApi {
 	})
 	ResponseEntity<SseEmitter> connect(
 		@Parameter(description = "사용자 객체 정보", required = true)
-		UserPrincipal userPrincipal
-	);
-
-	@Operation(summary = "SSE 연결 해제", description = "SSE 연결 해제를 실행합니다.")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "SSE 연결 해제 성공",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class))),
-		@ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResultDto.class)))
-	})
-	ResponseEntity<ResultDto<Void>> disconnect(
-		@Parameter(description = "사용자 객체 정보", required = true)
-		UserPrincipal userPrincipal
+		UserPrincipal userPrincipal,
+		@Parameter(description = "마지막 이벤트 ID", required = false)
+		String lastEventId
 	);
 
 	@Operation(summary = "알림 읽음 처리", description = "알림을 읽음 상태로 변경합니다.")

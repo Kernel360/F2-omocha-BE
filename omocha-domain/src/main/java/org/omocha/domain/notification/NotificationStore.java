@@ -5,12 +5,13 @@ import org.omocha.domain.notification.enums.NotificationCode;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface NotificationStore {
-	void emitterStore(Long memberId, SseEmitter emitter);
+	void emitterStore(Long memberId, String emitterId, SseEmitter emitter, Long EXPIRATION);
 
-	void emitterDelete(Long memberId);
+	void emitterDelete(Long memberId, String emitterId);
 
 	Notification notificationStore(
 		Long memberId,
+		String eventId,
 		EventName eventName,
 		NotificationCode notificationCode,
 		String data

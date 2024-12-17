@@ -179,7 +179,8 @@ public class GlobalExceptionHandler {
 
 		log.warn("Exception: {}, Message: {}",
 			e.getClass().getName(),
-			e.getMessage()
+			e.getMessage(),
+			e
 		);
 	}
 
@@ -196,7 +197,11 @@ public class GlobalExceptionHandler {
 		log.error("Request URI: {}, Method: {}, Params: {}",
 			request.getRequestURI(),
 			request.getMethod(),
-			request.getQueryString(),
+			request.getQueryString()
+		);
+
+		log.error("Message: {}",
+			e.getMessage(),
 			e
 		);
 

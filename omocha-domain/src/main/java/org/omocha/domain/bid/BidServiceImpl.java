@@ -37,8 +37,6 @@ public class BidServiceImpl implements BidService {
 	private final ChatService chatService;
 	private final NotificationService notificationService;
 
-	// TODO : 동시성 해결 해결 해야 함
-
 	@Override
 	@Transactional(readOnly = true)
 	public List<BidInfo.BidList> retrieveBids(Long auctionId) {
@@ -48,7 +46,6 @@ public class BidServiceImpl implements BidService {
 			.toList();
 	}
 
-	// TODO : 최고 입찰가 관련 논의 후 수정 필요
 	@Override
 	@DistributedLock(key = "#addBid.auctionId()")
 	public BidInfo.AddBid addBid(BidCommand.AddBid addBid) {
@@ -65,8 +62,6 @@ public class BidServiceImpl implements BidService {
 		Member member = memberReader.getMember(buyerMemberId);
 
 		Bid bid = bidStore.store(auction, member, bidPrice);
-
-		notificationService.sendBidEvent(auctionId, auction.getMemberId(), buyerMemberId);
 
 		return BidInfo.AddBid.toInfo(bid);
 	}
