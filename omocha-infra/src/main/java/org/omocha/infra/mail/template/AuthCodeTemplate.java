@@ -55,7 +55,9 @@ public class AuthCodeTemplate implements TemplateStrategy {
 			mimeMessageHelper.setText(content, true);
 
 		} catch (IOException | TemplateException | MessagingException e) {
-			throw new MailTemplateFailException(email, e);
+			MailTemplateFailException mtfe = new MailTemplateFailException(email);
+			mtfe.initCause(e);
+			throw mtfe;
 		}
 
 		return mimeMessage;

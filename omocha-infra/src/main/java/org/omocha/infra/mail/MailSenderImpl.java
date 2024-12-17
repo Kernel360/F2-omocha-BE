@@ -4,6 +4,7 @@ import org.omocha.domain.mail.MailCommand;
 import org.omocha.domain.mail.MailSender;
 import org.omocha.domain.mail.exception.MailSendFailException;
 import org.omocha.infra.mail.template.MailTemplate;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -27,8 +28,10 @@ public class MailSenderImpl implements MailSender {
 		MimeMessage mail = mailTemplate.getMimeMessage("authCodeTemplate", sendCommand.email(), code, mimeMessage);
 		try {
 			mailSender.send(mail);
-		} catch (Exception e) {
-			throw new MailSendFailException(sendCommand.email(), e);
+		} catch (MailException e) {
+			MailSendFailException msfe = new MailSendFailException(sendCommand.email());
+			msfe.initCause(e);
+			throw msfe;
 		}
 
 	}
