@@ -146,7 +146,7 @@ public class NotificationServiceImpl implements NotificationService {
 		String data
 	) {
 		String eventId = createEmitterId(memberId);
-		Notification notification = notificationStore.notificationStore(memberId, eventId, eventName, code, data);
+		Notification notification = notificationStore.store(memberId, eventId, eventName, code, data);
 
 		String notificationData = JsonUtils.toJson(
 			NotificationInfo.RootResponse.toInfo(notification, NotificationInfo.AuctionResponse.class)
@@ -154,20 +154,6 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationReader.getEmitterList(memberId).forEach(emitter ->
 			sendSseEvent(emitter, eventId, eventName, memberId, notificationData));
-	}
-
-	@Override
-	@Transactional
-	public void read(NotificationCommand.Read readCommand) {
-		Notification notification = notificationReader.getNotification(readCommand.notificationId());
-
-		Long readMemberId = readCommand.memberId();
-		Long notifyMemberId = notification.getMember().getMemberId();
-		if (!readMemberId.equals(notifyMemberId)) {
-			throw new NotificationAccessException(readMemberId, notifyMemberId);
-		}
-
-		notification.modifyAsRead();
 	}
 
 	private void sendSseEvent(
@@ -196,5 +182,25 @@ public class NotificationServiceImpl implements NotificationService {
 
 	private String convertAuctionToJson(Auction auction) {
 		return JsonUtils.toJson(NotificationInfo.AuctionResponse.toInfo(auction));
+	}
+
+	@Override
+	@Transactional
+	public void read(NotificationCommand.Read readCommand) {
+		Notification notification = notificationReader.getNotification(readCommand.notificationId());
+
+		Long readMemberId = readCommand.memberId();
+		Long notifyMemberId = notification.getMember().getMemberId();
+		if (!readMemberId.equals(notifyMemberId)) {
+			throw new NotificationAccessException(readMemberId, notifyMemberId);
+		}
+
+		notification.modifyAsRead();
+	}
+
+	@Override
+	@Transactional
+	public void readAll(NotificationCommand.ReadAll readAllCommand) {
+		notificationStore.bulkRead(readAllCommand.memberId(), readAllCommand.notificationIdList());
 	}
 }

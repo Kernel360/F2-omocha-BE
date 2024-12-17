@@ -20,4 +20,8 @@ public class NotificationFacade {
 	public void read(NotificationCommand.Read readCommand) {
 		notificationService.read(readCommand);
 	}
+
+	public void readAll(NotificationCommand.ReadAll readAllCommand) {
+		notificationService.readAll(readAllCommand);
+	}
 }

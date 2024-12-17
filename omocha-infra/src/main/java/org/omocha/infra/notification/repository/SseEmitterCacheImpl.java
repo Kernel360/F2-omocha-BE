@@ -82,14 +82,4 @@ public class SseEmitterCacheImpl implements SseEmitterCache {
 		emitters.remove(emitterId);
 		template.opsForSet().remove(RedisPrefix.SSE_EMITTER_PREFIX.getPrefix() + memberId, emitterId);
 	}
-
-	public void deleteAllEventCacheStartWithId(String memberId) {
-		eventCache.forEach(
-			(key, emitter) -> {
-				if (key.startsWith(memberId)) {
-					eventCache.remove(key);
-				}
-			}
-		);
-	}
 }

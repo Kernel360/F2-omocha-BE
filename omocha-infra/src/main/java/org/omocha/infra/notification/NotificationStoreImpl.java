@@ -1,5 +1,7 @@
 package org.omocha.infra.notification;
 
+import java.util.List;
+
 import org.omocha.domain.member.Member;
 import org.omocha.domain.member.MemberReader;
 import org.omocha.domain.notification.Notification;
@@ -35,7 +37,7 @@ public class NotificationStoreImpl implements NotificationStore {
 	}
 
 	@Override
-	public Notification notificationStore(
+	public Notification store(
 		Long memberId,
 		String eventId,
 		EventName eventName,
@@ -54,5 +56,10 @@ public class NotificationStoreImpl implements NotificationStore {
 		notificationRepository.storeNotificationCache(eventId, notification);
 
 		return notificationRepository.save(notification);
+	}
+
+	@Override
+	public void bulkRead(Long memberId, List<Long> notificationIdList) {
+		notificationRepository.modifyAllAsRead(memberId, notificationIdList);
 	}
 }

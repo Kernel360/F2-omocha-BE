@@ -12,4 +12,6 @@ public interface NotificationService {
 	void sendConcludeEvent(List<Long> concludedAuctionIdList);
 
 	void read(NotificationCommand.Read readCommand);
+
+	void readAll(NotificationCommand.ReadAll readAllCommand);
 }

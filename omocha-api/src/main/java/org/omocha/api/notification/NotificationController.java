@@ -4,6 +4,7 @@ import static org.omocha.domain.common.code.SuccessCode.*;
 
 import org.omocha.api.auth.jwt.UserPrincipal;
 import org.omocha.api.common.response.ResultDto;
+import org.omocha.api.notification.dto.NotificationDto;
 import org.omocha.api.notification.dto.NotificationDtoMapper;
 import org.omocha.domain.notification.NotificationCommand;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +55,26 @@ public class NotificationController implements NotificationApi {
 			userPrincipal.getId(), notificationId);
 
 		notificationFacade.read(readCommand);
+
+		ResultDto<Void> resultDto = ResultDto.res(
+			NOTIFICATION_READ_SUCCESS.getStatusCode(),
+			NOTIFICATION_READ_SUCCESS.getDescription()
+		);
+
+		return ResponseEntity
+			.status(NOTIFICATION_READ_SUCCESS.getHttpStatus())
+			.body(resultDto);
+	}
+
+	@Override
+	@PostMapping(value = "/readAll")
+	public ResponseEntity<ResultDto<Void>> readAll(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@RequestBody NotificationDto.ReadAll readAllDto
+	) {
+		NotificationCommand.ReadAll readCommand = notificationDtoMapper.toCommand(userPrincipal.getId(), readAllDto);
+
+		notificationFacade.readAll(readCommand);
 
 		ResultDto<Void> resultDto = ResultDto.res(
 			NOTIFICATION_READ_SUCCESS.getStatusCode(),
