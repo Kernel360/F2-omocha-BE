@@ -24,7 +24,7 @@
 
 | 로그인 & 회원가입 페이지                                                                                                     | 메인 페이지                                                                                                               |
 |--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| <p align="center"> <img src="https://github.com/gooot/ProjectImage/blob/main/Omocha/v1/login.gif" width="350"></p> | <p align="center"><img src="https://github.com/gooot/ProjectImage/blob/main/Omocha/v1/mainpage.gif" width="350"></p> |
+| <p align="center"> <img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_record_login.gif" width="350"></p> | <p align="center"><img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_record_mainpage.gif" width="350"></p> |
 | 회원가입, 로그인을 제공합니다.                                                                                                  | 경매 게시글 전체 확인, 검색을 제공합니다.                                                                                             |
 | - OAuth 2.0(Google, Naver)을 통한 로그인이 가능합니다.<br/>- 일반 회원가입으로 생성한 ID,PW로 로그인이 가능합니다.<br/>- 회원가입시 이메일 인증을 하여야 합니다.     | - 배너를 통해 여러 정보를 제공합니다.<br/>- 인기 경매, 신규 경매 상품, 마감 임박 상품을 확인 할 수 있습니다.                                                 |
 
@@ -34,7 +34,7 @@
 
 | 경매 게시글 생성                                                                                                                                 | 입찰                                                                                                                  |
 |-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| <p align="center"><img src="https://github.com/gooot/ProjectImage/blob/main/Omocha/v1/AuctionCreate.gif" width="350"></p>                 | <p align="center"><img src="https://github.com/gooot/ProjectImage/blob/main/Omocha/v1/Bidding.gif" width="350"></p> |
+| <p align="center"><img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_record_auction_create.gif" width="350"></p>                 | <p align="center"><img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/omocha_record_bid.gif" width="350"></p> |
 | 새로운 경매 게시글을 생성하고 상품 정보 및 경매 기간을 설정할 수 있습니다.                                                                                               | 상품에 입찰하고 실시간으로 경쟁 입찰 상황을 확인할 수 있습니다.                                                                                |
 | - 경매는 일반 경매 or 라이브 경매로 생성할 수 있음. (현재는 일반형만 가능) <br/> - 상품명, 상품 사진(최대 10개), 상품 정보, 시작가, 입찰단위, 경매 시간을 입력해야함. <br/> - 한번 등록된 경매는 수정, 삭제가 불가함 | - 판매자가 설정한 입찰 단위 맞춰 입찰 할 수 있습니다.<br/>- 즉시 구매를 통해 바로 구매 할 수 있습니다.                                                    |
 
