@@ -40,8 +40,14 @@ public class AuctionReaderImpl implements AuctionReader {
 
 	@Override
 	public List<Auction> getExpiredBiddingAuctionList() {
-		return auctionRepository.findAllByAuctionStatusAndEndDateBefore(
-			Auction.AuctionStatus.BIDDING, LocalDateTime.now());
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime oneHourBefore = now.minusHours(1);
+
+		return auctionRepository.findAllByAuctionStatusAndEndDateBetween(
+			Auction.AuctionStatus.BIDDING,
+			oneHourBefore,
+			now
+		);
 	}
 
 	@Override

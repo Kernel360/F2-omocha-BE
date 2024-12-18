@@ -7,6 +7,9 @@ import org.omocha.domain.auction.Auction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
-	List<Auction> findAllByAuctionStatusAndEndDateBefore(Auction.AuctionStatus status, LocalDateTime endDate);
-
+	List<Auction> findAllByAuctionStatusAndEndDateBetween(
+		Auction.AuctionStatus status,
+		LocalDateTime startDate,
+		LocalDateTime endDate
+	);
 }
