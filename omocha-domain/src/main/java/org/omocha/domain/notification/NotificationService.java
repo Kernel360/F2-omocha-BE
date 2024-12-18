@@ -9,6 +9,8 @@ public interface NotificationService {
 
 	void sendBidEvent(Long auctionId, Long buyerMemberId);
 
+	void sendInstantBuyEvent(Long auctionId, Long buyerMemberId);
+
 	void sendConcludeEvent(List<Long> concludedAuctionIdList);
 
 	void read(NotificationCommand.Read readCommand);

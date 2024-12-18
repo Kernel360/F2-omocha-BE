@@ -38,6 +38,7 @@ public class BidFacade {
 
 	public void buyNow(BidCommand.BuyNow buyNowCommand) {
 		bidService.buyNow(buyNowCommand);
+		notificationService.sendInstantBuyEvent(buyNowCommand.auctionId(), buyNowCommand.buyerMemberId());
 	}
 
 	public Page<BidInfo.RetrieveMyBids> retrieveMyBids(

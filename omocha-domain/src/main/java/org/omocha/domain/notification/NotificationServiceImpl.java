@@ -113,6 +113,16 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
+	public void sendInstantBuyEvent(Long auctionId, Long buyerMemberId) {
+		Auction auction = auctionReader.getAuction(auctionId);
+		String auctionData = convertAuctionToJson(auction);
+
+		notifyMember(CONCLUDE, auction.getMemberId(), CONCLUDE_SELLER, auctionData);
+		notifyConcludeBuyers(auctionId, auction.getConclude().getBuyer().getMemberId(), auctionData);
+	}
+
+	@Override
+	@Transactional
 	public void sendConcludeEvent(List<Long> concludedAuctionIdList) {
 		concludedAuctionIdList.forEach(auctionId -> {
 			Auction auction = auctionReader.getAuction(auctionId);
