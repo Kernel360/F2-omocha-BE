@@ -26,6 +26,11 @@ public class CodeCacheReaderImpl implements CodeCacheReader {
 		return Optional.ofNullable(template.opsForValue().get(appendPrefixKey(key)));
 	}
 
+	@Override
+	public Optional<Long> findCodeDuration(String key) {
+		return Optional.ofNullable(template.getExpire(appendPrefixKey(key)));
+	}
+
 	private String appendPrefixKey(String key) {
 		return RedisPrefix.AUTHCODE_PREFIX.getPrefix() + key;
 	}
