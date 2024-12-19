@@ -36,7 +36,7 @@ public class MemberReaderImpl implements MemberReader {
 
 	@Override
 	public Member getMember(Email email) {
-		return memberRepository.findByEmail(email)
+		return memberRepository.findByEmailAndProviderIsNull(email)
 			.orElseThrow(() -> new MemberNotFoundExceptionForEmail(email));
 	}
 
