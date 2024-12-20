@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.omocha.domain.mail.exception.MailAuthCodeMisMachException;
 import org.omocha.domain.mail.exception.MailCodeKeyNotFoundException;
+import org.omocha.domain.mail.exception.MailRetryExcessException;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,14 @@ public class CodeManager {
 	}
 
 	public String addCode(String email) {
+		Long codeDuration = codeCacheReader.findCodeDuration(email).orElseGet(() -> {
+			return (Long)0L;
+		});
+
+		if (codeDuration > 1785) {
+			throw new MailRetryExcessException();
+		}
+
 		String code = createCode();
 		AuthCode authCode = new AuthCode(code);
 		codeCacheStore.storeCode(email, authCode);
