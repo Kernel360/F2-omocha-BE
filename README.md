@@ -13,6 +13,11 @@
 <p align="left"><img src="https://github.com/limbaba1120/limbaba1120_images/blob/master/notion_image/1%ED%8C%80_omocha_panel.jpg" width="800"></p>
 </details>
 
+## ⭐ **노션 Page**
+- https://www.notion.so/Final_-_1-Omocha-eff998bfd0524dd3926822834f9cd433?pvs=4
+
+---
+
 ## ⭐ **주요 기능**
 
 <!-- 
